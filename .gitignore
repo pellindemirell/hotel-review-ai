@@ -1,0 +1,36 @@
+# ===== .NET =====
+**/bin/
+**/obj/
+**/*.user
+**/.vs/
+**/appsettings.Development.json
+**/appsettings.Local.json
+
+# ===== Angular =====
+web/hotel-review-web/node_modules/
+web/hotel-review-web/dist/
+web/hotel-review-web/.angular/
+web/hotel-review-web/src/environments/environment.local.ts
+
+# ===== Flutter =====
+mobile/hotel_review_mobile/.dart_tool/
+mobile/hotel_review_mobile/build/
+mobile/hotel_review_mobile/.flutter-plugins
+mobile/hotel_review_mobile/google-services.json
+mobile/hotel_review_mobile/ios/GoogleService-Info.plist
+
+# ===== Python =====
+ai-service/__pycache__/
+ai-service/*.pyc
+ai-service/.venv/
+ai-service/.env
+
+# ===== Docker / ENV =====
+.env
+.env.local
+docker-compose.override.yml
+
+# ===== IDE =====
+.idea/
+.vscode/settings.json
+*.DS_Store
