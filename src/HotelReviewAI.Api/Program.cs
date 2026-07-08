@@ -1,4 +1,5 @@
 using System.Text;
+using HotelReviewAI.Application.DTOs;
 using HotelReviewAI.Application.Interfaces;
 using HotelReviewAI.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,6 +13,20 @@ builder.Services.AddControllers();
 
 // Configure Dependency Injection
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+
+// Configure MediatR (For Stajyer 3 - CQRS)
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginRequest).Assembly));
+
+// Configure CORS (For Stajyer 4 & 5 - Web & Mobile)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 
 // Configure JWT Authentication
 var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? throw new InvalidOperationException("JwtSettings:Secret is missing");
@@ -74,6 +89,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
