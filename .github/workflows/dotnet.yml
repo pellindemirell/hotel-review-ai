@@ -1,0 +1,31 @@
+name: .NET CI
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+        include-prerelease: true
+        
+    - name: Restore dependencies
+      run: dotnet restore HotelReviewAI.sln
+      
+    - name: Build
+      run: dotnet build HotelReviewAI.sln --no-restore --configuration Release
+      
+    # Note: Test step is commented out for now. 
+    # Once the unit/integration tests are written, uncomment this to run tests automatically.
+    # - name: Test
+    #   run: dotnet test HotelReviewAI.sln --no-build --verbosity normal --configuration Release
