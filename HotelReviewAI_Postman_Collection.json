@@ -1,0 +1,147 @@
+{
+	"info": {
+		"_postman_id": "c71120f2-51e8-468e-a228-40a12e2d93e1",
+		"name": "HotelReviewAI API Tests",
+		"description": "Postman Collection to test C# Backend API (port 5012) and Python AI Service (port 8000).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "C# Backend API",
+			"item": [
+				{
+					"name": "User Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@test.com\",\n    \"password\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5012/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5012",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Logs in the test user and returns a JWT bearer token."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Python AI Service",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"health"
+							]
+						},
+						"description": "Checks if the Python FastAPI AI service is alive."
+					},
+					"response": []
+				},
+				{
+					"name": "Analyze Review",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\": \"Oda temizliği çok kötüydü, banyoda kirli havlular vardı. Ancak kahvaltı güzeldi.\",\n    \"rating\": 2,\n    \"language\": \"tr\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/analyze-review",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"analyze-review"
+							]
+						},
+						"description": "Sends a single review to be analyzed for sentiment, category, keywords, summary, and suggestion."
+					},
+					"response": []
+				},
+				{
+					"name": "Analyze Batch",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reviews\": [\n        {\n            \"comment\": \"Yemekler harika lezzetliydi, garsonlar çok ilgili.\",\n            \"rating\": 5,\n            \"language\": \"tr\"\n        },\n        {\n            \"comment\": \"Very noisy room, couldn't sleep well.\",\n            \"rating\": 1,\n            \"language\": \"en\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/analyze-batch",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"analyze-batch"
+							]
+						},
+						"description": "Sends a batch of reviews to be analyzed."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

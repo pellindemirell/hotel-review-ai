@@ -1,3 +1,6 @@
+
+using HotelReviewAI.Persistence.Contexts;
+using Microsoft.EntityFrameworkCore;
 using System.Text;
 using HotelReviewAI.Application.DTOs;
 using HotelReviewAI.Application.Interfaces;
@@ -5,8 +8,22 @@ using HotelReviewAI.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using FluentValidation;
+using HotelReviewAI.Application.Behaviors;
+using HotelReviewAI.Api.Middlewares;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -14,10 +31,15 @@ builder.Services.AddControllers();
 // Configure Dependency Injection
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 
-// Configure MediatR (For Stajyer 3 - CQRS)
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginRequest).Assembly));
+// Configure FluentValidation + Pipeline Behavior
+builder.Services.AddValidatorsFromAssembly(typeof(LoginRequest).Assembly);
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(LoginRequest).Assembly);
+    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+});
 
-// Configure CORS (For Stajyer 4 & 5 - Web & Mobile)
+// Configure CORS (Web & Mobile)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
@@ -44,6 +66,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
         };
     });
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddAuthorization();
 
@@ -81,12 +105,15 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.UseHttpsRedirection();
 

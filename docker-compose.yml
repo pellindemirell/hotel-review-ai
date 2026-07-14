@@ -1,1 +1,25 @@
+version: '3.8'
 
+services:
+  ai-service:
+    build: ./ai-service
+    environment:
+      - DB_HOST=192.168.40.140
+      - DB_PORT=5432
+      - DB_NAME=stajor
+      - DB_USER=stajor1
+      - DB_PASSWORD=stajor1*-
+    ports:
+      - "8000:8000"
+
+  web-api:
+    build:
+      context: .
+      dockerfile: src/HotelReviewAI.Api/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=192.168.40.140;Port=5432;Database=stajor;Username=stajor1;Password=stajor1*-
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5012:5012"
+    depends_on:
+      - ai-service

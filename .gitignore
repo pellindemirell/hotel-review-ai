@@ -34,3 +34,6 @@ docker-compose.override.yml
 .idea/
 .vscode/settings.json
 *.DS_Store
+
+.env
+appsettings.Developmnet.json
