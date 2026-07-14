@@ -1,0 +1,14 @@
+$kind: http-request
+description: Logs in the test user and returns a JWT bearer token.
+url: http://localhost:5012/api/auth/login
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+        "email": "admin@test.com",
+        "password": "1234"
+    }
+order: 1000

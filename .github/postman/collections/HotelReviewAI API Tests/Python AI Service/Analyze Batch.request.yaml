@@ -1,0 +1,24 @@
+$kind: http-request
+description: Sends a batch of reviews to be analyzed.
+url: http://localhost:8000/analyze-batch
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+        "reviews": [
+            {
+                "comment": "Yemekler harika lezzetliydi, garsonlar çok ilgili.",
+                "rating": 5,
+                "language": "tr"
+            },
+            {
+                "comment": "Very noisy room, couldn't sleep well.",
+                "rating": 1,
+                "language": "en"
+            }
+        ]
+    }
+order: 3000

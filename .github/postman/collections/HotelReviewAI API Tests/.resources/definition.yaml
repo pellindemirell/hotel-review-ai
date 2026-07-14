@@ -1,0 +1,2 @@
+$kind: collection
+description: Postman Collection to test C# Backend API (port 5012) and Python AI Service (port 8000).
