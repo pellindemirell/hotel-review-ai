@@ -17,7 +17,7 @@ public class AppDbContext : DbContext
     public DbSet<Department> Departments => Set<Department>();
 
 
- //verıtabanı kuralları onetoone ilişkisi analiz yaptır yorum silinirse analizi sil
+ //verıtabanı kuralları: bir yorumun 0-N analiz (clause) kaydı olabilir, yorum silinirse analizleri de silinir
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -31,9 +31,9 @@ public class AppDbContext : DbContext
             entity.Property(r => r.Language).HasMaxLength(10);
             entity.Property(r => r.Rating).IsRequired();
 
-            entity.HasOne(r => r.Analysis)
+            entity.HasMany(r => r.Analyses)
                   .WithOne(a => a.Review)
-                  .HasForeignKey<ReviewAnalysis>(a => a.ReviewId)
+                  .HasForeignKey(a => a.ReviewId)
                   .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasMany(r => r.Attachments)
@@ -47,18 +47,25 @@ public class AppDbContext : DbContext
                   .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // ReviewAnalysis - Keywords stored as JSON
+        // ReviewAnalysis - her satır bir clause (cümlecik); bir yorumun 0-N analizi olabilir
         modelBuilder.Entity<ReviewAnalysis>(entity =>
         {
             entity.HasKey(a => a.Id);
-            entity.Property(a => a.Keywords)
-                  .HasColumnType("jsonb");
+            entity.Property(a => a.ClauseText).IsRequired();
+            entity.Property(a => a.Suggestion).HasMaxLength(500);
+
+            entity.HasOne(a => a.Category)
+                  .WithMany()
+                  .HasForeignKey(a => a.CategoryId)
+                  .OnDelete(DeleteBehavior.SetNull);
         });
 
-        // ReviewCategory - Keywords stored as JSON
+        // ReviewCategory (aspect) - Keywords stored as JSON
         modelBuilder.Entity<ReviewCategory>(entity =>
         {
             entity.HasKey(c => c.Id);
+            entity.Property(c => c.Key).IsRequired().HasMaxLength(100);
+            entity.HasIndex(c => c.Key).IsUnique();
             entity.Property(c => c.Name).IsRequired().HasMaxLength(100);
             entity.Property(c => c.Keywords)
                   .HasColumnType("jsonb");
@@ -98,6 +105,8 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Department>(entity =>
         {
             entity.HasKey(d => d.Id);
+            entity.Property(d => d.Key).IsRequired().HasMaxLength(100);
+            entity.HasIndex(d => d.Key).IsUnique();
             entity.Property(d => d.Name).IsRequired().HasMaxLength(100);
         });
 
