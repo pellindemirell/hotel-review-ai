@@ -1,5 +1,6 @@
 
 using HotelReviewAI.Persistence.Contexts;
+using HotelReviewAI.Persistence.Seed;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using HotelReviewAI.Application.DTOs;
@@ -104,6 +105,12 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await DbSeeder.SeedAsync(dbContext);
+}
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
