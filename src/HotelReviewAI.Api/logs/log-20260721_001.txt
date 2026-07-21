@@ -829,3 +829,15 @@ SELECT EXISTS (
 2026-07-21 15:29:33.155 +03:00 [INF] Application started. Press Ctrl+C to shut down.
 2026-07-21 15:29:33.155 +03:00 [INF] Hosting environment: Development
 2026-07-21 15:29:33.155 +03:00 [INF] Content root path: C:\Users\monster\OneDrive\Masaüstü\stajproje\HotelReviewAI\src\HotelReviewAI.Api
+2026-07-21 15:43:21.976 +03:00 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT pg_advisory_xact_lock(888123);
+2026-07-21 15:43:22.189 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."IsActive")
+2026-07-21 15:43:22.259 +03:00 [INF] User profile is available. Using 'C:\Users\monster\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-21 15:43:22.292 +03:00 [INF] Now listening on: http://localhost:5012
+2026-07-21 15:43:22.293 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-21 15:43:22.293 +03:00 [INF] Hosting environment: Development
+2026-07-21 15:43:22.293 +03:00 [INF] Content root path: C:\Users\monster\OneDrive\Masaüstü\stajproje\HotelReviewAI\src\HotelReviewAI.Api
