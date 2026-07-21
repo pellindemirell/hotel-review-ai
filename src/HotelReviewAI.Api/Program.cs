@@ -1,21 +1,13 @@
-
+using HotelReviewAI.Application;
+using HotelReviewAI.Infrastructure;
+using HotelReviewAI.Persistence;
 using HotelReviewAI.Persistence.Contexts;
 using HotelReviewAI.Persistence.Seed;
-using Microsoft.EntityFrameworkCore;
-using System.Text;
-using HotelReviewAI.Application.DTOs;
-using HotelReviewAI.Application.Interfaces;
-using HotelReviewAI.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using FluentValidation;
-using HotelReviewAI.Application.Behaviors;
-using HotelReviewAI.Api.Middlewares;
-using HotelReviewAI.Persistence.Repositories;
-
-
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,30 +24,27 @@ builder.Services.AddControllers()
     .AddJsonOptions(options =>
         options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter()));
 
-// Configure Dependency Injection
-builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+//  Katman DI Extension Metotları 
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddPersistence(builder.Configuration);
 
-// Configure FluentValidation + Pipeline Behavior
-builder.Services.AddValidatorsFromAssembly(typeof(LoginRequest).Assembly);
-builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssembly(typeof(LoginRequest).Assembly);
-    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
-});
 
 // Configure CORS (Web & Mobile)
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
+    options.AddPolicy("AllowAll", policy =>
     {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
 
 // Configure JWT Authentication
-var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? throw new InvalidOperationException("JwtSettings:Secret is missing");
+var jwtSecret = builder.Configuration["JwtSettings:Secret"]
+    ?? throw new InvalidOperationException("JwtSettings:Secret is missing");
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -70,18 +59,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
         };
     });
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Configure Repositories
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
-builder.Services.AddScoped<IReviewAnalysisRepository, ReviewAnalysisRepository>();
-builder.Services.AddScoped<IReviewAttachmentRepository, ReviewAttachmentRepository>();
-builder.Services.AddScoped<IReviewCategoryRepository, ReviewCategoryRepository>();
-builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-builder.Services.AddScoped<IActionItemRepository, ActionItemRepository>();
-builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 
 builder.Services.AddAuthorization();
 
@@ -90,8 +67,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "HotelReviewAI API", Version = "v1" });
-    
-    // Configure Swagger to use JWT Bearer Authentication
+
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
@@ -119,29 +95,26 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+// Seed data
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     await DbSeeder.SeedAsync(dbContext);
 }
 
-app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseMiddleware<HotelReviewAI.Api.Middlewares.ExceptionHandlingMiddleware>();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-
 app.UseHttpsRedirection();
-
+app.UseStaticFiles();
 app.UseCors("AllowAll");
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

@@ -10,10 +10,49 @@ public static class DbSeeder
 {
     public static async Task SeedAsync(AppDbContext context)
     {
-        var departments = await SeedDepartmentsAsync(context);
-        var categories = await SeedCategoriesAsync(context, departments);
-        await SeedUsersAsync(context, departments);
-        await SeedReviewsAsync(context, categories);
+        // Eğer veritabanı sağlayıcısı PostgreSQL ise eşzamanlı çalıştırma çakışmalarını önlemek için advisory lock kullanalım.
+        if (context.Database.IsNpgsql())
+        {
+            using var transaction = await context.Database.BeginTransactionAsync();
+            try
+            {
+                // İşlem seviyesinde (transaction-level) advisory lock edinilir.
+                // Bu kilit, işlem Commit veya Rollback edildiğinde PostgreSQL tarafından otomatik olarak bırakılır.
+                await context.Database.ExecuteSqlRawAsync("SELECT pg_advisory_xact_lock(888123);");
+
+                // Kilit alındıktan sonra durumu tekrar kontrol et
+                if (await context.Departments.AnyAsync())
+                {
+                    await transaction.CommitAsync();
+                    return;
+                }
+
+                var departments = await SeedDepartmentsAsync(context);
+                var categories = await SeedCategoriesAsync(context, departments);
+                await SeedUsersAsync(context, departments);
+                await SeedReviewsAsync(context, categories);
+
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+        else
+        {
+            // Npgsql dışındaki sağlayıcılar (örneğin in-memory) için düz kontrol ve ekleme
+            if (await context.Departments.AnyAsync())
+            {
+                return;
+            }
+
+            var departments = await SeedDepartmentsAsync(context);
+            var categories = await SeedCategoriesAsync(context, departments);
+            await SeedUsersAsync(context, departments);
+            await SeedReviewsAsync(context, categories);
+        }
     }
 
     private static async Task<Dictionary<string, Department>> SeedDepartmentsAsync(AppDbContext context)
@@ -82,13 +121,18 @@ public static class DbSeeder
             return;
         }
 
-        var jsonPath = Path.Combine(AppContext.BaseDirectory, "seed-data", "reviews.json");
-        if (!File.Exists(jsonPath))
+        var assembly = typeof(DbSeeder).Assembly;
+        var resourceName = "HotelReviewAI.Persistence.Seed.reviews.json";
+
+        using var stream = assembly.GetManifestResourceStream(resourceName);
+        if (stream == null)
         {
             return;
         }
 
-        var json = await File.ReadAllTextAsync(jsonPath);
+        using var reader = new System.IO.StreamReader(stream);
+        var json = await reader.ReadToEndAsync();
+
         var seedReviews = JsonSerializer.Deserialize<List<ReviewSeedDto>>(json, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true

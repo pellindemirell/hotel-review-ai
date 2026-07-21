@@ -1,20 +1,27 @@
 using HotelReviewAI.Application.Interfaces;
 using HotelReviewAI.Domain.Entities;
+using HotelReviewAI.Domain.Enums;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace HotelReviewAI.Application.Commands.Reviews;
 
 public class CreateReviewHandler : IRequestHandler<CreateReviewCommand, Guid>
 {
     private readonly IReviewRepository _reviewRepository;
+    private readonly IReviewAnalysisProcessingService _analysisProcessingService;
 
-    public CreateReviewHandler(IReviewRepository reviewRepository)
+    public CreateReviewHandler(
+        IReviewRepository reviewRepository,
+        IReviewAnalysisProcessingService analysisProcessingService)
     {
         _reviewRepository = reviewRepository;
+        _analysisProcessingService = analysisProcessingService;
     }
 
     public async Task<Guid> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
     {
+        // 1. Yorumu veritabanına kaydet
         var review = Review.Create(
             guestName: request.GuestName,
             comment: request.Comment,
@@ -24,9 +31,10 @@ public class CreateReviewHandler : IRequestHandler<CreateReviewCommand, Guid>
             reviewDate: request.ReviewDate ?? DateTime.UtcNow,
             createdBy: null);
 
-        // Not: Aşama 8 (AI entegrasyonu) yazılınca, kayıttan sonra burada AI servisine
-        // analiz isteği gönderilip sonucu ReviewAnalysis olarak kaydedilecek.
         await _reviewRepository.AddAsync(review);
+
+        // 2. AI analizi ve otomatik aksiyon işlemlerini ortak servise devret
+        await _analysisProcessingService.ProcessAnalysisAsync(review, isReanalysis: false, cancellationToken);
 
         return review.Id;
     }

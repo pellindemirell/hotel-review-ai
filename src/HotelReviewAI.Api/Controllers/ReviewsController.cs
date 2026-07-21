@@ -66,4 +66,31 @@ public class ReviewsController : ControllerBase
 
         return Ok(BaseResponse<object>.Ok(null!, "Yorum silindi"));
     }
+
+    [HttpPost("import")]
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> Import(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest(BaseResponse<object>.Fail("Lütfen geçerli bir CSV dosyası seçin."));
+        }
+
+        using var stream = file.OpenReadStream();
+        var result = await _mediator.Send(new ImportReviewsCsvCommand(stream));
+
+        return Ok(BaseResponse<ImportResultDto>.Ok(result, $"{result.SuccessCount} yorum başarıyla içe aktarıldı."));
+    }
+
+    [HttpPost("{id:guid}/reanalyze")]
+    public async Task<IActionResult> Reanalyze(Guid id)
+    {
+        var success = await _mediator.Send(new ReanalyzeReviewCommand(id));
+        if (!success)
+        {
+            return BadRequest(BaseResponse<object>.Fail("Yorum yeniden analiz edilemedi."));
+        }
+
+        return Ok(BaseResponse<object>.Ok(null!, "Yorum yeniden analiz edildi"));
+    }
 }

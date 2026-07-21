@@ -59,11 +59,16 @@ namespace HotelReviewAI.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssignedTo");
+                    b.HasIndex("AssignedTo")
+                        .HasDatabaseName("IX_ActionItems_AssignedTo");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("DepartmentId")
+                        .HasDatabaseName("IX_ActionItems_DepartmentId");
 
                     b.HasIndex("ReviewId");
+
+                    b.HasIndex("Status")
+                        .HasDatabaseName("IX_ActionItems_Status");
 
                     b.ToTable("ActionItems");
                 });
@@ -101,6 +106,15 @@ namespace HotelReviewAI.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt")
+                        .HasDatabaseName("IX_AuditLogs_CreatedAt");
+
+                    b.HasIndex("EntityName")
+                        .HasDatabaseName("IX_AuditLogs_EntityName");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("IX_AuditLogs_UserId");
+
                     b.ToTable("AuditLogs");
                 });
 
@@ -135,7 +149,8 @@ namespace HotelReviewAI.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Key")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_Departments_Key");
 
                     b.ToTable("Departments");
                 });
@@ -183,6 +198,18 @@ namespace HotelReviewAI.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IsActive")
+                        .HasDatabaseName("IX_Reviews_IsActive");
+
+                    b.HasIndex("Rating")
+                        .HasDatabaseName("IX_Reviews_Rating");
+
+                    b.HasIndex("ReviewDate")
+                        .HasDatabaseName("IX_Reviews_ReviewDate");
+
+                    b.HasIndex("Source")
+                        .HasDatabaseName("IX_Reviews_Source");
+
                     b.ToTable("Reviews");
                 });
 
@@ -211,6 +238,10 @@ namespace HotelReviewAI.Persistence.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
+                    b.PrimitiveCollection<string>("Keywords")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
+
                     b.Property<int>("Priority")
                         .HasColumnType("integer");
 
@@ -227,14 +258,22 @@ namespace HotelReviewAI.Persistence.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
+                    b.Property<string>("Summary")
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("IX_ReviewAnalyses_CategoryId");
 
-                    b.HasIndex("ReviewId");
+                    b.HasIndex("ReviewId")
+                        .HasDatabaseName("IX_ReviewAnalyses_ReviewId");
+
+                    b.HasIndex("Sentiment")
+                        .HasDatabaseName("IX_ReviewAnalyses_Sentiment");
 
                     b.ToTable("ReviewAnalyses");
                 });
@@ -313,7 +352,8 @@ namespace HotelReviewAI.Persistence.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("Key")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_ReviewCategories_Key");
 
                     b.ToTable("ReviewCategories");
                 });
@@ -360,7 +400,8 @@ namespace HotelReviewAI.Persistence.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("Email")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_Users_Email");
 
                     b.ToTable("Users");
                 });
