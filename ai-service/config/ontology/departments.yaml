@@ -1,0 +1,3626 @@
+version: '1.0'
+description: Hotel department taxonomy — Faz 1 full schema (W01)
+departments:
+- id: owner
+  label_tr: Sahip / Owner
+  label_en: Sahip / Owner
+  parent_group: Executive
+  responsibility: Multi-property KPI, finans özeti
+  tasks:
+  - Sahip / Owner günlük operasyon
+  - Multi-property KPI, finans özeti süreç yönetimi
+  - Sahip / Owner misafir talebi koordinasyonu
+  - Sahip / Owner raporlama ve takip
+  authority: &id001
+    can_create_work_order: false
+    can_notify:
+    - general_manager
+    - assistant_gm
+    can_view_finance: true
+  tools:
+  - get_portfolio_kpis
+  - compare_properties
+  - executive_dashboard
+  - annual_report
+  - notify_department
+  kpis: &id002
+  - executive_kpi_score
+  - escalation_count
+  - guest_satisfaction_index
+  workflows:
+  - WF-EXE-001-portfolio-review
+  keywords:
+  - sahip
+  - owner
+  - portföy
+  - kpi
+  - finans
+  - yatırım
+  - roi
+  - gelir
+  - performans
+  - strateji
+  - çoklu tesis
+  - multi
+  - property
+  - özeti
+  - yönetim
+  status: full
+- id: board
+  label_tr: Yönetim Kurulu
+  label_en: Yönetim Kurulu
+  parent_group: Executive
+  responsibility: Stratejik rapor, yıllık trend
+  tasks:
+  - Yönetim Kurulu günlük operasyon
+  - Stratejik rapor, yıllık trend süreç yönetimi
+  - Yönetim Kurulu misafir talebi koordinasyonu
+  - Yönetim Kurulu raporlama ve takip
+  authority: *id001
+  tools:
+  - annual_report
+  - compare_periods
+  - executive_dashboard
+  - get_reports
+  - notify_department
+  kpis: *id002
+  workflows:
+  - WF-EXE-003-board-report
+  keywords:
+  - yönetim kurulu
+  - board
+  - stratejik
+  - rapor
+  - yıllık
+  - trend
+  - karar
+  - paydaş
+  - denetim
+  - vizyon
+  - plan
+  - yönetim
+  - kurulu
+  - strateji
+  - kpi
+  status: full
+- id: ceo
+  label_tr: CEO
+  label_en: CEO
+  parent_group: Executive
+  responsibility: Grup operasyon özeti
+  tasks:
+  - CEO günlük operasyon
+  - Grup operasyon özeti süreç yönetimi
+  - CEO misafir talebi koordinasyonu
+  - CEO raporlama ve takip
+  authority: *id001
+  tools:
+  - executive_dashboard
+  - get_department_kpis
+  - compare_periods
+  - notify_department
+  - get_reports
+  kpis: *id002
+  workflows:
+  - WF-EXE-004-ceo-briefing
+  keywords:
+  - ceo
+  - grup
+  - operasyon
+  - özet
+  - strateji
+  - büyüme
+  - kpi
+  - brifing
+  - hedef
+  - performans
+  - yönetim
+  - özeti
+  - rapor
+  - koordinasyon
+  status: full
+- id: general_manager
+  label_tr: Genel Müdür
+  label_en: Genel Müdür
+  parent_group: Executive
+  responsibility: Tüm operasyon, günlük brifing
+  tasks:
+  - Genel Müdür günlük operasyon
+  - Tüm operasyon, günlük brifing süreç yönetimi
+  - Genel Müdür misafir talebi koordinasyonu
+  - Genel Müdür raporlama ve takip
+  authority: *id001
+  tools:
+  - daily_briefing
+  - get_department_kpis
+  - list_escalations
+  - notify_department
+  - executive_dashboard
+  kpis: *id002
+  workflows:
+  - WF-EXE-002-daily-briefing
+  keywords:
+  - genel müdür
+  - gm
+  - brifing
+  - operasyon
+  - eskalasyon
+  - misafir
+  - şikayet
+  - kpi
+  - günlük
+  - yönetim
+  - koordinasyon
+  - genel
+  - müdür
+  - tüm
+  - strateji
+  status: full
+- id: assistant_gm
+  label_tr: Asistan GM
+  label_en: Asistan GM
+  parent_group: Executive
+  responsibility: GM vekalet, eskalasyon
+  tasks:
+  - Asistan GM günlük operasyon
+  - GM vekalet, eskalasyon süreç yönetimi
+  - Asistan GM misafir talebi koordinasyonu
+  - Asistan GM raporlama ve takip
+  authority: *id001
+  tools:
+  - list_escalations
+  - notify_department
+  - daily_briefing
+  - get_department_kpis
+  - create_ticket
+  kpis: *id002
+  workflows:
+  - WF-EXE-005-escalation
+  keywords:
+  - asistan
+  - gm
+  - vekalet
+  - eskalasyon
+  - koordinasyon
+  - brifing
+  - misafir
+  - şikayet
+  - acil
+  - yönetim
+  - takip
+  - strateji
+  - kpi
+  - rapor
+  - performans
+  status: full
+- id: executive_office
+  label_tr: Executive Office
+  label_en: Executive Office
+  parent_group: Executive
+  responsibility: Üst yönetim koordinasyon
+  tasks:
+  - Executive Office günlük operasyon
+  - Üst yönetim koordinasyon süreç yönetimi
+  - Executive Office misafir talebi koordinasyonu
+  - Executive Office raporlama ve takip
+  authority: *id001
+  tools:
+  - schedule_meeting
+  - get_reports
+  - notify_department
+  - executive_dashboard
+  - compare_periods
+  kpis: *id002
+  workflows:
+  - WF-EXE-006-executive-coordination
+  keywords:
+  - executive
+  - ofis
+  - koordinasyon
+  - toplantı
+  - rapor
+  - ajanda
+  - yönetim
+  - brifing
+  - sunum
+  - takvim
+  - üst yönetim
+  - office
+  - üst
+  - strateji
+  - kpi
+  status: full
+- id: front_office
+  label_tr: Front Office / Resepsiyon
+  label_en: Front Office / Resepsiyon
+  parent_group: Front Office
+  responsibility: Check-in/out, oda atama, misafir karşılama
+  tasks:
+  - Front Office / Resepsiyon günlük operasyon
+  - Check-in/out, oda atama, misafir karşılama süreç yönetimi
+  - Front Office / Resepsiyon misafir talebi koordinasyonu
+  - Front Office / Resepsiyon raporlama ve takip
+  authority: &id003
+    can_create_work_order: true
+    can_notify:
+    - housekeeping
+    - guest_service
+    - concierge
+    can_view_finance: false
+    can_set_room_status: true
+  tools:
+  - check_room
+  - get_reservation
+  - create_ticket
+  - notify_department
+  - get_guest_profile
+  - set_room_status
+  kpis: &id004
+  - check_in_time
+  - queue_length
+  - guest_satisfaction
+  - resolution_time
+  workflows:
+  - WF-FO-001-checkin
+  - WF-FO-002-checkout
+  keywords:
+  - resepsiyon
+  - check-in
+  - check-out
+  - oda
+  - misafir
+  - karşılama
+  - folyo
+  - anahtar
+  - giriş
+  - çıkış
+  - front office
+  - front
+  - office
+  - check
+  - out
+  status: full
+- id: reception
+  label_tr: Resepsiyon
+  label_en: Resepsiyon
+  parent_group: Front Office
+  responsibility: Check-in/out, oda atama
+  tasks:
+  - Resepsiyon günlük operasyon
+  - Check-in/out, oda atama süreç yönetimi
+  - Resepsiyon misafir talebi koordinasyonu
+  - Resepsiyon raporlama ve takip
+  authority: *id003
+  tools:
+  - check_room
+  - get_reservation
+  - create_ticket
+  - set_room_status
+  - notify_department
+  kpis:
+  - check_in_time
+  - queue_length
+  workflows:
+  - WF-FO-001-checkin
+  keywords:
+  - resepsiyon
+  - check-in
+  - check-out
+  - oda atama
+  - misafir
+  - kuyruk
+  - bekleme
+  - anahtar
+  - kimlik
+  - giriş
+  - çıkış
+  - check
+  - out
+  - oda
+  - atama
+  status: full
+- id: reservation
+  label_tr: Rezervasyon
+  label_en: Rezervasyon
+  parent_group: Front Office
+  responsibility: Booking, overbooking kontrol
+  tasks:
+  - Rezervasyon günlük operasyon
+  - Booking, overbooking kontrol süreç yönetimi
+  - Rezervasyon misafir talebi koordinasyonu
+  - Rezervasyon raporlama ve takip
+  authority: *id003
+  tools:
+  - search_availability
+  - create_reservation
+  - modify_reservation
+  - notify_department
+  - get_reservation
+  kpis:
+  - conversion_rate
+  - overbooking_rate
+  workflows:
+  - WF-FO-003-reservation
+  keywords:
+  - rezervasyon
+  - booking
+  - overbooking
+  - müsaitlik
+  - oda tipi
+  - tarih
+  - iptal
+  - değişiklik
+  - grup
+  - onay
+  - kapasite
+  - kontrol
+  - misafir
+  - oda
+  - check-in
+  status: full
+- id: night_audit
+  label_tr: Night Audit
+  label_en: Night Audit
+  parent_group: Front Office
+  responsibility: Gece kapanış, folyo
+  tasks:
+  - Night Audit günlük operasyon
+  - Gece kapanış, folyo süreç yönetimi
+  - Night Audit misafir talebi koordinasyonu
+  - Night Audit raporlama ve takip
+  authority: *id003
+  tools:
+  - night_audit_report
+  - get_finance_summary
+  - get_reservation
+  - notify_department
+  - reconcile_folio
+  kpis:
+  - audit_accuracy
+  - folio_discrepancy_rate
+  workflows:
+  - WF-FO-004-night-audit
+  keywords:
+  - night audit
+  - gece
+  - kapanış
+  - folyo
+  - denetim
+  - mutabakat
+  - kasa
+  - rapor
+  - gün sonu
+  - fatura
+  - bakiye
+  - night
+  - audit
+  - misafir
+  - oda
+  status: full
+- id: bellboy
+  label_tr: Bellboy
+  label_en: Bellboy
+  parent_group: Front Office
+  responsibility: Bagaj, escort
+  tasks:
+  - Bellboy günlük operasyon
+  - Bagaj, escort süreç yönetimi
+  - Bellboy misafir talebi koordinasyonu
+  - Bellboy raporlama ve takip
+  authority: *id003
+  tools:
+  - assign_bellboy_task
+  - notify_department
+  - get_guest_profile
+  - create_ticket
+  - track_luggage
+  kpis:
+  - response_time
+  - luggage_delivery_time
+  workflows:
+  - WF-FO-005-luggage
+  keywords:
+  - bellboy
+  - bagaj
+  - escort
+  - taşıma
+  - lobi
+  - asansör
+  - oda
+  - valiz
+  - eşya
+  - yardım
+  - refakat
+  - misafir
+  - check-in
+  - check-out
+  - resepsiyon
+  status: full
+- id: concierge
+  label_tr: Concierge
+  label_en: Concierge
+  parent_group: Front Office
+  responsibility: Tur, transfer, bilgi
+  tasks:
+  - Concierge günlük operasyon
+  - Tur, transfer, bilgi süreç yönetimi
+  - Concierge misafir talebi koordinasyonu
+  - Concierge raporlama ve takip
+  authority: *id003
+  tools:
+  - get_excursion
+  - book_transfer
+  - search_faq
+  - notify_department
+  - create_reservation
+  kpis:
+  - guest_satisfaction
+  - booking_conversion
+  workflows:
+  - WF-FO-006-concierge
+  keywords:
+  - concierge
+  - tur
+  - transfer
+  - havaalanı
+  - taksi
+  - bilgi
+  - öneri
+  - restoran
+  - bilet
+  - etkinlik
+  - rezervasyon
+  - misafir
+  - oda
+  - check-in
+  - check-out
+  status: full
+- id: valet
+  label_tr: Valet
+  label_en: Valet
+  parent_group: Front Office
+  responsibility: Otopark, araç
+  tasks:
+  - Valet günlük operasyon
+  - Otopark, araç süreç yönetimi
+  - Valet misafir talebi koordinasyonu
+  - Valet raporlama ve takip
+  authority: *id003
+  tools:
+  - valet_status
+  - notify_guest
+  - track_vehicle
+  - create_ticket
+  - notify_department
+  kpis:
+  - wait_time
+  - vehicle_retrieval_time
+  workflows:
+  - WF-FO-007-valet
+  keywords:
+  - valet
+  - otopark
+  - araç
+  - park
+  - anahtar
+  - vale
+  - çıkış
+  - giriş
+  - plaka
+  - bekleme
+  - teslim
+  - misafir
+  - oda
+  - check-in
+  - check-out
+  status: full
+- id: guest_service
+  label_tr: Guest Service
+  label_en: Guest Service
+  parent_group: Front Office
+  responsibility: Misafir talepleri koordinasyon
+  tasks:
+  - Guest Service günlük operasyon
+  - Misafir talepleri koordinasyon süreç yönetimi
+  - Guest Service misafir talebi koordinasyonu
+  - Guest Service raporlama ve takip
+  authority: *id003
+  tools:
+  - create_ticket
+  - notify_department
+  - get_guest_profile
+  - track_complaint
+  - escalate_issue
+  kpis:
+  - resolution_time
+  - first_contact_resolution
+  workflows:
+  - WF-FO-008-guest-request
+  keywords:
+  - misafir
+  - talep
+  - şikayet
+  - çözüm
+  - takip
+  - memnuniyet
+  - eskalasyon
+  - telafi
+  - geri bildirim
+  - hizmet
+  - koordinasyon
+  - guest
+  - service
+  - talepleri
+  - oda
+  status: full
+- id: lobby
+  label_tr: Lobby
+  label_en: Lobby
+  parent_group: Front Office
+  responsibility: Lobi düzeni, bekleme
+  tasks:
+  - Lobby günlük operasyon
+  - Lobi düzeni, bekleme süreç yönetimi
+  - Lobby misafir talebi koordinasyonu
+  - Lobby raporlama ve takip
+  authority: *id003
+  tools:
+  - notify_housekeeping
+  - notify_department
+  - create_ticket
+  - get_guest_profile
+  - lobby_status
+  kpis: *id004
+  workflows:
+  - WF-FO-009-lobby
+  keywords:
+  - lobi
+  - bekleme
+  - düzen
+  - temizlik
+  - oturma
+  - karşılama
+  - atmosfer
+  - dekor
+  - müzik
+  - ışık
+  - konfor
+  - lobby
+  - düzeni
+  - misafir
+  - oda
+  status: full
+- id: vip_desk
+  label_tr: VIP Desk
+  label_en: VIP Desk
+  parent_group: Front Office
+  responsibility: VIP misafir protokol
+  tasks:
+  - VIP Desk günlük operasyon
+  - VIP misafir protokol süreç yönetimi
+  - VIP Desk misafir talebi koordinasyonu
+  - VIP Desk raporlama ve takip
+  authority: *id003
+  tools:
+  - get_vip_profile
+  - vip_amenities
+  - notify_department
+  - create_ticket
+  - vip_welcome
+  kpis:
+  - vip_nps
+  - vip_response_time
+  workflows:
+  - WF-FO-010-vip
+  keywords:
+  - vip
+  - protokol
+  - özel
+  - misafir
+  - karşılama
+  - amenity
+  - suite
+  - upgrade
+  - öncelik
+  - kişisel
+  - concierge
+  - desk
+  - oda
+  - check-in
+  - check-out
+  status: full
+- id: call_center
+  label_tr: Call Center
+  label_en: Call Center
+  parent_group: Front Office
+  responsibility: Telefon rezervasyon / bilgi
+  tasks:
+  - Call Center günlük operasyon
+  - Telefon rezervasyon / bilgi süreç yönetimi
+  - Call Center misafir talebi koordinasyonu
+  - Call Center raporlama ve takip
+  authority: *id003
+  tools:
+  - search_faq
+  - create_reservation
+  - notify_department
+  - get_reservation
+  - call_log
+  kpis:
+  - call_abandon_rate
+  - average_handle_time
+  workflows:
+  - WF-FO-011-call-center
+  keywords:
+  - call center
+  - telefon
+  - rezervasyon
+  - bilgi
+  - çağrı
+  - bekleme
+  - iptal
+  - sorgu
+  - müsaitlik
+  - onay
+  - müşteri
+  - call
+  - center
+  - misafir
+  - oda
+  status: full
+- id: housekeeping
+  label_tr: Kat Hizmetleri — Housekeeping
+  label_en: Kat Hizmetleri
+  parent_group: Housekeeping
+  responsibility: Misafir odaları ve belirlenen ortak alanların temizlik, düzen, linen yönetimi ve oda hazırlık standartlarının
+    sağlanması. Check-out / stay-over / turndown süreçleri.
+  tasks:
+  - Oda temizliği (checkout, stay-over, deep clean)
+  - Linen ve havlu değişimi
+  - Minibar kontrol ve raporlama
+  - Lost & Found kayıt
+  - Oda durumu güncelleme (clean / dirty / inspected)
+  - Leke / hasar raporlama (Engineering veya Laundry yönlendirme)
+  - Turndown servisi
+  - Public area temizliği koordinasyonu
+  authority:
+    can_create_work_order: true
+    can_notify:
+    - front_office
+    - laundry
+    - engineering_hvac
+    can_view_finance: false
+    can_set_room_status: true
+  tools:
+  - check_room
+  - set_room_status
+  - create_task
+  - list_dirty_rooms
+  - report_lost_found
+  - notify_department
+  - get_room_history
+  - create_work_order
+  kpis:
+  - rooms_cleaned_per_shift
+  - average_cleaning_time
+  - inspection_fail_rate
+  - linen_par_level_compliance
+  - guest_cleanliness_complaint_rate
+  workflows:
+  - WF-HK-001-checkout-clean
+  - WF-HK-002-stay-over
+  - WF-HK-003-cleanliness-complaint
+  keywords:
+  - kirli
+  - temiz
+  - havlu
+  - çarşaf
+  - nevresim
+  - leke
+  - banyo
+  - toz
+  - koku
+  - eksik
+  - minibar
+  - turndown
+  responsible_aspects:
+  - room_cleanliness
+  - room_linen
+  - room_towel
+  - bathroom_cleanliness
+  - facility_corridor_clean
+  primary_issues:
+  - room_dirty
+  - linen_missing
+  - stain
+  - odor
+  - minibar_not_restocked
+  status: full
+- id: hk_room_cleaning
+  label_tr: Oda Temizliği
+  label_en: Oda Temizliği
+  parent_group: Housekeeping
+  responsibility: Checkout/stay-over temizlik
+  tasks:
+  - Oda Temizliği günlük operasyon
+  - Checkout/stay-over temizlik süreç yönetimi
+  - Oda Temizliği misafir talebi koordinasyonu
+  - Oda Temizliği raporlama ve takip
+  authority: &id005
+    can_create_work_order: true
+    can_notify:
+    - front_office
+    - laundry
+    - engineering_hvac
+    can_view_finance: false
+    can_set_room_status: true
+  tools: &id006
+  - check_room
+  - set_room_status
+  - create_task
+  - list_dirty_rooms
+  - notify_department
+  - create_work_order
+  kpis: &id007
+  - rooms_cleaned_per_shift
+  - inspection_fail_rate
+  - linen_par_level_compliance
+  - guest_cleanliness_complaint_rate
+  workflows:
+  - WF-HK-001-checkout-clean
+  keywords:
+  - oda temizliği
+  - checkout
+  - stay-over
+  - kirli
+  - temiz
+  - süpürme
+  - silme
+  - banyo
+  - yatak
+  - havlu
+  - inspection
+  - deep clean
+  - oda
+  - temizliği
+  - stay
+  status: full
+- id: hk_public_area
+  label_tr: Ortak Alan Temizliği
+  label_en: Ortak Alan Temizliği
+  parent_group: Housekeeping
+  responsibility: Koridor, lobby, asansör
+  tasks:
+  - Ortak Alan Temizliği günlük operasyon
+  - Koridor, lobby, asansör süreç yönetimi
+  - Ortak Alan Temizliği misafir talebi koordinasyonu
+  - Ortak Alan Temizliği raporlama ve takip
+  authority: *id005
+  tools: *id006
+  kpis: *id007
+  workflows:
+  - WF-HK-004-public-area
+  keywords:
+  - ortak alan
+  - koridor
+  - lobby
+  - asansör
+  - temizlik
+  - zemin
+  - cam
+  - toz
+  - dezenfeksiyon
+  - gece
+  - gündüz
+  - public area
+  - ortak
+  - alan
+  - temizliği
+  status: full
+- id: laundry
+  label_tr: Çamaşırhane
+  label_en: Çamaşırhane
+  parent_group: Housekeeping
+  responsibility: Linen yıkama, par level
+  tasks:
+  - Çamaşırhane günlük operasyon
+  - Linen yıkama, par level süreç yönetimi
+  - Çamaşırhane misafir talebi koordinasyonu
+  - Çamaşırhane raporlama ve takip
+  authority: *id005
+  tools: *id006
+  kpis: *id007
+  workflows:
+  - WF-HK-005-laundry
+  keywords:
+  - çamaşırhane
+  - linen
+  - yıkama
+  - ütü
+  - par level
+  - havlu
+  - çarşaf
+  - leke
+  - kurutma
+  - stok
+  - dağıtım
+  - textile
+  - par
+  - level
+  - temizlik
+  status: full
+- id: lost_found
+  label_tr: Kayıp Eşya
+  label_en: Kayıp Eşya
+  parent_group: Housekeeping
+  responsibility: Kayıt, depolama, iade
+  tasks:
+  - Kayıp Eşya günlük operasyon
+  - Kayıt, depolama, iade süreç yönetimi
+  - Kayıp Eşya misafir talebi koordinasyonu
+  - Kayıp Eşya raporlama ve takip
+  authority: *id005
+  tools: *id006
+  kpis: *id007
+  workflows:
+  - WF-HK-006-lost-found
+  keywords:
+  - kayıp
+  - eşya
+  - buluntu
+  - depolama
+  - iade
+  - kayıt
+  - misafir
+  - teslim
+  - arama
+  - etiket
+  - saklama
+  - lost found
+  - temizlik
+  - oda
+  - havlu
+  status: full
+- id: linen_room
+  label_tr: Linen Room
+  label_en: Linen Room
+  parent_group: Housekeeping
+  responsibility: Stok, dağıtım
+  tasks:
+  - Linen Room günlük operasyon
+  - Stok, dağıtım süreç yönetimi
+  - Linen Room misafir talebi koordinasyonu
+  - Linen Room raporlama ve takip
+  authority: *id005
+  tools: *id006
+  kpis: *id007
+  workflows:
+  - WF-HK-linen_room
+  keywords:
+  - linen room
+  - stok
+  - dağıtım
+  - havlu
+  - çarşaf
+  - nevresim
+  - par level
+  - sayım
+  - raf
+  - depo
+  - kat
+  - textile
+  - linen
+  - room
+  - temizlik
+  status: full
+- id: minibar_dept
+  label_tr: Minibar
+  label_en: Minibar
+  parent_group: Housekeeping
+  responsibility: Stok, sayım, HK rapor
+  tasks:
+  - Minibar günlük operasyon
+  - Stok, sayım, HK rapor süreç yönetimi
+  - Minibar misafir talebi koordinasyonu
+  - Minibar raporlama ve takip
+  authority: *id005
+  tools: *id006
+  kpis: *id007
+  workflows:
+  - WF-HK-007-minibar
+  keywords:
+  - minibar
+  - stok
+  - sayım
+  - dolum
+  - içecek
+  - atıştırmalık
+  - fatura
+  - eksik
+  - kontrol
+  - rapor
+  - hk
+  - oda
+  - temizlik
+  - havlu
+  - linen
+  status: full
+- id: turndown
+  label_tr: Turndown
+  label_en: Turndown
+  parent_group: Housekeeping
+  responsibility: Akşam servis
+  tasks:
+  - Turndown günlük operasyon
+  - Akşam servis süreç yönetimi
+  - Turndown misafir talebi koordinasyonu
+  - Turndown raporlama ve takip
+  authority: *id005
+  tools: *id006
+  kpis: *id007
+  workflows:
+  - WF-HK-008-turndown
+  keywords:
+  - turndown
+  - akşam
+  - servis
+  - yatak
+  - çikolata
+  - havlu
+  - aydınlatma
+  - oda
+  - misafir
+  - gece
+  - hazırlık
+  - amenity
+  - temizlik
+  - linen
+  - kirli
+  status: full
+- id: flower_service
+  label_tr: Çiçek Servisi
+  label_en: Çiçek Servisi
+  parent_group: Housekeeping
+  responsibility: Oda / etkinlik süsleme
+  tasks:
+  - Çiçek Servisi günlük operasyon
+  - Oda / etkinlik süsleme süreç yönetimi
+  - Çiçek Servisi misafir talebi koordinasyonu
+  - Çiçek Servisi raporlama ve takip
+  authority: *id005
+  tools: *id006
+  kpis: *id007
+  workflows:
+  - WF-HK-flower_service
+  keywords:
+  - çiçek
+  - süsleme
+  - oda
+  - etkinlik
+  - düzenleme
+  - vazo
+  - buket
+  - dekorasyon
+  - özel gün
+  - balayı
+  - düğün
+  - sunum
+  - servisi
+  - temizlik
+  - havlu
+  status: full
+- id: engineering_hvac
+  label_tr: Mühendislik — HVAC / İklimlendirme
+  label_en: Mühendislik
+  parent_group: Engineering
+  responsibility: Otel genelinde ısıtma, soğutma, havalandırma sistemlerinin işletimi, arıza giderme ve planlı bakımı. Oda
+    ve ortak alan klima üniteleri, chiller, fan coil, VRV, merkezi hava kanalları.
+  tasks:
+  - Arıza müdahalesi (soğutmama, ısıtmama, ses, su kaçağı)
+  - Filtre değişimi ve periyodik bakım
+  - Sıcaklık kalibrasyonu ve setpoint ayarı
+  - Chiller / boiler koordinasyonu
+  - Enerji tüketimi anomali inceleme
+  - Yedek parça talebi (Satın Alma)
+  - Arıza raporlama ve kök neden kaydı
+  authority:
+    can_create_work_order: true
+    can_notify:
+    - front_office
+    - guest_relations
+    - duty_manager
+    can_view_finance: false
+    can_set_room_out_of_order: true
+  tools:
+  - create_work_order
+  - list_open_issues
+  - get_complaint_trends
+  - maintenance_history
+  - notify_department
+  - get_asset_status
+  - root_cause_analysis
+  - compare_periods
+  kpis:
+  - mean_time_to_repair_hvac
+  - open_hvac_issues_count
+  - repeat_issue_rate_30d
+  - pm_compliance_rate
+  - guest_complaint_ac_per_100_rooms
+  workflows:
+  - WF-ENG-001-ac-breakdown
+  - WF-ENG-002-systemic-hvac-alert
+  keywords:
+  - klima
+  - ac
+  - soğutmuyor
+  - ısıtmıyor
+  - hvac
+  - fan coil
+  - chiller
+  - filtre
+  - ses yapıyor
+  - thermostat
+  - sıcaklık
+  - havalandırma
+  responsible_assets:
+  - room_ac_unit
+  - fan_coil
+  - chiller
+  - ahu
+  - vrf_outdoor
+  responsible_aspects:
+  - room_ac
+  - facility_maintenance
+  primary_issues:
+  - ac_not_cooling
+  - ac_not_heating
+  - ac_noise
+  - ac_leak
+  - ac_odor
+  status: full
+- id: engineering_electrical
+  label_tr: Elektrik
+  label_en: Elektrik
+  parent_group: Engineering
+  responsibility: Panel, priz, aydınlatma
+  tasks:
+  - Elektrik günlük operasyon
+  - Panel, priz, aydınlatma süreç yönetimi
+  - Elektrik misafir talebi koordinasyonu
+  - Elektrik raporlama ve takip
+  authority: &id008
+    can_create_work_order: true
+    can_notify:
+    - front_office
+    - guest_service
+    - duty_manager
+    can_view_finance: false
+    can_set_room_out_of_order: true
+  tools: &id009
+  - create_work_order
+  - list_open_issues
+  - maintenance_history
+  - notify_department
+  - get_asset_status
+  - root_cause_analysis
+  kpis: &id010
+  - mean_time_to_repair
+  - open_issues_count
+  - repeat_issue_rate_30d
+  - pm_compliance_rate
+  workflows:
+  - WF-ENG-engineering_electrical
+  keywords:
+  - sigorta
+  - elektrik kesintisi
+  - priz
+  - panel
+  - aydınlatma
+  - kısa devre
+  - voltaj
+  - trafo
+  - elektrik
+  - lamba
+  - anahtar
+  - enerji
+  - arıza
+  - bakım
+  - onarım
+  status: full
+  responsible_assets:
+  - panel
+  - socket
+  - lighting
+- id: engineering_mechanical
+  label_tr: Mekanik
+  label_en: Mekanik
+  parent_group: Engineering
+  responsibility: Pompa, motor, titreşim
+  tasks:
+  - Mekanik günlük operasyon
+  - Pompa, motor, titreşim süreç yönetimi
+  - Mekanik misafir talebi koordinasyonu
+  - Mekanik raporlama ve takip
+  authority: *id008
+  tools: *id009
+  kpis: *id010
+  workflows:
+  - WF-ENG-engineering_mechanical
+  keywords:
+  - titreşim
+  - motor arızası
+  - pompa
+  - motor
+  - mekanik
+  - gürültü
+  - rulman
+  - kayış
+  - bakım
+  - yağlama
+  - arıza
+  - onarım
+  - teknik
+  - müdahale
+  - iş emri
+  status: full
+  responsible_assets:
+  - pump
+  - motor
+- id: engineering_plumbing
+  label_tr: Tesisat
+  label_en: Tesisat
+  parent_group: Engineering
+  responsibility: Su kaçağı, tıkanıklık, basınç
+  tasks:
+  - Tesisat günlük operasyon
+  - Su kaçağı, tıkanıklık, basınç süreç yönetimi
+  - Tesisat misafir talebi koordinasyonu
+  - Tesisat raporlama ve takip
+  authority: *id008
+  tools: *id009
+  kpis: *id010
+  workflows:
+  - WF-ENG-003-plumbing-leak
+  keywords:
+  - su kaçağı
+  - tıkanıklık
+  - basınç
+  - tesisat
+  - lavabo
+  - tuvalet
+  - duş
+  - boru
+  - valf
+  - gider
+  - sıcak su
+  - soğuk su
+  - kaçağı
+  - arıza
+  - bakım
+  status: full
+  responsible_assets:
+  - pipe
+  - valve
+  - drain
+- id: engineering_painting
+  label_tr: Boya
+  label_en: Boya
+  parent_group: Engineering
+  responsibility: Yüzey, duvar boyası
+  tasks:
+  - Boya günlük operasyon
+  - Yüzey, duvar boyası süreç yönetimi
+  - Boya misafir talebi koordinasyonu
+  - Boya raporlama ve takip
+  authority: *id008
+  tools: *id009
+  kpis: *id010
+  workflows:
+  - WF-ENG-engineering_painting
+  keywords:
+  - boya
+  - dökülme
+  - yüzey
+  - duvar
+  - tavan
+  - renk
+  - astar
+  - macun
+  - onarım
+  - yenileme
+  - leke
+  - kaplama
+  - boyası
+  - arıza
+  - bakım
+  status: full
+- id: engineering_carpentry
+  label_tr: Marangoz
+  label_en: Marangoz
+  parent_group: Engineering
+  responsibility: Kapı, mobilya, menteşe
+  tasks:
+  - Marangoz günlük operasyon
+  - Kapı, mobilya, menteşe süreç yönetimi
+  - Marangoz misafir talebi koordinasyonu
+  - Marangoz raporlama ve takip
+  authority: *id008
+  tools: *id009
+  kpis: *id010
+  workflows:
+  - WF-ENG-engineering_carpentry
+  keywords:
+  - kapı
+  - menteşe
+  - mobilya
+  - marangoz
+  - ahşap
+  - çekmece
+  - dolap
+  - kilit
+  - tamir
+  - montaj
+  - sürtme
+  - kırık
+  - arıza
+  - bakım
+  - onarım
+  status: full
+- id: engineering_pools
+  label_tr: Havuz Teknik
+  label_en: Havuz Teknik
+  parent_group: Engineering
+  responsibility: Havuz tesisi, filtre, kimyasal
+  tasks:
+  - Havuz Teknik günlük operasyon
+  - Havuz tesisi, filtre, kimyasal süreç yönetimi
+  - Havuz Teknik misafir talebi koordinasyonu
+  - Havuz Teknik raporlama ve takip
+  authority: *id008
+  tools: *id009
+  kpis: *id010
+  workflows:
+  - WF-ENG-engineering_pools
+  keywords:
+  - havuz
+  - filtre
+  - kimyasal
+  - pompa
+  - ph
+  - klor
+  - su kalitesi
+  - temizlik
+  - arıza
+  - bakım
+  - motor
+  - tesis
+  - teknik
+  - tesisi
+  - onarım
+  status: full
+- id: engineering_generators
+  label_tr: Jeneratör
+  label_en: Jeneratör
+  parent_group: Engineering
+  responsibility: Kesinti, jeneratör, UPS
+  tasks:
+  - Jeneratör günlük operasyon
+  - Kesinti, jeneratör, UPS süreç yönetimi
+  - Jeneratör misafir talebi koordinasyonu
+  - Jeneratör raporlama ve takip
+  authority: *id008
+  tools: *id009
+  kpis: *id010
+  workflows:
+  - WF-ENG-engineering_generators
+  keywords:
+  - jeneratör
+  - kesinti
+  - ups
+  - elektrik
+  - yedek
+  - güç
+  - acil
+  - devreye alma
+  - yakıt
+  - bakım
+  - alarm
+  - transfer
+  - arıza
+  - onarım
+  - teknik
+  status: full
+- id: engineering_elevators
+  label_tr: Asansör
+  label_en: Asansör
+  parent_group: Engineering
+  responsibility: Asansör arıza, bakım
+  tasks:
+  - Asansör günlük operasyon
+  - Asansör arıza, bakım süreç yönetimi
+  - Asansör misafir talebi koordinasyonu
+  - Asansör raporlama ve takip
+  authority: *id008
+  tools: *id009
+  kpis: *id010
+  workflows:
+  - WF-ENG-engineering_elevators
+  keywords:
+  - asansör
+  - takılı
+  - alarm
+  - arıza
+  - bakım
+  - kapı
+  - kat
+  - sıkışma
+  - servis
+  - güvenlik
+  - modernizasyon
+  - lift
+  - onarım
+  - teknik
+  - müdahale
+  status: full
+- id: engineering_fire
+  label_tr: Yangın Sistemleri
+  label_en: Yangın Sistemleri
+  parent_group: Engineering
+  responsibility: Alarm, sprinkler, dedektör
+  tasks:
+  - Yangın Sistemleri günlük operasyon
+  - Alarm, sprinkler, dedektör süreç yönetimi
+  - Yangın Sistemleri misafir talebi koordinasyonu
+  - Yangın Sistemleri raporlama ve takip
+  authority: *id008
+  tools: *id009
+  kpis: *id010
+  workflows:
+  - WF-ENG-engineering_fire
+  keywords:
+  - yangın
+  - alarm
+  - sprinkler
+  - dedektör
+  - tahliye
+  - söndürme
+  - duman
+  - acil
+  - test
+  - bakım
+  - ihbar
+  - güvenlik
+  - sistemleri
+  - arıza
+  - onarım
+  status: full
+- id: engineering_internet
+  label_tr: İnternet / WiFi
+  label_en: İnternet / WiFi
+  parent_group: Engineering
+  responsibility: AP, switch, ağ
+  tasks:
+  - İnternet / WiFi günlük operasyon
+  - AP, switch, ağ süreç yönetimi
+  - İnternet / WiFi misafir talebi koordinasyonu
+  - İnternet / WiFi raporlama ve takip
+  authority: *id008
+  tools: *id009
+  kpis: *id010
+  workflows:
+  - WF-ENG-engineering_internet
+  keywords:
+  - wifi
+  - bağlantı
+  - ap
+  - switch
+  - ağ
+  - internet
+  - sinyal
+  - hız
+  - kesinti
+  - şifre
+  - kablosuz
+  - lan
+  - i̇nternet
+  - arıza
+  - bakım
+  status: full
+- id: engineering_tv
+  label_tr: TV / IPTV
+  label_en: TV / IPTV
+  parent_group: Engineering
+  responsibility: TV, set-top box
+  tasks:
+  - TV / IPTV günlük operasyon
+  - TV, set-top box süreç yönetimi
+  - TV / IPTV misafir talebi koordinasyonu
+  - TV / IPTV raporlama ve takip
+  authority: *id008
+  tools: *id009
+  kpis: *id010
+  workflows:
+  - WF-ENG-engineering_tv
+  keywords:
+  - tv
+  - iptv
+  - set-top
+  - sinyal
+  - kanal
+  - kumanda
+  - açılmıyor
+  - görüntü
+  - ses
+  - kablo
+  - uydu
+  - yayın
+  - set
+  - top
+  - box
+  status: full
+- id: engineering_satellite
+  label_tr: Uydu
+  label_en: Uydu
+  parent_group: Engineering
+  responsibility: Dish, headend
+  tasks:
+  - Uydu günlük operasyon
+  - Dish, headend süreç yönetimi
+  - Uydu misafir talebi koordinasyonu
+  - Uydu raporlama ve takip
+  authority: *id008
+  tools: *id009
+  kpis: *id010
+  workflows:
+  - WF-ENG-engineering_satellite
+  keywords:
+  - uydu
+  - dish
+  - headend
+  - kesinti
+  - sinyal
+  - yayın
+  - anten
+  - frekans
+  - kurulum
+  - bakım
+  - kanal
+  - receiver
+  - arıza
+  - onarım
+  - teknik
+  status: full
+- id: engineering_lighting
+  label_tr: Aydınlatma
+  label_en: Aydınlatma
+  parent_group: Engineering
+  responsibility: Armatür, dimmer
+  tasks:
+  - Aydınlatma günlük operasyon
+  - Armatür, dimmer süreç yönetimi
+  - Aydınlatma misafir talebi koordinasyonu
+  - Aydınlatma raporlama ve takip
+  authority: *id008
+  tools: *id009
+  kpis: *id010
+  workflows:
+  - WF-ENG-engineering_lighting
+  keywords:
+  - lamba
+  - loş
+  - armatür
+  - dimmer
+  - aydınlatma
+  - led
+  - yanmıyor
+  - titreme
+  - sensör
+  - acil
+  - koridor
+  - dış
+  - arıza
+  - bakım
+  - onarım
+  status: full
+- id: engineering_water
+  label_tr: Su Sistemleri
+  label_en: Su Sistemleri
+  parent_group: Engineering
+  responsibility: Boiler, tank, sıcak su
+  tasks:
+  - Su Sistemleri günlük operasyon
+  - Boiler, tank, sıcak su süreç yönetimi
+  - Su Sistemleri misafir talebi koordinasyonu
+  - Su Sistemleri raporlama ve takip
+  authority: *id008
+  tools: *id009
+  kpis: *id010
+  workflows:
+  - WF-ENG-engineering_water
+  keywords:
+  - sıcak su
+  - boiler
+  - tank
+  - basınç
+  - su
+  - ısıtma
+  - soğuk
+  - kaçak
+  - pompa
+  - kalorifer
+  - sıcaklık
+  - akış
+  - sistemleri
+  - sıcak
+  - arıza
+  status: full
+- id: teknik
+  label_tr: Teknik Genel
+  label_en: Teknik Genel
+  parent_group: Engineering
+  responsibility: Genel teknik müdahale
+  tasks:
+  - Teknik Genel günlük operasyon
+  - Genel teknik müdahale süreç yönetimi
+  - Teknik Genel misafir talebi koordinasyonu
+  - Teknik Genel raporlama ve takip
+  authority: *id008
+  tools: *id009
+  kpis: *id010
+  workflows:
+  - WF-ENG-teknik
+  keywords:
+  - teknik
+  - genel
+  - arıza
+  - müdahale
+  - onarım
+  - bakım
+  - iş emri
+  - acil
+  - koordinasyon
+  - yedek
+  - parça
+  - saha
+  - yedek parça
+  - arıza raporu
+  status: full
+- id: restaurant
+  label_tr: Ana Restoran
+  label_en: Ana Restoran
+  parent_group: Food & Beverage
+  responsibility: A la carte, akşam yemeği
+  tasks:
+  - Ana Restoran günlük operasyon
+  - A la carte, akşam yemeği süreç yönetimi
+  - Ana Restoran misafir talebi koordinasyonu
+  - Ana Restoran raporlama ve takip
+  authority: &id011
+    can_create_work_order: true
+    can_notify:
+    - kitchen
+    - room_service
+    - guest_service
+    can_view_finance: false
+  tools: &id012
+  - create_order
+  - get_menu
+  - kitchen_ticket
+  - notify_department
+  - get_fb_kpis
+  kpis:
+  - covers
+  - wait_time
+  workflows:
+  - WF-FB-restaurant
+  keywords:
+  - restoran
+  - a la carte
+  - akşam
+  - yemek
+  - servis
+  - menü
+  - rezervasyon
+  - masa
+  - garson
+  - kalite
+  - bekleme
+  - covers
+  - ana
+  - carte
+  - yemeği
+  status: full
+- id: kitchen
+  label_tr: Mutfak
+  label_en: Mutfak
+  parent_group: Food & Beverage
+  responsibility: Yemek üretimi, hijyen
+  tasks:
+  - Mutfak günlük operasyon
+  - Yemek üretimi, hijyen süreç yönetimi
+  - Mutfak misafir talebi koordinasyonu
+  - Mutfak raporlama ve takip
+  authority: *id011
+  tools: *id012
+  kpis:
+  - food_cost
+  - waste_rate
+  workflows:
+  - WF-FB-kitchen
+  keywords:
+  - mutfak
+  - yemek
+  - üretim
+  - hijyen
+  - hazırlık
+  - pişirme
+  - sıcaklık
+  - haccp
+  - fire
+  - stok
+  - kalite
+  - servis
+  - üretimi
+  - içecek
+  - menü
+  status: full
+- id: breakfast
+  label_tr: Kahvaltı
+  label_en: Kahvaltı
+  parent_group: Food & Beverage
+  responsibility: Açık büfe kahvaltı
+  tasks:
+  - Kahvaltı günlük operasyon
+  - Açık büfe kahvaltı süreç yönetimi
+  - Kahvaltı misafir talebi koordinasyonu
+  - Kahvaltı raporlama ve takip
+  authority: *id011
+  tools: *id012
+  kpis:
+  - breakfast_complaint_rate
+  workflows:
+  - WF-FB-breakfast
+  keywords:
+  - kahvaltı
+  - büfe
+  - açık büfe
+  - sabah
+  - yumurta
+  - peynir
+  - çeşit
+  - sıra
+  - kalite
+  - soğuk
+  - sıcak
+  - complaint
+  - açık
+  - yemek
+  - içecek
+  status: full
+- id: lunch
+  label_tr: Öğle Yemeği
+  label_en: Öğle Yemeği
+  parent_group: Food & Beverage
+  responsibility: Öğle servisi
+  tasks:
+  - Öğle Yemeği günlük operasyon
+  - Öğle servisi süreç yönetimi
+  - Öğle Yemeği misafir talebi koordinasyonu
+  - Öğle Yemeği raporlama ve takip
+  authority: *id011
+  tools: *id012
+  kpis: &id013
+  - food_cost
+  - covers_per_shift
+  - wait_time
+  - guest_fb_complaint_rate
+  workflows:
+  - WF-FB-lunch
+  keywords:
+  - öğle
+  - yemeği
+  - servisi
+  - yemek
+  - içecek
+  - servis
+  - menü
+  - sipariş
+  - mutfak
+  - restoran
+  - bar
+  - kalite
+  - hijyen
+  - lunch
+  status: full
+- id: dinner
+  label_tr: Akşam Yemeği
+  label_en: Akşam Yemeği
+  parent_group: Food & Beverage
+  responsibility: Akşam servisi
+  tasks:
+  - Akşam Yemeği günlük operasyon
+  - Akşam servisi süreç yönetimi
+  - Akşam Yemeği misafir talebi koordinasyonu
+  - Akşam Yemeği raporlama ve takip
+  authority: *id011
+  tools: *id012
+  kpis: *id013
+  workflows:
+  - WF-FB-dinner
+  keywords:
+  - akşam
+  - yemeği
+  - servisi
+  - yemek
+  - içecek
+  - servis
+  - menü
+  - sipariş
+  - mutfak
+  - restoran
+  - bar
+  - kalite
+  - hijyen
+  - dinner
+  status: full
+- id: bakery
+  label_tr: Fırın
+  label_en: Fırın
+  parent_group: Food & Beverage
+  responsibility: Ekmek, hamur işi
+  tasks:
+  - Fırın günlük operasyon
+  - Ekmek, hamur işi süreç yönetimi
+  - Fırın misafir talebi koordinasyonu
+  - Fırın raporlama ve takip
+  authority: *id011
+  tools: *id012
+  kpis: *id013
+  workflows:
+  - WF-FB-bakery
+  keywords:
+  - fırın
+  - ekmek
+  - hamur
+  - işi
+  - yemek
+  - içecek
+  - servis
+  - menü
+  - sipariş
+  - mutfak
+  - restoran
+  - bar
+  - kalite
+  - hijyen
+  - bakery
+  status: full
+- id: pastry
+  label_tr: Pastane
+  label_en: Pastane
+  parent_group: Food & Beverage
+  responsibility: Tatlı, pasta
+  tasks:
+  - Pastane günlük operasyon
+  - Tatlı, pasta süreç yönetimi
+  - Pastane misafir talebi koordinasyonu
+  - Pastane raporlama ve takip
+  authority: *id011
+  tools: *id012
+  kpis: *id013
+  workflows:
+  - WF-FB-pastry
+  keywords:
+  - pastane
+  - tatlı
+  - pasta
+  - yemek
+  - içecek
+  - servis
+  - menü
+  - sipariş
+  - mutfak
+  - restoran
+  - bar
+  - kalite
+  - hijyen
+  - pastry
+  status: full
+- id: snack_bar
+  label_tr: Snack Bar
+  label_en: Snack Bar
+  parent_group: Food & Beverage
+  responsibility: Ara öğün, gözleme
+  tasks:
+  - Snack Bar günlük operasyon
+  - Ara öğün, gözleme süreç yönetimi
+  - Snack Bar misafir talebi koordinasyonu
+  - Snack Bar raporlama ve takip
+  authority: *id011
+  tools: *id012
+  kpis: *id013
+  workflows:
+  - WF-FB-snack_bar
+  keywords:
+  - snack
+  - bar
+  - ara
+  - öğün
+  - gözleme
+  - yemek
+  - içecek
+  - servis
+  - menü
+  - sipariş
+  - mutfak
+  - restoran
+  - kalite
+  - hijyen
+  status: full
+- id: lobby_bar
+  label_tr: Lobby Bar
+  label_en: Lobby Bar
+  parent_group: Food & Beverage
+  responsibility: Lobi içecek servisi
+  tasks:
+  - Lobby Bar günlük operasyon
+  - Lobi içecek servisi süreç yönetimi
+  - Lobby Bar misafir talebi koordinasyonu
+  - Lobby Bar raporlama ve takip
+  authority: *id011
+  tools: *id012
+  kpis: *id013
+  workflows:
+  - WF-FB-lobby_bar
+  keywords:
+  - lobby
+  - bar
+  - lobi
+  - içecek
+  - servisi
+  - yemek
+  - servis
+  - menü
+  - sipariş
+  - mutfak
+  - restoran
+  - kalite
+  - hijyen
+  status: full
+- id: bar
+  label_tr: Bar
+  label_en: Bar
+  parent_group: Food & Beverage
+  responsibility: Gece bar, kokteyl
+  tasks:
+  - Bar günlük operasyon
+  - Gece bar, kokteyl süreç yönetimi
+  - Bar misafir talebi koordinasyonu
+  - Bar raporlama ve takip
+  authority: *id011
+  tools: *id012
+  kpis: *id013
+  workflows:
+  - WF-FB-bar
+  keywords:
+  - bar
+  - gece
+  - kokteyl
+  - yemek
+  - içecek
+  - servis
+  - menü
+  - sipariş
+  - mutfak
+  - restoran
+  - kalite
+  - hijyen
+  status: full
+- id: beach_bar
+  label_tr: Beach Bar
+  label_en: Beach Bar
+  parent_group: Food & Beverage
+  responsibility: Plaj bar
+  tasks:
+  - Beach Bar günlük operasyon
+  - Plaj bar süreç yönetimi
+  - Beach Bar misafir talebi koordinasyonu
+  - Beach Bar raporlama ve takip
+  authority: *id011
+  tools: *id012
+  kpis: *id013
+  workflows:
+  - WF-FB-beach_bar
+  keywords:
+  - beach
+  - bar
+  - plaj
+  - yemek
+  - içecek
+  - servis
+  - menü
+  - sipariş
+  - mutfak
+  - restoran
+  - kalite
+  - hijyen
+  status: full
+- id: pool_bar
+  label_tr: Pool Bar
+  label_en: Pool Bar
+  parent_group: Food & Beverage
+  responsibility: Havuz bar
+  tasks:
+  - Pool Bar günlük operasyon
+  - Havuz bar süreç yönetimi
+  - Pool Bar misafir talebi koordinasyonu
+  - Pool Bar raporlama ve takip
+  authority: *id011
+  tools: *id012
+  kpis: *id013
+  workflows:
+  - WF-FB-pool_bar
+  keywords:
+  - pool
+  - bar
+  - havuz
+  - yemek
+  - içecek
+  - servis
+  - menü
+  - sipariş
+  - mutfak
+  - restoran
+  - kalite
+  - hijyen
+  status: full
+- id: room_service
+  label_tr: Oda Servisi
+  label_en: Oda Servisi
+  parent_group: Food & Beverage
+  responsibility: Oda içi yemek servisi
+  tasks:
+  - Oda Servisi günlük operasyon
+  - Oda içi yemek servisi süreç yönetimi
+  - Oda Servisi misafir talebi koordinasyonu
+  - Oda Servisi raporlama ve takip
+  authority: *id011
+  tools: *id012
+  kpis:
+  - delivery_time
+  workflows:
+  - WF-FB-room_service
+  keywords:
+  - oda servisi
+  - sipariş
+  - teslimat
+  - yemek
+  - gece
+  - menü
+  - süre
+  - sıcaklık
+  - tray
+  - fatura
+  - hız
+  - kalite
+  - oda
+  - servisi
+  - içi
+  status: full
+- id: banquet
+  label_tr: Banquet
+  label_en: Banquet
+  parent_group: Food & Beverage
+  responsibility: Toplantı, düğün catering
+  tasks:
+  - Banquet günlük operasyon
+  - Toplantı, düğün catering süreç yönetimi
+  - Banquet misafir talebi koordinasyonu
+  - Banquet raporlama ve takip
+  authority: *id011
+  tools: *id012
+  kpis:
+  - event_count
+  workflows:
+  - WF-FB-banquet
+  keywords:
+  - banquet
+  - toplantı
+  - düğün
+  - catering
+  - etkinlik
+  - salon
+  - kurulum
+  - menü
+  - grup
+  - servis
+  - rezervasyon
+  - setup
+  - yemek
+  - içecek
+  - sipariş
+  status: full
+- id: coffee_shop
+  label_tr: Kahve Dükkanı
+  label_en: Kahve Dükkanı
+  parent_group: Food & Beverage
+  responsibility: Kahve, pastane
+  tasks:
+  - Kahve Dükkanı günlük operasyon
+  - Kahve, pastane süreç yönetimi
+  - Kahve Dükkanı misafir talebi koordinasyonu
+  - Kahve Dükkanı raporlama ve takip
+  authority: *id011
+  tools: *id012
+  kpis: *id013
+  workflows:
+  - WF-FB-coffee_shop
+  keywords:
+  - kahve
+  - dükkanı
+  - pastane
+  - yemek
+  - içecek
+  - servis
+  - menü
+  - sipariş
+  - mutfak
+  - restoran
+  - bar
+  - kalite
+  - hijyen
+  - coffee
+  - shop
+  status: full
+- id: wine_cellar
+  label_tr: Şarap Mahzeni
+  label_en: Şarap Mahzeni
+  parent_group: Food & Beverage
+  responsibility: Şarap stok, servis
+  tasks:
+  - Şarap Mahzeni günlük operasyon
+  - Şarap stok, servis süreç yönetimi
+  - Şarap Mahzeni misafir talebi koordinasyonu
+  - Şarap Mahzeni raporlama ve takip
+  authority: *id011
+  tools: *id012
+  kpis: *id013
+  workflows:
+  - WF-FB-wine_cellar
+  keywords:
+  - şarap
+  - mahzeni
+  - stok
+  - servis
+  - yemek
+  - içecek
+  - menü
+  - sipariş
+  - mutfak
+  - restoran
+  - bar
+  - kalite
+  - hijyen
+  - wine
+  - cellar
+  status: full
+- id: spa
+  label_tr: Spa
+  label_en: Spa
+  parent_group: Spa & Wellness
+  responsibility: Spa genel operasyon
+  tasks:
+  - Spa günlük operasyon
+  - Spa genel operasyon süreç yönetimi
+  - Spa misafir talebi koordinasyonu
+  - Spa raporlama ve takip
+  authority: &id014
+    can_create_work_order: true
+    can_notify:
+    - front_office
+    - guest_service
+    can_view_finance: false
+  tools: &id015
+  - book_spa
+  - spa_schedule
+  - notify_department
+  - get_spa_kpis
+  - create_appointment
+  kpis: &id016
+  - spa_utilization
+  - treatment_revenue
+  - guest_spa_satisfaction
+  workflows:
+  - WF-SPA-spa
+  keywords:
+  - spa
+  - genel
+  - operasyon
+  - masaj
+  - terapi
+  - randevu
+  - wellness
+  - rahatlama
+  - bakım
+  - seans
+  - terapist
+  status: full
+- id: massage
+  label_tr: Masaj
+  label_en: Masaj
+  parent_group: Spa & Wellness
+  responsibility: Masaj terapisi
+  tasks:
+  - Masaj günlük operasyon
+  - Masaj terapisi süreç yönetimi
+  - Masaj misafir talebi koordinasyonu
+  - Masaj raporlama ve takip
+  authority: *id014
+  tools: *id015
+  kpis: *id016
+  workflows:
+  - WF-SPA-massage
+  keywords:
+  - masaj
+  - terapisi
+  - spa
+  - terapi
+  - randevu
+  - wellness
+  - rahatlama
+  - bakım
+  - seans
+  - terapist
+  - massage
+  status: full
+- id: sauna
+  label_tr: Sauna
+  label_en: Sauna
+  parent_group: Spa & Wellness
+  responsibility: Sauna işletimi
+  tasks:
+  - Sauna günlük operasyon
+  - Sauna işletimi süreç yönetimi
+  - Sauna misafir talebi koordinasyonu
+  - Sauna raporlama ve takip
+  authority: *id014
+  tools: *id015
+  kpis: *id016
+  workflows:
+  - WF-SPA-sauna
+  keywords:
+  - sauna
+  - işletimi
+  - spa
+  - masaj
+  - terapi
+  - randevu
+  - wellness
+  - rahatlama
+  - bakım
+  - seans
+  - terapist
+  status: full
+- id: steam_room
+  label_tr: Buhar Odası
+  label_en: Buhar Odası
+  parent_group: Spa & Wellness
+  responsibility: Hamam buhar
+  tasks:
+  - Buhar Odası günlük operasyon
+  - Hamam buhar süreç yönetimi
+  - Buhar Odası misafir talebi koordinasyonu
+  - Buhar Odası raporlama ve takip
+  authority: *id014
+  tools: *id015
+  kpis: *id016
+  workflows:
+  - WF-SPA-steam_room
+  keywords:
+  - buhar
+  - odası
+  - hamam
+  - spa
+  - masaj
+  - terapi
+  - randevu
+  - wellness
+  - rahatlama
+  - bakım
+  - seans
+  - terapist
+  - steam
+  - room
+  status: full
+- id: turkish_bath
+  label_tr: Hamam
+  label_en: Hamam
+  parent_group: Spa & Wellness
+  responsibility: Geleneksel hamam
+  tasks:
+  - Hamam günlük operasyon
+  - Geleneksel hamam süreç yönetimi
+  - Hamam misafir talebi koordinasyonu
+  - Hamam raporlama ve takip
+  authority: *id014
+  tools: *id015
+  kpis: *id016
+  workflows:
+  - WF-SPA-turkish_bath
+  keywords:
+  - hamam
+  - geleneksel
+  - spa
+  - masaj
+  - terapi
+  - randevu
+  - wellness
+  - rahatlama
+  - bakım
+  - seans
+  - terapist
+  - turkish
+  - bath
+  status: full
+- id: fitness
+  label_tr: Fitness
+  label_en: Fitness
+  parent_group: Spa & Wellness
+  responsibility: Spor salonu
+  tasks:
+  - Fitness günlük operasyon
+  - Spor salonu süreç yönetimi
+  - Fitness misafir talebi koordinasyonu
+  - Fitness raporlama ve takip
+  authority: *id014
+  tools: *id015
+  kpis: *id016
+  workflows:
+  - WF-SPA-fitness
+  keywords:
+  - fitness
+  - spor
+  - salonu
+  - spa
+  - masaj
+  - terapi
+  - randevu
+  - wellness
+  - rahatlama
+  - bakım
+  - seans
+  - terapist
+  status: full
+- id: yoga
+  label_tr: Yoga
+  label_en: Yoga
+  parent_group: Spa & Wellness
+  responsibility: Yoga dersleri
+  tasks:
+  - Yoga günlük operasyon
+  - Yoga dersleri süreç yönetimi
+  - Yoga misafir talebi koordinasyonu
+  - Yoga raporlama ve takip
+  authority: *id014
+  tools: *id015
+  kpis: *id016
+  workflows:
+  - WF-SPA-yoga
+  keywords:
+  - yoga
+  - dersleri
+  - spa
+  - masaj
+  - terapi
+  - randevu
+  - wellness
+  - rahatlama
+  - bakım
+  - seans
+  - terapist
+  status: full
+- id: beauty
+  label_tr: Güzellik
+  label_en: Güzellik
+  parent_group: Spa & Wellness
+  responsibility: Cilt bakımı, makyaj
+  tasks:
+  - Güzellik günlük operasyon
+  - Cilt bakımı, makyaj süreç yönetimi
+  - Güzellik misafir talebi koordinasyonu
+  - Güzellik raporlama ve takip
+  authority: *id014
+  tools: *id015
+  kpis: *id016
+  workflows:
+  - WF-SPA-beauty
+  keywords:
+  - güzellik
+  - cilt
+  - bakımı
+  - makyaj
+  - spa
+  - masaj
+  - terapi
+  - randevu
+  - wellness
+  - rahatlama
+  - bakım
+  - seans
+  - terapist
+  - beauty
+  status: full
+- id: hairdresser
+  label_tr: Kuaför
+  label_en: Kuaför
+  parent_group: Spa & Wellness
+  responsibility: Saç kesim, bakım
+  tasks:
+  - Kuaför günlük operasyon
+  - Saç kesim, bakım süreç yönetimi
+  - Kuaför misafir talebi koordinasyonu
+  - Kuaför raporlama ve takip
+  authority: *id014
+  tools: *id015
+  kpis: *id016
+  workflows:
+  - WF-SPA-hairdresser
+  keywords:
+  - kuaför
+  - saç
+  - kesim
+  - bakım
+  - spa
+  - masaj
+  - terapi
+  - randevu
+  - wellness
+  - rahatlama
+  - seans
+  - terapist
+  - hairdresser
+  status: full
+- id: animasyon
+  label_tr: Animasyon
+  label_en: Animasyon
+  parent_group: Entertainment
+  responsibility: Gündüz/gece animasyon
+  tasks:
+  - Animasyon günlük operasyon
+  - Gündüz/gece animasyon süreç yönetimi
+  - Animasyon misafir talebi koordinasyonu
+  - Animasyon raporlama ve takip
+  authority: &id017
+    can_create_work_order: false
+    can_notify:
+    - front_office
+    - guest_service
+    can_view_finance: false
+  tools: &id018
+  - event_schedule
+  - activity_booking
+  - notify_department
+  - get_entertainment_kpis
+  - create_event_task
+  kpis: &id019
+  - activity_participation
+  - show_attendance
+  - kids_club_occupancy
+  workflows:
+  - WF-ENT-animasyon
+  keywords:
+  - animasyon
+  - gündüz
+  - gece
+  - etkinlik
+  - gösteri
+  - aktivite
+  - eğlence
+  - program
+  - katılım
+  - çocuk
+  - disco
+  status: full
+- id: kids_club
+  label_tr: Mini Club
+  label_en: Mini Club
+  parent_group: Entertainment
+  responsibility: Çocuk kulübü
+  tasks:
+  - Mini Club günlük operasyon
+  - Çocuk kulübü süreç yönetimi
+  - Mini Club misafir talebi koordinasyonu
+  - Mini Club raporlama ve takip
+  authority: *id017
+  tools: *id018
+  kpis: *id019
+  workflows:
+  - WF-ENT-kids_club
+  keywords:
+  - mini
+  - club
+  - çocuk
+  - kulübü
+  - animasyon
+  - etkinlik
+  - gösteri
+  - aktivite
+  - eğlence
+  - program
+  - katılım
+  - disco
+  - kids
+  status: full
+- id: mini_disco
+  label_tr: Mini Disco
+  label_en: Mini Disco
+  parent_group: Entertainment
+  responsibility: Çocuk disko
+  tasks:
+  - Mini Disco günlük operasyon
+  - Çocuk disko süreç yönetimi
+  - Mini Disco misafir talebi koordinasyonu
+  - Mini Disco raporlama ve takip
+  authority: *id017
+  tools: *id018
+  kpis: *id019
+  workflows:
+  - WF-ENT-mini_disco
+  keywords:
+  - mini
+  - disco
+  - çocuk
+  - disko
+  - animasyon
+  - etkinlik
+  - gösteri
+  - aktivite
+  - eğlence
+  - program
+  - katılım
+  status: full
+- id: sports
+  label_tr: Spor Aktiviteleri
+  label_en: Spor Aktiviteleri
+  parent_group: Entertainment
+  responsibility: Tenis, voleybol, su sporları
+  tasks:
+  - Spor Aktiviteleri günlük operasyon
+  - Tenis, voleybol, su sporları süreç yönetimi
+  - Spor Aktiviteleri misafir talebi koordinasyonu
+  - Spor Aktiviteleri raporlama ve takip
+  authority: *id017
+  tools: *id018
+  kpis: *id019
+  workflows:
+  - WF-ENT-sports
+  keywords:
+  - spor
+  - aktiviteleri
+  - tenis
+  - voleybol
+  - sporları
+  - animasyon
+  - etkinlik
+  - gösteri
+  - aktivite
+  - eğlence
+  - program
+  - katılım
+  - çocuk
+  - disco
+  - sports
+  status: full
+- id: shows
+  label_tr: Gösteriler
+  label_en: Gösteriler
+  parent_group: Entertainment
+  responsibility: Sahne şovları
+  tasks:
+  - Gösteriler günlük operasyon
+  - Sahne şovları süreç yönetimi
+  - Gösteriler misafir talebi koordinasyonu
+  - Gösteriler raporlama ve takip
+  authority: *id017
+  tools: *id018
+  kpis: *id019
+  workflows:
+  - WF-ENT-shows
+  keywords:
+  - gösteriler
+  - sahne
+  - şovları
+  - animasyon
+  - etkinlik
+  - gösteri
+  - aktivite
+  - eğlence
+  - program
+  - katılım
+  - çocuk
+  - disco
+  - shows
+  status: full
+- id: dj
+  label_tr: DJ
+  label_en: DJ
+  parent_group: Entertainment
+  responsibility: Müzik, disko
+  tasks:
+  - DJ günlük operasyon
+  - Müzik, disko süreç yönetimi
+  - DJ misafir talebi koordinasyonu
+  - DJ raporlama ve takip
+  authority: *id017
+  tools: *id018
+  kpis: *id019
+  workflows:
+  - WF-ENT-dj
+  keywords:
+  - müzik
+  - disko
+  - animasyon
+  - etkinlik
+  - gösteri
+  - aktivite
+  - eğlence
+  - program
+  - katılım
+  - çocuk
+  - disco
+  - dj
+  status: full
+- id: events_entertainment
+  label_tr: Etkinlik
+  label_en: Etkinlik
+  parent_group: Entertainment
+  responsibility: Özel etkinlik koordinasyon
+  tasks:
+  - Etkinlik günlük operasyon
+  - Özel etkinlik koordinasyon süreç yönetimi
+  - Etkinlik misafir talebi koordinasyonu
+  - Etkinlik raporlama ve takip
+  authority: *id017
+  tools: *id018
+  kpis: *id019
+  workflows:
+  - WF-ENT-events_entertainment
+  keywords:
+  - etkinlik
+  - özel
+  - koordinasyon
+  - animasyon
+  - gösteri
+  - aktivite
+  - eğlence
+  - program
+  - katılım
+  - çocuk
+  - disco
+  - events
+  - entertainment
+  status: full
+- id: guvenlik
+  label_tr: Güvenlik
+  label_en: Güvenlik
+  parent_group: Security
+  responsibility: Genel güvenlik
+  tasks:
+  - Güvenlik günlük operasyon
+  - Genel güvenlik süreç yönetimi
+  - Güvenlik misafir talebi koordinasyonu
+  - Güvenlik raporlama ve takip
+  authority: &id020
+    can_create_work_order: true
+    can_notify:
+    - general_manager
+    - emergency
+    - front_office
+    can_view_finance: false
+  tools: &id021
+  - security_alert
+  - cctv_view
+  - notify_department
+  - incident_report
+  - access_log
+  kpis: &id022
+  - incident_count
+  - response_time
+  - patrol_compliance
+  workflows:
+  - WF-SEC-guvenlik
+  keywords:
+  - güvenlik
+  - genel
+  - kamera
+  - devriye
+  - olay
+  - acil
+  - giriş
+  - kontrol
+  - şüpheli
+  - ihlal
+  - guvenlik
+  status: full
+- id: cctv
+  label_tr: CCTV
+  label_en: CCTV
+  parent_group: Security
+  responsibility: Kamera izleme
+  tasks:
+  - CCTV günlük operasyon
+  - Kamera izleme süreç yönetimi
+  - CCTV misafir talebi koordinasyonu
+  - CCTV raporlama ve takip
+  authority: *id020
+  tools: *id021
+  kpis: *id022
+  workflows:
+  - WF-SEC-cctv
+  keywords:
+  - cctv
+  - kamera
+  - izleme
+  - güvenlik
+  - devriye
+  - olay
+  - acil
+  - giriş
+  - kontrol
+  - şüpheli
+  - ihlal
+  status: full
+- id: emergency
+  label_tr: Acil Durum
+  label_en: Acil Durum
+  parent_group: Security
+  responsibility: İlk yardım, tahliye
+  tasks:
+  - Acil Durum günlük operasyon
+  - İlk yardım, tahliye süreç yönetimi
+  - Acil Durum misafir talebi koordinasyonu
+  - Acil Durum raporlama ve takip
+  authority: *id020
+  tools: *id021
+  kpis: *id022
+  workflows:
+  - WF-SEC-emergency
+  keywords:
+  - acil
+  - durum
+  - i̇lk
+  - yardım
+  - tahliye
+  - güvenlik
+  - kamera
+  - devriye
+  - olay
+  - giriş
+  - kontrol
+  - şüpheli
+  - ihlal
+  - emergency
+  status: full
+- id: parking_security
+  label_tr: Otopark Güvenliği
+  label_en: Otopark Güvenliği
+  parent_group: Security
+  responsibility: Araç güvenliği
+  tasks:
+  - Otopark Güvenliği günlük operasyon
+  - Araç güvenliği süreç yönetimi
+  - Otopark Güvenliği misafir talebi koordinasyonu
+  - Otopark Güvenliği raporlama ve takip
+  authority: *id020
+  tools: *id021
+  kpis: *id022
+  workflows:
+  - WF-SEC-parking_security
+  keywords:
+  - otopark
+  - güvenliği
+  - araç
+  - güvenlik
+  - kamera
+  - devriye
+  - olay
+  - acil
+  - giriş
+  - kontrol
+  - şüpheli
+  - ihlal
+  - parking
+  - security
+  status: full
+- id: gate_control
+  label_tr: Kapı Kontrol
+  label_en: Kapı Kontrol
+  parent_group: Security
+  responsibility: Giriş-çıkış kontrol
+  tasks:
+  - Kapı Kontrol günlük operasyon
+  - Giriş-çıkış kontrol süreç yönetimi
+  - Kapı Kontrol misafir talebi koordinasyonu
+  - Kapı Kontrol raporlama ve takip
+  authority: *id020
+  tools: *id021
+  kpis: *id022
+  workflows:
+  - WF-SEC-gate_control
+  keywords:
+  - kapı
+  - kontrol
+  - giriş
+  - çıkış
+  - güvenlik
+  - kamera
+  - devriye
+  - olay
+  - acil
+  - şüpheli
+  - ihlal
+  - gate
+  - control
+  status: full
+- id: accounting
+  label_tr: Muhasebe
+  label_en: Muhasebe
+  parent_group: Finance
+  responsibility: Defter, fatura
+  tasks:
+  - Muhasebe günlük operasyon
+  - Defter, fatura süreç yönetimi
+  - Muhasebe misafir talebi koordinasyonu
+  - Muhasebe raporlama ve takip
+  authority: &id023
+    can_create_work_order: false
+    can_notify:
+    - general_manager
+    - purchasing
+    can_view_finance: true
+  tools: &id024
+  - get_finance_summary
+  - invoice_create
+  - purchase_order
+  - notify_department
+  - cost_report
+  kpis: &id025
+  - budget_variance
+  - invoice_accuracy
+  - payment_cycle_days
+  workflows:
+  - WF-FIN-accounting
+  keywords:
+  - muhasebe
+  - defter
+  - fatura
+  - bütçe
+  - maliyet
+  - ödeme
+  - tedarik
+  - stok
+  - denetim
+  - gelir
+  - accounting
+  status: full
+- id: cashier
+  label_tr: Kasa
+  label_en: Kasa
+  parent_group: Finance
+  responsibility: Nakit işlemler
+  tasks:
+  - Kasa günlük operasyon
+  - Nakit işlemler süreç yönetimi
+  - Kasa misafir talebi koordinasyonu
+  - Kasa raporlama ve takip
+  authority: *id023
+  tools: *id024
+  kpis: *id025
+  workflows:
+  - WF-FIN-cashier
+  keywords:
+  - kasa
+  - nakit
+  - işlemler
+  - muhasebe
+  - fatura
+  - bütçe
+  - maliyet
+  - ödeme
+  - tedarik
+  - stok
+  - denetim
+  - gelir
+  - cashier
+  status: full
+- id: purchasing
+  label_tr: Satın Alma
+  label_en: Satın Alma
+  parent_group: Finance
+  responsibility: Tedarik, sipariş
+  tasks:
+  - Satın Alma günlük operasyon
+  - Tedarik, sipariş süreç yönetimi
+  - Satın Alma misafir talebi koordinasyonu
+  - Satın Alma raporlama ve takip
+  authority: *id023
+  tools: *id024
+  kpis: *id025
+  workflows:
+  - WF-FIN-purchasing
+  keywords:
+  - satın
+  - alma
+  - tedarik
+  - sipariş
+  - muhasebe
+  - fatura
+  - bütçe
+  - maliyet
+  - ödeme
+  - stok
+  - denetim
+  - gelir
+  - purchasing
+  status: full
+- id: warehouse
+  label_tr: Depo
+  label_en: Depo
+  parent_group: Finance
+  responsibility: Stok yönetimi
+  tasks:
+  - Depo günlük operasyon
+  - Stok yönetimi süreç yönetimi
+  - Depo misafir talebi koordinasyonu
+  - Depo raporlama ve takip
+  authority: *id023
+  tools: *id024
+  kpis: *id025
+  workflows:
+  - WF-FIN-warehouse
+  keywords:
+  - depo
+  - stok
+  - yönetimi
+  - muhasebe
+  - fatura
+  - bütçe
+  - maliyet
+  - ödeme
+  - tedarik
+  - denetim
+  - gelir
+  - warehouse
+  status: full
+- id: cost_control
+  label_tr: Maliyet Kontrol
+  label_en: Maliyet Kontrol
+  parent_group: Finance
+  responsibility: Food cost, variance
+  tasks:
+  - Maliyet Kontrol günlük operasyon
+  - Food cost, variance süreç yönetimi
+  - Maliyet Kontrol misafir talebi koordinasyonu
+  - Maliyet Kontrol raporlama ve takip
+  authority: *id023
+  tools: *id024
+  kpis: *id025
+  workflows:
+  - WF-FIN-cost_control
+  keywords:
+  - maliyet
+  - kontrol
+  - food
+  - cost
+  - variance
+  - muhasebe
+  - fatura
+  - bütçe
+  - ödeme
+  - tedarik
+  - stok
+  - denetim
+  - gelir
+  - control
+  status: full
+- id: income_audit
+  label_tr: Gelir Denetimi
+  label_en: Gelir Denetimi
+  parent_group: Finance
+  responsibility: Gelir kontrol
+  tasks:
+  - Gelir Denetimi günlük operasyon
+  - Gelir kontrol süreç yönetimi
+  - Gelir Denetimi misafir talebi koordinasyonu
+  - Gelir Denetimi raporlama ve takip
+  authority: *id023
+  tools: *id024
+  kpis: *id025
+  workflows:
+  - WF-FIN-income_audit
+  keywords:
+  - gelir
+  - denetimi
+  - kontrol
+  - muhasebe
+  - fatura
+  - bütçe
+  - maliyet
+  - ödeme
+  - tedarik
+  - stok
+  - denetim
+  - income
+  - audit
+  status: full
+- id: recruitment
+  label_tr: İşe Alım
+  label_en: İşe Alım
+  parent_group: Human Resources
+  responsibility: Aday, mülakat
+  tasks:
+  - İşe Alım günlük operasyon
+  - Aday, mülakat süreç yönetimi
+  - İşe Alım misafir talebi koordinasyonu
+  - İşe Alım raporlama ve takip
+  authority: &id026
+    can_create_work_order: false
+    can_notify:
+    - general_manager
+    - department_heads
+    can_view_finance: false
+  tools: &id027
+  - hr_request
+  - training_schedule
+  - notify_department
+  - staff_roster
+  - performance_review
+  kpis: &id028
+  - turnover_rate
+  - training_hours
+  - staff_satisfaction
+  workflows:
+  - WF-HR-recruitment
+  keywords:
+  - i̇şe
+  - alım
+  - aday
+  - mülakat
+  - personel
+  - eğitim
+  - bordro
+  - işe alım
+  - performans
+  - izin
+  - vardiya
+  - disiplin
+  - özlük
+  - recruitment
+  status: full
+- id: training
+  label_tr: Eğitim
+  label_en: Eğitim
+  parent_group: Human Resources
+  responsibility: Personel eğitimi
+  tasks:
+  - Eğitim günlük operasyon
+  - Personel eğitimi süreç yönetimi
+  - Eğitim misafir talebi koordinasyonu
+  - Eğitim raporlama ve takip
+  authority: *id026
+  tools: *id027
+  kpis: *id028
+  workflows:
+  - WF-HR-training
+  keywords:
+  - eğitim
+  - personel
+  - eğitimi
+  - bordro
+  - işe alım
+  - performans
+  - izin
+  - vardiya
+  - disiplin
+  - özlük
+  - training
+  status: full
+- id: payroll
+  label_tr: Bordro
+  label_en: Bordro
+  parent_group: Human Resources
+  responsibility: Maaş, özlük
+  tasks:
+  - Bordro günlük operasyon
+  - Maaş, özlük süreç yönetimi
+  - Bordro misafir talebi koordinasyonu
+  - Bordro raporlama ve takip
+  authority: *id026
+  tools: *id027
+  kpis: *id028
+  workflows:
+  - WF-HR-payroll
+  keywords:
+  - bordro
+  - maaş
+  - özlük
+  - personel
+  - eğitim
+  - işe alım
+  - performans
+  - izin
+  - vardiya
+  - disiplin
+  - payroll
+  status: full
+- id: personel
+  label_tr: Personel / İK Operasyon
+  label_en: Personel / İK Operasyon
+  parent_group: Human Resources
+  responsibility: Personel davranış, disiplin
+  tasks:
+  - Personel / İK Operasyon günlük operasyon
+  - Personel davranış, disiplin süreç yönetimi
+  - Personel / İK Operasyon misafir talebi koordinasyonu
+  - Personel / İK Operasyon raporlama ve takip
+  authority: *id026
+  tools: *id027
+  kpis: *id028
+  workflows:
+  - WF-HR-personel
+  keywords:
+  - personel
+  - i̇k
+  - operasyon
+  - davranış
+  - disiplin
+  - eğitim
+  - bordro
+  - işe alım
+  - performans
+  - izin
+  - vardiya
+  - özlük
+  status: full
+- id: performance_hr
+  label_tr: Performans
+  label_en: Performans
+  parent_group: Human Resources
+  responsibility: KPI, değerlendirme
+  tasks:
+  - Performans günlük operasyon
+  - KPI, değerlendirme süreç yönetimi
+  - Performans misafir talebi koordinasyonu
+  - Performans raporlama ve takip
+  authority: *id026
+  tools: *id027
+  kpis: *id028
+  workflows:
+  - WF-HR-performance_hr
+  keywords:
+  - performans
+  - kpi
+  - değerlendirme
+  - personel
+  - eğitim
+  - bordro
+  - işe alım
+  - izin
+  - vardiya
+  - disiplin
+  - özlük
+  - performance
+  - hr
+  status: full
+- id: sales
+  label_tr: Satış
+  label_en: Satış
+  parent_group: Sales & Marketing
+  responsibility: B2B, kurumsal
+  tasks:
+  - Satış günlük operasyon
+  - B2B, kurumsal süreç yönetimi
+  - Satış misafir talebi koordinasyonu
+  - Satış raporlama ve takip
+  authority: &id029
+    can_create_work_order: false
+    can_notify:
+    - reservation
+    - revenue
+    - marketing
+    can_view_finance: true
+  tools: &id030
+  - crm_lead
+  - rate_quote
+  - notify_department
+  - campaign_report
+  - ota_dashboard
+  kpis: &id031
+  - conversion_rate
+  - adr
+  - revpar
+  - ota_commission_rate
+  workflows:
+  - WF-SM-sales
+  keywords:
+  - satış
+  - b2b
+  - kurumsal
+  - pazarlama
+  - kampanya
+  - fiyat
+  - rezervasyon
+  - ota
+  - grup
+  - yield
+  - sales
+  status: full
+- id: marketing
+  label_tr: Pazarlama
+  label_en: Pazarlama
+  parent_group: Sales & Marketing
+  responsibility: Kampanya, marka
+  tasks:
+  - Pazarlama günlük operasyon
+  - Kampanya, marka süreç yönetimi
+  - Pazarlama misafir talebi koordinasyonu
+  - Pazarlama raporlama ve takip
+  authority: *id029
+  tools: *id030
+  kpis: *id031
+  workflows:
+  - WF-SM-marketing
+  keywords:
+  - pazarlama
+  - kampanya
+  - marka
+  - satış
+  - fiyat
+  - rezervasyon
+  - ota
+  - kurumsal
+  - grup
+  - yield
+  - marketing
+  status: full
+- id: revenue
+  label_tr: Gelir Yönetimi
+  label_en: Gelir Yönetimi
+  parent_group: Sales & Marketing
+  responsibility: Fiyat, yield
+  tasks:
+  - Gelir Yönetimi günlük operasyon
+  - Fiyat, yield süreç yönetimi
+  - Gelir Yönetimi misafir talebi koordinasyonu
+  - Gelir Yönetimi raporlama ve takip
+  authority: *id029
+  tools: *id030
+  kpis: *id031
+  workflows:
+  - WF-SM-revenue
+  keywords:
+  - gelir
+  - yönetimi
+  - fiyat
+  - yield
+  - satış
+  - pazarlama
+  - kampanya
+  - rezervasyon
+  - ota
+  - kurumsal
+  - grup
+  - revenue
+  status: full
+- id: ota
+  label_tr: OTA
+  label_en: OTA
+  parent_group: Sales & Marketing
+  responsibility: Booking.com, Expedia
+  tasks:
+  - OTA günlük operasyon
+  - Booking.com, Expedia süreç yönetimi
+  - OTA misafir talebi koordinasyonu
+  - OTA raporlama ve takip
+  authority: *id029
+  tools: *id030
+  kpis: *id031
+  workflows:
+  - WF-SM-ota
+  keywords:
+  - ota
+  - booking.com
+  - expedia
+  - satış
+  - pazarlama
+  - kampanya
+  - fiyat
+  - rezervasyon
+  - kurumsal
+  - grup
+  - yield
+  status: full
+- id: corporate_sales
+  label_tr: Kurumsal Satış
+  label_en: Kurumsal Satış
+  parent_group: Sales & Marketing
+  responsibility: Anlaşmalı şirketler
+  tasks:
+  - Kurumsal Satış günlük operasyon
+  - Anlaşmalı şirketler süreç yönetimi
+  - Kurumsal Satış misafir talebi koordinasyonu
+  - Kurumsal Satış raporlama ve takip
+  authority: *id029
+  tools: *id030
+  kpis: *id031
+  workflows:
+  - WF-SM-corporate_sales
+  keywords:
+  - kurumsal
+  - satış
+  - anlaşmalı
+  - şirketler
+  - pazarlama
+  - kampanya
+  - fiyat
+  - rezervasyon
+  - ota
+  - grup
+  - yield
+  - corporate
+  - sales
+  status: full
+- id: groups
+  label_tr: Grup Satış
+  label_en: Grup Satış
+  parent_group: Sales & Marketing
+  responsibility: Grup rezervasyon
+  tasks:
+  - Grup Satış günlük operasyon
+  - Grup rezervasyon süreç yönetimi
+  - Grup Satış misafir talebi koordinasyonu
+  - Grup Satış raporlama ve takip
+  authority: *id029
+  tools: *id030
+  kpis: *id031
+  workflows:
+  - WF-SM-groups
+  keywords:
+  - grup
+  - satış
+  - rezervasyon
+  - pazarlama
+  - kampanya
+  - fiyat
+  - ota
+  - kurumsal
+  - yield
+  - groups
+  status: full
+- id: events_sales
+  label_tr: Etkinlik Satış
+  label_en: Etkinlik Satış
+  parent_group: Sales & Marketing
+  responsibility: Toplantı, düğün satış
+  tasks:
+  - Etkinlik Satış günlük operasyon
+  - Toplantı, düğün satış süreç yönetimi
+  - Etkinlik Satış misafir talebi koordinasyonu
+  - Etkinlik Satış raporlama ve takip
+  authority: *id029
+  tools: *id030
+  kpis: *id031
+  workflows:
+  - WF-SM-events_sales
+  keywords:
+  - etkinlik
+  - satış
+  - toplantı
+  - düğün
+  - pazarlama
+  - kampanya
+  - fiyat
+  - rezervasyon
+  - ota
+  - kurumsal
+  - grup
+  - yield
+  - events
+  - sales
+  status: full
+- id: pms
+  label_tr: PMS
+  label_en: PMS
+  parent_group: IT
+  responsibility: Opera, Protel yönetimi
+  tasks:
+  - PMS günlük operasyon
+  - Opera, Protel yönetimi süreç yönetimi
+  - PMS misafir talebi koordinasyonu
+  - PMS raporlama ve takip
+  authority: &id032
+    can_create_work_order: true
+    can_notify:
+    - engineering_internet
+    - general_manager
+    can_view_finance: false
+  tools: &id033
+  - system_status
+  - ticket_it
+  - notify_department
+  - backup_status
+  - api_health
+  kpis: &id034
+  - system_uptime
+  - ticket_resolution_time
+  - incident_count
+  workflows:
+  - WF-IT-pms
+  keywords:
+  - pms
+  - opera
+  - protel
+  - yönetimi
+  - sistem
+  - sunucu
+  - ağ
+  - yazılım
+  - entegrasyon
+  - backup
+  - pos
+  - api
+  - ticket
+  status: full
+- id: pos
+  label_tr: POS
+  label_en: POS
+  parent_group: IT
+  responsibility: Restoran POS
+  tasks:
+  - POS günlük operasyon
+  - Restoran POS süreç yönetimi
+  - POS misafir talebi koordinasyonu
+  - POS raporlama ve takip
+  authority: *id032
+  tools: *id033
+  kpis: *id034
+  workflows:
+  - WF-IT-pos
+  keywords:
+  - pos
+  - restoran
+  - sistem
+  - sunucu
+  - ağ
+  - yazılım
+  - entegrasyon
+  - backup
+  - pms
+  - api
+  - ticket
+  status: full
+- id: wifi_it
+  label_tr: WiFi IT
+  label_en: WiFi IT
+  parent_group: IT
+  responsibility: Misafir ağı
+  tasks:
+  - WiFi IT günlük operasyon
+  - Misafir ağı süreç yönetimi
+  - WiFi IT misafir talebi koordinasyonu
+  - WiFi IT raporlama ve takip
+  authority: *id032
+  tools: *id033
+  kpis: *id034
+  workflows:
+  - WF-IT-wifi_it
+  keywords:
+  - wifi
+  - misafir
+  - ağı
+  - sistem
+  - sunucu
+  - ağ
+  - yazılım
+  - entegrasyon
+  - backup
+  - pos
+  - pms
+  - api
+  - ticket
+  - it
+  status: full
+- id: servers
+  label_tr: Sunucular
+  label_en: Sunucular
+  parent_group: IT
+  responsibility: Sunucu altyapısı
+  tasks:
+  - Sunucular günlük operasyon
+  - Sunucu altyapısı süreç yönetimi
+  - Sunucular misafir talebi koordinasyonu
+  - Sunucular raporlama ve takip
+  authority: *id032
+  tools: *id033
+  kpis: *id034
+  workflows:
+  - WF-IT-servers
+  keywords:
+  - sunucular
+  - sunucu
+  - altyapısı
+  - sistem
+  - ağ
+  - yazılım
+  - entegrasyon
+  - backup
+  - pos
+  - pms
+  - api
+  - ticket
+  - servers
+  status: full
+- id: backup
+  label_tr: Yedekleme
+  label_en: Yedekleme
+  parent_group: IT
+  responsibility: Backup, DR
+  tasks:
+  - Yedekleme günlük operasyon
+  - Backup, DR süreç yönetimi
+  - Yedekleme misafir talebi koordinasyonu
+  - Yedekleme raporlama ve takip
+  authority: *id032
+  tools: *id033
+  kpis: *id034
+  workflows:
+  - WF-IT-backup
+  keywords:
+  - yedekleme
+  - backup
+  - sistem
+  - sunucu
+  - ağ
+  - yazılım
+  - entegrasyon
+  - pos
+  - pms
+  - api
+  - ticket
+  status: full
+- id: network
+  label_tr: Ağ
+  label_en: Ağ
+  parent_group: IT
+  responsibility: LAN, WAN
+  tasks:
+  - Ağ günlük operasyon
+  - LAN, WAN süreç yönetimi
+  - Ağ misafir talebi koordinasyonu
+  - Ağ raporlama ve takip
+  authority: *id032
+  tools: *id033
+  kpis: *id034
+  workflows:
+  - WF-IT-network
+  keywords:
+  - lan
+  - wan
+  - sistem
+  - sunucu
+  - ağ
+  - yazılım
+  - entegrasyon
+  - backup
+  - pos
+  - pms
+  - api
+  - ticket
+  - network
+  status: full
+- id: ai_platform
+  label_tr: AI Platform
+  label_en: AI Platform
+  parent_group: IT
+  responsibility: Hotel AI OS
+  tasks:
+  - AI Platform günlük operasyon
+  - Hotel AI OS süreç yönetimi
+  - AI Platform misafir talebi koordinasyonu
+  - AI Platform raporlama ve takip
+  authority: *id032
+  tools: *id033
+  kpis: *id034
+  workflows:
+  - WF-IT-ai_platform
+  keywords:
+  - platform
+  - hotel
+  - sistem
+  - sunucu
+  - ağ
+  - yazılım
+  - entegrasyon
+  - backup
+  - pos
+  - pms
+  - api
+  - ticket
+  - ai
+  status: full
+- id: api_integration
+  label_tr: API Entegrasyon
+  label_en: API Entegrasyon
+  parent_group: IT
+  responsibility: Harici sistemler
+  tasks:
+  - API Entegrasyon günlük operasyon
+  - Harici sistemler süreç yönetimi
+  - API Entegrasyon misafir talebi koordinasyonu
+  - API Entegrasyon raporlama ve takip
+  authority: *id032
+  tools: *id033
+  kpis: *id034
+  workflows:
+  - WF-IT-api_integration
+  keywords:
+  - api
+  - entegrasyon
+  - harici
+  - sistemler
+  - sistem
+  - sunucu
+  - ağ
+  - yazılım
+  - backup
+  - pos
+  - pms
+  - ticket
+  - integration
+  status: full
+- id: havuz
+  label_tr: Havuz
+  label_en: Havuz
+  parent_group: Pool & Beach
+  responsibility: Havuz operasyon, temizlik
+  tasks:
+  - Havuz günlük operasyon
+  - Havuz operasyon, temizlik süreç yönetimi
+  - Havuz misafir talebi koordinasyonu
+  - Havuz raporlama ve takip
+  authority:
+    can_create_work_order: true
+    can_notify:
+    - engineering_pools
+    - housekeeping
+    - guvenlik
+    can_view_finance: false
+  tools:
+  - pool_status
+  - beach_schedule
+  - notify_department
+  - water_quality_log
+  - create_work_order
+  kpis:
+  - pool_clarity_score
+  - beach_occupancy
+  - guest_pool_complaint_rate
+  workflows:
+  - WF-PLB-havuz
+  keywords:
+  - havuz
+  - plaj
+  - su
+  - temizlik
+  - şezlong
+  - havlu
+  - güvenlik
+  - cankurtaran
+  - kalite
+  - sıcaklık
+  - kapalı
+  - açık
+  - operasyon
+  - kimyasal
+  - filtre
+  status: full

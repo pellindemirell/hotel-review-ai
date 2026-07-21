@@ -1,0 +1,5159 @@
+version: '1.0'
+lang: tr
+synonyms:
+- entity_id: eq_air_conditioner
+  terms:
+  - klima
+  - iklimlendirme
+  - sogutma
+  - isitma
+  - klima sistemi
+  - fan coil
+  - split
+  - oda klimalari
+  - klima cihazı
+  - oda kliması
+  - soğutma ünitesi
+  - AC ünitesi
+  - klima üfleme
+  - klima çalışmıyor
+  - klima arızalı
+  - klima sesli
+  - kliması
+  - klimayi
+  - klima cihazı arızalı
+  - oda soğutucu
+  - air conditioner TR
+  - split klima ünitesi
+  - klima motoru
+  - klima paneli
+  - klimalar
+  - klimanın
+  - klimada
+  - ac klima
+  - sogutma klima
+  - iklimlendirme cihazı
+  - oda AC
+  - soğutma cihazı
+- entity_id: eq_split_ac
+  terms:
+  - split klima
+  - split
+- entity_id: eq_chiller
+  terms:
+  - chiller
+  - sogutma makinesi
+  - soğutma grubu
+  - chiller arızası
+  - santral soğutma
+  - chiller arızalı
+  - soğutma santrali
+  - chiller plant
+  - merkezi soğutma durdu
+- entity_id: eq_boiler
+  terms:
+  - kazan
+  - boiler
+  - kazan arızası
+  - ısıtma kazanı
+  - sıcak su kazanı
+  - kazan arızalı
+  - ısıtma kazanı yanmıyor
+  - sıcak su kazanı durdu
+  - boiler bakımı
+- entity_id: eq_thermostat
+  terms:
+  - termostat
+  - sicaklik ayari
+  - sıcaklık düğmesi
+  - ısı ayarı
+  - derece ayarı
+  - termostat bozuk
+  - oda termostatı
+  - sıcaklık paneli
+  - termostat ayarı tutmuyor
+  - duvar termostatı
+- entity_id: eq_ac_remote
+  terms:
+  - klima kumandasi
+  - kumanda
+  - remote
+  - klima kumandası
+  - klima uzaktan kumanda
+  - AC remote
+  - kumanda pili bitmiş
+  - kumanda tuşları
+- entity_id: eq_wifi_router
+  terms:
+  - wifi
+  - internet
+  - wi-fi
+  - kablosuz
+  - ag baglantisi
+  - wifi router
+- entity_id: eq_access_point
+  terms:
+  - access point
+  - erisim noktasi
+- entity_id: eq_tv
+  terms:
+  - tv
+  - televizyon
+  - televizyonu
+- entity_id: eq_minibar
+  terms:
+  - minibar
+  - mini bar
+  - mini-bar
+  - minibari
+  - oda mini buzdolabı
+  - minibar dolabı
+  - minibar boş
+  - minibar stok yok
+  - oda minibarı
+  - minibar rafı
+  - mini buzdolabı bar
+  - oda içi mini bar
+  - minibar ünitesi
+  - mini buzdolabı içecek
+- entity_id: eq_bed
+  terms:
+  - yatak
+  - yataklar
+- entity_id: eq_mattress
+  terms:
+  - sunger
+  - yatak süngeri
+  - mattress
+- entity_id: eq_pillow
+  terms:
+  - yastik
+  - yastiklar
+  - yastık
+- entity_id: eq_elevator
+  terms:
+  - asansor
+  - lift
+  - asansör
+  - asansör arızalı
+  - asansör çalışmıyor
+  - lift bozuk
+  - asansör sıkıştı
+- entity_id: eq_safe
+  terms:
+  - kasa
+  - oda kasasi
+  - oda kasası
+  - elektronik kasa
+  - safe box arızalı
+- entity_id: phy_room
+  terms:
+  - oda
+  - odalar
+  - odamiz
+  - odam
+- entity_id: phy_bathroom
+  terms:
+  - banyo
+  - tuvalet
+  - wc
+  - lavabo
+- entity_id: phy_lobby
+  terms:
+  - lobi
+  - resepsiyon alani
+- entity_id: fac_pool
+  terms:
+  - havuz
+  - yuzme havuzu
+  - aquapark
+- entity_id: fac_restaurant
+  terms:
+  - restoran
+  - restorant
+  - yemekhane
+  - bufe
+- entity_id: fac_spa
+  terms:
+  - spa
+  - wellness
+  - masaj merkezi
+- entity_id: fac_bar
+  terms:
+  - bar
+  - gece bar
+  - irish bar
+- entity_id: fac_beach
+  terms:
+  - plaj
+  - kumsal
+  - deniz kenari
+- entity_id: hum_housekeeper
+  terms:
+  - kat gorevlisi
+  - temizlik personeli
+  - hk
+- entity_id: hum_waiter
+  terms:
+  - garson
+  - servis elemani
+- entity_id: hum_front_desk_agent
+  terms:
+  - resepsiyonist
+  - on buro
+- entity_id: hum_hvac_technician
+  terms:
+  - hvac teknisyeni
+  - klima teknisyeni
+  - teknik servis
+- aspect_key: room_cleanliness
+  terms:
+  - tertemiz
+  - temiz oda
+  - kirli
+  - pis
+  - tozlu
+  - hijyen
+  - oda temiz
+  - oda pis
+  - oda hijyen
+  - temizlik yapılmamış
+  - kirli oda
+  - toz içinde oda
+  - oda bakımsız
+  - hijyen zayıf
+  - temizlik yetersiz
+  - oda tertemiz değil
+  - temizlik unutulmuş
+  - oda bakımsız kirli
+  - hijyen skoru düşük
+  - oda süpürülmemiş
+  - tozlu mobilya
+  - kirli zemin
+  - oda hijyen sorunlu
+- aspect_key: hvac_noise
+  terms:
+  - ses yapıyor
+  - gurultu
+  - ugultu
+  - klima ses
+  - cok ses
+  - klima gürültüsü
+  - klima çok ses
+  - klima uğultu
+  - klima tıkırtı
+  - ses yapan klima
+  - gürültülü klima
+  - klima zırıltı
+  - klima uğultusu
+  - AC gürültüsü
+  - fan sesi yüksek
+  - klima vınlama
+  - HVAC gürültü
+- aspect_key: hvac_cooling
+  terms:
+  - sogutmuyor
+  - soguk vermiyor
+  - sicak oda
+  - soğutma sistemi
+  - oda soğutma
+  - cooling yetersiz
+- aspect_key: food_quality
+  terms:
+  - yemekler
+  - lezzet
+  - lezzetli
+  - lezzetsiz
+  - mutfak
+  - guzeldi
+  - yemek kötü
+  - yemek berbat
+  - kalitesiz yemek
+  - yemek fena
+  - lezzet yok
+  - yemek vasat
+  - mutfak zayıf
+- aspect_key: breakfast_variety
+  terms:
+  - kahvalti
+  - sabah yemegi
+  - acik bufe
+  - kahvaltı çeşit az
+  - kahvaltıda seçenek yok
+  - kahvaltı monoton
+  - kahvaltı seçenekleri az
+  - kahvaltıda çeşit yok
+  - sabah menüsü fakir
+- aspect_key: wifi_speed
+  terms:
+  - yavas internet
+  - hizli internet
+  - baglanti
+  - wifi yavaş
+  - internet çok yavaş
+  - wi-fi hızı düşük
+  - bağlantı yavaş
+- aspect_key: staff_behavior
+  terms:
+  - kibar
+  - kaba
+  - ilgisiz
+  - personel davranisi
+  - personel kaba
+  - personel saygısız
+  - çalışanlar ilgisiz
+  - personel kötü
+  - davranış kötü
+  - personel suratsız
+  - personel davranış kötü
+  - çalışanlar kaba
+  - personel saygısız tutum
+  - kötü muamele
+  - personel soğuk
+- aspect_key: bed_comfort
+  terms:
+  - yatak sert
+  - yatak yumusak
+  - rahat yatak
+  - yatak rahatsız
+  - yatak kötü
+  - uyku kalitesi düşük
+- aspect_key: shower_pressure
+  terms:
+  - dus basinci
+  - su basinci
+  - zayif su
+  - duş basıncı düşük
+  - su akışı zayıf
+  - duş damlıyor
+- aspect_key: hot_water
+  terms:
+  - sicak su
+  - ilik su
+  - su soguk
+  - sıcak su yok
+  - su ısınmıyor
+  - duş soğuk
+  - sıcak su kesik
+- aspect_key: hvac_not_working
+  terms:
+  - klima calismiyor
+- aspect_key: room_temperature
+  terms:
+  - oda cok sicak
+- aspect_key: room_temperature
+  terms:
+  - oda cok soguk
+- aspect_key: wifi_stability
+  terms:
+  - wifi kopuyor
+- aspect_key: wifi_coverage
+  terms:
+  - internet yok
+  - wifi çekmiyor
+  - odada internet yok
+  - sinyal zayıf
+  - wifi kapsama yok
+- aspect_key: reception_service
+  terms:
+  - resepsiyon yavas
+  - resepsiyon
+  - resepsiyon hizmeti
+  - ön büro
+  - önbüro
+  - karşılama masası
+  - resepsiyon desk
+  - giriş bankosu
+  - front desk TR
+  - resepsiyoncu
+  - resepsiyon görevlisi
+  - resepsiyon yavaş
+  - resepsiyon ilgisiz
+  - resepsyon
+  - resepsiyonu
+  - respsiyon
+  - ön büroda
+  - karşılama desk
+  - resepsiyonda bekleme
+  - ön büro kuyruğu
+  - karşılama zayıf
+  - desk personeli
+- aspect_key: staff_behavior
+  terms:
+  - garson ilgisiz
+- aspect_key: breakfast_variety
+  terms:
+  - kahvalti zayif
+- aspect_key: pool_cleanliness
+  terms:
+  - havuz kirli
+  - havuz hijyeni
+  - bulanık havuz
+  - havuzda çöp
+  - bulanık havuz suyu
+  - havuzda yaprak
+  - havuz hijyeni zayıf
+- aspect_key: beach_quality
+  terms:
+  - plaj temiz
+- aspect_key: elevator_service
+  terms:
+  - asansor bozuk
+- aspect_key: tv_quality
+  terms:
+  - tv acilmiyor
+- aspect_key: minibar
+  terms:
+  - minibar bos
+- aspect_key: towel_quality
+  terms:
+  - havlu eksik
+  - havlu sert
+  - havlu eski
+  - havlu ince
+  - havlu kalitesiz
+- aspect_key: bed_comfort
+  terms:
+  - yatak rahatsiz
+- aspect_key: shower_pressure
+  terms:
+  - dus suyu az
+- aspect_key: hot_water
+  terms:
+  - sicak su gelmiyor
+- aspect_key: room_smell
+  terms:
+  - koku var odada
+- aspect_key: room_cleanliness
+  terms:
+  - temizlik kotu
+- aspect_key: food_temperature
+  terms:
+  - yemek soguk geldi
+- aspect_key: food_queue
+  terms:
+  - bufe kalabalik
+  - yemek kuyruğu uzun
+  - restoran sırası
+  - büfede bekleme
+- aspect_key: animation
+  terms:
+  - animasyon zayif
+- aspect_key: spa_price
+  terms:
+  - spa pahali
+  - spa pahalı
+  - masaj ücreti abartı
+  - spa fiyatları yüksek
+- aspect_key: security_staff
+  terms:
+  - guvenlik iyi
+- aspect_key: parking
+  terms:
+  - otopark dolu
+- aspect_key: reception_service
+  terms:
+  - check in gec
+- aspect_key: room_upgrade
+  terms:
+  - oda degistirdiler
+- aspect_key: room_noise
+  terms:
+  - gurultu cok
+  - oda gürültülü
+  - ses izolasyonu yok
+  - koridor sesi
+  - komşu gürültü
+- aspect_key: hvac_noise
+  terms:
+  - klima sesi
+- aspect_key: room_cleanliness
+  terms:
+  - leke vardi
+- entity_id: eq_vrf_outdoor
+  terms:
+  - vrf
+  - dis unite
+  - vrf klima
+  - vrf dış ünite
+  - dış ünite gürültü
+  - VRF santral
+  - multi split dış ünite
+- entity_id: eq_ahu
+  terms:
+  - ahu
+  - hava isitici
+  - hava santrali
+  - klima santrali
+  - AHU bakımı
+  - santral filtre
+- entity_id: eq_fiber_switch
+  terms:
+  - fiber
+  - switch
+  - fiber switch
+- entity_id: eq_sump_pump
+  terms:
+  - dalgic pompa
+  - su pompa
+  - dalgaç pompa
+- entity_id: eq_bidet
+  terms:
+  - bidet
+  - taharet
+- entity_id: eq_jacuzzi_tub
+  terms:
+  - jakuzi
+  - spa jakuzi
+  - jakuzi küvet
+- entity_id: eq_massage_table
+  terms:
+  - masaj masasi
+  - masaj masası
+  - masaj masası eski
+  - masa gıcırdıyor
+  - masaj yatağı rahatsız
+- entity_id: eq_treadmill
+  terms:
+  - kosu bandi
+  - koşu bandı
+- entity_id: eq_emergency_light
+  terms:
+  - acil isik
+  - acil aydınlatma
+- entity_id: eq_power_socket
+  terms:
+  - priz
+  - priz calismiyor
+- aspect_key: room_cleanliness
+  terms:
+  - otel
+- aspect_key: staff_behavior
+  terms:
+  - konaklama
+- aspect_key: food_quality
+  terms:
+  - misafir
+- aspect_key: hvac_cooling
+  terms:
+  - oda servisi
+- aspect_key: wifi_speed
+  terms:
+  - kat hizmetleri
+- aspect_key: room_cleanliness
+  terms:
+  - resepsiyon
+- aspect_key: staff_behavior
+  terms:
+  - fitness
+- aspect_key: hvac_cooling
+  terms:
+  - deniz
+- aspect_key: room_cleanliness
+  terms:
+  - semsiye
+- aspect_key: staff_behavior
+  terms:
+  - sezlong
+- aspect_key: hvac_cooling
+  terms:
+  - kaydirak
+- aspect_key: wifi_speed
+  terms:
+  - animasyon
+- aspect_key: room_cleanliness
+  terms:
+  - mini club
+- aspect_key: staff_behavior
+  terms:
+  - disco
+- aspect_key: food_quality
+  terms:
+  - sahne
+- aspect_key: hvac_cooling
+  terms:
+  - konser
+- aspect_key: wifi_speed
+  terms:
+  - etkinlik
+- aspect_key: room_cleanliness
+  terms:
+  - tur
+- aspect_key: staff_behavior
+  terms:
+  - transfer
+- aspect_key: food_quality
+  terms:
+  - havalimani
+- aspect_key: hvac_cooling
+  terms:
+  - vale
+- aspect_key: wifi_speed
+  terms:
+  - otopark
+- aspect_key: room_cleanliness
+  terms:
+  - guvenlik
+- aspect_key: staff_behavior
+  terms:
+  - kamera
+- aspect_key: food_quality
+  terms:
+  - yangin
+- aspect_key: hvac_cooling
+  terms:
+  - acil cikis
+- aspect_key: wifi_speed
+  terms:
+  - ilk yardim
+- aspect_key: room_cleanliness
+  terms:
+  - doktor
+- aspect_key: staff_behavior
+  terms:
+  - eczane
+- aspect_key: food_quality
+  terms:
+  - saglik
+- aspect_key: hvac_cooling
+  terms:
+  - alerji
+- aspect_key: wifi_speed
+  terms:
+  - diyet
+- aspect_key: room_cleanliness
+  terms:
+  - vegan
+- aspect_key: staff_behavior
+  terms:
+  - helal
+- aspect_key: food_quality
+  terms:
+  - kosher
+- aspect_key: hvac_cooling
+  terms:
+  - glutensiz
+- aspect_key: room_cleanliness
+  terms:
+  - ogle yemegi
+- aspect_key: staff_behavior
+  terms:
+  - aksam yemegi
+- aspect_key: wifi_speed
+  terms:
+  - snack
+- aspect_key: room_cleanliness
+  terms:
+  - atistirmalik
+- aspect_key: staff_behavior
+  terms:
+  - gozleme
+- aspect_key: food_quality
+  terms:
+  - pide
+- aspect_key: hvac_cooling
+  terms:
+  - lahmacun
+- aspect_key: wifi_speed
+  terms:
+  - doner
+- aspect_key: room_cleanliness
+  terms:
+  - kebap
+- aspect_key: staff_behavior
+  terms:
+  - balik
+- aspect_key: food_quality
+  terms:
+  - tavuk
+- aspect_key: hvac_cooling
+  terms:
+  - et
+- aspect_key: wifi_speed
+  terms:
+  - salata
+- aspect_key: room_cleanliness
+  terms:
+  - corba
+- aspect_key: staff_behavior
+  terms:
+  - tatli
+- aspect_key: food_quality
+  terms:
+  - pasta
+- aspect_key: hvac_cooling
+  terms:
+  - dondurma
+- aspect_key: wifi_speed
+  terms:
+  - meyve
+- aspect_key: room_cleanliness
+  terms:
+  - icecek
+- aspect_key: staff_behavior
+  terms:
+  - su
+- aspect_key: food_quality
+  terms:
+  - cola
+- aspect_key: hvac_cooling
+  terms:
+  - bira
+- aspect_key: wifi_speed
+  terms:
+  - sarap
+- aspect_key: room_cleanliness
+  terms:
+  - raki
+- aspect_key: staff_behavior
+  terms:
+  - kokteyl
+- aspect_key: food_quality
+  terms:
+  - viski
+- aspect_key: hvac_cooling
+  terms:
+  - cay
+- aspect_key: wifi_speed
+  terms:
+  - kahve
+- aspect_key: room_cleanliness
+  terms:
+  - espresso
+- aspect_key: staff_behavior
+  terms:
+  - latte
+- aspect_key: food_quality
+  terms:
+  - Turk kahvesi
+- aspect_key: wifi_speed
+  terms:
+  - buzdolabi
+- aspect_key: food_quality
+  terms:
+  - isi
+- aspect_key: hvac_cooling
+  terms:
+  - soguk
+- aspect_key: wifi_speed
+  terms:
+  - sicaklik
+- aspect_key: room_cleanliness
+  terms:
+  - nem
+- aspect_key: staff_behavior
+  terms:
+  - havalandirma
+- aspect_key: food_quality
+  terms:
+  - filtre
+- aspect_key: hvac_cooling
+  terms:
+  - kompresor
+- aspect_key: staff_behavior
+  terms:
+  - ag
+- aspect_key: food_quality
+  terms:
+  - sinyal
+- aspect_key: hvac_cooling
+  terms:
+  - modem
+- aspect_key: wifi_speed
+  terms:
+  - router
+- aspect_key: hvac_cooling
+  terms:
+  - kanal
+- aspect_key: wifi_speed
+  terms:
+  - netflix
+- aspect_key: room_cleanliness
+  terms:
+  - youtube
+- aspect_key: staff_behavior
+  terms:
+  - telefon
+- aspect_key: food_quality
+  terms:
+  - interkom
+- aspect_key: room_cleanliness
+  terms:
+  - carsaf
+- aspect_key: staff_behavior
+  terms:
+  - nevresim
+- aspect_key: food_quality
+  terms:
+  - battaniye
+- aspect_key: hvac_cooling
+  terms:
+  - yorgan
+- aspect_key: wifi_speed
+  terms:
+  - havlu
+- aspect_key: room_cleanliness
+  terms:
+  - bornoz
+- aspect_key: staff_behavior
+  terms:
+  - terlik
+- aspect_key: food_quality
+  terms:
+  - sabun
+- aspect_key: hvac_cooling
+  terms:
+  - sampuan
+- aspect_key: wifi_speed
+  terms:
+  - dus
+- aspect_key: room_cleanliness
+  terms:
+  - kuvet
+- aspect_key: food_quality
+  terms:
+  - klozet
+- aspect_key: wifi_speed
+  terms:
+  - ayna
+- aspect_key: room_cleanliness
+  terms:
+  - sac kurutma
+- aspect_key: staff_behavior
+  terms:
+  - fön
+- aspect_key: food_quality
+  terms:
+  - utu
+- aspect_key: wifi_speed
+  terms:
+  - guvenli
+- aspect_key: room_cleanliness
+  terms:
+  - anahtar
+- aspect_key: staff_behavior
+  terms:
+  - kart
+- aspect_key: food_quality
+  terms:
+  - kapi
+- aspect_key: hvac_cooling
+  terms:
+  - pencere
+- aspect_key: wifi_speed
+  terms:
+  - balkon
+- aspect_key: room_cleanliness
+  terms:
+  - manzara
+- aspect_key: staff_behavior
+  terms:
+  - deniz manzarasi
+- aspect_key: food_quality
+  terms:
+  - dag manzarasi
+- aspect_key: hvac_cooling
+  terms:
+  - temiz
+- aspect_key: staff_behavior
+  terms:
+  - toz
+- aspect_key: food_quality
+  terms:
+  - leke
+- aspect_key: hvac_cooling
+  terms:
+  - koku
+- aspect_key: wifi_speed
+  terms:
+  - rutubet
+- aspect_key: room_cleanliness
+  terms:
+  - kuf
+- aspect_key: staff_behavior
+  terms:
+  - bocek
+- aspect_key: food_quality
+  terms:
+  - sinek
+- aspect_key: hvac_cooling
+  terms:
+  - karinca
+- aspect_key: room_cleanliness
+  terms:
+  - ses
+- aspect_key: staff_behavior
+  terms:
+  - sakin
+- aspect_key: food_quality
+  terms:
+  - rahat
+- aspect_key: hvac_cooling
+  terms:
+  - konfor
+- aspect_key: wifi_speed
+  terms:
+  - rahatlik
+- aspect_key: room_cleanliness
+  terms:
+  - hizli
+- aspect_key: staff_behavior
+  terms:
+  - yavas
+- aspect_key: food_quality
+  terms:
+  - gec
+- aspect_key: hvac_cooling
+  terms:
+  - bekleme
+- aspect_key: wifi_speed
+  terms:
+  - kuyruk
+- aspect_key: room_cleanliness
+  terms:
+  - sira
+- aspect_key: staff_behavior
+  terms:
+  - profesyonel
+- aspect_key: room_cleanliness
+  terms:
+  - yardimsever
+- aspect_key: staff_behavior
+  terms:
+  - guleryuz
+- aspect_key: food_quality
+  terms:
+  - personel
+- aspect_key: wifi_speed
+  terms:
+  - sef
+- aspect_key: food_quality
+  terms:
+  - muhendis
+- aspect_key: hvac_cooling
+  terms:
+  - guvenlik gorevlisi
+- aspect_key: wifi_speed
+  terms:
+  - animator
+- aspect_key: room_cleanliness
+  terms:
+  - masajci
+- aspect_key: staff_behavior
+  terms:
+  - terapist
+- aspect_key: food_quality
+  terms:
+  - cankurtaran
+- aspect_key: hvac_cooling
+  terms:
+  - mudur
+- aspect_key: wifi_speed
+  terms:
+  - yonetim
+- aspect_key: room_cleanliness
+  terms:
+  - sikayet
+- aspect_key: staff_behavior
+  terms:
+  - cozum
+- aspect_key: food_quality
+  terms:
+  - telafi
+- aspect_key: hvac_cooling
+  terms:
+  - indirim
+- aspect_key: wifi_speed
+  terms:
+  - upgrade
+- aspect_key: room_cleanliness
+  terms:
+  - yukseltme
+- aspect_key: staff_behavior
+  terms:
+  - check in
+- aspect_key: food_quality
+  terms:
+  - check out
+- aspect_key: hvac_cooling
+  terms:
+  - rezervasyon
+- aspect_key: wifi_speed
+  terms:
+  - booking
+- aspect_key: room_cleanliness
+  terms:
+  - iptal
+- aspect_key: staff_behavior
+  terms:
+  - overbooking
+- aspect_key: food_quality
+  terms:
+  - fiyat
+- aspect_key: hvac_cooling
+  terms:
+  - ucret
+- aspect_key: wifi_speed
+  terms:
+  - pahali
+- aspect_key: room_cleanliness
+  terms:
+  - ucuz
+- aspect_key: staff_behavior
+  terms:
+  - deger
+- aspect_key: food_quality
+  terms:
+  - her sey dahil
+- aspect_key: hvac_cooling
+  terms:
+  - ultra
+- aspect_key: wifi_speed
+  terms:
+  - all inclusive
+- aspect_key: room_cleanliness
+  terms:
+  - a la carte
+- aspect_key: food_quality
+  terms:
+  - cocuk
+- aspect_key: hvac_cooling
+  terms:
+  - bebek
+- aspect_key: wifi_speed
+  terms:
+  - aile
+- aspect_key: room_cleanliness
+  terms:
+  - cift
+- aspect_key: staff_behavior
+  terms:
+  - balayi
+- aspect_key: food_quality
+  terms:
+  - grup
+- aspect_key: hvac_cooling
+  terms:
+  - toplami
+- aspect_key: wifi_speed
+  terms:
+  - konferans
+- aspect_key: room_cleanliness
+  terms:
+  - toplanti
+- aspect_key: staff_behavior
+  terms:
+  - dugun
+- aspect_key: food_quality
+  terms:
+  - organizasyon
+- aspect_key: hvac_cooling
+  terms:
+  - etkinlik salonu
+- aspect_key: wifi_speed
+  terms:
+  - projeksiyon
+- aspect_key: room_cleanliness
+  terms:
+  - mikrofon
+- aspect_key: staff_behavior
+  terms:
+  - ses sistemi
+- aspect_key: food_quality
+  terms:
+  - isik
+- aspect_key: hvac_cooling
+  terms:
+  - dekor
+- aspect_key: wifi_speed
+  terms:
+  - cicek
+- aspect_key: room_cleanliness
+  terms:
+  - susleme
+- aspect_key: staff_behavior
+  terms:
+  - lost found
+- aspect_key: food_quality
+  terms:
+  - kayip esya
+- aspect_key: hvac_cooling
+  terms:
+  - camasir
+- aspect_key: wifi_speed
+  terms:
+  - utuleme
+- aspect_key: room_cleanliness
+  terms:
+  - linen
+- aspect_key: staff_behavior
+  terms:
+  - havlu degisimi
+- aspect_key: food_quality
+  terms:
+  - turndown
+- aspect_key: hvac_cooling
+  terms:
+  - minibar dolum
+- aspect_key: wifi_speed
+  terms:
+  - deep clean
+- aspect_key: room_cleanliness
+  terms:
+  - derin temizlik
+- aspect_key: staff_behavior
+  terms:
+  - stay over
+- aspect_key: food_quality
+  terms:
+  - checkout temizlik
+- aspect_key: hvac_cooling
+  terms:
+  - inspection
+- aspect_key: wifi_speed
+  terms:
+  - out of order
+- aspect_key: room_cleanliness
+  terms:
+  - ooo
+- aspect_key: staff_behavior
+  terms:
+  - ariza
+- aspect_key: food_quality
+  terms:
+  - bozuk
+- aspect_key: hvac_cooling
+  terms:
+  - calismiyor
+- aspect_key: wifi_speed
+  terms:
+  - tamir
+- aspect_key: room_cleanliness
+  terms:
+  - bakim
+- aspect_key: staff_behavior
+  terms:
+  - onarim
+- aspect_key: food_quality
+  terms:
+  - yedek parca
+- aspect_key: hvac_cooling
+  terms:
+  - is emri
+- aspect_key: wifi_speed
+  terms:
+  - work order
+- aspect_key: room_cleanliness
+  terms:
+  - sla
+- aspect_key: staff_behavior
+  terms:
+  - oncelik
+- aspect_key: food_quality
+  terms:
+  - kritik
+- aspect_key: hvac_cooling
+  terms:
+  - acil
+- aspect_key: wifi_speed
+  terms:
+  - eskalasyon
+- aspect_key: room_cleanliness
+  terms:
+  - duty manager
+- aspect_key: staff_behavior
+  terms:
+  - genel mudur
+- aspect_key: food_quality
+  terms:
+  - misafir iliskileri
+- aspect_key: hvac_cooling
+  terms:
+  - guest relations
+- aspect_key: wifi_speed
+  terms:
+  - vip
+- aspect_key: room_cleanliness
+  terms:
+  - protocol
+- aspect_key: staff_behavior
+  terms:
+  - concierge
+- aspect_key: food_quality
+  terms:
+  - bellboy
+- aspect_key: hvac_cooling
+  terms:
+  - bagaj
+- aspect_key: wifi_speed
+  terms:
+  - transfer araci
+- aspect_key: room_cleanliness
+  terms:
+  - shuttle
+- aspect_key: staff_behavior
+  terms:
+  - taksi
+- aspect_key: food_quality
+  terms:
+  - tur operatoru
+- aspect_key: hvac_cooling
+  terms:
+  - excursion
+- aspect_key: wifi_speed
+  terms:
+  - dalgic
+- aspect_key: room_cleanliness
+  terms:
+  - dalış
+- aspect_key: staff_behavior
+  terms:
+  - snorkel
+- aspect_key: food_quality
+  terms:
+  - jet ski
+- aspect_key: hvac_cooling
+  terms:
+  - banana
+- aspect_key: wifi_speed
+  terms:
+  - parasut
+- aspect_key: room_cleanliness
+  terms:
+  - tenis
+- aspect_key: staff_behavior
+  terms:
+  - voleybol
+- aspect_key: food_quality
+  terms:
+  - basketbol
+- aspect_key: hvac_cooling
+  terms:
+  - futbol
+- aspect_key: wifi_speed
+  terms:
+  - golf
+- aspect_key: room_cleanliness
+  terms:
+  - bisiklet
+- aspect_key: staff_behavior
+  terms:
+  - yoga
+- aspect_key: food_quality
+  terms:
+  - pilates
+- aspect_key: hvac_cooling
+  terms:
+  - hamam
+- aspect_key: wifi_speed
+  terms:
+  - sauna
+- aspect_key: room_cleanliness
+  terms:
+  - buhar odasi
+- aspect_key: staff_behavior
+  terms:
+  - masaj
+- aspect_key: food_quality
+  terms:
+  - peeling
+- aspect_key: hvac_cooling
+  terms:
+  - cilt bakimi
+- aspect_key: wifi_speed
+  terms:
+  - manikur
+- aspect_key: room_cleanliness
+  terms:
+  - pedikur
+- aspect_key: staff_behavior
+  terms:
+  - sac kesim
+- aspect_key: food_quality
+  terms:
+  - kuaför
+- aspect_key: hvac_cooling
+  terms:
+  - guzellik
+- aspect_key: wifi_speed
+  terms:
+  - spa paketi
+- aspect_key: staff_behavior
+  terms:
+  - detoks
+- aspect_key: food_quality
+  terms:
+  - aromaterapi
+- aspect_key: hvac_cooling
+  terms:
+  - refleksoloji
+- aspect_key: wifi_speed
+  terms:
+  - shiatsu
+- aspect_key: room_cleanliness
+  terms:
+  - thai masaj
+- aspect_key: staff_behavior
+  terms:
+  - hot stone
+- aspect_key: food_quality
+  terms:
+  - couples massage
+- aspect_key: hvac_cooling
+  terms:
+  - private pool
+- aspect_key: room_cleanliness
+  terms:
+  - infinity pool
+- aspect_key: staff_behavior
+  terms:
+  - heated pool
+- aspect_key: food_quality
+  terms:
+  - kids pool
+- aspect_key: hvac_cooling
+  terms:
+  - adult only
+- aspect_key: wifi_speed
+  terms:
+  - havuz bar
+- aspect_key: room_cleanliness
+  terms:
+  - beach bar
+- aspect_key: staff_behavior
+  terms:
+  - pool bar
+- aspect_key: food_quality
+  terms:
+  - lobby bar
+- aspect_key: wifi_speed
+  terms:
+  - night club
+- aspect_key: staff_behavior
+  terms:
+  - live music
+- aspect_key: food_quality
+  terms:
+  - dj set
+- aspect_key: hvac_cooling
+  terms:
+  - show program
+- aspect_key: wifi_speed
+  terms:
+  - kids animation
+- aspect_key: room_cleanliness
+  terms:
+  - teen club
+- aspect_key: staff_behavior
+  terms:
+  - mini disco
+- aspect_key: food_quality
+  terms:
+  - water polo
+- aspect_key: hvac_cooling
+  terms:
+  - aerobics
+- aspect_key: wifi_speed
+  terms:
+  - zumba
+- aspect_key: room_cleanliness
+  terms:
+  - fitness center
+- aspect_key: staff_behavior
+  terms:
+  - personal trainer
+- aspect_key: food_quality
+  terms:
+  - gym equipment
+- aspect_key: hvac_cooling
+  terms:
+  - cardio
+- aspect_key: wifi_speed
+  terms:
+  - weights
+- aspect_key: room_cleanliness
+  terms:
+  - steam
+- aspect_key: staff_behavior
+  terms:
+  - turkish bath ritual
+- aspect_key: food_quality
+  terms:
+  - peeling glove
+- aspect_key: hvac_cooling
+  terms:
+  - kese
+- aspect_key: wifi_speed
+  terms:
+  - kopuk
+- aspect_key: room_cleanliness
+  terms:
+  - foam massage
+- aspect_key: staff_behavior
+  terms:
+  - mud bath
+- aspect_key: food_quality
+  terms:
+  - salt room
+- aspect_key: hvac_cooling
+  terms:
+  - infrared sauna
+- aspect_key: wifi_speed
+  terms:
+  - cold plunge
+- aspect_key: room_cleanliness
+  terms:
+  - ice bath
+- aspect_key: staff_behavior
+  terms:
+  - room type
+- aspect_key: food_quality
+  terms:
+  - standard
+- aspect_key: hvac_cooling
+  terms:
+  - superior
+- aspect_key: wifi_speed
+  terms:
+  - deluxe
+- aspect_key: room_cleanliness
+  terms:
+  - suite
+- aspect_key: staff_behavior
+  terms:
+  - family room
+- aspect_key: food_quality
+  terms:
+  - connecting
+- aspect_key: hvac_cooling
+  terms:
+  - accessible room
+- aspect_key: wifi_speed
+  terms:
+  - smoking room
+- aspect_key: room_cleanliness
+  terms:
+  - non smoking
+- aspect_key: staff_behavior
+  terms:
+  - sea view
+- aspect_key: food_quality
+  terms:
+  - garden view
+- aspect_key: hvac_cooling
+  terms:
+  - pool view
+- aspect_key: wifi_speed
+  terms:
+  - mountain view
+- aspect_key: room_cleanliness
+  terms:
+  - city view
+- aspect_key: staff_behavior
+  terms:
+  - partial sea view
+- aspect_key: food_quality
+  terms:
+  - corner room
+- aspect_key: hvac_cooling
+  terms:
+  - ground floor
+- aspect_key: wifi_speed
+  terms:
+  - top floor
+- aspect_key: room_cleanliness
+  terms:
+  - high floor
+- aspect_key: staff_behavior
+  terms:
+  - low floor
+- aspect_key: food_quality
+  terms:
+  - near elevator
+- aspect_key: hvac_cooling
+  terms:
+  - quiet room
+- aspect_key: wifi_speed
+  terms:
+  - honeymoon suite
+- aspect_key: room_cleanliness
+  terms:
+  - presidential suite
+- aspect_key: staff_behavior
+  terms:
+  - villa
+- aspect_key: food_quality
+  terms:
+  - bungalow
+- aspect_key: hvac_cooling
+  terms:
+  - chalet
+- aspect_key: wifi_speed
+  terms:
+  - allergy free room
+- aspect_key: room_cleanliness
+  terms:
+  - hypoallergenic
+- aspect_key: staff_behavior
+  terms:
+  - extra pillow
+- aspect_key: food_quality
+  terms:
+  - extra blanket
+- aspect_key: hvac_cooling
+  terms:
+  - baby cot
+- aspect_key: wifi_speed
+  terms:
+  - high chair
+- aspect_key: room_cleanliness
+  terms:
+  - stroller
+- aspect_key: staff_behavior
+  terms:
+  - wheelchair access
+- aspect_key: food_quality
+  terms:
+  - ramp
+- aspect_key: wifi_speed
+  terms:
+  - fire alarm
+- aspect_key: room_cleanliness
+  terms:
+  - smoke detector
+- aspect_key: staff_behavior
+  terms:
+  - sprinkler
+- aspect_key: food_quality
+  terms:
+  - emergency exit
+- aspect_key: hvac_cooling
+  terms:
+  - evacuation
+- aspect_key: wifi_speed
+  terms:
+  - security patrol
+- aspect_key: room_cleanliness
+  terms:
+  - night security
+- aspect_key: staff_behavior
+  terms:
+  - CCTV
+- aspect_key: food_quality
+  terms:
+  - key card access
+- aspect_key: hvac_cooling
+  terms:
+  - safe box
+- aspect_key: wifi_speed
+  terms:
+  - in room safe
+- aspect_key: room_cleanliness
+  terms:
+  - deposit box
+- aspect_key: staff_behavior
+  terms:
+  - front desk safe
+- aspect_key: food_quality
+  terms:
+  - currency exchange
+- aspect_key: hvac_cooling
+  terms:
+  - atm
+- aspect_key: wifi_speed
+  terms:
+  - credit card
+- aspect_key: room_cleanliness
+  terms:
+  - cash payment
+- aspect_key: staff_behavior
+  terms:
+  - invoice
+- aspect_key: food_quality
+  terms:
+  - receipt
+- aspect_key: hvac_cooling
+  terms:
+  - folio
+- aspect_key: wifi_speed
+  terms:
+  - minibar bill
+- aspect_key: room_cleanliness
+  terms:
+  - room charge
+- aspect_key: staff_behavior
+  terms:
+  - restaurant charge
+- aspect_key: food_quality
+  terms:
+  - spa charge
+- aspect_key: hvac_cooling
+  terms:
+  - late checkout fee
+- aspect_key: wifi_speed
+  terms:
+  - early checkin fee
+- aspect_key: room_cleanliness
+  terms:
+  - resort fee
+- aspect_key: staff_behavior
+  terms:
+  - city tax
+- aspect_key: food_quality
+  terms:
+  - tourism tax
+- aspect_key: hvac_cooling
+  terms:
+  - deposit
+- aspect_key: wifi_speed
+  terms:
+  - cancellation policy
+- aspect_key: room_cleanliness
+  terms:
+  - no show
+- aspect_key: staff_behavior
+  terms:
+  - overbooking compensation
+- aspect_key: food_quality
+  terms:
+  - room move
+- aspect_key: hvac_cooling
+  terms:
+  - maintenance issue
+- aspect_key: wifi_speed
+  terms:
+  - construction noise
+- aspect_key: room_cleanliness
+  terms:
+  - renovation
+- aspect_key: staff_behavior
+  terms:
+  - closed facility
+- aspect_key: food_quality
+  terms:
+  - seasonal closure
+- aspect_key: hvac_cooling
+  terms:
+  - weather impact
+- aspect_key: wifi_speed
+  terms:
+  - rain
+- aspect_key: room_cleanliness
+  terms:
+  - storm
+- aspect_key: staff_behavior
+  terms:
+  - heatwave
+- aspect_key: food_quality
+  terms:
+  - cold snap
+- aspect_key: hvac_cooling
+  terms:
+  - power outage
+- aspect_key: wifi_speed
+  terms:
+  - water outage
+- aspect_key: room_cleanliness
+  terms:
+  - generator backup
+- aspect_key: staff_behavior
+  terms:
+  - elevator maintenance
+- aspect_key: food_quality
+  terms:
+  - pool maintenance
+- aspect_key: hvac_cooling
+  terms:
+  - spa maintenance
+- aspect_key: wifi_speed
+  terms:
+  - restaurant closed
+- aspect_key: room_cleanliness
+  terms:
+  - bar closed
+- aspect_key: staff_behavior
+  terms:
+  - kitchen closed
+- aspect_key: food_quality
+  terms:
+  - late night food
+- aspect_key: hvac_cooling
+  terms:
+  - 24h reception
+- aspect_key: wifi_speed
+  terms:
+  - 24h room service
+- aspect_key: room_cleanliness
+  terms:
+  - express checkout
+- aspect_key: staff_behavior
+  terms:
+  - mobile checkin
+- aspect_key: food_quality
+  terms:
+  - digital key
+- aspect_key: hvac_cooling
+  terms:
+  - app control
+- aspect_key: wifi_speed
+  terms:
+  - smart room
+- aspect_key: room_cleanliness
+  terms:
+  - voice control
+- aspect_key: staff_behavior
+  terms:
+  - automation
+- aspect_key: food_quality
+  terms:
+  - curtain control
+- aspect_key: hvac_cooling
+  terms:
+  - light control
+- aspect_key: wifi_speed
+  terms:
+  - dnd sign
+- aspect_key: room_cleanliness
+  terms:
+  - make up room
+- aspect_key: staff_behavior
+  terms:
+  - do not disturb
+- aspect_key: food_quality
+  terms:
+  - privacy
+- aspect_key: hvac_cooling
+  terms:
+  - housekeeping schedule
+- aspect_key: wifi_speed
+  terms:
+  - turndown time
+- aspect_key: room_cleanliness
+  terms:
+  - wake up call
+- aspect_key: staff_behavior
+  terms:
+  - alarm clock
+- aspect_key: food_quality
+  terms:
+  - blackout curtains
+- aspect_key: hvac_cooling
+  terms:
+  - soundproof windows
+- aspect_key: wifi_speed
+  terms:
+  - double glazing
+- aspect_key: room_cleanliness
+  terms:
+  - mosquito net
+- aspect_key: staff_behavior
+  terms:
+  - insect spray
+- aspect_key: food_quality
+  terms:
+  - air freshener
+- aspect_key: hvac_cooling
+  terms:
+  - room spray
+- aspect_key: wifi_speed
+  terms:
+  - welcome amenity
+- aspect_key: room_cleanliness
+  terms:
+  - welcome drink
+- aspect_key: staff_behavior
+  terms:
+  - welcome fruit
+- aspect_key: food_quality
+  terms:
+  - birthday setup
+- aspect_key: hvac_cooling
+  terms:
+  - anniversary setup
+- aspect_key: wifi_speed
+  terms:
+  - honeymoon decoration
+- aspect_key: room_cleanliness
+  terms:
+  - towel art
+- aspect_key: staff_behavior
+  terms:
+  - bed decoration
+- aspect_key: food_quality
+  terms:
+  - pillow menu
+- aspect_key: hvac_cooling
+  terms:
+  - mattress menu
+- aspect_key: wifi_speed
+  terms:
+  - bed type request
+- aspect_key: room_cleanliness
+  terms:
+  - twin beds
+- aspect_key: staff_behavior
+  terms:
+  - double bed
+- aspect_key: food_quality
+  terms:
+  - king bed
+- aspect_key: hvac_cooling
+  terms:
+  - queen bed
+- aspect_key: wifi_speed
+  terms:
+  - sofa bed
+- aspect_key: room_cleanliness
+  terms:
+  - rollaway bed
+- aspect_key: staff_behavior
+  terms:
+  - extra bed charge
+- aspect_key: food_quality
+  terms:
+  - crib request
+- aspect_key: hvac_cooling
+  terms:
+  - baby amenities
+- aspect_key: wifi_speed
+  terms:
+  - kids amenities
+- aspect_key: room_cleanliness
+  terms:
+  - kids menu
+- aspect_key: staff_behavior
+  terms:
+  - high chair request
+- entity_id: eq_fan_coil
+  terms:
+  - fan coil
+  - fan coil ünite
+  - FCU
+  - fan-coil arızası
+  - fan coil gürültü
+  - fancoil su sızıntı
+- entity_id: eq_network_switch
+  terms:
+  - network switch
+- entity_id: eq_tv_remote
+  terms:
+  - tv kumandası
+  - TV kumandası yok
+  - televizyon remote eksik
+  - kumanda tuşları bozuk
+- entity_id: eq_shower_head
+  terms:
+  - duş başlığı
+- entity_id: eq_toilet
+  terms:
+  - klozet
+- entity_id: eq_faucet
+  terms:
+  - musluk
+- entity_id: eq_water_heater
+  terms:
+  - su isıtıcı
+  - şofben arızalı
+  - su ısıtıcısı bozuk
+  - boyler sıcak vermiyor
+- entity_id: eq_coffee_machine
+  terms:
+  - kahve makinesi
+  - kahve makinesi bozuk
+  - oda kahve makinesi yok
+- entity_id: eq_refrigerator
+  terms:
+  - buzdolabı
+- entity_id: eq_oven
+  terms:
+  - fırın
+- entity_id: eq_dishwasher
+  terms:
+  - bulaşık makinesi
+- entity_id: eq_pool_pump
+  terms:
+  - havuz pompası
+  - havuz pompası arızalı
+  - pompa sesi
+  - filtre pompası durdu
+- entity_id: eq_pool_filter
+  terms:
+  - havuz filtresi
+  - havuz filtresi kirli
+  - filtre bakımı gecikmiş
+  - kum filtresi
+- entity_id: eq_spa_jacuzzi
+  terms:
+  - jakuzi
+  - jakuzi arızalı
+  - spa jakuzi kapalı
+  - jakuzi köpürmüyor
+- entity_id: eq_sauna_heater
+  terms:
+  - sauna isıtıcı
+  - sauna sobası
+  - sauna ısıtıcı arızalı
+  - sauna sobası yanmıyor
+- entity_id: eq_iron
+  terms:
+  - ütü
+  - ütü yok
+  - ütü masası eksik
+  - iron arızalı
+- entity_id: eq_hair_dryer
+  terms:
+  - saç kurutma
+  - saç kurutma makinesi yok
+  - fön arızalı
+  - hair dryer zayıf
+- entity_id: eq_door_lock
+  terms:
+  - kapı kilidi
+  - kapı kilidi arızalı
+  - elektronik kilit açılmıyor
+  - kapı kilitlenmiyor
+- entity_id: eq_smoke_detector
+  terms:
+  - duman dedektörü
+- entity_id: eq_fire_extinguisher
+  terms:
+  - yangın söndürücü
+- entity_id: eq_laundry_machine
+  terms:
+  - çamaşır makinesi
+- entity_id: eq_vacuum_cleaner
+  terms:
+  - elektrikli süpürge
+  - süpürge sesi
+  - vacuum gürültü
+- entity_id: eq_projector
+  terms:
+  - projeksiyon
+- entity_id: eq_pos_terminal
+  terms:
+  - pos terminal
+  - POS cihazı
+  - ödeme terminali arızalı
+  - kart pos çalışmıyor
+- entity_id: eq_ice_machine
+  terms:
+  - buz makinesi
+  - buz makinesi bozuk
+  - buzluk boş
+  - ice machine yok
+- entity_id: eq_blender
+  terms:
+  - blender
+- entity_id: eq_gym_treadmill
+  terms:
+  - koşu bandı
+- entity_id: eq_solar_panel
+  terms:
+  - güneş paneli
+- entity_id: eq_generator
+  terms:
+  - jeneratör
+  - jeneratör arızalı
+  - yedek güç yok
+  - jeneratör gürültü
+- entity_id: eq_cctv_camera
+  terms:
+  - güvenlik kamerası
+- entity_id: eq_key_card_reader
+  terms:
+  - kartlı geçiş
+  - kart okuyucu
+  - kapı kart okuyucu
+  - keycard reader arızalı
+  - manyetik okuyucu
+- entity_id: eq_phone
+  terms:
+  - oda telefonu
+- entity_id: eq_curtain_motor
+  terms:
+  - perde motoru
+- entity_id: eq_blackout_blind
+  terms:
+  - karartma perdesi
+- entity_id: eq_desk_lamp
+  terms:
+  - masa lambası
+- entity_id: eq_balcony_railing
+  terms:
+  - balkon demiri
+- entity_id: eq_water_dispenser
+  terms:
+  - su sebili
+- entity_id: eq_toaster
+  terms:
+  - tost makinesi
+- entity_id: eq_kettle
+  terms:
+  - su isıtıcısı
+  - kettle yok
+  - su ısıtıcı arızalı
+  - çaydanlık yok
+- entity_id: eq_bath_towel_warmer
+  terms:
+  - havlu isıtıcı
+- entity_id: eq_aquapark_slide
+  terms:
+  - su kaydırağı
+  - aquapark slaytı
+  - kaydırak yüzeyi bozuk
+  - tube kaydırak
+- entity_id: eq_pool_lounger
+  terms:
+  - şezlong
+  - şezlong kırık
+  - lounger hasarlı
+  - yatak iskeleti bozuk
+- entity_id: eq_umbrella
+  terms:
+  - şemsiye
+- entity_id: eq_baby_cot
+  terms:
+  - bebek yatağı
+- entity_id: eq_wheelchair
+  terms:
+  - tekerlekli sandalye
+- entity_id: eq_pms_terminal
+  terms:
+  - pms terminal
+  - resepsiyon bilgisayarı
+  - ön büro sistemi yavaş
+  - check-in terminal
+- entity_id: eq_printer
+  terms:
+  - yazıcı
+- entity_id: eq_backup_ups
+  terms:
+  - ups
+- entity_id: eq_hvac_filter
+  terms:
+  - hvac filtresi
+  - HVAC filtre
+  - klima filtresi kirli
+  - filtre değişmemiş
+  - filtre toz dolu
+- entity_id: eq_compressor
+  terms:
+  - kompresör
+  - kompresör sesi
+  - klima kompresörü
+  - compressor arızası
+  - kompresör titriyor
+- entity_id: eq_ductwork
+  terms:
+  - havalandırma kanalı
+- entity_id: eq_damper
+  terms:
+  - damper
+- entity_id: eq_exhaust_fan
+  terms:
+  - egzoz fanı
+  - banyo aspiratörü
+  - egzoz çalışmıyor
+  - havalandırma fanı
+- entity_id: eq_heat_pump
+  terms:
+  - isı pompası
+  - ısı pompası
+  - heat pump arızası
+  - ısı pompası gürültü
+- entity_id: eq_radiator
+  terms:
+  - radyatör
+  - kalorifer
+  - radyatör soğuk
+  - petek ısınmıyor
+  - kalorifer sesi
+- entity_id: eq_floor_heating
+  terms:
+  - yerden isıtma
+  - yerden ısıtma
+  - taban ısıtma çalışmıyor
+  - floor heating soğuk
+- entity_id: eq_dehumidifier
+  terms:
+  - nem alma
+  - nem alma cihazı
+  - dehumidifier yok
+  - nem alıcı arızalı
+  - oda nemli cihaz yok
+- entity_id: eq_air_purifier
+  terms:
+  - hava temizleyici
+  - air purifier yok
+  - HEPA cihazı
+  - oda hava filtresi
+- entity_id: eq_duct_sensor
+  terms:
+  - kanal sensörü
+- entity_id: eq_modem
+  terms:
+  - modem
+- entity_id: eq_firewall
+  terms:
+  - firewall
+- entity_id: eq_nas
+  terms:
+  - nas
+- entity_id: eq_pbx
+  terms:
+  - santral
+- entity_id: eq_intercom
+  terms:
+  - i̇nterkom
+- entity_id: eq_door_bell
+  terms:
+  - kapı zili
+- entity_id: eq_light_switch
+  terms:
+  - anahtar
+- entity_id: eq_dimmer
+  terms:
+  - dimmer
+- entity_id: eq_led_panel
+  terms:
+  - led panel
+- entity_id: eq_circuit_breaker
+  terms:
+  - sigorta
+- entity_id: eq_transformer
+  terms:
+  - trafo
+- entity_id: eq_water_meter
+  terms:
+  - su sayacı
+- entity_id: eq_backflow_valve
+  terms:
+  - geri tepme valfi
+- entity_id: eq_grease_trap
+  terms:
+  - yağ tutucu
+- entity_id: eq_bathtub
+  terms:
+  - küvet
+- entity_id: eq_steam_generator
+  terms:
+  - buhar jeneratörü
+  - steam room buhar yok
+  - buhar odası soğuk
+- entity_id: eq_exercise_bike
+  terms:
+  - bisiklet
+- entity_id: eq_dumbbell_rack
+  terms:
+  - dambıl standı
+- entity_id: eq_cooling_tower
+  terms:
+  - soğutma kulesi
+  - cooling tower
+  - cooling tower gürültü
+  - kule bakımı
+- entity_id: eq_ahu_filter_bank
+  terms:
+  - ahu filtre bankası
+  - ahu filter bank
+- entity_id: eq_vav_box
+  terms:
+  - vav kutusu
+  - vav box
+- entity_id: eq_fcu_drain_pan
+  terms:
+  - fcu yoğuşma tavası
+  - fcu drain pan
+- entity_id: eq_chilled_water_pump
+  terms:
+  - chiller su pompası
+  - chilled water pump
+- entity_id: eq_hot_water_pump
+  terms:
+  - sıcak su pompası
+  - hot water pump
+- entity_id: eq_expansion_tank
+  terms:
+  - genleşme tankı
+  - expansion tank
+- entity_id: eq_plate_heat_exchanger
+  terms:
+  - plakalı isı değiştirici
+  - plate heat exchanger
+- entity_id: eq_vrf_indoor
+  terms:
+  - vrf i̇ç ünite
+  - vrf indoor
+  - VRF iç ünite
+  - kaset klima
+  - tavan tipi VRF
+  - iç ünite damlıyor
+- entity_id: eq_vrf_controller
+  terms:
+  - vrf kontrolör
+  - vrf controller
+- entity_id: eq_bms_controller
+  terms:
+  - bms kontrolör
+  - bms controller
+- entity_id: eq_co2_sensor
+  terms:
+  - co2 sensörü
+  - co2 sensor
+- entity_id: eq_humidity_sensor
+  terms:
+  - nem sensörü
+  - humidity sensor
+- entity_id: eq_pressure_sensor_hvac
+  terms:
+  - hvac basınç sensörü
+  - pressure sensor hvac
+- entity_id: eq_actuator_damper
+  terms:
+  - damper aktüatörü
+  - actuator damper
+- entity_id: eq_fresh_air_unit
+  terms:
+  - taze hava ünitesi
+  - fresh air unit
+- entity_id: eq_kitchen_hood_fan
+  terms:
+  - mutfak davlumbaz fanı
+  - kitchen hood fan
+- entity_id: eq_bathroom_exhaust
+  terms:
+  - banyo egzoz fanı
+  - bathroom exhaust
+- entity_id: eq_corridor_ahu
+  terms:
+  - koridor ahu
+  - corridor ahu
+- entity_id: eq_lobby_ahu
+  terms:
+  - lobi ahu
+  - lobby ahu
+- entity_id: eq_heat_recovery_unit
+  terms:
+  - isı geri kazanım ünitesi
+  - heat recovery unit
+- entity_id: eq_electric_heater_coil
+  terms:
+  - elektrikli isıtıcı serpantin
+  - electric heater coil
+- entity_id: eq_chiller_condenser
+  terms:
+  - chiller kondenser
+  - chiller condenser
+- entity_id: eq_chiller_evaporator
+  terms:
+  - chiller evaporatör
+  - chiller evaporator
+- entity_id: eq_refrigerant_leak_sensor
+  terms:
+  - soğutucu gaz kaçak sensörü
+  - refrigerant leak sensor
+- entity_id: eq_glycol_pump
+  terms:
+  - glikol pompası
+  - glycol pump
+- entity_id: eq_makeup_air_unit
+  terms:
+  - make-up air ünitesi
+  - makeup air unit
+- entity_id: eq_ceiling_cassette_ac
+  terms:
+  - kaset tipi klima
+  - ceiling cassette ac
+  - tavan kaseti
+  - 4 yönlü kaset
+  - kaset klima damlıyor
+- entity_id: eq_window_ac
+  terms:
+  - pencere tipi klima
+  - window ac
+  - pencere kliması gürültülü
+- entity_id: eq_portable_ac
+  terms:
+  - portatif klima
+  - portable ac
+  - taşınabilir klima
+  - mobil klima verdiler
+  - geçici klima
+- entity_id: eq_fan_speed_controller
+  terms:
+  - fan hız kontrolörü
+  - fan speed controller
+- entity_id: eq_zone_thermostat
+  terms:
+  - bölge termostatı
+  - zone thermostat
+  - kat termostatı
+- entity_id: eq_outdoor_temp_sensor
+  terms:
+  - dış sıcaklık sensörü
+  - outdoor temp sensor
+- entity_id: eq_condensate_pump
+  terms:
+  - yoğuşma pompası
+  - condensate pump
+  - kondens pompası arızalı
+  - su pompası klima
+- entity_id: eq_air_curtain
+  terms:
+  - hava perdesi
+  - air curtain
+- entity_id: eq_uv_air_sterilizer
+  terms:
+  - uv hava sterilizatörü
+  - uv air sterilizer
+- entity_id: eq_hepa_filter_unit
+  terms:
+  - hepa filtre ünitesi
+  - hepa filter unit
+- entity_id: eq_duct_silencer
+  terms:
+  - kanal susturucu
+  - duct silencer
+- entity_id: eq_flexible_duct
+  terms:
+  - esnek hava kanalı
+  - flexible duct
+- entity_id: eq_grilled_diffuser
+  terms:
+  - difüzör izgara
+  - grilled diffuser
+- entity_id: eq_return_air_grille
+  terms:
+  - dönüş hava izgarası
+  - return air grille
+- entity_id: eq_boiler_burner
+  terms:
+  - kazan brülörü
+  - boiler burner
+- entity_id: eq_boiler_flue
+  terms:
+  - kazan baca
+  - boiler flue
+- entity_id: eq_steam_humidifier
+  terms:
+  - buharlı nemlendirici
+  - steam humidifier
+- entity_id: eq_desiccant_dehumidifier
+  terms:
+  - desiccant nem alma
+  - desiccant dehumidifier
+- entity_id: eq_thermal_wheel
+  terms:
+  - isı çarkı
+  - thermal wheel
+- entity_id: eq_bypass_damper
+  terms:
+  - bypass damper
+- entity_id: eq_fire_damper
+  terms:
+  - yangın damperi
+  - fire damper
+- entity_id: eq_smoke_damper
+  terms:
+  - duman damperi
+  - smoke damper
+- entity_id: eq_chiller_control_panel
+  terms:
+  - chiller kontrol paneli
+  - chiller control panel
+- entity_id: eq_hvac_valve_actuator
+  terms:
+  - hvac vana aktüatörü
+  - hvac valve actuator
+- entity_id: eq_room_temp_sensor
+  terms:
+  - oda sıcaklık sensörü
+  - room temp sensor
+- entity_id: eq_pipe_insulation_hvac
+  terms:
+  - hvac boru i̇zolasyonu
+  - pipe insulation hvac
+- entity_id: eq_vibration_isolator
+  terms:
+  - titreşim i̇zolatörü
+  - vibration isolator
+- entity_id: eq_hvac_access_door
+  terms:
+  - hvac erişim kapağı
+  - hvac access door
+- entity_id: eq_main_water_pump
+  terms:
+  - ana su pompası
+- entity_id: eq_booster_pump
+  terms:
+  - basınç artırma pompası
+- entity_id: eq_hot_water_tank
+  terms:
+  - sıcak su tankı
+- entity_id: eq_cold_water_tank
+  terms:
+  - soğuk su tankı
+- entity_id: eq_pressure_reducing_valve
+  terms:
+  - basınç düşürücü vana
+- entity_id: eq_check_valve
+  terms:
+  - çekvalf
+- entity_id: eq_gate_valve
+  terms:
+  - sürgülü vana
+- entity_id: eq_ball_valve
+  terms:
+  - küresel vana
+- entity_id: eq_solenoid_valve
+  terms:
+  - solenoid vana
+- entity_id: eq_water_softener
+  terms:
+  - su yumuşatma cihazı
+- entity_id: eq_water_filter_main
+  terms:
+  - ana su filtresi
+- entity_id: eq_uv_water_sterilizer
+  terms:
+  - uv su sterilizatörü
+- entity_id: eq_sewage_pump
+  terms:
+  - atık su pompası
+- entity_id: eq_floor_drain
+  terms:
+  - yer süzgeci
+- entity_id: eq_p_trap
+  terms:
+  - p tipi sifon
+- entity_id: eq_mixing_valve
+  terms:
+  - karışım vanası
+- entity_id: eq_thermostatic_mixer
+  terms:
+  - termostatik karıştırıcı
+- entity_id: eq_shower_mixer
+  terms:
+  - duş bataryası
+- entity_id: eq_rain_shower
+  terms:
+  - yağmur duşu
+- entity_id: eq_handheld_shower
+  terms:
+  - el duşu
+- entity_id: eq_toilet_flush_valve
+  terms:
+  - klozet rezervuar vanası
+- entity_id: eq_toilet_seat
+  terms:
+  - klozet kapağı
+- entity_id: eq_urinal
+  terms:
+  - pisuvar
+- entity_id: eq_sink_basin
+  terms:
+  - lavabo
+- entity_id: eq_kitchen_sink
+  terms:
+  - mutfak evye
+- entity_id: eq_dishwasher_drain
+  terms:
+  - bulaşık makinesi tahliyesi
+- entity_id: eq_grease_interceptor
+  terms:
+  - yağ ayırıcı
+- entity_id: eq_water_hammer_arrestor
+  terms:
+  - su darbesi önleyici
+- entity_id: eq_pipe_hanger
+  terms:
+  - boru askısı
+- entity_id: eq_expansion_joint_pipe
+  terms:
+  - boru genleşme derzi
+- entity_id: eq_manhole_cover
+  terms:
+  - rögar kapağı
+- entity_id: eq_storm_drain
+  terms:
+  - yağmur suyu drenajı
+- entity_id: eq_irrigation_valve
+  terms:
+  - sulama vanası
+- entity_id: eq_irrigation_pump
+  terms:
+  - sulama pompası
+- entity_id: eq_pool_fill_valve
+  terms:
+  - havuz dolum vanası
+- entity_id: eq_spa_jet_pump
+  terms:
+  - spa jet pompası
+- entity_id: eq_water_leak_sensor
+  terms:
+  - su kaçak sensörü
+- entity_id: eq_instant_water_heater
+  terms:
+  - anlık su isıtıcı
+- entity_id: eq_calorifier
+  terms:
+  - kalorifer / boyler
+- entity_id: eq_circulation_pump_hw
+  terms:
+  - sıcak su sirkülasyon pompası
+- entity_id: eq_rpz_valve
+  terms:
+  - rpz vana
+- entity_id: eq_metering_faucet
+  terms:
+  - zaman ayarlı musluk
+- entity_id: eq_sensor_faucet
+  terms:
+  - sensörlü musluk
+- entity_id: eq_bidet_spray
+  terms:
+  - taharet musluğu
+- entity_id: eq_bathtub_overflow
+  terms:
+  - küvet taşma gideri
+- entity_id: eq_shower_drain
+  terms:
+  - duş gideri
+- entity_id: eq_pipe_insulation_plumb
+  terms:
+  - tesisat boru i̇zolasyonu
+- entity_id: eq_water_pressure_gauge
+  terms:
+  - su basınç göstergesi
+- entity_id: eq_chemical_dosing_pump
+  terms:
+  - kimyasal dozaj pompası
+- entity_id: eq_ro_water_system
+  terms:
+  - ro su arıtma sistemi
+- entity_id: eq_main_distribution_board
+  terms:
+  - ana dağıtım panosu
+- entity_id: eq_floor_db_panel
+  terms:
+  - kat dağıtım panosu
+- entity_id: eq_room_db_panel
+  terms:
+  - oda dağıtım panosu
+- entity_id: eq_rcd_breaker
+  terms:
+  - kaçak akım rölesi
+- entity_id: eq_mcb_breaker
+  terms:
+  - otomatik sigorta
+- entity_id: eq_ats_switch
+  terms:
+  - otomatik transfer şalteri
+- entity_id: eq_surge_protector
+  terms:
+  - parafudr
+- entity_id: eq_busbar
+  terms:
+  - bara
+- entity_id: eq_cable_tray
+  terms:
+  - kablo kanalı
+- entity_id: eq_conduit
+  terms:
+  - boru tesisat (elektrik)
+- entity_id: eq_emergency_exit_sign
+  terms:
+  - acil çıkış tabelası
+- entity_id: eq_battery_pack_emergency
+  terms:
+  - acil aydınlatma aküsü
+- entity_id: eq_led_downlight
+  terms:
+  - led spot
+- entity_id: eq_led_strip
+  terms:
+  - led şerit
+- entity_id: eq_wall_sconce
+  terms:
+  - duvar apliği
+- entity_id: eq_floor_lamp
+  terms:
+  - lambader
+- entity_id: eq_bedside_lamp
+  terms:
+  - başucu lambası
+- entity_id: eq_bathroom_mirror_light
+  terms:
+  - ayna aydınlatması
+- entity_id: eq_corridor_light
+  terms:
+  - koridor aydınlatması
+- entity_id: eq_lobby_chandelier
+  terms:
+  - lobi avizesi
+- entity_id: eq_exterior_floodlight
+  terms:
+  - dış aydınlatma projektörü
+- entity_id: eq_landscape_light
+  terms:
+  - peyzaj aydınlatması
+- entity_id: eq_pool_underwater_light
+  terms:
+  - havuz sualtı lambası
+- entity_id: eq_usb_socket
+  terms:
+  - usb priz
+- entity_id: eq_shaver_socket
+  terms:
+  - tıraş prizi
+- entity_id: eq_floor_socket
+  terms:
+  - yer prizi
+- entity_id: eq_occupancy_sensor
+  terms:
+  - hareket sensörü
+- entity_id: eq_door_contact_sensor
+  terms:
+  - kapı kontak sensörü
+- entity_id: eq_energy_meter
+  terms:
+  - enerji sayacı
+- entity_id: eq_power_factor_capacitor
+  terms:
+  - güç faktörü kondansatörü
+- entity_id: eq_transformer_dry
+  terms:
+  - kuru tip trafo
+- entity_id: eq_generator_ats_panel
+  terms:
+  - jeneratör ats paneli
+- entity_id: eq_ups_battery_bank
+  terms:
+  - ups akü bankası
+- entity_id: eq_inverter
+  terms:
+  - i̇nvertör
+- entity_id: eq_solar_inverter
+  terms:
+  - güneş i̇nvertörü
+- entity_id: eq_ev_charger
+  terms:
+  - ev şarj i̇stasyonu
+- entity_id: eq_lightning_rod
+  terms:
+  - paratoner
+- entity_id: eq_grounding_electrode
+  terms:
+  - topraklama elektrodu
+- entity_id: eq_timer_switch
+  terms:
+  - zaman saatli anahtar
+- entity_id: eq_smart_room_controller
+  terms:
+  - akıllı oda kontrolörü
+- entity_id: eq_elevator_cabin
+  terms:
+  - asansör kabini
+- entity_id: eq_elevator_door
+  terms:
+  - asansör kapısı
+- entity_id: eq_elevator_motor
+  terms:
+  - asansör motoru
+- entity_id: eq_elevator_controller
+  terms:
+  - asansör kontrolörü
+- entity_id: eq_elevator_rope
+  terms:
+  - asansör halatı
+- entity_id: eq_elevator_brake
+  terms:
+  - asansör freni
+- entity_id: eq_elevator_call_button
+  terms:
+  - asansör çağrı butonu
+- entity_id: eq_elevator_display
+  terms:
+  - asansör kat göstergesi
+- entity_id: eq_elevator_intercom
+  terms:
+  - asansör i̇nterkom
+- entity_id: eq_service_elevator
+  terms:
+  - servis asansörü
+- entity_id: eq_freight_elevator
+  terms:
+  - yük asansörü
+- entity_id: eq_escalator
+  terms:
+  - yürüyen merdiven
+- entity_id: eq_moving_walkway
+  terms:
+  - yürüyen bant
+- entity_id: eq_wheelchair_lift
+  terms:
+  - engelli platform asansörü
+- entity_id: eq_elevator_buffer
+  terms:
+  - asansör tamponu
+- entity_id: eq_fire_alarm_panel
+  terms:
+  - yangın alarm paneli
+- entity_id: eq_smoke_detector_addressable
+  terms:
+  - adresli duman dedektörü
+- entity_id: eq_heat_detector
+  terms:
+  - isı dedektörü
+- entity_id: eq_manual_call_point
+  terms:
+  - manuel yangın butonu
+- entity_id: eq_fire_sprinkler
+  terms:
+  - yangın sprinkler
+- entity_id: eq_sprinkler_valve
+  terms:
+  - sprinkler vanası
+- entity_id: eq_fire_hose_reel
+  terms:
+  - yangın hortum makarası
+- entity_id: eq_fire_hydrant
+  terms:
+  - yangın hidrantı
+- entity_id: eq_fire_pump
+  terms:
+  - yangın pompası
+- entity_id: eq_fire_extinguisher_co2
+  terms:
+  - co2 yangın söndürücü
+- entity_id: eq_fire_extinguisher_foam
+  terms:
+  - köpüklü yangın söndürücü
+- entity_id: eq_fire_blanket
+  terms:
+  - yangın battaniyesi
+- entity_id: eq_emergency_speaker
+  terms:
+  - acil anons hoparlörü
+- entity_id: eq_fire_door
+  terms:
+  - yangın kapısı
+- entity_id: eq_fire_door_closer
+  terms:
+  - yangın kapı kapatıcı
+- entity_id: eq_gas_suppression_system
+  terms:
+  - gazlı söndürme sistemi
+- entity_id: eq_kitchen_ansul_system
+  terms:
+  - mutfak ansul sistemi
+- entity_id: eq_beam_smoke_detector
+  terms:
+  - işın tipi duman dedektörü
+- entity_id: eq_aspirating_smoke_detector
+  terms:
+  - emme tipi duman dedektörü
+- entity_id: eq_fire_control_room_panel
+  terms:
+  - yangın kontrol odası paneli
+- entity_id: eq_diesel_generator
+  terms:
+  - dizel jeneratör
+- entity_id: eq_generator_fuel_tank
+  terms:
+  - jeneratör yakıt tankı
+- entity_id: eq_generator_radiator
+  terms:
+  - jeneratör radyatörü
+- entity_id: eq_generator_battery
+  terms:
+  - jeneratör aküsü
+- entity_id: eq_generator_control_panel
+  terms:
+  - jeneratör kontrol paneli
+- entity_id: eq_generator_silencer
+  terms:
+  - jeneratör susturucu
+- entity_id: eq_fuel_transfer_pump
+  terms:
+  - yakıt transfer pompası
+- entity_id: eq_day_tank
+  terms:
+  - günlük yakıt tankı
+- entity_id: eq_mechanical_workshop_lathe
+  terms:
+  - atölye torna
+- entity_id: eq_welding_machine
+  terms:
+  - kaynak makinesi
+- entity_id: eq_air_compressor_workshop
+  terms:
+  - atölye hava kompresörü
+- entity_id: eq_scaffold_tower
+  terms:
+  - i̇skele kulesi
+- entity_id: eq_ladder_extension
+  terms:
+  - uzatmalı merdiven
+- entity_id: eq_tool_cart
+  terms:
+  - takım arabası
+- entity_id: eq_multimeter
+  terms:
+  - multimetre
+- entity_id: eq_duvet
+  terms:
+  - yorgan
+- entity_id: eq_bed_sheet
+  terms:
+  - çarşaf
+- entity_id: eq_pillowcase
+  terms:
+  - yastık kılıfı
+- entity_id: eq_mattress_protector
+  terms:
+  - yatak koruyucu
+- entity_id: eq_extra_pillow
+  terms:
+  - ekstra yastık
+- entity_id: eq_orthopedic_pillow
+  terms:
+  - ortopedik yastık
+- entity_id: eq_crib_mattress
+  terms:
+  - beşik yatağı
+- entity_id: eq_wardrobe
+  terms:
+  - gardırop
+- entity_id: eq_desk_chair
+  terms:
+  - çalışma sandalyesi
+- entity_id: eq_armchair
+  terms:
+  - koltuk
+- entity_id: eq_sofa_bed
+  terms:
+  - çekyat
+- entity_id: eq_coffee_table
+  terms:
+  - sehpa
+- entity_id: eq_nightstand
+  terms:
+  - komodin
+- entity_id: eq_luggage_rack
+  terms:
+  - bavul standı
+- entity_id: eq_full_length_mirror
+  terms:
+  - boy aynası
+- entity_id: eq_bathroom_mirror
+  terms:
+  - banyo aynası
+- entity_id: eq_towel_rack
+  terms:
+  - havlu askılığı
+- entity_id: eq_bath_towel
+  terms:
+  - banyo havlusu
+- entity_id: eq_hand_towel
+  terms:
+  - el havlusu
+- entity_id: eq_washcloth
+  terms:
+  - yüz havlusu
+- entity_id: eq_bath_mat
+  terms:
+  - banyo paspası
+- entity_id: eq_bathrobe
+  terms:
+  - bornoz
+- entity_id: eq_slippers
+  terms:
+  - terlik
+- entity_id: eq_toiletries_dispenser
+  terms:
+  - kozmetik dispenseri
+- entity_id: eq_tissue_box
+  terms:
+  - kağıt mendil kutusu
+- entity_id: eq_waste_bin
+  terms:
+  - çöp kutusu
+- entity_id: eq_recycling_bin
+  terms:
+  - geri dönüşüm kutusu
+- entity_id: eq_ironing_board
+  terms:
+  - ütü masası
+- entity_id: eq_clothes_hanger
+  terms:
+  - askı
+- entity_id: eq_laundry_bag
+  terms:
+  - çamaşır torbası
+- entity_id: eq_housekeeping_cart
+  terms:
+  - kat arabası
+- entity_id: eq_vacuum_robot
+  terms:
+  - robot süpürge
+- entity_id: eq_carpet_cleaner
+  terms:
+  - halı yıkama makinesi
+- entity_id: eq_steam_cleaner
+  terms:
+  - buharlı temizlik makinesi
+- entity_id: eq_floor_polisher
+  terms:
+  - zemin cilalama makinesi
+- entity_id: eq_trolley_linen
+  terms:
+  - çamaşır arabası
+- entity_id: eq_dryer_machine
+  terms:
+  - kurutma makinesi
+- entity_id: eq_ironing_press
+  terms:
+  - pres ütü
+- entity_id: eq_sewing_machine_hk
+  terms:
+  - dikiş makinesi
+- entity_id: eq_scale_luggage
+  terms:
+  - bavul tartısı
+- entity_id: eq_do_not_disturb_sign
+  terms:
+  - rahatsız etmeyin tabelası
+- entity_id: eq_make_up_room_sign
+  terms:
+  - oda temizlensin tabelası
+- entity_id: eq_welcome_amenities_tray
+  terms:
+  - karşılama i̇kram tepsisi
+- entity_id: eq_minibar_restock_tray
+  terms:
+  - minibar i̇kmal tepsisi
+- entity_id: eq_air_freshener_dispenser
+  terms:
+  - oda kokusu dispenseri
+- entity_id: eq_combi_oven
+  terms:
+  - kombi fırın
+- entity_id: eq_convection_oven
+  terms:
+  - konveksiyon fırın
+- entity_id: eq_induction_cooktop
+  terms:
+  - i̇ndüksiyon ocak
+- entity_id: eq_gas_range
+  terms:
+  - gazlı ocak
+- entity_id: eq_deep_fryer
+  terms:
+  - fritöz
+- entity_id: eq_griddle
+  terms:
+  - izgara plaka
+- entity_id: eq_charcoal_grill
+  terms:
+  - kömür izgara
+- entity_id: eq_salamander
+  terms:
+  - salamander
+- entity_id: eq_microwave_oven
+  terms:
+  - mikrodalga fırın
+- entity_id: eq_blast_chiller
+  terms:
+  - şok soğutucu
+- entity_id: eq_walk_in_cooler
+  terms:
+  - walk-in soğuk oda
+- entity_id: eq_walk_in_freezer
+  terms:
+  - walk-in dondurucu
+- entity_id: eq_reach_in_fridge
+  terms:
+  - dik tip buzdolabı
+- entity_id: eq_prep_table
+  terms:
+  - hazırlık tezgahı
+- entity_id: eq_cutting_board_station
+  terms:
+  - kesme tahtası i̇stasyonu
+- entity_id: eq_food_processor
+  terms:
+  - mutfak robotu
+- entity_id: eq_stand_mixer
+  terms:
+  - mikser
+- entity_id: eq_slicer
+  terms:
+  - dilimleme makinesi
+- entity_id: eq_vacuum_sealer
+  terms:
+  - vakum makinesi
+- entity_id: eq_sous_vide_circulator
+  terms:
+  - sous-vide cihazı
+- entity_id: eq_coffee_espresso_machine
+  terms:
+  - espresso makinesi
+- entity_id: eq_coffee_grinder
+  terms:
+  - kahve değirmeni
+- entity_id: eq_juice_extractor
+  terms:
+  - meyve sıkacağı
+- entity_id: eq_toaster_conveyor
+  terms:
+  - konveyör tost makinesi
+- entity_id: eq_waffle_maker
+  terms:
+  - waffle makinesi
+- entity_id: eq_pancake_griddle
+  terms:
+  - pankek izgarası
+- entity_id: eq_soup_kettle
+  terms:
+  - çorba kazanı
+- entity_id: eq_bain_marie
+  terms:
+  - bain-marie
+- entity_id: eq_hot_holding_cabinet
+  terms:
+  - sıcak tutma dolabı
+- entity_id: eq_plate_warmer
+  terms:
+  - tabak isıtıcı
+- entity_id: eq_ice_cream_machine
+  terms:
+  - dondurma makinesi
+- entity_id: eq_pastry_oven
+  terms:
+  - pastane fırını
+- entity_id: eq_proofing_cabinet
+  terms:
+  - mayalama dolabı
+- entity_id: eq_dough_sheeter
+  terms:
+  - hamur açma makinesi
+- entity_id: eq_bar_blender
+  terms:
+  - bar blender
+- entity_id: eq_bar_ice_bin
+  terms:
+  - bar buz haznesi
+- entity_id: eq_draft_beer_system
+  terms:
+  - fıçı bira sistemi
+- entity_id: eq_wine_cooler
+  terms:
+  - şarap soğutucu
+- entity_id: eq_soda_gun
+  terms:
+  - soda tabancası
+  - temizlik sodası
+  - soda ile temiz
+- entity_id: eq_glasswasher
+  terms:
+  - bardak yıkama makinesi
+- entity_id: eq_pot_washer
+  terms:
+  - tencere yıkama makinesi
+- entity_id: eq_kitchen_exhaust_hood
+  terms:
+  - mutfak davlumbazı
+- entity_id: eq_grease_filter_hood
+  terms:
+  - davlumbaz yağ filtresi
+- entity_id: eq_food_temp_probe
+  terms:
+  - gıda sıcaklık probu
+- entity_id: eq_portion_scale
+  terms:
+  - porsiyon terazisi
+- entity_id: eq_pool_sand_filter
+  terms:
+  - havuz kum filtresi
+- entity_id: eq_pool_chlorinator
+  terms:
+  - havuz klorinatörü
+- entity_id: eq_pool_ph_controller
+  terms:
+  - havuz ph kontrolörü
+- entity_id: eq_pool_heater
+  terms:
+  - havuz isıtıcısı
+- entity_id: eq_pool_heat_pump
+  terms:
+  - havuz isı pompası
+- entity_id: eq_pool_vacuum
+  terms:
+  - havuz süpürgesi
+- entity_id: eq_pool_skimmer
+  terms:
+  - havuz skimmer
+- entity_id: eq_pool_ladder
+  terms:
+  - havuz merdiveni
+- entity_id: eq_pool_handrail
+  terms:
+  - havuz korkuluğu
+- entity_id: eq_lifeguard_chair
+  terms:
+  - cankurtaran kulesi
+- entity_id: eq_pool_cover
+  terms:
+  - havuz örtüsü
+- entity_id: eq_jacuzzi_filter
+  terms:
+  - jakuzi filtresi
+- entity_id: eq_sauna_thermometer
+  terms:
+  - sauna termometresi
+- entity_id: eq_sauna_bucket
+  terms:
+  - sauna kovası
+- entity_id: eq_steam_room_bench
+  terms:
+  - buhar odası bankı
+- entity_id: eq_spa_shower
+  terms:
+  - spa duşu
+- entity_id: eq_treatment_bed_spa
+  terms:
+  - tedavi yatağı
+- entity_id: eq_hot_stone_warmer
+  terms:
+  - sıcak taş isıtıcı
+- entity_id: eq_aromatherapy_diffuser
+  terms:
+  - aromaterapi difüzörü
+- entity_id: eq_towel_warmer_spa
+  terms:
+  - spa havlu isıtıcı
+- entity_id: eq_kids_pool_slide
+  terms:
+  - çocuk havuzu kaydırağı
+- entity_id: eq_infinity_edge_pump
+  terms:
+  - infinity kenar pompası
+- entity_id: eq_beach_umbrella_stand
+  terms:
+  - plaj şemsiye standı
+- entity_id: eq_beach_lounger
+  terms:
+  - plaj şezlongu
+- entity_id: eq_beach_shower
+  terms:
+  - plaj duşu
+- entity_id: eq_smart_tv
+  terms:
+  - akıllı tv
+- entity_id: eq_set_top_box
+  terms:
+  - uydu alıcısı
+- entity_id: eq_soundbar
+  terms:
+  - soundbar
+- entity_id: eq_bluetooth_speaker
+  terms:
+  - bluetooth hoparlör
+- entity_id: eq_conference_mic
+  terms:
+  - konferans mikrofonu
+- entity_id: eq_conference_speaker
+  terms:
+  - konferans hoparlörü
+- entity_id: eq_video_conference_cam
+  terms:
+  - video konferans kamerası
+- entity_id: eq_digital_signage
+  terms:
+  - dijital tabela
+- entity_id: eq_wifi_controller
+  terms:
+  - wifi kontrolör
+- entity_id: eq_poe_switch
+  terms:
+  - poe switch
+- entity_id: eq_guest_portal_server
+  terms:
+  - misafir portal sunucusu
+- entity_id: eq_nvr_recorder
+  terms:
+  - nvr kayıt cihazı
+- entity_id: eq_ptz_camera
+  terms:
+  - ptz kamera
+- entity_id: eq_access_control_panel
+  terms:
+  - geçiş kontrol paneli
+- entity_id: eq_biometric_reader
+  terms:
+  - biyometrik okuyucu
+- entity_id: eq_metal_detector_gate
+  terms:
+  - metal dedektör kapısı
+- entity_id: eq_xray_baggage
+  terms:
+  - bavul x-ray
+- entity_id: eq_panic_button
+  terms:
+  - panik butonu
+- entity_id: eq_guest_tablet
+  terms:
+  - misafir tableti
+- entity_id: eq_chromecast_device
+  terms:
+  - chromecast
+- aspect_key: hvac_not_cooling
+  terms:
+  - soğutmuyor
+  - üflemiyor soğuk
+  - sıcak kalıyor
+  - klima serinletmiyor
+  - oda ısınmış
+  - soğuk hava yok
+  - klima soğutmuyor
+  - üfleme ılık
+  - AC soğuk değil
+  - serinletmiyor odayı
+  - soğutma yok
+- aspect_key: hvac_not_heating
+  terms:
+  - ısıtmıyor
+  - oda üşüyor
+  - sıcak üflemiyor
+  - kalorifer yok
+  - ısınmıyor oda
+  - ısıtma yok
+  - kışın soğuk oda
+  - kalorifer çalışmıyor
+- aspect_key: hvac_too_cold
+  terms:
+  - çok soğuk oda
+  - aşırı soğuk
+  - buz gibi oda
+  - üşüdük klimadan
+  - klima aşırı
+  - oda buz gibi
+  - aşırı soğutma
+  - klima fazla soğuk
+  - üşüyoruz odada
+- aspect_key: hvac_too_hot
+  terms:
+  - çok sıcak oda
+  - bunaltıcı
+  - boğucu sıcak
+  - klima yetmiyor sıcak
+  - oda fırın gibi
+  - bunaltıcı sıcak
+  - klima yetişmiyor
+  - sıcaklık yüksek
+- aspect_key: hvac_filter_dirty
+  terms:
+  - filtre kirli
+  - filtre değişmemiş
+  - tozlu filtre
+  - filtre bakımı
+  - filtre hiç değişmemiş
+  - toz üflüyor klima
+  - kirli filtre
+  - filtre bakımı yok
+- aspect_key: hvac_musty_smell
+  terms:
+  - klima küf kokusu
+  - kanal kokusu
+  - bayat hava
+  - küflü üfleme
+  - küflü klima kokusu
+  - kanal küf kokusu
+  - bayat üfleme
+  - klima kokusu kötü
+- aspect_key: hvac_water_leak
+  terms:
+  - klima damlıyor
+  - klima su akıtıyor
+  - yoğuşma taşıyor
+  - iç ünite sızıntı
+  - klima su damlatıyor
+  - yoğuşma akıyor
+  - damla düşüyor yatağa
+- aspect_key: hvac_remote_missing
+  terms:
+  - kumanda yok
+  - klima kumandası eksik
+  - remote kayıp
+  - kumanda bulunamadı
+  - kumanda eksik
+  - remote yok odada
+  - klima kumandası bulunamadı
+- aspect_key: hvac_vibration
+  terms:
+  - klima titriyor
+  - titreşimli klima
+  - duvar titriyor klima
+  - klima sarsıntı
+  - titreşim duvara
+  - ünite titreşiyor
+- aspect_key: hvac_night_noise
+  terms:
+  - gece klima sesi
+  - uyurken klima gürültü
+  - gece uğultu
+  - gece klima uğultu
+  - uyku kaçıran klima
+  - gece AC sesi
+- aspect_key: bathroom_mold
+  terms:
+  - banyo küflü
+  - küf lekesi
+  - siyah küf
+  - küflenmiş derz
+  - banyoda küf
+  - duşta küf
+  - küflü fayans
+  - siyah leke küf
+- aspect_key: bathroom_grout
+  terms:
+  - derzler kirli
+  - fayans arası kir
+  - derz kararmış
+- aspect_key: shower_glass_clean
+  terms:
+  - duş camı kireçli
+  - cam lekeli
+  - duşakabin kirli
+- aspect_key: bathtub_cleanliness
+  terms:
+  - küvet kirli
+  - küvet lekeli
+  - küvet sabun kalıntısı
+- aspect_key: sheet_stain
+  terms:
+  - çarşaf lekeli
+  - çarşaf kirli
+  - lekeli nevresim
+  - kirli çarşaf
+  - çarşafta leke
+  - lekeli yatak örtüsü
+  - kirli nevresim
+  - sarı leke çarşaf
+- aspect_key: bathroom_towel_stain
+  terms:
+  - havlu lekeli
+  - kirli havlu
+  - sarı havlu
+  - eski havlu
+  - havluda leke
+  - sarı lekeli havlu
+  - kirli banyo havlusu
+- aspect_key: room_trash_overflow
+  terms:
+  - çöp taşmış
+  - çöp boşaltılmamış
+  - dolu çöp kutusu
+  - dolup taşan çöp
+  - çöp kutusu dolu
+  - oda çöpü alınmamış
+- aspect_key: room_pest_control
+  terms:
+  - böcek var
+  - karınca
+  - hamam böceği
+  - haşere problemi
+  - odada böcek
+  - karınca istilası
+  - hamamböceği gördük
+  - haşere var
+  - sivrisinek odada
+- aspect_key: lobby_cleanliness
+  terms:
+  - lobi kirli
+  - lobi tozlu
+  - giriş hijyen
+  - giriş alanı kirli
+  - lobi hijyen zayıf
+- aspect_key: plate_cleanliness
+  terms:
+  - tabak kirli
+  - tabakta leke
+  - bulaşık kalıntısı
+  - yağlı tabak
+- aspect_key: cutlery_cleanliness
+  terms:
+  - çatal kirli
+  - bıçak yağlı
+  - kaşık lekeli
+  - kirli çatal bıçak
+- aspect_key: glass_cleanliness
+  terms:
+  - bardak kirli
+  - bardakta ruj
+  - yağlı bardak
+  - leke bardak
+- aspect_key: table_cleanliness
+  terms:
+  - masa kirli
+  - masa silinmemiş
+  - masa örtüsü leke
+- aspect_key: bed_making_quality
+  terms:
+  - yatak dağınık
+  - yatak yapılmamış
+  - çarşaf düzgün değil
+  - yatak düzgün yapılmamış
+  - çarşaf kırışık
+  - yatak dağınık bırakılmış
+- aspect_key: room_odor_smoke
+  terms:
+  - sigara kokuyor
+  - oda duman kokusu
+  - sigara izi koku
+  - sigara kokusu oda
+  - duman kokuyor
+  - sigara izi
+  - yanık koku odada
+- aspect_key: room_mold_smell
+  terms:
+  - küf kokuyor
+  - rutubet kokusu
+  - nemli koku
+  - oda küf kokuyor
+  - rutubet kokusu yoğun
+  - nemli küf kokusu
+- aspect_key: bathroom_smell
+  terms:
+  - banyo kokuyor
+  - kötü koku banyo
+  - lağım kokusu banyo
+- aspect_key: bathroom_hair
+  terms:
+  - saç bırakılmış
+  - duşta saç
+  - lavaboda saç
+  - önceki misafir saçı
+  - duşta saç kalmış
+  - lavaboda saç teli
+  - saç temizlenmemiş
+- aspect_key: spa_cleanliness
+  terms:
+  - spa kirli
+  - spa hijyen zayıf
+  - masaj odası kirli
+  - spa alanı kirli
+  - masaj odası hijyen
+  - spa soyunma kirli
+- aspect_key: food_taste
+  terms:
+  - tatsız
+  - lezzetsiz
+  - ağza uymuyor
+  - bayat tat
+  - tuzsuz
+  - aşırı tuzlu
+  - lezzetsiz yemek
+  - tatsız büfe
+  - yavan tat
+  - tuz dengesi kötü
+- aspect_key: food_freshness
+  terms:
+  - bayat yemek
+  - taze değil
+  - eski yemek
+  - bozulmuş gibi
+  - yemek taze değil
+  - bayat salata
+  - eski ürün hissi
+- aspect_key: food_variety
+  terms:
+  - çeşit az
+  - menü fakir
+  - aynı şeyler
+  - çeşitlilik yok
+  - bufede az seçenek
+  - çeşitlilik yetersiz
+  - menü tekrarı
+  - aynı yemekler
+  - seçenek az
+  - bufede monoton
+  - çeşit fakir
+  - her gün aynı
+- aspect_key: breakfast_quality
+  terms:
+  - kahvaltı zayıf
+  - kahvaltı kötü
+  - kahvaltı yetersiz
+  - kahvaltı berbat
+  - sabah yemeği kötü
+  - kahvaltı kalitesiz
+  - sabah yemeği zayıf
+  - kahvaltı hayal kırıklığı
+- aspect_key: breakfast_queue
+  terms:
+  - kahvaltı kuyruğu
+  - kahvaltıda sıra
+  - sabah kuyruk
+  - kahvaltı bekleme
+- aspect_key: buffet_hygiene
+  terms:
+  - büfe hijyen
+  - büfede sinek
+  - açık büfe kirli
+  - servis hijyen zayıf
+  - açık büfe hijyen
+  - servis kaşığı kirli
+  - büfe koruyucu yok
+- aspect_key: buffet_refill
+  terms:
+  - büfe boş
+  - ikmal yok
+  - tepsiler boş
+  - yenileme yavaş
+  - büfe ikmal yok
+  - tepsiler boş kalıyor
+  - yenileme gecikiyor
+  - büfe boşalmış
+- aspect_key: dinner_quality
+  terms:
+  - akşam yemeği kötü
+  - aksam yemek zayıf
+  - dinner kötü
+  - akşam yemeği kalitesiz
+  - dinner zayıf
+  - aksam menü kötü
+- aspect_key: meat_quality
+  terms:
+  - et kalitesiz
+  - kıyması kötü
+  - et sert
+  - et yağlı kötü
+  - et bayat gibi
+  - et lezzetsiz
+  - etli yemek kötü
+  - kıyma kalitesi
+  - kıyma kalitesi çok düşük
+  - kiyma kalitesi
+- aspect_key: seafood_quality
+  terms:
+  - balık bayat
+  - deniz ürünü kötü
+  - balık kokmuş
+  - deniz mahsulu kötü
+  - balık tazelik şüpheli
+- aspect_key: grill_quality
+  terms:
+  - ızgara kötü
+  - mangal zayıf
+  - ızgara yanmış
+  - ızgara eti kuru
+- aspect_key: dessert_quality
+  terms:
+  - tatlı kötü
+  - tatlı bayat
+  - pasta kalitesiz
+  - tatlı kalitesiz
+  - pasta bayat
+  - tatlı çeşit az
+  - dessert zayıf
+- aspect_key: coffee_quality
+  terms:
+  - kahve kötü
+  - kahve sulu
+  - kahve zayıf
+  - kahve acı kötü
+  - kahve makinesi kötü
+  - espresso zayıf
+  - filtre kahve acı
+- aspect_key: a_la_carte_wait
+  terms:
+  - a la carte bekleme
+  - sipariş geç geldi
+  - yemek 1 saat
+  - restoran gecikme
+  - alakart çok bekledik
+  - sipariş gecikti
+  - restoran servisi yavaş
+- aspect_key: a_la_carte_quality
+  terms:
+  - a la carte kötü
+  - özel restoran zayıf
+  - alacarte hayal kırıklığı
+  - a'la carte zayıf
+  - özel restoran hayal kırıklığı
+  - alakart kötü
+- aspect_key: food_portion_size
+  terms:
+  - porsiyon küçük
+  - kuş kadar
+  - yetmiyor porsiyon
+  - az porsiyon
+  - yetmiyor
+  - az servis
+  - küçük tabak
+- aspect_key: fly_insect_food
+  terms:
+  - yemekte sinek
+  - tabakta böcek
+  - sineк ölü
+  - böcek salam
+  - sinek ölü yemekte
+- aspect_key: bar_queue
+  terms:
+  - bar kuyruğu
+  - içecek sırası
+  - barda uzun bekleme
+  - barda uzun sıra
+  - içecek kuyruğu
+  - bar yoğun
+- aspect_key: alcohol_quality
+  terms:
+  - alkol kalitesiz
+  - ucuz içki
+  - rakı kötü
+  - içki zayıf
+  - içki kalitesiz
+  - ucuz marka alkol
+  - rakı zayıf
+- aspect_key: cocktail_knowledge
+  terms:
+  - kokteyl bilmiyor
+  - tarif bilmiyor
+  - kokteyl yapamıyor
+- aspect_key: kids_menu
+  terms:
+  - çocuk menüsü yok
+  - çocuk yemeği yetersiz
+  - kids meal kötü
+- aspect_key: vegetarian_options
+  terms:
+  - vejetaryen seçenek yok
+  - etsiz az
+  - vejetaryen menü zayıf
+- aspect_key: allergen_info
+  terms:
+  - alerjen bilgisi yok
+  - alerji etiketi eksik
+  - içerik belirsiz
+  - alerjen bilgisi eksik
+  - içerik yazmıyor
+  - alerji uyarısı yok
+- aspect_key: room_service_speed
+  terms:
+  - oda servisi geç
+  - oda yemeği gecikti
+  - room service yavaş
+  - oda servisi gecikti
+  - room service yavaş geldi
+  - oda yemeği geç
+- aspect_key: pancake_queue
+  terms:
+  - pankek sırası
+  - pankek 20 dakika
+  - waffle kuyruğu
+  - pankek kuyruğu uzun
+  - waffle sırası
+  - gözleme sırası
+- aspect_key: honey_kaymak
+  terms:
+  - bal kaymak bitiyor
+  - kaymak yok
+  - bal tükenmiş
+  - bal kaymak
+  - bal ve kaymak
+  - kaymak bal
+  - bal-kaymak
+  - kaymak bitmiş
+  - kaymak yok büfede
+  - Türk kahvaltı bal kaymak
+  - kaymaklı bal
+  - bal kaymağı bitmiş
+  - kahvaltıda kaymak
+  - kahvaltı bal kaymak yok
+  - kaymak tabağı boş
+  - bal kavanozu bitmiş
+- aspect_key: staff_friendliness
+  terms:
+  - güler yüz yok
+  - samimi değil
+  - soğuk personel
+  - sıcakkanlı değil
+  - güler yüz eksik
+  - samimiyetsiz
+  - sıcakkanlı değiller
+  - karşılama soğuk
+- aspect_key: staff_helpfulness
+  terms:
+  - yardım etmiyor
+  - ilgilenmiyor
+  - yardımcı olmuyor
+  - umursamaz
+  - yardımcı olmuyorlar
+  - ilgisiz tutum
+  - yardım reddedildi
+  - umursamaz personel
+- aspect_key: staff_shortage
+  terms:
+  - personel az
+  - çalışan yetmiyor
+  - personel eksiği
+  - yetişemiyorlar
+  - kadrosuz
+  - personel yetersiz
+  - çalışan az
+  - kadrosuz servis
+  - yetişemiyor personel
+- aspect_key: staff_checkin_speed
+  terms:
+  - check-in yavaş
+  - giriş uzun sürdü
+  - resepsiyon kuyruğu
+  - checkin bekleme
+  - check-in çok yavaş
+  - girişte uzun bekleme
+  - resepsiyon sırası uzun
+  - checkin 30 dakika
+- aspect_key: staff_checkout_speed
+  terms:
+  - check-out yavaş
+  - çıkış bekledik
+  - checkout kuyruk
+  - checkout yavaş
+  - çıkışta bekledik
+  - hesap kapatma gecikti
+- aspect_key: staff_front_desk_attitude
+  terms:
+  - resepsiyon kaba
+  - ön büro ilgisiz
+  - resepsiyon suratsız
+  - karşılama kötü
+  - resepsiyon kaba davrandı
+  - resepsiyon suratsız karşılama
+  - FO personeli soğuk
+- aspect_key: staff_complaint_handling
+  terms:
+  - şikayet dinlemiyor
+  - şikayet çözülmedi
+  - şikayete aldırmadı
+  - şikayeti dinlemediler
+  - complaint ignored
+  - şikayete cevap yok
+- aspect_key: staff_language
+  terms:
+  - dil bilmiyor
+  - anlaşamıyoruz
+  - çeviri yok
+  - ingilizce zayıf
+  - dil bariyeri
+  - anlaşamıyoruz personelle
+  - yabancı dil zayıf
+- aspect_key: staff_training
+  terms:
+  - eğitimsiz personel
+  - deneyimsiz
+  - iş bilmiyor
+  - acemi
+  - eğitimsiz ekip
+  - iş bilmiyorlar
+  - acemi personel
+  - deneyimsiz kadro
+- aspect_key: staff_restaurant_service
+  terms:
+  - garson ilgisiz
+  - garson kaba
+  - servis personeli kötü
+  - masa hizmeti zayıf
+  - restoran servisi kötü
+- aspect_key: staff_bar_service
+  terms:
+  - barmen kaba
+  - bar personeli yavaş
+  - içki servisi kötü
+  - barmen yavaş
+  - bar servisi kötü
+  - içki bekledik
+- aspect_key: staff_housekeeping_attitude
+  terms:
+  - temizlikçi kaba
+  - oda görevlisi saygısız
+  - hk personeli kötü
+  - temizlik personeli kaba
+  - oda görevlisi suratsız
+  - HK personeli saygısız
+- aspect_key: staff_animation_quality
+  terms:
+  - animasyon zayıf
+  - animatör ilgisiz
+  - etkinlik personeli kötü
+  - etkinlik kalitesiz
+- aspect_key: staff_duty_manager
+  terms:
+  - müdür yok
+  - nöbetçi bulunamadı
+  - yönetici görünmüyor
+  - nöbetçi müdür yok
+  - müdür bulunamadı
+  - duty manager yok
+- aspect_key: staff_proactivity
+  terms:
+  - proaktif değil
+  - kendiliğinden yardım yok
+  - beklemek gerekiyor
+  - proaktif değiller
+  - her şeyi sormak lazım
+- aspect_key: staff_follow_up
+  terms:
+  - takip yok
+  - sonra aramadılar
+  - geri dönüş yok
+  - takip etmediler
+- aspect_key: ops_checkin_process
+  terms:
+  - giriş süreci karmaşık
+  - check-in karışık
+  - kayıt uzun
+  - check in süreci
+  - giriş işlemleri
+  - kayıt prosedürü
+  - checkin karışık
+  - girişte bekledik
+  - kimlik kontrolü uzun
+  - pasaport işlemleri yavaş
+  - oda anahtarı gecikti
+  - kart basımı uzun
+  - giriş formaliteleri
+  - checkin işlemi
+  - check in uzun
+  - giriş prosedürü
+  - arrival desk
+  - giriş bankosu işlem
+  - arrival kayıt uzun
+  - checkin kuyruk işlemi
+- aspect_key: ops_billing_accuracy
+  terms:
+  - fatura hatalı
+  - yanlış ücret
+  - hesap yanlış
+  - ekstra yazılmış
+  - fatura yanlış
+  - hesap hatalı
+  - çift ücret
+  - yanlış kalem
+  - billing hatası
+- aspect_key: ops_extra_charges
+  terms:
+  - gizli ücret
+  - ekstra sürpriz
+  - dahil değil dediler
+  - ekstra ücret sürpriz
+  - dahil sanıyorduk
+  - gizli masraf
+  - ek ücret dayatması
+- aspect_key: ops_capacity_management
+  terms:
+  - aşırı kalabalık kabul
+  - kapasite aşımı
+  - çok misafir
+- aspect_key: hvac_draft
+  terms:
+  - cereyan yapıyor
+  - hava akımı rahatsız
+  - pencere gibi üflüyor
+  - doğrudan üfleme
+- aspect_key: hvac_uneven_temp
+  terms:
+  - bir taraf sıcak bir taraf soğuk
+  - dengesiz ısı
+  - odalarda fark
+  - oda sıcaklık dengesiz
+  - bir taraf soğuk
+  - sıcaklık eşit değil
+- aspect_key: hvac_dust_blow
+  terms:
+  - toz üflüyor
+  - klima toz çıkarıyor
+  - hava tozlu
+- aspect_key: hvac_ice_formation
+  terms:
+  - klima buz tutmuş
+  - iç ünite buzlu
+  - buzlanma
+- aspect_key: hvac_response_time
+  terms:
+  - teknisyen geç geldi
+  - klima servisi gecikti
+  - arıza geç çözüldü
+- aspect_key: hvac_fresh_air
+  terms:
+  - hava bayat
+  - taze hava yok
+  - oksijen yetmiyor
+- aspect_key: hvac_lobby_climate
+  terms:
+  - lobi çok sıcak
+  - lobi çok soğuk
+  - giriş alanı klima
+  - lobi iklimi kötü
+  - giriş bunaltıcı
+- aspect_key: room_carpet_stain
+  terms:
+  - halı lekeli
+  - halı kirli
+  - yer halısı leke
+  - halıda leke
+  - carpet leke
+- aspect_key: room_ceiling_stain
+  terms:
+  - tavanda leke
+  - tavan nem lekesi
+  - su lekesi tavan
+  - tavan su lekesi
+  - ceiling stain
+- aspect_key: room_balcony_cleanliness
+  terms:
+  - balkon kirli
+  - balkon süpürülmemiş
+  - balkon toz
+- aspect_key: shower_curtain_mold
+  terms:
+  - duş perdesi küflü
+  - perde küflenmiş
+  - küflü perde
+  - perde siyah leke
+  - duş perdesi kokuyor
+- aspect_key: toilet_paper_stock
+  terms:
+  - tuvalet kağıdı bitmiş
+  - kağıt yok
+  - rulo kalmamış
+- aspect_key: bathroom_amenities_refill
+  terms:
+  - şampuan bitmiş
+  - kozmetik yok
+  - sabun tükenmiş
+  - sabun yenilenmemiş
+  - amenity eksik
+  - tuvalet kağıdı yok
+- aspect_key: bed_bug_concern
+  terms:
+  - tahtakurusu şüphesi
+  - yatakta böcek
+  - ısırık izi
+- aspect_key: sheet_fit
+  terms:
+  - çarşaf kayıyor
+  - çarşaf küçük
+  - fitted sheet uyumsuz
+- aspect_key: duvet_cover_quality
+  terms:
+  - nevresim yırtık
+  - yorgan kılıfı eski
+  - kılıf kalitesiz
+- aspect_key: beach_cleanliness
+  terms:
+  - plaj kirli
+  - sahilde çöp
+  - plaj hijyen
+- aspect_key: sauna_cleanliness
+  terms:
+  - sauna kirli
+  - sauna hijyen
+  - sauna tahta kirli
+  - sauna bankları kirli
+  - sauna hijyen zayıf
+- aspect_key: jacuzzi_cleanliness
+  terms:
+  - jakuzi kirli
+  - jakuzi hijyen zayıf
+  - köpük kirli
+- aspect_key: gym_cleanliness
+  terms:
+  - fitness kirli
+  - aletler terli
+  - spor salonu hijyen
+- aspect_key: breakfast_hot_items
+  terms:
+  - sıcak kahvaltı soğuk
+  - omlet soğuk
+  - sıcak ürün yok
+  - sıcak yemek soğuk
+  - kızarmış yumurta yok
+  - sıcak büfe zayıf
+  - sıcak ürün bitmiş
+- aspect_key: breakfast_coffee
+  terms:
+  - kahvaltı kahvesi kötü
+  - kahve makinesi zayıf
+  - filtre kahve sulu
+  - sabah kahvesi sulu
+  - kahve istasyonu zayıf
+- aspect_key: breakfast_fruit
+  terms:
+  - meyve bayat
+  - meyve az
+  - meyve tabağı zayıf
+  - meyve taze değil
+  - meyve tabağı boş
+- aspect_key: lunch_quality
+  terms:
+  - öğle yemeği kötü
+  - öğle menü zayıf
+  - öğlen yemek vasat
+- aspect_key: soup_quality
+  terms:
+  - çorba soğuk
+  - çorba tatsız
+  - çorba sulu
+- aspect_key: salad_freshness
+  terms:
+  - salata bayat
+  - salata solmuş
+  - yeşillik kötü
+- aspect_key: food_presentation
+  terms:
+  - sunum kötü
+  - tabak dağınık
+  - görünüm zayıf
+  - tabak özensiz
+  - görünüm vasat
+- aspect_key: live_cooking_station
+  terms:
+  - canlı pişirme yok
+  - show cooking zayıf
+  - istasyon kapalı
+- aspect_key: halal_options
+  terms:
+  - helal seçenek yok
+  - helal menü eksik
+  - helal belirsiz
+- aspect_key: gluten_free_options
+  terms:
+  - glutensiz yok
+  - çölyak seçenek yok
+  - glutensiz menü eksik
+- aspect_key: vegan_options
+  terms:
+  - vegan seçenek yok
+  - vegan menü zayıf
+  - bitkisel az
+- aspect_key: bar_cocktail_quality
+  terms:
+  - kokteyl kötü
+  - kokteyl dengesiz
+  - kokteyl sulu
+- aspect_key: bar_price
+  terms:
+  - bar pahalı
+  - içecek fiyat fahiş
+  - bar ücret yüksek
+- aspect_key: room_service_temperature
+  terms:
+  - oda servisi soğuk
+  - yemek soğumuş geldi
+  - ılık oda yemeği
+- aspect_key: minibar_food
+  terms:
+  - minibar yiyecek yok
+  - mini bar boş snack
+  - çiğneme yok
+  - minibar yiyecek bayat
+  - mini bar snack eski
+  - minibar ürün SKT geçmiş
+- aspect_key: ice_cream_quality
+  terms:
+  - dondurma az çeşit
+  - dondurma erimiş
+  - dondurma kalitesiz
+- aspect_key: staff_attentiveness
+  terms:
+  - ilgi göstermiyor
+  - bakmıyor bile
+  - umursamıyor misafiri
+  - dikkatsiz personel
+  - ilgi göstermiyorlar
+  - göz teması yok servis
+- aspect_key: staff_speed
+  terms:
+  - hizmet yavaş
+  - geç geliyorlar
+  - servis temposu düşük
+- aspect_key: staff_empathy
+  terms:
+  - empati yok
+  - anlamaya çalışmıyor
+  - duygusuz yaklaşım
+  - anlayışsız personel
+- aspect_key: staff_apology
+  terms:
+  - özür dilemedi
+  - özür yok
+  - pişmanlık göstermedi
+  - özür dilemediler
+  - pişmanlık yok
+- aspect_key: staff_problem_solving
+  terms:
+  - çözüm üretmiyor
+  - problem çözemiyor
+  - çıkmaz sokak
+  - sorun çözemiyorlar
+  - çözüm üretemiyor
+  - problem solving zayıf
+- aspect_key: staff_compensation
+  terms:
+  - telafi yok
+  - jest yapılmadı
+  - kompanzasyon yok
+  - telafi teklif edilmedi
+  - kompansasyon yok
+  - indirim verilmedi
+- aspect_key: staff_language_english
+  terms:
+  - ingilizce bilmiyor
+  - ingilizce zayıf personel
+  - dil engeli İngilizce
+  - İngilizce bilmiyorlar
+  - English zayıf
+  - İngilizce anlaşılmıyor
+- aspect_key: staff_language_russian
+  terms:
+  - rusça bilen yok
+  - rusça personel eksik
+  - Rusça yok
+  - Rusça personel yok
+- aspect_key: staff_language_german
+  terms:
+  - almanca bilen yok
+  - almanca personel eksik
+  - Almanca yok
+  - Almanca personel yok
+- aspect_key: staff_night_reception
+  terms:
+  - gece resepsiyon yok
+  - gece vardiya ilgisiz
+  - gece desk boş
+  - gece resepsiyon ilgisiz
+  - gece personeli yok
+- aspect_key: staff_manager_visibility
+  terms:
+  - yönetici görünmüyor
+  - müdür ortalıkta yok
+  - sorumlu bulunamıyor
+- aspect_key: staff_bellboy
+  terms:
+  - bellboy yok
+  - bavul taşıma yok
+  - porter bulunamadı
+  - bagaj taşıma yavaş
+  - kapı görevlisi ilgisiz
+- aspect_key: staff_valet
+  terms:
+  - vale yok
+  - vale yavaş
+  - araç teslim sorun
+  - araç teslim gecikti
+- aspect_key: staff_lifeguard
+  terms:
+  - cankurtaran yok
+  - havuz güvenlik personeli yok
+  - cankurtaran ilgisiz
+  - lifeguard dikkatsiz
+- aspect_key: staff_kids_club
+  terms:
+  - kids club personeli yetersiz
+  - çocuk kulübü ilgisiz
+  - animatör çocuklarla ilgilenmiyor
+- aspect_key: staff_spa_therapist
+  terms:
+  - masajcı zayıf
+  - terapist yetersiz
+  - spa personeli kötü
+  - terapist deneyimsiz
+  - masajcı kalitesiz
+  - spa terapist kötü
+- aspect_key: staff_guest_relations
+  terms:
+  - misafir ilişkileri zayıf
+  - GR desk ilgisiz
+  - şikayet masası kötü
+  - guest relations yok
+  - GR ilgisiz
+- aspect_key: staff_overwork
+  terms:
+  - personel aşırı yorgun
+  - 14 saat çalışıyorlar
+  - tükenmiş çalışan
+- aspect_key: staff_tipping_pressure
+  terms:
+  - bahşiş istiyorlar
+  - zorla bahşiş
+  - tip baskısı
+  - bahşiş baskısı
+  - tip dayatması
+  - bahşiş bekliyorlar ısrarla
+- aspect_key: staff_discrimination
+  terms:
+  - ayrımcılık var
+  - yan gözle bakıyorlar
+  - eşit davranmıyorlar
+- aspect_key: staff_name_recognition
+  terms:
+  - isimle hitap yok
+  - tanımıyorlar
+  - kişisel ilgi yok
+  - tanıma yok
+- aspect_key: staff_uniform_cleanliness
+  terms:
+  - üniforma kirli
+  - kıyafet dağınık
+  - görünüm kötü personel
+  - kılık kıyafet bakımsız
+- aspect_key: staff_engineering_response
+  terms:
+  - teknik geç geldi
+  - mühendis gecikti
+  - arıza müdahale yavaş
+  - teknik servis geç
+  - mühendis gelmedi
+  - teknisyen yavaş
+  - arıza müdahalesi gecikti
+  - teknik ekip yok
+- aspect_key: staff_housekeeping_timing
+  terms:
+  - temizlik saati uygunsuz
+  - çok erken temizlik
+  - kapıyı çalmadan girdiler
+  - temizlik geç geldi
+  - oda geç temizlendi
+  - HK saatleri kötü
+  - öğleden sonra hâlâ kirli
+- aspect_key: staff_housekeeping_thorough
+  terms:
+  - yüzeysel temizlik
+  - detay kaçırmış
+  - köşeler kirli
+  - detay temizlenmemiş
+  - HK özensiz
+- aspect_key: staff_concierge_knowledge
+  terms:
+  - concierge bilgisiz
+  - öneri zayıf
+  - yerel bilgi yok
+  - tavsiye yetersiz
+  - şehir bilgisi yok
+- aspect_key: staff_restaurant_upsell
+  terms:
+  - upsell baskısı
+  - zorla satış
+  - sürekli ekstra öneriyor
+- aspect_key: staff_bar_friendliness
+  terms:
+  - barmen soğuk
+  - bar samimi değil
+  - içki servisi suratsız
+- aspect_key: ops_key_card
+  terms:
+  - kart açmıyor
+  - anahtar kart bozuk
+  - oda kartı çalışmıyor
+  - kart anahtar çalışmıyor
+  - keycard manyetik bozuldu
+  - oda kartı okutmuyor
+  - kart yeniden basılmalı
+  - key card dead
+- aspect_key: ops_early_checkin
+  terms:
+  - erken check-in yok
+  - erken giriş reddedildi
+  - erken check-in
+  - erken giriş istedik
+  - öğleden önce oda
+  - erken giriş ücreti
+  - early checkin yok
+  - sabah oda verilmedi
+- aspect_key: ops_late_checkout
+  terms:
+  - geç check-out yok
+  - geç çıkış reddedildi
+  - geç check-out
+  - geç çıkış
+  - late checkout ücreti
+  - öğleden sonra çıkış
+  - çıkış saati uzatma
+- aspect_key: ops_room_upgrade
+  terms:
+  - upgrade yok
+  - oda yükseltme yapılmadı
+  - oda yükseltme
+  - upgrade verilmedi
+  - suite upgrade
+  - ücretsiz upgrade yok
+  - oda kategorisi yükseltme
+  - upgrade vaadi tutulmadı
+- aspect_key: ops_reservation_accuracy
+  terms:
+  - rezervasyon hatalı
+  - yanlış oda tipi çıktı
+  - rezervasyon karışmış
+  - yanlış oda tipi
+  - rezervasyon kayıp
+  - booking yanlış
+  - çift kişilik yerine triple
+  - rezervasyon uyuşmazlığı
+- aspect_key: ops_value_for_money
+  terms:
+  - fiyat performans kötü
+  - paranın karşılığı yok
+  - pahalıya değmez
+  - paramız çöp
+  - paramiz cop
+  - para çöp oldu
+  - pişmanlıktan öteye
+  - değmezdi
+  - pahalı değmez
+  - değer düşük
+- aspect_key: cutlery_availability
+  terms:
+  - çatal bıçak yok
+  - çatal bıçak bulamadık
+  - masalarda çatal
+  - catal bicak yok
+- aspect_key: drink_soda_beverage
+  terms:
+  - soda yok
+  - soda için geçerli
+  - soda icin gecerli
+  - limonata yok
+  - barda soda
+- aspect_key: ops_checkout_process
+  terms:
+  - check out süreci
+  - çıkış işlemleri
+  - checkout formalite
+  - çıkış faturası bekledik
+  - hesap kapatma uzun
+  - çıkışta kuyruk
+  - checkout yavaş işlem
+  - check out işlemi
+  - çıkış prosedürü
+  - departure desk
+- aspect_key: ops_rate_transparency
+  terms:
+  - fiyat şeffaf değil
+  - ücret belirsiz
+  - dahil olanlar belirsiz
+  - fiyat listesi yok
+  - tarife karışık
+- aspect_key: ops_deposit_refund
+  terms:
+  - depozito iade
+  - teminat geri gelmedi
+  - deposit iade gecikti
+  - güvence ücreti iade yok
+- aspect_key: ops_luggage_storage
+  terms:
+  - bagaj emanet
+  - bavul bırakma
+  - luggage storage yok
+  - emanet yavaş
+  - bagaj odası dolu
+- aspect_key: ops_queue_lobby
+  terms:
+  - lobi kuyruğu
+  - girişte sıra
+  - lobi kalabalık sıra
+  - bankoda uzun bekleme
+  - lobby queue
+- aspect_key: ops_online_checkin
+  terms:
+  - online check-in çalışmıyor
+  - mobil giriş yok
+  - web checkin hata
+  - dijital check-in başarısız
+- aspect_key: ops_mobile_key
+  terms:
+  - mobil anahtar çalışmıyor
+  - dijital key hata
+  - telefonla kapı açılmıyor
+  - app key başarısız
+- aspect_key: ops_room_assignment
+  terms:
+  - oda ataması kötü
+  - yanlış kat
+  - istenmeyen oda
+  - oda tahsisi hatalı
+  - assignment kötü
+- aspect_key: ops_overbooking
+  terms:
+  - overbooking
+  - aşırı rezervasyon
+  - oda yok dediler
+  - overbooked
+  - otel dolu çıkışta
+- aspect_key: ops_walk_to_other_hotel
+  terms:
+  - başka otele gönderildik
+  - walk yaptılar
+  - farklı otelde kaldık
+  - yerine başka otel
+- aspect_key: ops_minibar_billing
+  terms:
+  - minibar faturası hatalı
+  - minibar ücret yanlış
+  - içmedik yazılmış
+  - minibar charge hata
+- aspect_key: ops_invoice
+  terms:
+  - fatura kesilmedi
+  - invoice gecikti
+  - kurumsal fatura yok
+  - e-fatura gelmedi
+- aspect_key: ops_all_inclusive_scope
+  terms:
+  - her şey dahil belirsiz
+  - AI kapsamı dar
+  - dahil değil çıktı
+  - all inclusive sınırları
+- aspect_key: ops_vip_handling
+  terms:
+  - VIP karşılanmadı
+  - özel misafir ilgisiz
+  - loyalty tanınmadı
+  - VIP prosedür yok
+- aspect_key: ops_loyalty_program
+  terms:
+  - sadakat puanı yok
+  - üyelik tanınmadı
+  - loyalty uygulanmadı
+  - puan yüklenmedi
+- aspect_key: ops_signage
+  terms:
+  - yön tabela eksik
+  - tabela yok
+  - yön bulamadık
+  - signage yetersiz
+  - kat tabelası belirsiz
+- aspect_key: hvac_airflow_weak
+  terms:
+  - üfleme zayıf
+  - hava akışı yetersiz
+  - fan gücü düşük
+  - zayıf üfleme
+- aspect_key: hvac_airflow_strong
+  terms:
+  - çok sert üfleme
+  - rüzgar gibi üflüyor
+  - direkt üfleme rahatsız
+- aspect_key: hvac_after_hours
+  terms:
+  - gece teknik yok
+  - mesai dışı müdahale yok
+  - gece klima tamiri gelmedi
+- aspect_key: hvac_parts_delay
+  terms:
+  - parça bekleniyor
+  - yedek parça yok
+  - klima parçası gecikti
+- aspect_key: hvac_temporary_fan
+  terms:
+  - geçici vantilatör
+  - fan verdiler
+  - klima yerine fan
+- aspect_key: hvac_room_move_climate
+  terms:
+  - klima yüzünden oda değiştik
+  - iklim için oda taşıma
+  - soğutmuyor diye taşıdılar
+- aspect_key: bathroom_cleanliness
+  terms:
+  - banyo kirli
+  - tuvalet hijyeni zayıf
+  - banyo temizlenmemiş
+  - lavabo kirli
+  - banyo hijyen kötü
+- aspect_key: room_odor_sewage
+  terms:
+  - lağım kokusu oda
+  - kanalizasyon kokusu
+  - pis su kokusu
+- aspect_key: bed_linen_change_freq
+  terms:
+  - çarşaf değişmedi
+  - nevresim değiştirilmedi
+  - günlerce aynı çarşaf
+- aspect_key: room_turndown_timing
+  terms:
+  - turndown yok
+  - akşam servisi gelmedi
+  - turndown gecikti
+- aspect_key: ops_laundry_quality
+  terms:
+  - çamaşır leke çıkmamış
+  - ütü kötü
+  - çamaşır kokuyor
+  - laundry kalitesiz
+- aspect_key: ops_laundry_turnaround
+  terms:
+  - çamaşır geç geldi
+  - laundry gecikti
+  - aynı gün yetişmedi
+- aspect_key: room_minibar_stock
+  terms:
+  - minibar stoku yok
+  - minibar boşaltılmış
+  - içecek yenilenmemiş
+  - minibar ürün eksik
+- aspect_key: room_minibar_price
+  terms:
+  - minibar pahalı
+  - mini bar fiyatı abartı
+  - minibar ücretleri yüksek
+- aspect_key: food_repeat_menu
+  terms:
+  - menü tekrar ediyor
+  - döngü aynı
+  - haftalık menü sabit
+  - yenilik yok
+- aspect_key: breakfast_pastry
+  terms:
+  - poğaça bayat
+  - hamur işi az
+  - croissant bayat
+  - tatlı börek yok
+- aspect_key: breakfast_eggs
+  terms:
+  - yumurta istasyonu yavaş
+  - omlet sırası
+  - yumurta seçeneği yok
+- aspect_key: buffet_crowd
+  terms:
+  - büfe kalabalık
+  - yemek salonu dolu
+  - bufede izdiham
+- aspect_key: buffet_labels
+  terms:
+  - yemek etiketi yok
+  - ne olduğu yazmıyor
+  - alerjen etiketi eksik
+- aspect_key: food_meat_quality
+  terms:
+  - et kalitesi düşük
+  - et sert çiğnenmiyor
+  - et yağlı kötü
+- aspect_key: food_seafood
+  terms:
+  - deniz ürünü bayat
+  - balık kokmuş
+  - seafood kalitesiz
+- aspect_key: food_vegetarian
+  terms:
+  - vejetaryen seçenek yok
+  - etsiz yemek az
+  - vejetaryen menü zayıf
+- aspect_key: food_halal
+  terms:
+  - helal belirsiz
+  - helal sertifika yok
+  - helal seçenek az
+- aspect_key: food_gluten_free
+  terms:
+  - glutensiz yok
+  - çölyak seçeneği yok
+  - gluten free menü yok
+- aspect_key: food_children_menu
+  terms:
+  - çocuk menüsü yok
+  - kids meal yetersiz
+  - çocuk yemeği az
+- aspect_key: food_temperature_hot
+  terms:
+  - sıcak yemek ılık
+  - servis soğuk gelmiş
+  - sıcak tutulmamış
+- aspect_key: food_salad_bar
+  terms:
+  - salata barı zayıf
+  - salata çeşit az
+  - yeşillik bayat
+- aspect_key: food_juice_bar
+  terms:
+  - meyve suyu barı yok
+  - taze sıkım yok
+  - juice bar boş
+- aspect_key: food_poisoning_concern
+  terms:
+  - zehirlenme şüphesi
+  - mide bulantısı yemekten
+  - gıda güvenliği endişesi
+- aspect_key: aquapark
+  terms:
+  - aquapark
+  - aqua park
+  - aquaprk
+  - akuapark
+  - su parkı
+  - kaydıraklı havuz
+  - aquapark kapalı
+  - su kaydırağı
+  - aqua park bakımsız
+  - aqua-park
+  - akuapark kaydırak
+  - su parkı kaydırakları
+  - aquapark alanı
+  - aqua park kapalı
+  - su kaydırak parkı
+  - aquapark bakımsız alan
+- aspect_key: pool_aquapark_queue
+  terms:
+  - aquapark kuyruğu
+  - kaydırak sırası uzun
+  - su parkı bekleme
+  - slayt kuyruğu
+- aspect_key: pool_aquapark_maintenance
+  terms:
+  - aquapark bakımda
+  - kaydırak kapalı
+  - slayt arızalı
+  - su parkı çalışmıyor
+- aspect_key: pool_water_clarity
+  terms:
+  - su berrak değil
+  - bulanık su
+  - görünürlük düşük havuz
+- aspect_key: pool_chlorine_smell
+  terms:
+  - klor kokusu yoğun
+  - havuz klor aşırı
+  - göz yakıyor klor
+- aspect_key: pool_temperature
+  terms:
+  - havuz soğuk
+  - su ısısı düşük
+  - havuz ısıtılmamış
+  - buz gibi havuz
+- aspect_key: pool_crowd
+  terms:
+  - havuz kalabalık
+  - yer yok havuzda
+  - havuz izdiham
+- aspect_key: pool_lounger
+  terms:
+  - şezlong yok
+  - şezlong yetmiyor
+  - lounger rezerve edilmiş
+  - şezlong havlu ile tutulmuş
+- aspect_key: pool_sunbed
+  terms:
+  - güneş yatağı yok
+  - sunbed kalmamış
+  - şezlong savaşları
+- aspect_key: pool_sunbed_reservation
+  terms:
+  - şezlong rezervasyonu adaletsiz
+  - havlu ile yer tutma
+  - erken rezervasyon sorunu
+- aspect_key: pool_towel_service
+  terms:
+  - havuz havlusu yok
+  - havlu kartı sorunu
+  - towel service yetersiz
+- aspect_key: pool_shade
+  terms:
+  - gölgelik yok
+  - şemsiye yetmiyor
+  - güneş koruması yok
+- aspect_key: pool_kids_area
+  terms:
+  - çocuk havuzu kirli
+  - kids pool sığ değil güvenli
+  - çocuk alanı bakımsız
+- aspect_key: pool_slide_safety
+  terms:
+  - kaydırak güvensiz
+  - slayt kaygan tehlike
+  - güvenlik görevlisi yok kaydırakta
+- aspect_key: pool_lifeguard_presence
+  terms:
+  - cankurtaran yok
+  - lifeguard görünmüyor
+  - havuz güvenlik personeli yok
+- aspect_key: pool_chemical_balance
+  terms:
+  - kimyasal dengesi bozuk
+  - pH sorunlu
+  - havuz kimyası kötü
+- aspect_key: pool_algae
+  terms:
+  - havuzda yosun
+  - yeşil duvarlar
+  - algae var
+- aspect_key: spa_service
+  terms:
+  - spa hizmeti zayıf
+  - spa deneyimi kötü
+  - wellness yetersiz
+- aspect_key: spa_booking
+  terms:
+  - spa randevu alınamıyor
+  - booking dolu
+  - spa rezervasyon zor
+- aspect_key: spa_massage_quality
+  terms:
+  - masaj kalitesiz
+  - masaj sert/kötü
+  - terapist zayıf
+- aspect_key: massage_quality
+  terms:
+  - masaj hayal kırıklığı
+  - masaj süresi kısa
+  - masaj özensiz
+- aspect_key: spa_wait_time
+  terms:
+  - spa bekleme uzun
+  - randevu gecikti
+  - terapist bekledik
+- aspect_key: spa_robe_slippers
+  terms:
+  - bornoz yok
+  - terlik eksik
+  - spa robe verilmedi
+- aspect_key: sauna_temperature
+  terms:
+  - sauna soğuk
+  - sauna ısısı düşük
+  - sauna yeterince sıcak değil
+- aspect_key: hammam_quality
+  terms:
+  - hamam kalitesiz
+  - hamam bakımsız
+  - Türk hamamı hayal kırıklığı
+- aspect_key: turkish_bath_quality
+  terms:
+  - Türk hamamı zayıf
+  - kese sabun kötü
+  - hamam personeli ilgisiz
+- aspect_key: spa_staff
+  terms:
+  - spa personeli ilgisiz
+  - spa ekibi kaba
+  - wellness personeli zayıf
+- aspect_key: staff_spa_attitude
+  terms:
+  - spa personeli suratsız
+  - spa karşılama soğuk
+- aspect_key: ops_spa_hours
+  terms:
+  - spa saatleri kısa
+  - spa erken kapanıyor
+  - spa açılış geç
+- aspect_key: staff_complaint_resolution
+  terms:
+  - sorun çözülmedi
+  - çözüm üretilmedi
+  - telafi yok
+- aspect_key: staff_security
+  terms:
+  - güvenlik personeli ilgisiz
+  - security yetersiz
+  - güvenlik görünmüyor
+- aspect_key: staff_welcome_drink
+  terms:
+  - karşılama içkisi yok
+  - welcome drink verilmedi
+- aspect_key: staff_farewell
+  terms:
+  - veda yok
+  - çıkışta ilgilenmediler
+  - farewell zayıf
+- aspect_key: staff_lost_found
+  terms:
+  - kayıp eşya bulamadılar
+  - lost and found yok
+  - eşya kayboldu ilgilenmediler
+- aspect_key: staff_special_request
+  terms:
+  - özel istek karşılanmadı
+  - request ignored
+  - özel talep unutuldu
+- aspect_key: staff_overworked
+  terms:
+  - personel aşırı yorgun
+  - çok yüklü çalışanlar
+  - stresli ekip
+- aspect_key: animation_staff
+  terms:
+  - animasyon ekibi zayıf
+  - animatörler ilgisiz
+  - show kalitesiz
+- aspect_key: ops_response_sla
+  terms:
+  - yanıt süresi aşıldı
+  - SLA kaçtı
+  - geç dönüş
+- aspect_key: hvac_heating
+  terms:
+  - ısıtma sistemi
+  - oda ısıtma yetersiz
+  - heating yok
+- aspect_key: pillow_quality
+  terms:
+  - yastık kötü
+  - yastık düz
+  - yastık sert
+  - yastık kokuyor
+- aspect_key: ops_elevator_capacity
+  terms:
+  - asansör yetersiz
+  - asansör kuyruğu
+  - lift yavaş
+  - asansör dar
+- aspect_key: pool_bar_service
+  terms:
+  - havuz barı yavaş
+  - pool bar servisi kötü
+  - şezlongda içecek gelmedi
+- aspect_key: staff_pool_service
+  terms:
+  - havuz personeli ilgisiz
+  - pool waiter yok
+- aspect_key: staff_beach_service
+  terms:
+  - plaj servisi yok
+  - beach waiter yavaş
+- aspect_key: ops_airport_transfer
+  terms:
+  - havaalanı transferi gecikti
+  - transfer şoförü yok
+  - airport transfer iptal
+- aspect_key: ops_shuttle
+  terms:
+  - shuttle yok
+  - servis aracı gecikti
+  - otel servisi çalışmıyor
+- aspect_key: ops_noise_construction
+  terms:
+  - inşaat gürültüsü
+  - renovasyon sesi
+  - matkap sesi
+- aspect_key: ops_renovation_impact
+  terms:
+  - renovasyon etkisi
+  - tadilat yüzünden rahatsız
+  - yenileme gürültüsü
+- aspect_key: ops_wake_up_call
+  terms:
+  - uyanma servisi yok
+  - wake up call gelmedi
+  - sabah araması yok
+  - uyanma çağrısı unutuldu
+- aspect_key: ops_safe_deposit
+  terms:
+  - kasa çalışmıyor
+  - safe açılamadı
+  - emanet kasa arızalı
+  - oda kasası şifre
+- aspect_key: ops_currency_exchange
+  terms:
+  - döviz bozdurma yok
+  - kur kötü
+  - para bozdurma yavaş
+- aspect_key: ops_group_handling
+  terms:
+  - grup check-in kaos
+  - grup yönetimi kötü
+  - tur grubu karmaşa
+- aspect_key: ops_connecting_request
+  terms:
+  - bitişik oda verilmedi
+  - connecting oda yok
+  - yan yana oda reddedildi
+- aspect_key: ops_view_guarantee
+  terms:
+  - manzara garantisi tutulmadı
+  - deniz manzarası yok
+  - view vaadi boşa
+- aspect_key: ops_bed_type_mismatch
+  terms:
+  - yatak tipi yanlış
+  - twin yerine double
+  - king bed yok
+- aspect_key: ops_allergy_note
+  terms:
+  - alerji notu okunmamış
+  - alerji talebi unutuldu
+- aspect_key: ops_birthday_setup
+  terms:
+  - doğum günü süsü yok
+  - birthday setup unutuldu
+- aspect_key: ops_honeymoon_package
+  terms:
+  - balayı paketi uygulanmadı
+  - honeymoon dekor yok
+- aspect_key: ops_medical_help
+  terms:
+  - doktor çağrılamadı
+  - tıbbi yardım gecikti
+  - revir yok
+- aspect_key: ops_taxi
+  terms:
+  - taksi bulamadık
+  - taksi çağırma yavaş
+  - taxi desk yok
+- aspect_key: ops_tour_desk
+  terms:
+  - tur masası bilgisiz
+  - tur desk pahalı
+  - excursion desk kötü
+- aspect_key: ops_kids_club_hours
+  terms:
+  - çocuk kulübü saatleri kısa
+  - kids club kapalı
+- aspect_key: ops_babysitting
+  terms:
+  - bebek bakıcısı yok
+  - babysitting bulunamadı
+- aspect_key: ops_power_backup
+  terms:
+  - jeneratör yok
+  - elektrik kesilince karanlık
+  - UPS yetersiz
+- aspect_key: ops_water_outage
+  terms:
+  - su kesintisi
+  - musluklardan su gelmedi
+  - su kesildi
+- aspect_key: ops_key_encoding
+  terms:
+  - kart yeniden kodlanamadı
+  - key encoding hata
+  - kart basımı başarısız
+- aspect_key: ops_complaint_log
+  terms:
+  - şikayet kaydı yok
+  - complaint log tutulmadı
+- aspect_key: ops_pos_system
+  terms:
+  - kasa sistemi çöktü
+  - POS yazılım hatası
+  - ödeme sistemi yavaş
+- aspect_key: hvac_slow_cool
+  terms:
+  - yavaş soğuyor
+  - soğutma geç geliyor
+  - saatlerce ısınık kaldı
+- aspect_key: hvac_slow_heat
+  terms:
+  - yavaş ısınıyor
+  - ısıtma geç
+  - ısınma saatler sürdü
+- aspect_key: hvac_fan_noise
+  terms:
+  - fan uğultusu
+  - vantilatör sesi yüksek
+  - fan zırıltı
+- aspect_key: hvac_rattle
+  terms:
+  - klima tıkırtı
+  - metal tıkırtı klima
+  - rattle sesi
+- aspect_key: hvac_whistle
+  terms:
+  - klima ıslık sesi
+  - hava ıslığı
+  - whistle sesi kanal
+- aspect_key: hvac_display_error
+  terms:
+  - klima hata kodu
+  - ekranda error
+  - display arıza
+- aspect_key: hvac_mode_stuck
+  terms:
+  - mod değişmiyor
+  - klima moda takıldı
+  - heat/cool kilitli
+- aspect_key: hvac_temp_display
+  terms:
+  - sıcaklık göstergesi yanlış
+  - display derece hatalı
+- aspect_key: hvac_condensate
+  terms:
+  - yoğuşma birikiyor
+  - kondens taşıyor
+  - su tepsisi dolu
+- aspect_key: hvac_eco_mode
+  terms:
+  - eco modu yetersiz
+  - tasarruf modu soğutmuyor
+- aspect_key: hvac_quiet_mode
+  terms:
+  - sessiz mod hâlâ gürültülü
+  - quiet mode işe yaramıyor
+- aspect_key: hvac_turbo_mode
+  terms:
+  - turbo mod yok
+  - hızlı soğutma yok
+- aspect_key: hvac_restaurant_climate
+  terms:
+  - restoran sıcak
+  - yemek salonu iklimi kötü
+  - restoran klima yetersiz
+- aspect_key: hvac_spa_climate
+  terms:
+  - spa bunaltıcı
+  - spa havalandırma kötü
+- aspect_key: hvac_gym_climate
+  terms:
+  - spor salonu sıcak
+  - gym klima yok
+- aspect_key: hvac_pool_dehumid
+  terms:
+  - kapalı havuz nemli
+  - havuz alanı buğu
+  - dehumid yetersiz
+- aspect_key: hvac_central_lock
+  terms:
+  - merkezi klima kilitli
+  - misafir ayarlayamıyor
+  - termostat kilit
+- aspect_key: hvac_guest_override
+  terms:
+  - misafir override yok
+  - manuel müdahale engelli
+- aspect_key: hvac_bms_issue
+  terms:
+  - BMS arızası
+  - otomasyon hatası
+  - santral kontrol sorunu
+- aspect_key: room_dampness
+  terms:
+  - oda nemli
+  - rutubetli oda
+  - duvarlar nemli
+- aspect_key: room_paint_peeling
+  terms:
+  - boya dökülüyor
+  - sıva dökülmüş
+  - duvar boyası soyulmuş
+- aspect_key: room_tile_broken
+  terms:
+  - fayans kırık
+  - kırık karo
+  - tile çatlak
+- aspect_key: room_insects
+  terms:
+  - böcek sorunu oda
+  - haşere odada
+  - sinek odada
+- aspect_key: bathroom_drain
+  terms:
+  - gider tıkanık
+  - su çekmiyor
+  - lavabo tıkanmış
+- aspect_key: bathroom_leak
+  terms:
+  - banyo sızıntı
+  - musluk damlıyor
+  - su kaçağı banyo
+- aspect_key: bathroom_exhaust
+  terms:
+  - banyo havalandırma yok
+  - egzoz çalışmıyor banyo
+  - buhar çıkmıyor
+- aspect_key: shower_drain_clog
+  terms:
+  - duş gideri tıkalı
+  - duşta su birikiyor
+- aspect_key: toilet_clog
+  terms:
+  - tuvalet tıkalı
+  - klozet tıkanmış
+  - sifon çekmiyor
+- aspect_key: food_hygiene
+  terms:
+  - yemek hijyeni şüpheli
+  - mutfak hijyen endişesi
+  - gıda hijyen zayıf
+- aspect_key: food_local_cuisine
+  terms:
+  - yerel mutfak zayıf
+  - Türk yemekleri az
+  - local dishes yok
+- aspect_key: food_spice_level
+  terms:
+  - aşırı acı
+  - baharat dengesiz
+  - çok baharatlı
+- aspect_key: buffet_organization
+  terms:
+  - büfe düzensiz
+  - istasyonlar karışık
+  - bufe organizasyon kötü
+- aspect_key: buffet_quality
+  terms:
+  - büfe kalitesi düşük
+  - açık büfe zayıf
+  - bufe vasat
+- aspect_key: pool_safety
+  terms:
+  - havuz güvenliği zayıf
+  - kaygan zemin havuz
+  - güvenlik uyarıları yok
+- aspect_key: pool_maintenance
+  terms:
+  - havuz bakım yetersiz
+  - havuz ekipmanı arızalı
+- aspect_key: pool_heater
+  terms:
+  - havuz ısıtıcısı bozuk
+  - ısıtma kapalı havuz
+- aspect_key: pool_lighting_night
+  terms:
+  - gece havuz aydınlatması yok
+  - havuz karanlık
+- aspect_key: pool_adult_only
+  terms:
+  - yetişkin havuzu ihlal
+  - adult only kuralı yok
+- aspect_key: pool_music_volume
+  terms:
+  - havuz müziği çok yüksek
+  - animasyon sesi rahatsız
+- aspect_key: spa_therapist_gender
+  terms:
+  - terapist cinsiyet tercihi yok
+  - kadın terapist bulunamadı
+- aspect_key: staff_knowledge
+  terms:
+  - bilgisiz personel
+  - otel bilgisi yok
+  - sorulara cevap yok
+- aspect_key: staff_complaint_escalation
+  terms:
+  - şikayet yükseltilmedi
+  - müdüre ulaşamadık
+  - escalation yok
+- aspect_key: staff_multilingual
+  terms:
+  - çok dilli personel yok
+  - dil çeşitliliği yok
+- aspect_key: staff_teamwork
+  terms:
+  - ekip uyumsuz
+  - departmanlar konuşmuyor
+- aspect_key: staff_identification
+  terms:
+  - yaka kartı yok
+  - kim olduğu belirsiz
+- aspect_key: staff_transfer_driver
+  terms:
+  - transfer şoförü kaba
+  - şoför gecikti
+- aspect_key: staff_minibar_attendant
+  terms:
+  - minibar görevlisi gelmedi
+  - minibar kontrolü yanlış
+- aspect_key: staff_room_service_waiter
+  terms:
+  - oda servisi garsonu kaba
+  - room service personeli ilgisiz

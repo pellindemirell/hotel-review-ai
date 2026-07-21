@@ -1,0 +1,62 @@
+version: "1.0"
+description: "Hotel entity relationship graph"
+
+relationships:
+  # contains — hierarchical structure
+  - {from_id: phy_hotel, to_id: phy_building_main, type: contains}
+  - {from_id: phy_hotel, to_id: phy_building_annex, type: contains}
+  - {from_id: phy_hotel, to_id: phy_lobby, type: contains}
+  - {from_id: phy_hotel, to_id: fac_pool, type: contains}
+  - {from_id: phy_hotel, to_id: fac_spa, type: contains}
+  - {from_id: phy_hotel, to_id: fac_restaurant, type: contains}
+  - {from_id: phy_hotel, to_id: fac_bar, type: contains}
+  - {from_id: phy_hotel, to_id: fac_gym, type: contains}
+  - {from_id: phy_hotel, to_id: fac_parking, type: contains}
+  - {from_id: phy_hotel, to_id: fac_beach, type: contains}
+  - {from_id: phy_building_main, to_id: phy_floor, type: contains}
+  - {from_id: phy_floor, to_id: phy_room, type: contains}
+  - {from_id: phy_floor, to_id: phy_suite, type: contains}
+  - {from_id: phy_building_main, to_id: phy_corridor, type: contains}
+
+  # has — room components
+  - {from_id: phy_room, to_id: phy_bathroom, type: has}
+  - {from_id: phy_room, to_id: eq_bed, type: has}
+  - {from_id: phy_room, to_id: eq_air_conditioner, type: has}
+  - {from_id: phy_room, to_id: eq_tv, type: has}
+  - {from_id: phy_room, to_id: eq_minibar, type: has}
+  - {from_id: phy_room, to_id: eq_safe, type: has}
+  - {from_id: phy_room, to_id: eq_wifi_router, type: has}
+  - {from_id: phy_bathroom, to_id: eq_shower_head, type: has}
+  - {from_id: phy_bathroom, to_id: eq_toilet, type: has}
+  - {from_id: eq_bed, to_id: eq_mattress, type: has}
+  - {from_id: eq_bed, to_id: eq_pillow, type: has}
+
+  # part_of — equipment hierarchy
+  - {from_id: eq_split_ac, to_id: eq_air_conditioner, type: part_of}
+  - {from_id: eq_ac_remote, to_id: eq_air_conditioner, type: part_of}
+  - {from_id: eq_thermostat, to_id: eq_air_conditioner, type: part_of}
+  - {from_id: eq_hvac_filter, to_id: eq_air_conditioner, type: part_of}
+  - {from_id: eq_compressor, to_id: eq_air_conditioner, type: part_of}
+
+  # located_in
+  - {from_id: eq_air_conditioner, to_id: phy_room, type: located_in}
+  - {from_id: eq_minibar, to_id: phy_room, type: located_in}
+  - {from_id: eq_pool_pump, to_id: fac_pool, type: located_in}
+  - {from_id: eq_coffee_machine, to_id: fac_restaurant, type: located_in}
+
+  # managed_by — operational ownership
+  - {from_id: eq_air_conditioner, to_id: engineering_hvac, type: managed_by}
+  - {from_id: eq_split_ac, to_id: engineering_hvac, type: managed_by}
+  - {from_id: eq_chiller, to_id: engineering_hvac, type: managed_by}
+  - {from_id: eq_boiler, to_id: engineering_hvac, type: managed_by}
+  - {from_id: eq_wifi_router, to_id: engineering_internet, type: managed_by}
+  - {from_id: eq_access_point, to_id: engineering_internet, type: managed_by}
+  - {from_id: phy_room, to_id: housekeeping, type: managed_by}
+  - {from_id: eq_bed, to_id: housekeeping, type: managed_by}
+  - {from_id: fac_pool, to_id: havuz, type: managed_by}
+  - {from_id: fac_restaurant, to_id: restaurant, type: managed_by}
+  - {from_id: eq_shower_head, to_id: engineering_plumbing, type: managed_by}
+  - {from_id: eq_elevator, to_id: teknik, type: managed_by}
+  - {from_id: eq_minibar, to_id: bar, type: managed_by}
+  - {from_id: fac_spa, to_id: spa, type: managed_by}
+  - {from_id: hum_hvac_technician, to_id: engineering_hvac, type: managed_by}
