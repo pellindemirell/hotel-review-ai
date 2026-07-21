@@ -1,5 +1,6 @@
 using HotelReviewAI.Application.DTOs;
 using HotelReviewAI.Application.Interfaces;
+using Mapster;
 using MediatR;
 
 namespace HotelReviewAI.Application.Queries.Reviews;
@@ -21,43 +22,7 @@ public class GetReviewByIdHandler : IRequestHandler<GetReviewByIdQuery, ReviewDe
             return null;
         }
 
-        return new ReviewDetailDto
-        {
-            Id = review.Id,
-            GuestName = review.GuestName,
-            Comment = review.Comment,
-            Rating = review.Rating,
-            ReviewDate = review.ReviewDate,
-            Source = review.Source.ToString(),
-            Language = review.Language,
-            Analyses = review.Analyses.Select(a => new ReviewAnalysisDto
-            {
-                Id = a.Id,
-                ClauseIndex = a.ClauseIndex,
-                ClauseText = a.ClauseText,
-                Sentiment = a.Sentiment.ToString(),
-                SentimentScore = a.SentimentScore,
-                Priority = a.Priority.ToString(),
-                CategoryId = a.CategoryId,
-                CategoryName = a.Category?.Name,
-                Suggestion = a.Suggestion,
-                Confidence = a.Confidence
-            }).ToList(),
-            Attachments = review.Attachments.Select(x => new ReviewAttachmentDto
-            {
-                Id = x.Id,
-                FileUrl = x.FileUrl,
-                FileType = x.FileType,
-                OcrText = x.OcrText
-            }).ToList(),
-            ActionItems = review.ActionItems.Select(x => new ActionItemDto
-            {
-                Id = x.Id,
-                Title = x.Title,
-                Status = x.Status.ToString(),
-                DueDate = x.DueDate,
-                AssignedTo = x.AssignedTo
-            }).ToList()
-        };
+        // Mapster ile otomatik map — MappingConfig'deki kurallar uygulanır
+        return review.Adapt<ReviewDetailDto>();
     }
 }

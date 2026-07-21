@@ -1,8 +1,6 @@
-using System;
 using Microsoft.AspNetCore.Mvc;
 using HotelReviewAI.Application.DTOs;
 using HotelReviewAI.Application.Interfaces;
-using HotelReviewAI.Domain.Enums;
 using HotelReviewAI.Shared.Responses;
 
 namespace HotelReviewAI.Api.Controllers;
@@ -12,29 +10,40 @@ namespace HotelReviewAI.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IJwtProvider _jwtProvider;
+    private readonly IUserRepository _userRepository;
 
-    public AuthController(IJwtProvider jwtProvider)
+    public AuthController(IJwtProvider jwtProvider, IUserRepository userRepository)
     {
         _jwtProvider = jwtProvider;
+        _userRepository = userRepository;
     }
 
     [HttpPost("login")]
-    public ActionResult<BaseResponse<LoginResponse>> Login([FromBody] LoginRequest request)
+    public async Task<ActionResult<BaseResponse<LoginResponse>>> Login([FromBody] LoginRequest request)
     {
-        // MVP: Dummy login logic for Stajyer 1 testing
-        // Once EF Core is set up by Stajyer 2, this will be replaced with actual database validation.
-        if (request.Email == "admin@test.com" && request.Password == "1234")
+        // 1. Kullanıcıyı veritabanından e-posta ile bul
+        var user = await _userRepository.GetByEmailAsync(request.Email);
+        if (user is null)
         {
-            var token = _jwtProvider.GenerateToken(
-                userId: Guid.NewGuid(),
-                email: request.Email,
-                role: Roles.Admin,
-                fullName: "Admin User"
-            );
-
-            return Ok(BaseResponse<LoginResponse>.Ok(new LoginResponse { Token = token }, "Login successful"));
+            return Unauthorized(BaseResponse<LoginResponse>.Fail("Geçersiz e-posta veya şifre."));
         }
 
-        return Unauthorized(BaseResponse<LoginResponse>.Fail("Invalid credentials"));
+        // 2. BCrypt ile şifre doğrulaması
+        var passwordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
+        if (!passwordValid)
+        {
+            return Unauthorized(BaseResponse<LoginResponse>.Fail("Geçersiz e-posta veya şifre."));
+        }
+
+        // 3. JWT oluştur — departmentId claim'i dahil edilir
+        var token = _jwtProvider.GenerateToken(
+            userId: user.Id,
+            email: user.Email,
+            role: user.Role,
+            fullName: user.FullName,
+            departmentId: user.DepartmentId
+        );
+
+        return Ok(BaseResponse<LoginResponse>.Ok(new LoginResponse { Token = token }, "Giriş başarılı."));
     }
 }

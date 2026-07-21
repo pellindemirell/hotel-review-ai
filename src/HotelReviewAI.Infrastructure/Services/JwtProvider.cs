@@ -17,7 +17,7 @@ public class JwtProvider : IJwtProvider
         _configuration = configuration;
     }
 
-    public string GenerateToken(Guid userId, string email, string role, string fullName)
+    public string GenerateToken(Guid userId, string email, string role, string fullName, Guid? departmentId = null)
     {
         var secretKey = _configuration["JwtSettings:Secret"];
         var issuer = _configuration["JwtSettings:Issuer"];
@@ -29,7 +29,7 @@ public class JwtProvider : IJwtProvider
             throw new InvalidOperationException("JWT Secret is not configured.");
         }
 
-        var claims = new[]
+        var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, email),
@@ -37,6 +37,12 @@ public class JwtProvider : IJwtProvider
             new Claim(ClaimTypes.Role, role),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
+
+        // DepartmentUser ve MobileUser rolleri için departman bilgisi eklenir
+        if (departmentId.HasValue)
+        {
+            claims.Add(new Claim("departmentId", departmentId.Value.ToString()));
+        }
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

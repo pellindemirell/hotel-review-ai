@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\HotelReviewAI.Application\HotelReviewAI.Application.csproj" />
@@ -18,5 +18,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Seed\reviews.json" />
+  </ItemGroup>
 
 </Project>

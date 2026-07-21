@@ -1,5 +1,6 @@
 using HotelReviewAI.Application.DTOs;
 using HotelReviewAI.Application.Interfaces;
+using Mapster;
 using MediatR;
 
 namespace HotelReviewAI.Application.Queries.Users;
@@ -20,16 +21,14 @@ public class GetUsersHandler : IRequestHandler<GetUsersQuery, List<UserDto>>
         var users = await _userRepository.GetAllAsync();
         var departments = (await _departmentRepository.GetAllAsync()).ToDictionary(d => d.Id);
 
-        return users.Select(u => new UserDto
+        // Mapster ile map et, sonra DepartmentName'i departman sözlüğünden doldur
+        return users.Select(u =>
         {
-            Id = u.Id,
-            FullName = u.FullName,
-            Email = u.Email,
-            Role = u.Role,
-            DepartmentId = u.DepartmentId,
-            DepartmentName = u.DepartmentId is not null && departments.TryGetValue(u.DepartmentId.Value, out var dept)
+            var dto = u.Adapt<UserDto>();
+            dto.DepartmentName = u.DepartmentId is not null && departments.TryGetValue(u.DepartmentId.Value, out var dept)
                 ? dept.Name
-                : null
+                : null;
+            return dto;
         }).ToList();
     }
 }

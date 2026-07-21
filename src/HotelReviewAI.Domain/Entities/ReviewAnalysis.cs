@@ -19,4 +19,7 @@ public class ReviewAnalysis : BaseEntity
 
     public string? Suggestion { get; set; }
     public double Confidence { get; set; }
+
+    public List<string> Keywords { get; set; } = [];
+    public string? Summary { get; set; }
 }

@@ -31,11 +31,10 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An unhandled exception occurred: {Message}", ex.Message);   //hatayı önbelleğine kaydet 
-            await HandleExceptionAsync(context, ex);   //hatamesajı üret
+            _logger.LogError(ex, "An unhandled exception occurred: {Message}", ex.Message); // Hatayı log kaydı olarak kaydet
+            await HandleExceptionAsync(context, ex); // Hata detaylarını istemciye uygun formatta dön
         }
     }
- //try-catch herhangi bir hatada controllera gitmeden önce hata catch bloğuna düşsün
 
     private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
@@ -54,7 +53,7 @@ public class ExceptionHandlingMiddleware
         else if (exception is DomainException domainException)
         {
             statusCode = HttpStatusCode.BadRequest;
-            message = "kural ihlali .";
+            message = "İş kuralı ihlali.";
             errors.Add(domainException.Message);
         }
         else

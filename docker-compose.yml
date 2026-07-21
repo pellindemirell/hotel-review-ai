@@ -4,7 +4,7 @@ services:
   ai-service:
     build: ./ai-service
     environment:
-      - DB_HOST=192.168.40.140
+      - DB_HOST=192.168.40.140 
       - DB_PORT=5432
       - DB_NAME=stajor
       - DB_USER=stajor1

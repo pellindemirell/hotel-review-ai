@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 import logging
 
-from .db import get_db, engine, Base
+from .db import get_db
 from .services.sentiment_service import analyze_sentiment
 from .services.category_service import classify_category
 from .services.keyword_service import extract_keywords
@@ -55,12 +55,11 @@ class OCRResponse(BaseModel):
     ocr_text: str = Field(..., description="Extracted text from image")
     quality_score: float = Field(..., description="Visual quality score (0.0 to 1.0)")
 
-# Ensure tables are created if needed (in case migrations are not run yet)
-try:
-    Base.metadata.create_all(bind=engine)
-    logger.info("Database tables verified.")
-except Exception as e:
-    logger.warning(f"Could not automatically create/verify tables: {e}")
+# NOT: create_all() kasıtlı olarak kaldırıldı. Şema, sadece backend (C#/EF Core)
+# migration'ları tarafından yönetilir; bu servis "stajor" veritabanına yazmaz,
+# sadece kategori listesini (classify_category) okur. Backend'in ReviewAnalysis
+# şeması (clause bazlı) ile bu servisin eski SQLAlchemy modelleri artık uyuşmuyor,
+# create_all() burada çalışırsa backend migration'larıyla çakışabilir/hataya yol açar.
 
 
 @app.get("/health")

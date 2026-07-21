@@ -1,6 +1,7 @@
 using HotelReviewAI.Application.DTOs;
 using HotelReviewAI.Application.Interfaces;
 using HotelReviewAI.Shared.Pagination;
+using Mapster;
 using MediatR;
 
 namespace HotelReviewAI.Application.Queries.Reviews;
@@ -30,15 +31,8 @@ public class GetReviewsHandler : IRequestHandler<GetReviewsQuery, PagedResponse<
 
         var (items, totalCount) = await _reviewRepository.GetFilteredReviewsAsync(filter);
 
-        var dtos = items.Select(r => new ReviewListItemDto
-        {
-            Id = r.Id,
-            GuestName = r.GuestName,
-            Comment = r.Comment,
-            Rating = r.Rating,
-            ReviewDate = r.ReviewDate,
-            Source = r.Source.ToString()
-        }).ToList();
+        // Mapster ile toplu dönüşüm
+        var dtos = items.Adapt<List<ReviewListItemDto>>();
 
         return new PagedResponse<List<ReviewListItemDto>>(dtos, request.PageNumber, request.PageSize, totalCount);
     }
