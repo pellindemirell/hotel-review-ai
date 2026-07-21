@@ -20,24 +20,15 @@ public static class DependencyInjection
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-        // Python AI servis entegrasyonu veya Sahte Servis seçeneği (Feature Toggle)
-        var useFakeAi = configuration.GetValue<bool>("UseFakeAiService");
+        // Python AI servis entegrasyonu (Her zaman aktif)
+        var aiServiceUrl = configuration["AiServiceUrl"] ?? "http://localhost:8000";
 
-        if (useFakeAi)
+        services.AddHttpClient<IAiAnalysisService, AiAnalysisService>(client =>
         {
-            services.AddScoped<IAiAnalysisService, FakeAiAnalysisService>();
-        }
-        else
-        {
-            var aiServiceUrl = configuration["AiServiceUrl"] ?? "http://localhost:8000";
-
-            services.AddHttpClient<IAiAnalysisService, AiAnalysisService>(client =>
-            {
-                client.BaseAddress = new Uri(aiServiceUrl);
-                client.Timeout = TimeSpan.FromSeconds(30);
-            })
-            .AddPolicyHandler(GetRetryPolicy());
-        }
+            client.BaseAddress = new Uri(aiServiceUrl);
+            client.Timeout = TimeSpan.FromSeconds(30);
+        })
+        .AddPolicyHandler(GetRetryPolicy());
 
         return services;
     }
