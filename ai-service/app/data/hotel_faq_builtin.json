@@ -1,0 +1,3407 @@
+[
+  {
+    "id": "faq_0001",
+    "question": "Check-in saat kaçta?",
+    "variants": [
+      "check-in",
+      "giriş saati"
+    ],
+    "answer": "Check-in saatimiz 14:00'dır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "check-in",
+      "giriş saati"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0002",
+    "question": "Check-out saat kaçta?",
+    "variants": [
+      "check-out",
+      "çıkış saati"
+    ],
+    "answer": "Check-out saatimiz 12:00'dır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "check-out",
+      "çıkış saati"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0003",
+    "question": "Erken check-in mümkün mü?",
+    "variants": [
+      "erken giriş"
+    ],
+    "answer": "Erken check-in müsaitliğe bağlıdır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "erken giriş"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0004",
+    "question": "Geç check-out yapabilir miyim?",
+    "variants": [
+      "geç çıkış"
+    ],
+    "answer": "Geç check-out müsaitliğe bağlıdır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "geç çıkış"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0005",
+    "question": "Oda anahtarımı kaybettim",
+    "variants": [
+      "kayıp kart"
+    ],
+    "answer": "Resepsiyona başvurun; kimlik sonrası yeni kart verilir.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "kayıp kart"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0006",
+    "question": "Havlu istiyorum",
+    "variants": [
+      "havlu istiyorum",
+      "ek havlu"
+    ],
+    "answer": "Ek havlu talebiniz alındı; kat hizmetleri yönlendirildi.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "havlu istiyorum",
+      "ek havlu"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0007",
+    "question": "Oda temizliği ne zaman?",
+    "variants": [
+      "oda temizliği"
+    ],
+    "answer": "Günlük temizlik 09:00-16:00 arası yapılır.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "oda temizliği"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0008",
+    "question": "Yastık ekstra alabilir miyim?",
+    "variants": [
+      "ek yastık"
+    ],
+    "answer": "Evet, ek yastık talep edebilirsiniz.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "ek yastık"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0009",
+    "question": "Minibar nasıl ücretlendiriliyor?",
+    "variants": [
+      "minibar"
+    ],
+    "answer": "Minibar tüketim bazlı ücretlendirilir.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "minibar"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0010",
+    "question": "Kahvaltı kaçta?",
+    "variants": [
+      "kahvaltı saat",
+      "kahvaltı kaçta"
+    ],
+    "answer": "Kahvaltı 07:00-10:30 arası servis edilir.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "kahvaltı saat",
+      "kahvaltı kaçta"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0011",
+    "question": "Vegan seçenek var mı?",
+    "variants": [
+      "vegan",
+      "vejetaryen"
+    ],
+    "answer": "Evet, vegan seçenekler sunulmaktadır.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "vegan",
+      "vejetaryen"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0012",
+    "question": "Glutensiz yemek var mı?",
+    "variants": [
+      "glutensiz"
+    ],
+    "answer": "Evet, glutensiz seçenekler mevcuttur.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "glutensiz"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0013",
+    "question": "Oda servisi var mı?",
+    "variants": [
+      "oda servisi"
+    ],
+    "answer": "24 saat oda servisi mevcuttur.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "oda servisi"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0014",
+    "question": "Havuz saatleri nedir?",
+    "variants": [
+      "havuz saat",
+      "havuz kaçta",
+      "havuz kapan"
+    ],
+    "answer": "Havuz 08:00-20:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "havuz saat",
+      "havuz kaçta",
+      "havuz kapan"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0015",
+    "question": "Spa saatleri?",
+    "variants": [
+      "spa saat"
+    ],
+    "answer": "Spa 10:00-22:00 arası hizmet verir.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "spa saat"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0016",
+    "question": "Hamam ücretsiz mi?",
+    "variants": [
+      "hamam"
+    ],
+    "answer": "Hamam hizmeti ücretlidir.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "hamam"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0017",
+    "question": "Masaj randevusu nasıl alınır?",
+    "variants": [
+      "masaj randevu"
+    ],
+    "answer": "Spa resepsiyonundan randevu alabilirsiniz.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "masaj randevu"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0018",
+    "question": "WiFi şifresi nedir?",
+    "variants": [
+      "wifi şifre"
+    ],
+    "answer": "WiFi şifresi oda kartında ve resepsiyondadır.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "wifi şifre"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0019",
+    "question": "Klima çalışmıyor ne yapmalıyım?",
+    "variants": [
+      "klima arız",
+      "klima bozuk"
+    ],
+    "answer": "Resepsiyonu arayın; teknik ekip yönlendirilir.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "klima arız",
+      "klima bozuk"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0020",
+    "question": "TV açılmıyor",
+    "variants": [
+      "tv çalışmıyor"
+    ],
+    "answer": "Teknik ekibimiz bilgilendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "tv çalışmıyor"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0021",
+    "question": "Kayıp eşyam var",
+    "variants": [
+      "kayıp eşya",
+      "kaybettim"
+    ],
+    "answer": "Lost & found için resepsiyona başvurun.",
+    "department": "Security",
+    "department_key": "guvenlik",
+    "keywords": [
+      "kayıp eşya",
+      "kaybettim"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0022",
+    "question": "Gürültü şikayetim var",
+    "variants": [
+      "gürültü"
+    ],
+    "answer": "Güvenlik devriyesi bilgilendirilir.",
+    "department": "Security",
+    "department_key": "guvenlik",
+    "keywords": [
+      "gürültü"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0023",
+    "question": "Fatura alabilir miyim?",
+    "variants": [
+      "fatura istiyorum"
+    ],
+    "answer": "Çıkışta veya e-posta ile fatura alabilirsiniz.",
+    "department": "Finance",
+    "department_key": "muhasebe",
+    "keywords": [
+      "fatura istiyorum"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0024",
+    "question": "Depozito ne zaman iade edilir?",
+    "variants": [
+      "depozito iade"
+    ],
+    "answer": "Check-out sonrası 3-7 iş günü içinde iade edilir.",
+    "department": "Finance",
+    "department_key": "muhasebe",
+    "keywords": [
+      "depozito iade"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0025",
+    "question": "Havalimanı transferi var mı?",
+    "variants": [
+      "havalimanı transfer"
+    ],
+    "answer": "Evet, ücretli havalimanı transferi organize edilir.",
+    "department": "Concierge",
+    "department_key": "transfer",
+    "keywords": [
+      "havalimanı transfer"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0026",
+    "question": "Tur organizasyonu yapılıyor mu?",
+    "variants": [
+      "tur",
+      "aktivite"
+    ],
+    "answer": "Concierge günlük tur programı sunar.",
+    "department": "Concierge",
+    "department_key": "turizm",
+    "keywords": [
+      "tur",
+      "aktivite"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0027",
+    "question": "Otopark ücretsiz mi?",
+    "variants": [
+      "otopark"
+    ],
+    "answer": "Evet, otopark ücretsizdir.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "otopark"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0028",
+    "question": "Plaj kaçta açılıyor?",
+    "variants": [
+      "plaj"
+    ],
+    "answer": "Plaj 08:00-19:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "plaj"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0029",
+    "question": "Çocuk kulübü var mı?",
+    "variants": [
+      "çocuk kulübü"
+    ],
+    "answer": "4-12 yaş için kids club 10:00-18:00 arası açıktır.",
+    "department": "Concierge",
+    "department_key": "turizm",
+    "keywords": [
+      "çocuk kulübü"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0030",
+    "question": "Fitness salonu saatleri?",
+    "variants": [
+      "fitness"
+    ],
+    "answer": "Fitness 07:00-22:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "fitness"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0031",
+    "question": "Bebek yatağı isteyebilir miyim?",
+    "variants": [
+      "bebek yatağı"
+    ],
+    "answer": "Evet, bebek yatağı talep edebilirsiniz.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "bebek yatağı"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0032",
+    "question": "Asansör çalışmıyor",
+    "variants": [
+      "asansör"
+    ],
+    "answer": "Teknik ekip bilgilendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "asansör"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0033",
+    "question": "Sıcak su gelmiyor",
+    "variants": [
+      "sıcak su"
+    ],
+    "answer": "Teknik servis acil yönlendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "sıcak su"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0034",
+    "question": "Check-in saat kaçta — nerede?",
+    "variants": [
+      "check-in",
+      "giriş saati",
+      "nerede"
+    ],
+    "answer": "Check-in saatimiz 14:00'dır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "check-in",
+      "giriş saati"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0035",
+    "question": "Check-out saat kaçta — nasıl?",
+    "variants": [
+      "check-out",
+      "çıkış saati",
+      "nasıl"
+    ],
+    "answer": "Check-out saatimiz 12:00'dır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "check-out",
+      "çıkış saati"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0036",
+    "question": "Erken check-in mümkün mü — bilgi alabilir miyim?",
+    "variants": [
+      "erken giriş",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Erken check-in müsaitliğe bağlıdır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "erken giriş"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0037",
+    "question": "Geç check-out yapabilir miyim — detay?",
+    "variants": [
+      "geç çıkış",
+      "detay"
+    ],
+    "answer": "Geç check-out müsaitliğe bağlıdır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "geç çıkış"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0038",
+    "question": "Oda anahtarımı kaybettim — açıklar mısınız?",
+    "variants": [
+      "kayıp kart",
+      "açıklar mısınız"
+    ],
+    "answer": "Resepsiyona başvurun; kimlik sonrası yeni kart verilir.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "kayıp kart"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0039",
+    "question": "Havlu istiyorum — ücretli mi?",
+    "variants": [
+      "havlu istiyorum",
+      "ek havlu",
+      "ücretli mi"
+    ],
+    "answer": "Ek havlu talebiniz alındı; kat hizmetleri yönlendirildi.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "havlu istiyorum",
+      "ek havlu"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0040",
+    "question": "Oda temizliği ne zaman — ücretsiz mi?",
+    "variants": [
+      "oda temizliği",
+      "ücretsiz mi"
+    ],
+    "answer": "Günlük temizlik 09:00-16:00 arası yapılır.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "oda temizliği"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0041",
+    "question": "Yastık ekstra alabilir miyim — nerede?",
+    "variants": [
+      "ek yastık",
+      "nerede"
+    ],
+    "answer": "Evet, ek yastık talep edebilirsiniz.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "ek yastık"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0042",
+    "question": "Minibar nasıl ücretlendiriliyor — nasıl?",
+    "variants": [
+      "minibar",
+      "nasıl"
+    ],
+    "answer": "Minibar tüketim bazlı ücretlendirilir.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "minibar"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0043",
+    "question": "Kahvaltı kaçta — bilgi alabilir miyim?",
+    "variants": [
+      "kahvaltı saat",
+      "kahvaltı kaçta",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Kahvaltı 07:00-10:30 arası servis edilir.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "kahvaltı saat",
+      "kahvaltı kaçta"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0044",
+    "question": "Vegan seçenek var mı — detay?",
+    "variants": [
+      "vegan",
+      "vejetaryen",
+      "detay"
+    ],
+    "answer": "Evet, vegan seçenekler sunulmaktadır.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "vegan",
+      "vejetaryen"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0045",
+    "question": "Glutensiz yemek var mı — açıklar mısınız?",
+    "variants": [
+      "glutensiz",
+      "açıklar mısınız"
+    ],
+    "answer": "Evet, glutensiz seçenekler mevcuttur.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "glutensiz"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0046",
+    "question": "Oda servisi var mı — ücretli mi?",
+    "variants": [
+      "oda servisi",
+      "ücretli mi"
+    ],
+    "answer": "24 saat oda servisi mevcuttur.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "oda servisi"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0047",
+    "question": "Havuz saatleri nedir — ücretsiz mi?",
+    "variants": [
+      "havuz saat",
+      "havuz kaçta",
+      "havuz kapan",
+      "ücretsiz mi"
+    ],
+    "answer": "Havuz 08:00-20:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "havuz saat",
+      "havuz kaçta",
+      "havuz kapan"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0048",
+    "question": "Spa saatleri — nerede?",
+    "variants": [
+      "spa saat",
+      "nerede"
+    ],
+    "answer": "Spa 10:00-22:00 arası hizmet verir.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "spa saat"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0049",
+    "question": "Hamam ücretsiz mi — nasıl?",
+    "variants": [
+      "hamam",
+      "nasıl"
+    ],
+    "answer": "Hamam hizmeti ücretlidir.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "hamam"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0050",
+    "question": "Masaj randevusu nasıl alınır — bilgi alabilir miyim?",
+    "variants": [
+      "masaj randevu",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Spa resepsiyonundan randevu alabilirsiniz.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "masaj randevu"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0051",
+    "question": "WiFi şifresi nedir — detay?",
+    "variants": [
+      "wifi şifre",
+      "detay"
+    ],
+    "answer": "WiFi şifresi oda kartında ve resepsiyondadır.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "wifi şifre"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0052",
+    "question": "Klima çalışmıyor ne yapmalıyım — açıklar mısınız?",
+    "variants": [
+      "klima arız",
+      "klima bozuk",
+      "açıklar mısınız"
+    ],
+    "answer": "Resepsiyonu arayın; teknik ekip yönlendirilir.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "klima arız",
+      "klima bozuk"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0053",
+    "question": "TV açılmıyor — ücretli mi?",
+    "variants": [
+      "tv çalışmıyor",
+      "ücretli mi"
+    ],
+    "answer": "Teknik ekibimiz bilgilendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "tv çalışmıyor"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0054",
+    "question": "Kayıp eşyam var — ücretsiz mi?",
+    "variants": [
+      "kayıp eşya",
+      "kaybettim",
+      "ücretsiz mi"
+    ],
+    "answer": "Lost & found için resepsiyona başvurun.",
+    "department": "Security",
+    "department_key": "guvenlik",
+    "keywords": [
+      "kayıp eşya",
+      "kaybettim"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0055",
+    "question": "Gürültü şikayetim var — nerede?",
+    "variants": [
+      "gürültü",
+      "nerede"
+    ],
+    "answer": "Güvenlik devriyesi bilgilendirilir.",
+    "department": "Security",
+    "department_key": "guvenlik",
+    "keywords": [
+      "gürültü"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0056",
+    "question": "Fatura alabilir miyim — nasıl?",
+    "variants": [
+      "fatura istiyorum",
+      "nasıl"
+    ],
+    "answer": "Çıkışta veya e-posta ile fatura alabilirsiniz.",
+    "department": "Finance",
+    "department_key": "muhasebe",
+    "keywords": [
+      "fatura istiyorum"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0057",
+    "question": "Depozito ne zaman iade edilir — bilgi alabilir miyim?",
+    "variants": [
+      "depozito iade",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Check-out sonrası 3-7 iş günü içinde iade edilir.",
+    "department": "Finance",
+    "department_key": "muhasebe",
+    "keywords": [
+      "depozito iade"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0058",
+    "question": "Havalimanı transferi var mı — detay?",
+    "variants": [
+      "havalimanı transfer",
+      "detay"
+    ],
+    "answer": "Evet, ücretli havalimanı transferi organize edilir.",
+    "department": "Concierge",
+    "department_key": "transfer",
+    "keywords": [
+      "havalimanı transfer"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0059",
+    "question": "Tur organizasyonu yapılıyor mu — açıklar mısınız?",
+    "variants": [
+      "tur",
+      "aktivite",
+      "açıklar mısınız"
+    ],
+    "answer": "Concierge günlük tur programı sunar.",
+    "department": "Concierge",
+    "department_key": "turizm",
+    "keywords": [
+      "tur",
+      "aktivite"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0060",
+    "question": "Otopark ücretsiz mi — ücretli mi?",
+    "variants": [
+      "otopark",
+      "ücretli mi"
+    ],
+    "answer": "Evet, otopark ücretsizdir.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "otopark"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0061",
+    "question": "Plaj kaçta açılıyor — ücretsiz mi?",
+    "variants": [
+      "plaj",
+      "ücretsiz mi"
+    ],
+    "answer": "Plaj 08:00-19:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "plaj"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0062",
+    "question": "Çocuk kulübü var mı — nerede?",
+    "variants": [
+      "çocuk kulübü",
+      "nerede"
+    ],
+    "answer": "4-12 yaş için kids club 10:00-18:00 arası açıktır.",
+    "department": "Concierge",
+    "department_key": "turizm",
+    "keywords": [
+      "çocuk kulübü"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0063",
+    "question": "Fitness salonu saatleri — nasıl?",
+    "variants": [
+      "fitness",
+      "nasıl"
+    ],
+    "answer": "Fitness 07:00-22:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "fitness"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0064",
+    "question": "Bebek yatağı isteyebilir miyim — bilgi alabilir miyim?",
+    "variants": [
+      "bebek yatağı",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Evet, bebek yatağı talep edebilirsiniz.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "bebek yatağı"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0065",
+    "question": "Asansör çalışmıyor — detay?",
+    "variants": [
+      "asansör",
+      "detay"
+    ],
+    "answer": "Teknik ekip bilgilendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "asansör"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0066",
+    "question": "Sıcak su gelmiyor — açıklar mısınız?",
+    "variants": [
+      "sıcak su",
+      "açıklar mısınız"
+    ],
+    "answer": "Teknik servis acil yönlendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "sıcak su"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0067",
+    "question": "Check-in saat kaçta — ücretli mi?",
+    "variants": [
+      "check-in",
+      "giriş saati",
+      "ücretli mi"
+    ],
+    "answer": "Check-in saatimiz 14:00'dır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "check-in",
+      "giriş saati"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0068",
+    "question": "Check-out saat kaçta — ücretsiz mi?",
+    "variants": [
+      "check-out",
+      "çıkış saati",
+      "ücretsiz mi"
+    ],
+    "answer": "Check-out saatimiz 12:00'dır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "check-out",
+      "çıkış saati"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0069",
+    "question": "Erken check-in mümkün mü — nerede?",
+    "variants": [
+      "erken giriş",
+      "nerede"
+    ],
+    "answer": "Erken check-in müsaitliğe bağlıdır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "erken giriş"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0070",
+    "question": "Geç check-out yapabilir miyim — nasıl?",
+    "variants": [
+      "geç çıkış",
+      "nasıl"
+    ],
+    "answer": "Geç check-out müsaitliğe bağlıdır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "geç çıkış"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0071",
+    "question": "Oda anahtarımı kaybettim — bilgi alabilir miyim?",
+    "variants": [
+      "kayıp kart",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Resepsiyona başvurun; kimlik sonrası yeni kart verilir.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "kayıp kart"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0072",
+    "question": "Havlu istiyorum — detay?",
+    "variants": [
+      "havlu istiyorum",
+      "ek havlu",
+      "detay"
+    ],
+    "answer": "Ek havlu talebiniz alındı; kat hizmetleri yönlendirildi.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "havlu istiyorum",
+      "ek havlu"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0073",
+    "question": "Oda temizliği ne zaman — açıklar mısınız?",
+    "variants": [
+      "oda temizliği",
+      "açıklar mısınız"
+    ],
+    "answer": "Günlük temizlik 09:00-16:00 arası yapılır.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "oda temizliği"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0074",
+    "question": "Yastık ekstra alabilir miyim — ücretli mi?",
+    "variants": [
+      "ek yastık",
+      "ücretli mi"
+    ],
+    "answer": "Evet, ek yastık talep edebilirsiniz.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "ek yastık"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0075",
+    "question": "Minibar nasıl ücretlendiriliyor — ücretsiz mi?",
+    "variants": [
+      "minibar",
+      "ücretsiz mi"
+    ],
+    "answer": "Minibar tüketim bazlı ücretlendirilir.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "minibar"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0076",
+    "question": "Kahvaltı kaçta — nerede?",
+    "variants": [
+      "kahvaltı saat",
+      "kahvaltı kaçta",
+      "nerede"
+    ],
+    "answer": "Kahvaltı 07:00-10:30 arası servis edilir.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "kahvaltı saat",
+      "kahvaltı kaçta"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0077",
+    "question": "Vegan seçenek var mı — nasıl?",
+    "variants": [
+      "vegan",
+      "vejetaryen",
+      "nasıl"
+    ],
+    "answer": "Evet, vegan seçenekler sunulmaktadır.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "vegan",
+      "vejetaryen"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0078",
+    "question": "Glutensiz yemek var mı — bilgi alabilir miyim?",
+    "variants": [
+      "glutensiz",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Evet, glutensiz seçenekler mevcuttur.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "glutensiz"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0079",
+    "question": "Oda servisi var mı — detay?",
+    "variants": [
+      "oda servisi",
+      "detay"
+    ],
+    "answer": "24 saat oda servisi mevcuttur.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "oda servisi"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0080",
+    "question": "Havuz saatleri nedir — açıklar mısınız?",
+    "variants": [
+      "havuz saat",
+      "havuz kaçta",
+      "havuz kapan",
+      "açıklar mısınız"
+    ],
+    "answer": "Havuz 08:00-20:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "havuz saat",
+      "havuz kaçta",
+      "havuz kapan"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0081",
+    "question": "Spa saatleri — ücretli mi?",
+    "variants": [
+      "spa saat",
+      "ücretli mi"
+    ],
+    "answer": "Spa 10:00-22:00 arası hizmet verir.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "spa saat"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0082",
+    "question": "Hamam ücretsiz mi — ücretsiz mi?",
+    "variants": [
+      "hamam",
+      "ücretsiz mi"
+    ],
+    "answer": "Hamam hizmeti ücretlidir.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "hamam"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0083",
+    "question": "Masaj randevusu nasıl alınır — nerede?",
+    "variants": [
+      "masaj randevu",
+      "nerede"
+    ],
+    "answer": "Spa resepsiyonundan randevu alabilirsiniz.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "masaj randevu"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0084",
+    "question": "WiFi şifresi nedir — nasıl?",
+    "variants": [
+      "wifi şifre",
+      "nasıl"
+    ],
+    "answer": "WiFi şifresi oda kartında ve resepsiyondadır.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "wifi şifre"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0085",
+    "question": "Klima çalışmıyor ne yapmalıyım — bilgi alabilir miyim?",
+    "variants": [
+      "klima arız",
+      "klima bozuk",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Resepsiyonu arayın; teknik ekip yönlendirilir.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "klima arız",
+      "klima bozuk"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0086",
+    "question": "TV açılmıyor — detay?",
+    "variants": [
+      "tv çalışmıyor",
+      "detay"
+    ],
+    "answer": "Teknik ekibimiz bilgilendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "tv çalışmıyor"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0087",
+    "question": "Kayıp eşyam var — açıklar mısınız?",
+    "variants": [
+      "kayıp eşya",
+      "kaybettim",
+      "açıklar mısınız"
+    ],
+    "answer": "Lost & found için resepsiyona başvurun.",
+    "department": "Security",
+    "department_key": "guvenlik",
+    "keywords": [
+      "kayıp eşya",
+      "kaybettim"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0088",
+    "question": "Gürültü şikayetim var — ücretli mi?",
+    "variants": [
+      "gürültü",
+      "ücretli mi"
+    ],
+    "answer": "Güvenlik devriyesi bilgilendirilir.",
+    "department": "Security",
+    "department_key": "guvenlik",
+    "keywords": [
+      "gürültü"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0089",
+    "question": "Fatura alabilir miyim — ücretsiz mi?",
+    "variants": [
+      "fatura istiyorum",
+      "ücretsiz mi"
+    ],
+    "answer": "Çıkışta veya e-posta ile fatura alabilirsiniz.",
+    "department": "Finance",
+    "department_key": "muhasebe",
+    "keywords": [
+      "fatura istiyorum"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0090",
+    "question": "Depozito ne zaman iade edilir — nerede?",
+    "variants": [
+      "depozito iade",
+      "nerede"
+    ],
+    "answer": "Check-out sonrası 3-7 iş günü içinde iade edilir.",
+    "department": "Finance",
+    "department_key": "muhasebe",
+    "keywords": [
+      "depozito iade"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0091",
+    "question": "Havalimanı transferi var mı — nasıl?",
+    "variants": [
+      "havalimanı transfer",
+      "nasıl"
+    ],
+    "answer": "Evet, ücretli havalimanı transferi organize edilir.",
+    "department": "Concierge",
+    "department_key": "transfer",
+    "keywords": [
+      "havalimanı transfer"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0092",
+    "question": "Tur organizasyonu yapılıyor mu — bilgi alabilir miyim?",
+    "variants": [
+      "tur",
+      "aktivite",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Concierge günlük tur programı sunar.",
+    "department": "Concierge",
+    "department_key": "turizm",
+    "keywords": [
+      "tur",
+      "aktivite"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0093",
+    "question": "Otopark ücretsiz mi — detay?",
+    "variants": [
+      "otopark",
+      "detay"
+    ],
+    "answer": "Evet, otopark ücretsizdir.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "otopark"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0094",
+    "question": "Plaj kaçta açılıyor — açıklar mısınız?",
+    "variants": [
+      "plaj",
+      "açıklar mısınız"
+    ],
+    "answer": "Plaj 08:00-19:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "plaj"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0095",
+    "question": "Çocuk kulübü var mı — ücretli mi?",
+    "variants": [
+      "çocuk kulübü",
+      "ücretli mi"
+    ],
+    "answer": "4-12 yaş için kids club 10:00-18:00 arası açıktır.",
+    "department": "Concierge",
+    "department_key": "turizm",
+    "keywords": [
+      "çocuk kulübü"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0096",
+    "question": "Fitness salonu saatleri — ücretsiz mi?",
+    "variants": [
+      "fitness",
+      "ücretsiz mi"
+    ],
+    "answer": "Fitness 07:00-22:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "fitness"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0097",
+    "question": "Bebek yatağı isteyebilir miyim — nerede?",
+    "variants": [
+      "bebek yatağı",
+      "nerede"
+    ],
+    "answer": "Evet, bebek yatağı talep edebilirsiniz.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "bebek yatağı"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0098",
+    "question": "Asansör çalışmıyor — nasıl?",
+    "variants": [
+      "asansör",
+      "nasıl"
+    ],
+    "answer": "Teknik ekip bilgilendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "asansör"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0099",
+    "question": "Sıcak su gelmiyor — bilgi alabilir miyim?",
+    "variants": [
+      "sıcak su",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Teknik servis acil yönlendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "sıcak su"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0100",
+    "question": "Check-in saat kaçta — detay?",
+    "variants": [
+      "check-in",
+      "giriş saati",
+      "detay"
+    ],
+    "answer": "Check-in saatimiz 14:00'dır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "check-in",
+      "giriş saati"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0101",
+    "question": "Check-out saat kaçta — açıklar mısınız?",
+    "variants": [
+      "check-out",
+      "çıkış saati",
+      "açıklar mısınız"
+    ],
+    "answer": "Check-out saatimiz 12:00'dır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "check-out",
+      "çıkış saati"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0102",
+    "question": "Erken check-in mümkün mü — ücretli mi?",
+    "variants": [
+      "erken giriş",
+      "ücretli mi"
+    ],
+    "answer": "Erken check-in müsaitliğe bağlıdır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "erken giriş"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0103",
+    "question": "Geç check-out yapabilir miyim — ücretsiz mi?",
+    "variants": [
+      "geç çıkış",
+      "ücretsiz mi"
+    ],
+    "answer": "Geç check-out müsaitliğe bağlıdır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "geç çıkış"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0104",
+    "question": "Oda anahtarımı kaybettim — nerede?",
+    "variants": [
+      "kayıp kart",
+      "nerede"
+    ],
+    "answer": "Resepsiyona başvurun; kimlik sonrası yeni kart verilir.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "kayıp kart"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0105",
+    "question": "Havlu istiyorum — nasıl?",
+    "variants": [
+      "havlu istiyorum",
+      "ek havlu",
+      "nasıl"
+    ],
+    "answer": "Ek havlu talebiniz alındı; kat hizmetleri yönlendirildi.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "havlu istiyorum",
+      "ek havlu"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0106",
+    "question": "Oda temizliği ne zaman — bilgi alabilir miyim?",
+    "variants": [
+      "oda temizliği",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Günlük temizlik 09:00-16:00 arası yapılır.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "oda temizliği"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0107",
+    "question": "Yastık ekstra alabilir miyim — detay?",
+    "variants": [
+      "ek yastık",
+      "detay"
+    ],
+    "answer": "Evet, ek yastık talep edebilirsiniz.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "ek yastık"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0108",
+    "question": "Minibar nasıl ücretlendiriliyor — açıklar mısınız?",
+    "variants": [
+      "minibar",
+      "açıklar mısınız"
+    ],
+    "answer": "Minibar tüketim bazlı ücretlendirilir.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "minibar"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0109",
+    "question": "Kahvaltı kaçta — ücretli mi?",
+    "variants": [
+      "kahvaltı saat",
+      "kahvaltı kaçta",
+      "ücretli mi"
+    ],
+    "answer": "Kahvaltı 07:00-10:30 arası servis edilir.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "kahvaltı saat",
+      "kahvaltı kaçta"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0110",
+    "question": "Vegan seçenek var mı — ücretsiz mi?",
+    "variants": [
+      "vegan",
+      "vejetaryen",
+      "ücretsiz mi"
+    ],
+    "answer": "Evet, vegan seçenekler sunulmaktadır.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "vegan",
+      "vejetaryen"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0111",
+    "question": "Glutensiz yemek var mı — nerede?",
+    "variants": [
+      "glutensiz",
+      "nerede"
+    ],
+    "answer": "Evet, glutensiz seçenekler mevcuttur.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "glutensiz"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0112",
+    "question": "Oda servisi var mı — nasıl?",
+    "variants": [
+      "oda servisi",
+      "nasıl"
+    ],
+    "answer": "24 saat oda servisi mevcuttur.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "oda servisi"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0113",
+    "question": "Havuz saatleri nedir — bilgi alabilir miyim?",
+    "variants": [
+      "havuz saat",
+      "havuz kaçta",
+      "havuz kapan",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Havuz 08:00-20:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "havuz saat",
+      "havuz kaçta",
+      "havuz kapan"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0114",
+    "question": "Spa saatleri — detay?",
+    "variants": [
+      "spa saat",
+      "detay"
+    ],
+    "answer": "Spa 10:00-22:00 arası hizmet verir.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "spa saat"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0115",
+    "question": "Hamam ücretsiz mi — açıklar mısınız?",
+    "variants": [
+      "hamam",
+      "açıklar mısınız"
+    ],
+    "answer": "Hamam hizmeti ücretlidir.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "hamam"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0116",
+    "question": "Masaj randevusu nasıl alınır — ücretli mi?",
+    "variants": [
+      "masaj randevu",
+      "ücretli mi"
+    ],
+    "answer": "Spa resepsiyonundan randevu alabilirsiniz.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "masaj randevu"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0117",
+    "question": "WiFi şifresi nedir — ücretsiz mi?",
+    "variants": [
+      "wifi şifre",
+      "ücretsiz mi"
+    ],
+    "answer": "WiFi şifresi oda kartında ve resepsiyondadır.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "wifi şifre"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0118",
+    "question": "Klima çalışmıyor ne yapmalıyım — nerede?",
+    "variants": [
+      "klima arız",
+      "klima bozuk",
+      "nerede"
+    ],
+    "answer": "Resepsiyonu arayın; teknik ekip yönlendirilir.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "klima arız",
+      "klima bozuk"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0119",
+    "question": "TV açılmıyor — nasıl?",
+    "variants": [
+      "tv çalışmıyor",
+      "nasıl"
+    ],
+    "answer": "Teknik ekibimiz bilgilendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "tv çalışmıyor"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0120",
+    "question": "Kayıp eşyam var — bilgi alabilir miyim?",
+    "variants": [
+      "kayıp eşya",
+      "kaybettim",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Lost & found için resepsiyona başvurun.",
+    "department": "Security",
+    "department_key": "guvenlik",
+    "keywords": [
+      "kayıp eşya",
+      "kaybettim"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0121",
+    "question": "Gürültü şikayetim var — detay?",
+    "variants": [
+      "gürültü",
+      "detay"
+    ],
+    "answer": "Güvenlik devriyesi bilgilendirilir.",
+    "department": "Security",
+    "department_key": "guvenlik",
+    "keywords": [
+      "gürültü"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0122",
+    "question": "Fatura alabilir miyim — açıklar mısınız?",
+    "variants": [
+      "fatura istiyorum",
+      "açıklar mısınız"
+    ],
+    "answer": "Çıkışta veya e-posta ile fatura alabilirsiniz.",
+    "department": "Finance",
+    "department_key": "muhasebe",
+    "keywords": [
+      "fatura istiyorum"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0123",
+    "question": "Depozito ne zaman iade edilir — ücretli mi?",
+    "variants": [
+      "depozito iade",
+      "ücretli mi"
+    ],
+    "answer": "Check-out sonrası 3-7 iş günü içinde iade edilir.",
+    "department": "Finance",
+    "department_key": "muhasebe",
+    "keywords": [
+      "depozito iade"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0124",
+    "question": "Havalimanı transferi var mı — ücretsiz mi?",
+    "variants": [
+      "havalimanı transfer",
+      "ücretsiz mi"
+    ],
+    "answer": "Evet, ücretli havalimanı transferi organize edilir.",
+    "department": "Concierge",
+    "department_key": "transfer",
+    "keywords": [
+      "havalimanı transfer"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0125",
+    "question": "Tur organizasyonu yapılıyor mu — nerede?",
+    "variants": [
+      "tur",
+      "aktivite",
+      "nerede"
+    ],
+    "answer": "Concierge günlük tur programı sunar.",
+    "department": "Concierge",
+    "department_key": "turizm",
+    "keywords": [
+      "tur",
+      "aktivite"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0126",
+    "question": "Otopark ücretsiz mi — nasıl?",
+    "variants": [
+      "otopark",
+      "nasıl"
+    ],
+    "answer": "Evet, otopark ücretsizdir.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "otopark"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0127",
+    "question": "Plaj kaçta açılıyor — bilgi alabilir miyim?",
+    "variants": [
+      "plaj",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Plaj 08:00-19:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "plaj"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0128",
+    "question": "Çocuk kulübü var mı — detay?",
+    "variants": [
+      "çocuk kulübü",
+      "detay"
+    ],
+    "answer": "4-12 yaş için kids club 10:00-18:00 arası açıktır.",
+    "department": "Concierge",
+    "department_key": "turizm",
+    "keywords": [
+      "çocuk kulübü"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0129",
+    "question": "Fitness salonu saatleri — açıklar mısınız?",
+    "variants": [
+      "fitness",
+      "açıklar mısınız"
+    ],
+    "answer": "Fitness 07:00-22:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "fitness"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0130",
+    "question": "Bebek yatağı isteyebilir miyim — ücretli mi?",
+    "variants": [
+      "bebek yatağı",
+      "ücretli mi"
+    ],
+    "answer": "Evet, bebek yatağı talep edebilirsiniz.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "bebek yatağı"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0131",
+    "question": "Asansör çalışmıyor — ücretsiz mi?",
+    "variants": [
+      "asansör",
+      "ücretsiz mi"
+    ],
+    "answer": "Teknik ekip bilgilendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "asansör"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0132",
+    "question": "Sıcak su gelmiyor — nerede?",
+    "variants": [
+      "sıcak su",
+      "nerede"
+    ],
+    "answer": "Teknik servis acil yönlendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "sıcak su"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0133",
+    "question": "Check-in saat kaçta — nasıl?",
+    "variants": [
+      "check-in",
+      "giriş saati",
+      "nasıl"
+    ],
+    "answer": "Check-in saatimiz 14:00'dır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "check-in",
+      "giriş saati"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0134",
+    "question": "Check-out saat kaçta — bilgi alabilir miyim?",
+    "variants": [
+      "check-out",
+      "çıkış saati",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Check-out saatimiz 12:00'dır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "check-out",
+      "çıkış saati"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0135",
+    "question": "Erken check-in mümkün mü — detay?",
+    "variants": [
+      "erken giriş",
+      "detay"
+    ],
+    "answer": "Erken check-in müsaitliğe bağlıdır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "erken giriş"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0136",
+    "question": "Geç check-out yapabilir miyim — açıklar mısınız?",
+    "variants": [
+      "geç çıkış",
+      "açıklar mısınız"
+    ],
+    "answer": "Geç check-out müsaitliğe bağlıdır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "geç çıkış"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0137",
+    "question": "Oda anahtarımı kaybettim — ücretli mi?",
+    "variants": [
+      "kayıp kart",
+      "ücretli mi"
+    ],
+    "answer": "Resepsiyona başvurun; kimlik sonrası yeni kart verilir.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "kayıp kart"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0138",
+    "question": "Havlu istiyorum — ücretsiz mi?",
+    "variants": [
+      "havlu istiyorum",
+      "ek havlu",
+      "ücretsiz mi"
+    ],
+    "answer": "Ek havlu talebiniz alındı; kat hizmetleri yönlendirildi.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "havlu istiyorum",
+      "ek havlu"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0139",
+    "question": "Oda temizliği ne zaman — nerede?",
+    "variants": [
+      "oda temizliği",
+      "nerede"
+    ],
+    "answer": "Günlük temizlik 09:00-16:00 arası yapılır.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "oda temizliği"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0140",
+    "question": "Yastık ekstra alabilir miyim — nasıl?",
+    "variants": [
+      "ek yastık",
+      "nasıl"
+    ],
+    "answer": "Evet, ek yastık talep edebilirsiniz.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "ek yastık"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0141",
+    "question": "Minibar nasıl ücretlendiriliyor — bilgi alabilir miyim?",
+    "variants": [
+      "minibar",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Minibar tüketim bazlı ücretlendirilir.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "minibar"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0142",
+    "question": "Kahvaltı kaçta — detay?",
+    "variants": [
+      "kahvaltı saat",
+      "kahvaltı kaçta",
+      "detay"
+    ],
+    "answer": "Kahvaltı 07:00-10:30 arası servis edilir.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "kahvaltı saat",
+      "kahvaltı kaçta"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0143",
+    "question": "Vegan seçenek var mı — açıklar mısınız?",
+    "variants": [
+      "vegan",
+      "vejetaryen",
+      "açıklar mısınız"
+    ],
+    "answer": "Evet, vegan seçenekler sunulmaktadır.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "vegan",
+      "vejetaryen"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0144",
+    "question": "Glutensiz yemek var mı — ücretli mi?",
+    "variants": [
+      "glutensiz",
+      "ücretli mi"
+    ],
+    "answer": "Evet, glutensiz seçenekler mevcuttur.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "glutensiz"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0145",
+    "question": "Oda servisi var mı — ücretsiz mi?",
+    "variants": [
+      "oda servisi",
+      "ücretsiz mi"
+    ],
+    "answer": "24 saat oda servisi mevcuttur.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "oda servisi"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0146",
+    "question": "Havuz saatleri nedir — nerede?",
+    "variants": [
+      "havuz saat",
+      "havuz kaçta",
+      "havuz kapan",
+      "nerede"
+    ],
+    "answer": "Havuz 08:00-20:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "havuz saat",
+      "havuz kaçta",
+      "havuz kapan"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0147",
+    "question": "Spa saatleri — nasıl?",
+    "variants": [
+      "spa saat",
+      "nasıl"
+    ],
+    "answer": "Spa 10:00-22:00 arası hizmet verir.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "spa saat"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0148",
+    "question": "Hamam ücretsiz mi — bilgi alabilir miyim?",
+    "variants": [
+      "hamam",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Hamam hizmeti ücretlidir.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "hamam"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0149",
+    "question": "Masaj randevusu nasıl alınır — detay?",
+    "variants": [
+      "masaj randevu",
+      "detay"
+    ],
+    "answer": "Spa resepsiyonundan randevu alabilirsiniz.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "masaj randevu"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0150",
+    "question": "WiFi şifresi nedir — açıklar mısınız?",
+    "variants": [
+      "wifi şifre",
+      "açıklar mısınız"
+    ],
+    "answer": "WiFi şifresi oda kartında ve resepsiyondadır.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "wifi şifre"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0151",
+    "question": "Klima çalışmıyor ne yapmalıyım — ücretli mi?",
+    "variants": [
+      "klima arız",
+      "klima bozuk",
+      "ücretli mi"
+    ],
+    "answer": "Resepsiyonu arayın; teknik ekip yönlendirilir.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "klima arız",
+      "klima bozuk"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0152",
+    "question": "TV açılmıyor — ücretsiz mi?",
+    "variants": [
+      "tv çalışmıyor",
+      "ücretsiz mi"
+    ],
+    "answer": "Teknik ekibimiz bilgilendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "tv çalışmıyor"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0153",
+    "question": "Kayıp eşyam var — nerede?",
+    "variants": [
+      "kayıp eşya",
+      "kaybettim",
+      "nerede"
+    ],
+    "answer": "Lost & found için resepsiyona başvurun.",
+    "department": "Security",
+    "department_key": "guvenlik",
+    "keywords": [
+      "kayıp eşya",
+      "kaybettim"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0154",
+    "question": "Gürültü şikayetim var — nasıl?",
+    "variants": [
+      "gürültü",
+      "nasıl"
+    ],
+    "answer": "Güvenlik devriyesi bilgilendirilir.",
+    "department": "Security",
+    "department_key": "guvenlik",
+    "keywords": [
+      "gürültü"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0155",
+    "question": "Fatura alabilir miyim — bilgi alabilir miyim?",
+    "variants": [
+      "fatura istiyorum",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Çıkışta veya e-posta ile fatura alabilirsiniz.",
+    "department": "Finance",
+    "department_key": "muhasebe",
+    "keywords": [
+      "fatura istiyorum"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0156",
+    "question": "Depozito ne zaman iade edilir — detay?",
+    "variants": [
+      "depozito iade",
+      "detay"
+    ],
+    "answer": "Check-out sonrası 3-7 iş günü içinde iade edilir.",
+    "department": "Finance",
+    "department_key": "muhasebe",
+    "keywords": [
+      "depozito iade"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0157",
+    "question": "Havalimanı transferi var mı — açıklar mısınız?",
+    "variants": [
+      "havalimanı transfer",
+      "açıklar mısınız"
+    ],
+    "answer": "Evet, ücretli havalimanı transferi organize edilir.",
+    "department": "Concierge",
+    "department_key": "transfer",
+    "keywords": [
+      "havalimanı transfer"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0158",
+    "question": "Tur organizasyonu yapılıyor mu — ücretli mi?",
+    "variants": [
+      "tur",
+      "aktivite",
+      "ücretli mi"
+    ],
+    "answer": "Concierge günlük tur programı sunar.",
+    "department": "Concierge",
+    "department_key": "turizm",
+    "keywords": [
+      "tur",
+      "aktivite"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0159",
+    "question": "Otopark ücretsiz mi — ücretsiz mi?",
+    "variants": [
+      "otopark",
+      "ücretsiz mi"
+    ],
+    "answer": "Evet, otopark ücretsizdir.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "otopark"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0160",
+    "question": "Plaj kaçta açılıyor — nerede?",
+    "variants": [
+      "plaj",
+      "nerede"
+    ],
+    "answer": "Plaj 08:00-19:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "plaj"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0161",
+    "question": "Çocuk kulübü var mı — nasıl?",
+    "variants": [
+      "çocuk kulübü",
+      "nasıl"
+    ],
+    "answer": "4-12 yaş için kids club 10:00-18:00 arası açıktır.",
+    "department": "Concierge",
+    "department_key": "turizm",
+    "keywords": [
+      "çocuk kulübü"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0162",
+    "question": "Fitness salonu saatleri — bilgi alabilir miyim?",
+    "variants": [
+      "fitness",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Fitness 07:00-22:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "fitness"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0163",
+    "question": "Bebek yatağı isteyebilir miyim — detay?",
+    "variants": [
+      "bebek yatağı",
+      "detay"
+    ],
+    "answer": "Evet, bebek yatağı talep edebilirsiniz.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "bebek yatağı"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0164",
+    "question": "Asansör çalışmıyor — açıklar mısınız?",
+    "variants": [
+      "asansör",
+      "açıklar mısınız"
+    ],
+    "answer": "Teknik ekip bilgilendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "asansör"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0165",
+    "question": "Sıcak su gelmiyor — ücretli mi?",
+    "variants": [
+      "sıcak su",
+      "ücretli mi"
+    ],
+    "answer": "Teknik servis acil yönlendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "sıcak su"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0166",
+    "question": "Check-in saat kaçta — ücretsiz mi?",
+    "variants": [
+      "check-in",
+      "giriş saati",
+      "ücretsiz mi"
+    ],
+    "answer": "Check-in saatimiz 14:00'dır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "check-in",
+      "giriş saati"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0167",
+    "question": "Check-out saat kaçta — nerede?",
+    "variants": [
+      "check-out",
+      "çıkış saati",
+      "nerede"
+    ],
+    "answer": "Check-out saatimiz 12:00'dır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "check-out",
+      "çıkış saati"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0168",
+    "question": "Erken check-in mümkün mü — nasıl?",
+    "variants": [
+      "erken giriş",
+      "nasıl"
+    ],
+    "answer": "Erken check-in müsaitliğe bağlıdır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "erken giriş"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0169",
+    "question": "Geç check-out yapabilir miyim — bilgi alabilir miyim?",
+    "variants": [
+      "geç çıkış",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Geç check-out müsaitliğe bağlıdır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "geç çıkış"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0170",
+    "question": "Oda anahtarımı kaybettim — detay?",
+    "variants": [
+      "kayıp kart",
+      "detay"
+    ],
+    "answer": "Resepsiyona başvurun; kimlik sonrası yeni kart verilir.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "kayıp kart"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0171",
+    "question": "Havlu istiyorum — açıklar mısınız?",
+    "variants": [
+      "havlu istiyorum",
+      "ek havlu",
+      "açıklar mısınız"
+    ],
+    "answer": "Ek havlu talebiniz alındı; kat hizmetleri yönlendirildi.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "havlu istiyorum",
+      "ek havlu"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0172",
+    "question": "Oda temizliği ne zaman — ücretli mi?",
+    "variants": [
+      "oda temizliği",
+      "ücretli mi"
+    ],
+    "answer": "Günlük temizlik 09:00-16:00 arası yapılır.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "oda temizliği"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0173",
+    "question": "Yastık ekstra alabilir miyim — ücretsiz mi?",
+    "variants": [
+      "ek yastık",
+      "ücretsiz mi"
+    ],
+    "answer": "Evet, ek yastık talep edebilirsiniz.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "ek yastık"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0174",
+    "question": "Minibar nasıl ücretlendiriliyor — nerede?",
+    "variants": [
+      "minibar",
+      "nerede"
+    ],
+    "answer": "Minibar tüketim bazlı ücretlendirilir.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "minibar"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0175",
+    "question": "Kahvaltı kaçta — nasıl?",
+    "variants": [
+      "kahvaltı saat",
+      "kahvaltı kaçta",
+      "nasıl"
+    ],
+    "answer": "Kahvaltı 07:00-10:30 arası servis edilir.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "kahvaltı saat",
+      "kahvaltı kaçta"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0176",
+    "question": "Vegan seçenek var mı — bilgi alabilir miyim?",
+    "variants": [
+      "vegan",
+      "vejetaryen",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Evet, vegan seçenekler sunulmaktadır.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "vegan",
+      "vejetaryen"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0177",
+    "question": "Glutensiz yemek var mı — detay?",
+    "variants": [
+      "glutensiz",
+      "detay"
+    ],
+    "answer": "Evet, glutensiz seçenekler mevcuttur.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "glutensiz"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0178",
+    "question": "Oda servisi var mı — açıklar mısınız?",
+    "variants": [
+      "oda servisi",
+      "açıklar mısınız"
+    ],
+    "answer": "24 saat oda servisi mevcuttur.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "oda servisi"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0179",
+    "question": "Havuz saatleri nedir — ücretli mi?",
+    "variants": [
+      "havuz saat",
+      "havuz kaçta",
+      "havuz kapan",
+      "ücretli mi"
+    ],
+    "answer": "Havuz 08:00-20:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "havuz saat",
+      "havuz kaçta",
+      "havuz kapan"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0180",
+    "question": "Spa saatleri — ücretsiz mi?",
+    "variants": [
+      "spa saat",
+      "ücretsiz mi"
+    ],
+    "answer": "Spa 10:00-22:00 arası hizmet verir.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "spa saat"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0181",
+    "question": "Hamam ücretsiz mi — nerede?",
+    "variants": [
+      "hamam",
+      "nerede"
+    ],
+    "answer": "Hamam hizmeti ücretlidir.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "hamam"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0182",
+    "question": "Masaj randevusu nasıl alınır — nasıl?",
+    "variants": [
+      "masaj randevu",
+      "nasıl"
+    ],
+    "answer": "Spa resepsiyonundan randevu alabilirsiniz.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "masaj randevu"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0183",
+    "question": "WiFi şifresi nedir — bilgi alabilir miyim?",
+    "variants": [
+      "wifi şifre",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "WiFi şifresi oda kartında ve resepsiyondadır.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "wifi şifre"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0184",
+    "question": "Klima çalışmıyor ne yapmalıyım — detay?",
+    "variants": [
+      "klima arız",
+      "klima bozuk",
+      "detay"
+    ],
+    "answer": "Resepsiyonu arayın; teknik ekip yönlendirilir.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "klima arız",
+      "klima bozuk"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0185",
+    "question": "TV açılmıyor — açıklar mısınız?",
+    "variants": [
+      "tv çalışmıyor",
+      "açıklar mısınız"
+    ],
+    "answer": "Teknik ekibimiz bilgilendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "tv çalışmıyor"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0186",
+    "question": "Kayıp eşyam var — ücretli mi?",
+    "variants": [
+      "kayıp eşya",
+      "kaybettim",
+      "ücretli mi"
+    ],
+    "answer": "Lost & found için resepsiyona başvurun.",
+    "department": "Security",
+    "department_key": "guvenlik",
+    "keywords": [
+      "kayıp eşya",
+      "kaybettim"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0187",
+    "question": "Gürültü şikayetim var — ücretsiz mi?",
+    "variants": [
+      "gürültü",
+      "ücretsiz mi"
+    ],
+    "answer": "Güvenlik devriyesi bilgilendirilir.",
+    "department": "Security",
+    "department_key": "guvenlik",
+    "keywords": [
+      "gürültü"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0188",
+    "question": "Fatura alabilir miyim — nerede?",
+    "variants": [
+      "fatura istiyorum",
+      "nerede"
+    ],
+    "answer": "Çıkışta veya e-posta ile fatura alabilirsiniz.",
+    "department": "Finance",
+    "department_key": "muhasebe",
+    "keywords": [
+      "fatura istiyorum"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0189",
+    "question": "Depozito ne zaman iade edilir — nasıl?",
+    "variants": [
+      "depozito iade",
+      "nasıl"
+    ],
+    "answer": "Check-out sonrası 3-7 iş günü içinde iade edilir.",
+    "department": "Finance",
+    "department_key": "muhasebe",
+    "keywords": [
+      "depozito iade"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0190",
+    "question": "Havalimanı transferi var mı — bilgi alabilir miyim?",
+    "variants": [
+      "havalimanı transfer",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Evet, ücretli havalimanı transferi organize edilir.",
+    "department": "Concierge",
+    "department_key": "transfer",
+    "keywords": [
+      "havalimanı transfer"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0191",
+    "question": "Tur organizasyonu yapılıyor mu — detay?",
+    "variants": [
+      "tur",
+      "aktivite",
+      "detay"
+    ],
+    "answer": "Concierge günlük tur programı sunar.",
+    "department": "Concierge",
+    "department_key": "turizm",
+    "keywords": [
+      "tur",
+      "aktivite"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0192",
+    "question": "Otopark ücretsiz mi — açıklar mısınız?",
+    "variants": [
+      "otopark",
+      "açıklar mısınız"
+    ],
+    "answer": "Evet, otopark ücretsizdir.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "otopark"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0193",
+    "question": "Plaj kaçta açılıyor — ücretli mi?",
+    "variants": [
+      "plaj",
+      "ücretli mi"
+    ],
+    "answer": "Plaj 08:00-19:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "plaj"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0194",
+    "question": "Çocuk kulübü var mı — ücretsiz mi?",
+    "variants": [
+      "çocuk kulübü",
+      "ücretsiz mi"
+    ],
+    "answer": "4-12 yaş için kids club 10:00-18:00 arası açıktır.",
+    "department": "Concierge",
+    "department_key": "turizm",
+    "keywords": [
+      "çocuk kulübü"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0195",
+    "question": "Fitness salonu saatleri — nerede?",
+    "variants": [
+      "fitness",
+      "nerede"
+    ],
+    "answer": "Fitness 07:00-22:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "fitness"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0196",
+    "question": "Bebek yatağı isteyebilir miyim — nasıl?",
+    "variants": [
+      "bebek yatağı",
+      "nasıl"
+    ],
+    "answer": "Evet, bebek yatağı talep edebilirsiniz.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "bebek yatağı"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0197",
+    "question": "Asansör çalışmıyor — bilgi alabilir miyim?",
+    "variants": [
+      "asansör",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Teknik ekip bilgilendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "asansör"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0198",
+    "question": "Sıcak su gelmiyor — detay?",
+    "variants": [
+      "sıcak su",
+      "detay"
+    ],
+    "answer": "Teknik servis acil yönlendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "sıcak su"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0199",
+    "question": "Check-in saat kaçta — açıklar mısınız?",
+    "variants": [
+      "check-in",
+      "giriş saati",
+      "açıklar mısınız"
+    ],
+    "answer": "Check-in saatimiz 14:00'dır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "check-in",
+      "giriş saati"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0200",
+    "question": "Check-out saat kaçta — ücretli mi?",
+    "variants": [
+      "check-out",
+      "çıkış saati",
+      "ücretli mi"
+    ],
+    "answer": "Check-out saatimiz 12:00'dır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "check-out",
+      "çıkış saati"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0201",
+    "question": "Erken check-in mümkün mü — ücretsiz mi?",
+    "variants": [
+      "erken giriş",
+      "ücretsiz mi"
+    ],
+    "answer": "Erken check-in müsaitliğe bağlıdır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "erken giriş"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0202",
+    "question": "Geç check-out yapabilir miyim — nerede?",
+    "variants": [
+      "geç çıkış",
+      "nerede"
+    ],
+    "answer": "Geç check-out müsaitliğe bağlıdır.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "geç çıkış"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0203",
+    "question": "Oda anahtarımı kaybettim — nasıl?",
+    "variants": [
+      "kayıp kart",
+      "nasıl"
+    ],
+    "answer": "Resepsiyona başvurun; kimlik sonrası yeni kart verilir.",
+    "department": "Front Office",
+    "department_key": "resepsiyon",
+    "keywords": [
+      "kayıp kart"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0204",
+    "question": "Havlu istiyorum — bilgi alabilir miyim?",
+    "variants": [
+      "havlu istiyorum",
+      "ek havlu",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Ek havlu talebiniz alındı; kat hizmetleri yönlendirildi.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "havlu istiyorum",
+      "ek havlu"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0205",
+    "question": "Oda temizliği ne zaman — detay?",
+    "variants": [
+      "oda temizliği",
+      "detay"
+    ],
+    "answer": "Günlük temizlik 09:00-16:00 arası yapılır.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "oda temizliği"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0206",
+    "question": "Yastık ekstra alabilir miyim — açıklar mısınız?",
+    "variants": [
+      "ek yastık",
+      "açıklar mısınız"
+    ],
+    "answer": "Evet, ek yastık talep edebilirsiniz.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "ek yastık"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0207",
+    "question": "Minibar nasıl ücretlendiriliyor — ücretli mi?",
+    "variants": [
+      "minibar",
+      "ücretli mi"
+    ],
+    "answer": "Minibar tüketim bazlı ücretlendirilir.",
+    "department": "Housekeeping",
+    "department_key": "housekeeping",
+    "keywords": [
+      "minibar"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0208",
+    "question": "Kahvaltı kaçta — ücretsiz mi?",
+    "variants": [
+      "kahvaltı saat",
+      "kahvaltı kaçta",
+      "ücretsiz mi"
+    ],
+    "answer": "Kahvaltı 07:00-10:30 arası servis edilir.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "kahvaltı saat",
+      "kahvaltı kaçta"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0209",
+    "question": "Vegan seçenek var mı — nerede?",
+    "variants": [
+      "vegan",
+      "vejetaryen",
+      "nerede"
+    ],
+    "answer": "Evet, vegan seçenekler sunulmaktadır.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "vegan",
+      "vejetaryen"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0210",
+    "question": "Glutensiz yemek var mı — nasıl?",
+    "variants": [
+      "glutensiz",
+      "nasıl"
+    ],
+    "answer": "Evet, glutensiz seçenekler mevcuttur.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "glutensiz"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0211",
+    "question": "Oda servisi var mı — bilgi alabilir miyim?",
+    "variants": [
+      "oda servisi",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "24 saat oda servisi mevcuttur.",
+    "department": "F&B",
+    "department_key": "restaurant",
+    "keywords": [
+      "oda servisi"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0212",
+    "question": "Havuz saatleri nedir — detay?",
+    "variants": [
+      "havuz saat",
+      "havuz kaçta",
+      "havuz kapan",
+      "detay"
+    ],
+    "answer": "Havuz 08:00-20:00 arası açıktır.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "havuz saat",
+      "havuz kaçta",
+      "havuz kapan"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0213",
+    "question": "Spa saatleri — açıklar mısınız?",
+    "variants": [
+      "spa saat",
+      "açıklar mısınız"
+    ],
+    "answer": "Spa 10:00-22:00 arası hizmet verir.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "spa saat"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0214",
+    "question": "Hamam ücretsiz mi — ücretli mi?",
+    "variants": [
+      "hamam",
+      "ücretli mi"
+    ],
+    "answer": "Hamam hizmeti ücretlidir.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "hamam"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0215",
+    "question": "Masaj randevusu nasıl alınır — ücretsiz mi?",
+    "variants": [
+      "masaj randevu",
+      "ücretsiz mi"
+    ],
+    "answer": "Spa resepsiyonundan randevu alabilirsiniz.",
+    "department": "Spa",
+    "department_key": "spa",
+    "keywords": [
+      "masaj randevu"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0216",
+    "question": "WiFi şifresi nedir — nerede?",
+    "variants": [
+      "wifi şifre",
+      "nerede"
+    ],
+    "answer": "WiFi şifresi oda kartında ve resepsiyondadır.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "wifi şifre"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0217",
+    "question": "Klima çalışmıyor ne yapmalıyım — nasıl?",
+    "variants": [
+      "klima arız",
+      "klima bozuk",
+      "nasıl"
+    ],
+    "answer": "Resepsiyonu arayın; teknik ekip yönlendirilir.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "klima arız",
+      "klima bozuk"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0218",
+    "question": "TV açılmıyor — bilgi alabilir miyim?",
+    "variants": [
+      "tv çalışmıyor",
+      "bilgi alabilir miyim"
+    ],
+    "answer": "Teknik ekibimiz bilgilendirildi.",
+    "department": "Engineering",
+    "department_key": "teknik",
+    "keywords": [
+      "tv çalışmıyor"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0219",
+    "question": "Kayıp eşyam var — detay?",
+    "variants": [
+      "kayıp eşya",
+      "kaybettim",
+      "detay"
+    ],
+    "answer": "Lost & found için resepsiyona başvurun.",
+    "department": "Security",
+    "department_key": "guvenlik",
+    "keywords": [
+      "kayıp eşya",
+      "kaybettim"
+    ],
+    "type": "faq"
+  },
+  {
+    "id": "faq_0220",
+    "question": "Gürültü şikayetim var — açıklar mısınız?",
+    "variants": [
+      "gürültü",
+      "açıklar mısınız"
+    ],
+    "answer": "Güvenlik devriyesi bilgilendirilir.",
+    "department": "Security",
+    "department_key": "guvenlik",
+    "keywords": [
+      "gürültü"
+    ],
+    "type": "faq"
+  }
+]

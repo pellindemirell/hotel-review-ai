@@ -1,0 +1,23 @@
+version: "1.0"
+lang: ru
+description: "Russian synonym dictionary"
+
+synonyms:
+  - {entity_id: eq_air_conditioner, terms: [кондиционер, климат-контроль, кондиционирование, сплит-система]}
+  - {entity_id: eq_wifi_router, terms: [вайфай, WiFi, интернет, беспроводной]}
+  - {entity_id: eq_tv, terms: [телевизор, ТВ]}
+  - {entity_id: eq_bed, terms: [кровать, постель]}
+  - {entity_id: eq_elevator, terms: [лифт, элеватор]}
+  - {entity_id: phy_room, terms: [номер, комната, гостиничный номер]}
+  - {entity_id: phy_bathroom, terms: [ванная, туалет, душ]}
+  - {entity_id: fac_pool, terms: [бассейн, аквапарк]}
+  - {entity_id: fac_restaurant, terms: [ресторан, столовая, шведский стол]}
+  - {entity_id: fac_spa, terms: [спа, велнес, массаж]}
+  - {entity_id: hum_housekeeper, terms: [горничная, уборщица]}
+  - {entity_id: hum_waiter, terms: [официант, официантка]}
+
+  - {aspect_key: room_cleanliness, terms: [чистый номер, грязный, гигиена]}
+  - {aspect_key: hvac_noise, terms: [шумный кондиционер, шум, громко]}
+  - {aspect_key: food_quality, terms: [еда, качество еды, вкусно, невкусно]}
+  - {aspect_key: breakfast_variety, terms: [завтрак, шведский стол]}
+  - {aspect_key: staff_behavior, terms: [вежливый, грубый, персонал]}
