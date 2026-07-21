@@ -13,7 +13,7 @@ public class Review : BaseEntity
     public DateTime ReviewDate { get; private set; }
     public Guid? CreatedBy { get; private set; }
 
-    public ReviewAnalysis? Analysis { get; set; }
+    public ICollection<ReviewAnalysis> Analyses { get; set; } = [];
     public ICollection<ReviewAttachment> Attachments { get; set; } = [];
     public ICollection<ActionItem> ActionItems { get; set; } = [];
 

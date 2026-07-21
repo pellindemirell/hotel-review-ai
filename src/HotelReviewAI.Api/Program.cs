@@ -1,5 +1,6 @@
 
 using HotelReviewAI.Persistence.Contexts;
+using HotelReviewAI.Persistence.Seed;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using HotelReviewAI.Application.DTOs;
@@ -12,6 +13,7 @@ using Serilog;
 using FluentValidation;
 using HotelReviewAI.Application.Behaviors;
 using HotelReviewAI.Api.Middlewares;
+using HotelReviewAI.Persistence.Repositories;
 
 
 
@@ -26,7 +28,9 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter()));
 
 // Configure Dependency Injection
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
@@ -69,6 +73,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Configure Repositories
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<IReviewAnalysisRepository, ReviewAnalysisRepository>();
+builder.Services.AddScoped<IReviewAttachmentRepository, ReviewAttachmentRepository>();
+builder.Services.AddScoped<IReviewCategoryRepository, ReviewCategoryRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IActionItemRepository, ActionItemRepository>();
+builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+
 builder.Services.AddAuthorization();
 
 // Configure Swagger
@@ -104,6 +118,12 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await DbSeeder.SeedAsync(dbContext);
+}
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 

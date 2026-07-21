@@ -1,0 +1,23 @@
+version: "1.0"
+lang: de
+description: "German synonym dictionary"
+
+synonyms:
+  - {entity_id: eq_air_conditioner, terms: [Klimaanlage, Klima, Klimagerät, Luftkonditionierung]}
+  - {entity_id: eq_wifi_router, terms: [WLAN, Internet, WiFi, drahtlos]}
+  - {entity_id: eq_tv, terms: [Fernseher, TV]}
+  - {entity_id: eq_bed, terms: [Bett, Betten]}
+  - {entity_id: eq_elevator, terms: [Aufzug, Lift]}
+  - {entity_id: phy_room, terms: [Zimmer, Hotelzimmer]}
+  - {entity_id: phy_bathroom, terms: [Badezimmer, Bad, Toilette]}
+  - {entity_id: fac_pool, terms: [Schwimmbad, Pool, Freibad]}
+  - {entity_id: fac_restaurant, terms: [Restaurant, Speisesaal, Buffet]}
+  - {entity_id: fac_spa, terms: [Spa, Wellness, Massage]}
+  - {entity_id: hum_housekeeper, terms: [Zimmermädchen, Housekeeping]}
+  - {entity_id: hum_waiter, terms: [Kellner, Kellnerin, Service]}
+
+  - {aspect_key: room_cleanliness, terms: [sauberes Zimmer, schmutzig, hygienisch]}
+  - {aspect_key: hvac_noise, terms: [laute Klimaanlage, Geräusch, Lärm]}
+  - {aspect_key: food_quality, terms: [Essen, Speisequalität, lecker, schmeckt]}
+  - {aspect_key: breakfast_variety, terms: [Frühstück, Frühstücksbuffet]}
+  - {aspect_key: staff_behavior, terms: [freundlich, unfreundlich, Personal]}

@@ -1,60 +1,80 @@
-import os
-from PIL import Image
+import cv2
+import numpy as np
+import logging
 
 try:
     import pytesseract
 except ImportError:
     pytesseract = None
 
-def perform_ocr(image_bytes: bytes, filename: str = "") -> tuple[str, float]:
-    """
-    Performs OCR text extraction on image bytes and computes a mock visual quality score.
-    Has a fallback if pytesseract is not installed or configured.
-    """
-    ocr_text = ""
-    quality_score = 0.90  # Default quality score
-    
-    # Save the bytes into a temporary PIL image
-    import io
-    try:
-        img = Image.open(io.BytesIO(image_bytes))
-        width, height = img.size
-        
-        # Simple rule-based quality score based on dimensions
-        # A tiny image has lower quality; high-res image has better quality
-        pixels = width * height
-        if pixels < 10000:  # < 100x100
-            quality_score = 0.50
-        elif pixels < 100000:  # < 300x300
-            quality_score = 0.75
-        else:
-            quality_score = 0.95
-            
-        # Try to run pytesseract
-        if pytesseract is not None:
-            try:
-                ocr_text = pytesseract.image_to_string(img, lang="tur+eng")
-            except Exception as e:
-                # If language files aren't found or engine not installed, fall back to default
-                try:
-                    ocr_text = pytesseract.image_to_string(img)
-                except Exception:
-                    ocr_text = ""
-    except Exception as e:
-        return f"Error reading image: {str(e)}", 0.0
+logger = logging.getLogger("ai_service")
 
-    # Clean up ocr_text
-    ocr_text = ocr_text.strip()
-    
-    # Fallback / mock response if OCR returned empty (e.g. no text or engine missing)
-    if not ocr_text:
-        # Mock OCR based on filename
-        base_name = os.path.basename(filename).lower()
-        if "fatura" in base_name or "receipt" in base_name:
-            ocr_text = "MOCK OCR: Fatura veya fiş görseli algılandı. Ödeme tutarı: 1250 TL."
-        elif "temizlik" in base_name or "dirty" in base_name:
-            ocr_text = "MOCK OCR: Kirli oda veya banyo görseli algılandı."
-        else:
-            ocr_text = f"MOCK OCR: '{filename}' isimli görsel başarıyla yüklendi fakat üzerinde okunabilir metin bulunamadı."
-            
-    return ocr_text, quality_score
+# Laplacian varyansı bu eşiğin altındaysa görsel bulanık kabul edilir
+QUALITY_ACCEPT_THRESHOLD = 0.45
+
+
+class OcrService:
+    @staticmethod
+    def process_image(image_bytes: bytes) -> dict:
+        """
+        Görseli işler: OpenCV ile netlik skoru hesaplar, opsiyonel Tesseract OCR uygular.
+        Tesseract kurulu değilse ocr_text boş döner (graceful fallback).
+        """
+        ocr_text = ""
+        image_quality_score = 0.0
+        is_acceptable = False
+
+        try:
+            nparr = np.frombuffer(image_bytes, np.uint8)
+            img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+            if img is None:
+                logger.error("Görsel yüklenemedi veya bozuk formatta.")
+                return {
+                    "ocr_text": "",
+                    "quality_score": 0.0,
+                }
+
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            laplacian_var = cv2.Laplacian(gray, cv2.CV_64F).var()
+            image_quality_score = round(min(1.0, max(0.0, laplacian_var / 300.0)), 2)
+            is_acceptable = image_quality_score >= QUALITY_ACCEPT_THRESHOLD
+
+            if pytesseract:
+                import os
+                import shutil
+                if not shutil.which("tesseract"):
+                    env_path = os.getenv("TESSERACT_CMD") or os.getenv("TESSERACT_PATH")
+                    if env_path and os.path.exists(env_path):
+                        pytesseract.pytesseract.tesseract_cmd = env_path
+                    else:
+                        common_paths = [
+                            r"C:\Program Files\Tesseract-OCR\tesseract.exe",
+                            r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe",
+                            os.path.expandvars(r"%LOCALAPPDATA%\Programs\Tesseract-OCR\tesseract.exe"),
+                        ]
+                        for path in common_paths:
+                            if os.path.exists(path):
+                                pytesseract.pytesseract.tesseract_cmd = path
+                                break
+                try:
+                    ocr_text = pytesseract.image_to_string(img, lang="tur+eng").strip()
+                except Exception as e:
+                    logger.warning(
+                        "Tesseract OCR kullanılamadı (%s); ocr_text boş döndürülüyor.",
+                        e,
+                    )
+            else:
+                logger.info("pytesseract yüklü değil; OCR atlandı.")
+
+        except Exception as e:
+            logger.error(f"Görsel işlenirken beklenmedik hata oluştu: {e}")
+            return {
+                "ocr_text": "",
+                "quality_score": 0.0,
+            }
+
+        return {
+            "ocr_text": ocr_text,
+            "quality_score": image_quality_score,
+        }

@@ -1,0 +1,7214 @@
+version: '1.0'
+description: Physical, facilities, human staff types, equipment — FAZ1-W02 expanded
+physical:
+- id: phy_hotel
+  subtype: hotel
+  labels:
+    tr: Otel
+    en: Hotel
+  department: front_office
+- id: phy_building_main
+  subtype: building
+  parent_id: phy_hotel
+  labels:
+    tr: Ana Bina
+    en: Main Building
+  department: front_office
+- id: phy_building_annex
+  subtype: building
+  parent_id: phy_hotel
+  labels:
+    tr: Ek Bina
+    en: Annex Building
+  department: front_office
+- id: phy_floor
+  subtype: floor
+  parent_id: phy_building_main
+  labels:
+    tr: Kat
+    en: Floor
+  department: housekeeping
+- id: phy_room
+  subtype: room
+  parent_id: phy_floor
+  labels:
+    tr: Oda
+    en: Room
+  department: housekeeping
+- id: phy_suite
+  subtype: suite
+  parent_id: phy_floor
+  labels:
+    tr: Süit
+    en: Suite
+  department: housekeeping
+- id: phy_corridor
+  subtype: corridor
+  parent_id: phy_building_main
+  labels:
+    tr: Koridor
+    en: Corridor
+  department: housekeeping
+- id: phy_lobby
+  subtype: lobby
+  parent_id: phy_hotel
+  labels:
+    tr: Lobi
+    en: Lobby
+  department: front_office
+- id: phy_bathroom
+  subtype: bathroom
+  parent_id: phy_room
+  labels:
+    tr: Banyo
+    en: Bathroom
+  department: housekeeping
+facilities:
+- id: fac_pool
+  subtype: pool
+  labels:
+    tr: Havuz
+    en: Swimming Pool
+  department: havuz
+- id: fac_spa
+  subtype: spa
+  labels:
+    tr: Spa
+    en: Spa
+  department: spa
+- id: fac_restaurant
+  subtype: restaurant
+  labels:
+    tr: Restoran
+    en: Restaurant
+  department: restaurant
+- id: fac_bar
+  subtype: bar
+  labels:
+    tr: Bar
+    en: Bar
+  department: bar
+- id: fac_gym
+  subtype: gym
+  labels:
+    tr: Fitness
+    en: Gym
+  department: spa
+- id: fac_parking
+  subtype: parking
+  labels:
+    tr: Otopark
+    en: Parking
+  department: front_office
+- id: fac_beach
+  subtype: beach
+  labels:
+    tr: Plaj
+    en: Beach
+  department: havuz
+- id: fac_conference
+  subtype: conference
+  labels:
+    tr: Konferans Salonu
+    en: Conference Room
+  department: front_office
+- id: fac_kitchen
+  subtype: kitchen
+  labels:
+    tr: Mutfak
+    en: Kitchen
+  department: restaurant
+- id: fac_aquapark
+  subtype: aquapark
+  labels:
+    tr: Aquapark
+    en: Water Park
+  department: havuz
+human:
+- id: hum_general_manager
+  subtype: executive
+  labels:
+    tr: Genel Müdür
+    en: General Manager
+  department: front_office
+- id: hum_duty_manager
+  subtype: management
+  labels:
+    tr: Görevli Müdür
+    en: Duty Manager
+  department: front_office
+- id: hum_front_desk_agent
+  subtype: front_office
+  labels:
+    tr: Resepsiyonist
+    en: Front Desk Agent
+  department: front_office
+- id: hum_concierge
+  subtype: front_office
+  labels:
+    tr: Concierge
+    en: Concierge
+  department: front_office
+- id: hum_bellboy
+  subtype: front_office
+  labels:
+    tr: Bellboy
+    en: Bellboy
+  department: front_office
+- id: hum_housekeeper
+  subtype: housekeeping
+  labels:
+    tr: Kat Görevlisi
+    en: Housekeeper
+  department: housekeeping
+- id: hum_hk_supervisor
+  subtype: housekeeping
+  labels:
+    tr: HK Süpervizör
+    en: HK Supervisor
+  department: housekeeping
+- id: hum_hvac_technician
+  subtype: engineering
+  labels:
+    tr: HVAC Teknisyeni
+    en: HVAC Technician
+  department: engineering_hvac
+- id: hum_plumber
+  subtype: engineering
+  labels:
+    tr: Tesisatçı
+    en: Plumber
+  department: engineering_plumbing
+- id: hum_electrician
+  subtype: engineering
+  labels:
+    tr: Elektrikçi
+    en: Electrician
+  department: teknik
+- id: hum_it_support
+  subtype: it
+  labels:
+    tr: IT Destek
+    en: IT Support
+  department: engineering_internet
+- id: hum_chef
+  subtype: f_b
+  labels:
+    tr: Şef
+    en: Chef
+  department: restaurant
+- id: hum_waiter
+  subtype: f_b
+  labels:
+    tr: Garson
+    en: Waiter
+  department: personel
+- id: hum_bartender
+  subtype: f_b
+  labels:
+    tr: Barmen
+    en: Bartender
+  department: bar
+- id: hum_spa_therapist
+  subtype: spa
+  labels:
+    tr: Spa Terapisti
+    en: Spa Therapist
+  department: spa
+- id: hum_lifeguard
+  subtype: pool
+  labels:
+    tr: Cankurtaran
+    en: Lifeguard
+  department: havuz
+- id: hum_animator
+  subtype: entertainment
+  labels:
+    tr: Animatör
+    en: Animator
+  department: animasyon
+- id: hum_security_guard
+  subtype: security
+  labels:
+    tr: Güvenlik Görevlisi
+    en: Security Guard
+  department: guvenlik
+- id: hum_valet
+  subtype: front_office
+  labels:
+    tr: Vale
+    en: Valet
+  department: front_office
+- id: hum_laundry_attendant
+  subtype: housekeeping
+  labels:
+    tr: Çamaşırhane Görevlisi
+    en: Laundry Attendant
+  department: housekeeping
+- id: hum_purchasing_officer
+  subtype: finance
+  labels:
+    tr: Satın Alma
+    en: Purchasing Officer
+  department: front_office
+- id: hum_hr_officer
+  subtype: hr
+  labels:
+    tr: İK Uzmanı
+    en: HR Officer
+  department: personel
+- id: hum_guest_relations
+  subtype: front_office
+  labels:
+    tr: Misafir İlişkileri
+    en: Guest Relations
+  department: front_office
+- id: hum_night_auditor
+  subtype: finance
+  labels:
+    tr: Gece Denetçisi
+    en: Night Auditor
+  department: front_office
+- id: hum_pool_attendant
+  subtype: pool
+  labels:
+    tr: Havuz Görevlisi
+    en: Pool Attendant
+  department: havuz
+equipment:
+- id: eq_air_conditioner
+  subtype: hvac
+  labels:
+    tr: Klima
+    en: Air Conditioner
+  department: engineering_hvac
+  parent_id: phy_room
+  canonical_id: EQ_000001
+  category: hvac
+  synonyms:
+    tr:
+    - klima
+    en:
+    - air conditioner
+- id: eq_split_ac
+  subtype: hvac
+  labels:
+    tr: Split Klima
+    en: Split AC
+  department: engineering_hvac
+  parent_id: eq_air_conditioner
+  canonical_id: EQ_000002
+  category: hvac
+  synonyms:
+    tr:
+    - split klima
+    en:
+    - split ac
+- id: eq_fan_coil
+  subtype: hvac
+  labels:
+    tr: Fan Coil
+    en: Fan Coil Unit
+  department: engineering_hvac
+  canonical_id: EQ_000003
+  category: hvac
+  synonyms:
+    tr:
+    - fan coil
+    en:
+    - fan coil unit
+- id: eq_chiller
+  subtype: hvac
+  labels:
+    tr: Chiller
+    en: Chiller
+  department: engineering_hvac
+  canonical_id: EQ_000004
+  category: hvac
+  synonyms:
+    tr:
+    - chiller
+    en:
+    - chiller
+- id: eq_boiler
+  subtype: hvac
+  labels:
+    tr: Kazan
+    en: Boiler
+  department: engineering_hvac
+  canonical_id: EQ_000005
+  category: hvac
+  synonyms:
+    tr:
+    - kazan
+    en:
+    - boiler
+- id: eq_thermostat
+  subtype: hvac
+  labels:
+    tr: Termostat
+    en: Thermostat
+  department: engineering_hvac
+  canonical_id: EQ_000006
+  category: hvac
+  synonyms:
+    tr:
+    - termostat
+    en:
+    - thermostat
+- id: eq_ac_remote
+  subtype: hvac
+  labels:
+    tr: Klima Kumandası
+    en: AC Remote
+  department: engineering_hvac
+  canonical_id: EQ_000007
+  category: hvac
+  synonyms:
+    tr:
+    - klima kumandası
+    en:
+    - ac remote
+- id: eq_wifi_router
+  subtype: internet
+  labels:
+    tr: WiFi Router
+    en: WiFi Router
+  department: engineering_internet
+  canonical_id: EQ_000008
+  category: internet
+  synonyms:
+    tr:
+    - wifi router
+    en:
+    - wifi router
+- id: eq_access_point
+  subtype: internet
+  labels:
+    tr: Access Point
+    en: Access Point
+  department: engineering_internet
+  canonical_id: EQ_000009
+  category: internet
+  synonyms:
+    tr:
+    - access point
+    en:
+    - access point
+- id: eq_network_switch
+  subtype: internet
+  labels:
+    tr: Network Switch
+    en: Network Switch
+  department: engineering_internet
+  canonical_id: EQ_000010
+  category: internet
+  synonyms:
+    tr:
+    - network switch
+    en:
+    - network switch
+- id: eq_tv
+  subtype: av
+  labels:
+    tr: Televizyon
+    en: Television
+  department: teknik
+  parent_id: phy_room
+  canonical_id: EQ_000011
+  category: av
+  synonyms:
+    tr:
+    - televizyon
+    en:
+    - television
+- id: eq_tv_remote
+  subtype: av
+  labels:
+    tr: TV Kumandası
+    en: TV Remote
+  department: teknik
+  canonical_id: EQ_000012
+  category: av
+  synonyms:
+    tr:
+    - tv kumandası
+    en:
+    - tv remote
+- id: eq_minibar
+  subtype: f_b
+  labels:
+    tr: Minibar
+    en: Minibar
+  department: bar
+  parent_id: phy_room
+  canonical_id: EQ_000013
+  category: f_b
+  synonyms:
+    tr:
+    - minibar
+    en:
+    - minibar
+- id: eq_safe
+  subtype: security
+  labels:
+    tr: Kasa
+    en: In-room Safe
+  department: guvenlik
+  parent_id: phy_room
+  canonical_id: EQ_000014
+  category: security
+  synonyms:
+    tr:
+    - kasa
+    en:
+    - in-room safe
+- id: eq_elevator
+  subtype: vertical_transport
+  labels:
+    tr: Asansör
+    en: Elevator
+  department: teknik
+  canonical_id: EQ_000015
+  category: vertical_transport
+  synonyms:
+    tr:
+    - asansör
+    en:
+    - elevator
+- id: eq_bed
+  subtype: furniture
+  labels:
+    tr: Yatak
+    en: Bed
+  department: housekeeping
+  parent_id: phy_room
+  canonical_id: EQ_000016
+  category: furniture
+  synonyms:
+    tr:
+    - yatak
+    en:
+    - bed
+- id: eq_mattress
+  subtype: furniture
+  labels:
+    tr: Yatak Süngeri
+    en: Mattress
+  department: housekeeping
+  parent_id: eq_bed
+  canonical_id: EQ_000017
+  category: furniture
+  synonyms:
+    tr:
+    - yatak süngeri
+    en:
+    - mattress
+- id: eq_pillow
+  subtype: linen
+  labels:
+    tr: Yastık
+    en: Pillow
+  department: housekeeping
+  canonical_id: EQ_000018
+  category: linen
+  synonyms:
+    tr:
+    - yastık
+    en:
+    - pillow
+- id: eq_shower_head
+  subtype: plumbing
+  labels:
+    tr: Duş Başlığı
+    en: Shower Head
+  department: engineering_plumbing
+  parent_id: phy_bathroom
+  canonical_id: EQ_000019
+  category: plumbing
+  synonyms:
+    tr:
+    - duş başlığı
+    en:
+    - shower head
+- id: eq_toilet
+  subtype: plumbing
+  labels:
+    tr: Klozet
+    en: Toilet
+  department: engineering_plumbing
+  parent_id: phy_bathroom
+  canonical_id: EQ_000020
+  category: plumbing
+  synonyms:
+    tr:
+    - klozet
+    en:
+    - toilet
+- id: eq_faucet
+  subtype: plumbing
+  labels:
+    tr: Musluk
+    en: Faucet
+  department: engineering_plumbing
+  canonical_id: EQ_000021
+  category: plumbing
+  synonyms:
+    tr:
+    - musluk
+    en:
+    - faucet
+- id: eq_water_heater
+  subtype: plumbing
+  labels:
+    tr: Su Isıtıcı
+    en: Water Heater
+  department: engineering_plumbing
+  canonical_id: EQ_000022
+  category: plumbing
+  synonyms:
+    tr:
+    - su isıtıcı
+    en:
+    - water heater
+- id: eq_coffee_machine
+  subtype: f_b
+  labels:
+    tr: Kahve Makinesi
+    en: Coffee Machine
+  department: restaurant
+  canonical_id: EQ_000023
+  category: f_b
+  synonyms:
+    tr:
+    - kahve makinesi
+    en:
+    - coffee machine
+- id: eq_refrigerator
+  subtype: kitchen
+  labels:
+    tr: Buzdolabı
+    en: Refrigerator
+  department: restaurant
+  canonical_id: EQ_000024
+  category: kitchen
+  synonyms:
+    tr:
+    - buzdolabı
+    en:
+    - refrigerator
+- id: eq_oven
+  subtype: kitchen
+  labels:
+    tr: Fırın
+    en: Oven
+  department: restaurant
+  canonical_id: EQ_000025
+  category: kitchen
+  synonyms:
+    tr:
+    - fırın
+    en:
+    - oven
+- id: eq_dishwasher
+  subtype: kitchen
+  labels:
+    tr: Bulaşık Makinesi
+    en: Dishwasher
+  department: restaurant
+  canonical_id: EQ_000026
+  category: kitchen
+  synonyms:
+    tr:
+    - bulaşık makinesi
+    en:
+    - dishwasher
+- id: eq_pool_pump
+  subtype: pool
+  labels:
+    tr: Havuz Pompası
+    en: Pool Pump
+  department: havuz
+  canonical_id: EQ_000027
+  category: pool
+  synonyms:
+    tr:
+    - havuz pompası
+    en:
+    - pool pump
+- id: eq_pool_filter
+  subtype: pool
+  labels:
+    tr: Havuz Filtresi
+    en: Pool Filter
+  department: havuz
+  canonical_id: EQ_000028
+  category: pool
+  synonyms:
+    tr:
+    - havuz filtresi
+    en:
+    - pool filter
+- id: eq_spa_jacuzzi
+  subtype: spa
+  labels:
+    tr: Jakuzi
+    en: Jacuzzi
+  department: spa
+  canonical_id: EQ_000029
+  category: spa
+  synonyms:
+    tr:
+    - jakuzi
+    en:
+    - jacuzzi
+- id: eq_sauna_heater
+  subtype: spa
+  labels:
+    tr: Sauna Isıtıcı
+    en: Sauna Heater
+  department: spa
+  canonical_id: EQ_000030
+  category: spa
+  synonyms:
+    tr:
+    - sauna isıtıcı
+    en:
+    - sauna heater
+- id: eq_iron
+  subtype: housekeeping
+  labels:
+    tr: Ütü
+    en: Iron
+  department: housekeeping
+  canonical_id: EQ_000031
+  category: housekeeping
+  synonyms:
+    tr:
+    - ütü
+    en:
+    - iron
+- id: eq_hair_dryer
+  subtype: amenities
+  labels:
+    tr: Saç Kurutma
+    en: Hair Dryer
+  department: housekeeping
+  canonical_id: EQ_000032
+  category: amenities
+  synonyms:
+    tr:
+    - saç kurutma
+    en:
+    - hair dryer
+- id: eq_door_lock
+  subtype: security
+  labels:
+    tr: Kapı Kilidi
+    en: Door Lock
+  department: guvenlik
+  canonical_id: EQ_000033
+  category: security
+  synonyms:
+    tr:
+    - kapı kilidi
+    en:
+    - door lock
+- id: eq_smoke_detector
+  subtype: safety
+  labels:
+    tr: Duman Dedektörü
+    en: Smoke Detector
+  department: guvenlik
+  canonical_id: EQ_000034
+  category: safety
+  synonyms:
+    tr:
+    - duman dedektörü
+    en:
+    - smoke detector
+- id: eq_fire_extinguisher
+  subtype: safety
+  labels:
+    tr: Yangın Söndürücü
+    en: Fire Extinguisher
+  department: guvenlik
+  canonical_id: EQ_000035
+  category: safety
+  synonyms:
+    tr:
+    - yangın söndürücü
+    en:
+    - fire extinguisher
+- id: eq_laundry_machine
+  subtype: laundry
+  labels:
+    tr: Çamaşır Makinesi
+    en: Washing Machine
+  department: housekeeping
+  canonical_id: EQ_000036
+  category: laundry
+  synonyms:
+    tr:
+    - çamaşır makinesi
+    en:
+    - washing machine
+- id: eq_vacuum_cleaner
+  subtype: housekeeping
+  labels:
+    tr: Elektrikli Süpürge
+    en: Vacuum Cleaner
+  department: housekeeping
+  canonical_id: EQ_000037
+  category: housekeeping
+  synonyms:
+    tr:
+    - elektrikli süpürge
+    en:
+    - vacuum cleaner
+- id: eq_projector
+  subtype: av
+  labels:
+    tr: Projeksiyon
+    en: Projector
+  department: teknik
+  canonical_id: EQ_000038
+  category: av
+  synonyms:
+    tr:
+    - projeksiyon
+    en:
+    - projector
+- id: eq_pos_terminal
+  subtype: f_b
+  labels:
+    tr: POS Terminal
+    en: POS Terminal
+  department: restaurant
+  canonical_id: EQ_000039
+  category: f_b
+  synonyms:
+    tr:
+    - pos terminal
+    en:
+    - pos terminal
+- id: eq_ice_machine
+  subtype: f_b
+  labels:
+    tr: Buz Makinesi
+    en: Ice Machine
+  department: bar
+  canonical_id: EQ_000040
+  category: f_b
+  synonyms:
+    tr:
+    - buz makinesi
+    en:
+    - ice machine
+- id: eq_blender
+  subtype: bar
+  labels:
+    tr: Blender
+    en: Blender
+  department: bar
+  canonical_id: EQ_000041
+  category: bar
+  synonyms:
+    tr:
+    - blender
+    en:
+    - blender
+- id: eq_gym_treadmill
+  subtype: gym
+  labels:
+    tr: Koşu Bandı
+    en: Treadmill
+  department: spa
+  canonical_id: EQ_000042
+  category: gym
+  synonyms:
+    tr:
+    - koşu bandı
+    en:
+    - treadmill
+- id: eq_solar_panel
+  subtype: energy
+  labels:
+    tr: Güneş Paneli
+    en: Solar Panel
+  department: teknik
+  canonical_id: EQ_000043
+  category: energy
+  synonyms:
+    tr:
+    - güneş paneli
+    en:
+    - solar panel
+- id: eq_generator
+  subtype: energy
+  labels:
+    tr: Jeneratör
+    en: Generator
+  department: teknik
+  canonical_id: EQ_000044
+  category: energy
+  synonyms:
+    tr:
+    - jeneratör
+    en:
+    - generator
+- id: eq_cctv_camera
+  subtype: security
+  labels:
+    tr: Güvenlik Kamerası
+    en: CCTV Camera
+  department: guvenlik
+  canonical_id: EQ_000045
+  category: security
+  synonyms:
+    tr:
+    - güvenlik kamerası
+    en:
+    - cctv camera
+- id: eq_key_card_reader
+  subtype: security
+  labels:
+    tr: Kartlı Geçiş
+    en: Key Card Reader
+  department: guvenlik
+  canonical_id: EQ_000046
+  category: security
+  synonyms:
+    tr:
+    - kartlı geçiş
+    en:
+    - key card reader
+- id: eq_phone
+  subtype: telecom
+  labels:
+    tr: Oda Telefonu
+    en: Room Phone
+  department: teknik
+  canonical_id: EQ_000047
+  category: telecom
+  synonyms:
+    tr:
+    - oda telefonu
+    en:
+    - room phone
+- id: eq_curtain_motor
+  subtype: room_automation
+  labels:
+    tr: Perde Motoru
+    en: Curtain Motor
+  department: teknik
+  canonical_id: EQ_000048
+  category: room_automation
+  synonyms:
+    tr:
+    - perde motoru
+    en:
+    - curtain motor
+- id: eq_blackout_blind
+  subtype: furniture
+  labels:
+    tr: Karartma Perdesi
+    en: Blackout Blind
+  department: housekeeping
+  canonical_id: EQ_000049
+  category: furniture
+  synonyms:
+    tr:
+    - karartma perdesi
+    en:
+    - blackout blind
+- id: eq_desk_lamp
+  subtype: furniture
+  labels:
+    tr: Masa Lambası
+    en: Desk Lamp
+  department: housekeeping
+  canonical_id: EQ_000050
+  category: furniture
+  synonyms:
+    tr:
+    - masa lambası
+    en:
+    - desk lamp
+- id: eq_balcony_railing
+  subtype: structure
+  labels:
+    tr: Balkon Demiri
+    en: Balcony Railing
+  department: teknik
+  canonical_id: EQ_000051
+  category: structure
+  synonyms:
+    tr:
+    - balkon demiri
+    en:
+    - balcony railing
+- id: eq_water_dispenser
+  subtype: f_b
+  labels:
+    tr: Su Sebili
+    en: Water Dispenser
+  department: restaurant
+  canonical_id: EQ_000052
+  category: f_b
+  synonyms:
+    tr:
+    - su sebili
+    en:
+    - water dispenser
+- id: eq_toaster
+  subtype: kitchen
+  labels:
+    tr: Tost Makinesi
+    en: Toaster
+  department: restaurant
+  canonical_id: EQ_000053
+  category: kitchen
+  synonyms:
+    tr:
+    - tost makinesi
+    en:
+    - toaster
+- id: eq_kettle
+  subtype: amenities
+  labels:
+    tr: Su Isıtıcısı
+    en: Kettle
+  department: housekeeping
+  canonical_id: EQ_000054
+  category: amenities
+  synonyms:
+    tr:
+    - su isıtıcısı
+    en:
+    - kettle
+- id: eq_bath_towel_warmer
+  subtype: amenities
+  labels:
+    tr: Havlu Isıtıcı
+    en: Towel Warmer
+  department: housekeeping
+  canonical_id: EQ_000055
+  category: amenities
+  synonyms:
+    tr:
+    - havlu isıtıcı
+    en:
+    - towel warmer
+- id: eq_aquapark_slide
+  subtype: aquapark
+  labels:
+    tr: Su Kaydırağı
+    en: Water Slide
+  department: havuz
+  canonical_id: EQ_000056
+  category: aquapark
+  synonyms:
+    tr:
+    - su kaydırağı
+    en:
+    - water slide
+- id: eq_pool_lounger
+  subtype: pool
+  labels:
+    tr: Şezlong
+    en: Pool Lounger
+  department: havuz
+  canonical_id: EQ_000057
+  category: pool
+  synonyms:
+    tr:
+    - şezlong
+    en:
+    - pool lounger
+- id: eq_umbrella
+  subtype: beach
+  labels:
+    tr: Şemsiye
+    en: Beach Umbrella
+  department: havuz
+  canonical_id: EQ_000058
+  category: beach
+  synonyms:
+    tr:
+    - şemsiye
+    en:
+    - beach umbrella
+- id: eq_baby_cot
+  subtype: furniture
+  labels:
+    tr: Bebek Yatağı
+    en: Baby Cot
+  department: housekeeping
+  canonical_id: EQ_000059
+  category: furniture
+  synonyms:
+    tr:
+    - bebek yatağı
+    en:
+    - baby cot
+- id: eq_wheelchair
+  subtype: accessibility
+  labels:
+    tr: Tekerlekli Sandalye
+    en: Wheelchair
+  department: front_office
+  canonical_id: EQ_000060
+  category: accessibility
+  synonyms:
+    tr:
+    - tekerlekli sandalye
+    en:
+    - wheelchair
+- id: eq_pms_terminal
+  subtype: it
+  labels:
+    tr: PMS Terminal
+    en: PMS Terminal
+  department: engineering_internet
+  canonical_id: EQ_000061
+  category: it
+  synonyms:
+    tr:
+    - pms terminal
+    en:
+    - pms terminal
+- id: eq_printer
+  subtype: it
+  labels:
+    tr: Yazıcı
+    en: Printer
+  department: engineering_internet
+  canonical_id: EQ_000062
+  category: it
+  synonyms:
+    tr:
+    - yazıcı
+    en:
+    - printer
+- id: eq_backup_ups
+  subtype: it
+  labels:
+    tr: UPS
+    en: UPS
+  department: teknik
+  canonical_id: EQ_000063
+  category: it
+  synonyms:
+    tr:
+    - ups
+    en:
+    - ups
+- id: eq_hvac_filter
+  subtype: hvac
+  labels:
+    tr: HVAC Filtresi
+    en: HVAC Filter
+  department: engineering_hvac
+  canonical_id: EQ_000064
+  category: hvac
+  synonyms:
+    tr:
+    - hvac filtresi
+    en:
+    - hvac filter
+- id: eq_compressor
+  subtype: hvac
+  labels:
+    tr: Kompresör
+    en: Compressor
+  department: engineering_hvac
+  canonical_id: EQ_000065
+  category: hvac
+  synonyms:
+    tr:
+    - kompresör
+    en:
+    - compressor
+- id: eq_ductwork
+  subtype: hvac
+  labels:
+    tr: Havalandırma Kanalı
+    en: Ductwork
+  department: engineering_hvac
+  canonical_id: EQ_000066
+  category: hvac
+  synonyms:
+    tr:
+    - havalandırma kanalı
+    en:
+    - ductwork
+- id: eq_vrf_outdoor
+  subtype: hvac
+  labels:
+    tr: VRF Dış Ünite
+    en: VRF Outdoor Unit
+  department: engineering_hvac
+  canonical_id: EQ_000067
+  category: hvac
+  synonyms:
+    tr:
+    - vrf dış ünite
+    en:
+    - vrf outdoor unit
+- id: eq_ahu
+  subtype: hvac
+  labels:
+    tr: AHU
+    en: Air Handling Unit
+  department: engineering_hvac
+  canonical_id: EQ_000068
+  category: hvac
+  synonyms:
+    tr:
+    - ahu
+    en:
+    - air handling unit
+- id: eq_damper
+  subtype: hvac
+  labels:
+    tr: Damper
+    en: Damper
+  department: engineering_hvac
+  canonical_id: EQ_000069
+  category: hvac
+  synonyms:
+    tr:
+    - damper
+    en:
+    - damper
+- id: eq_exhaust_fan
+  subtype: hvac
+  labels:
+    tr: Egzoz Fanı
+    en: Exhaust Fan
+  department: engineering_hvac
+  canonical_id: EQ_000070
+  category: hvac
+  synonyms:
+    tr:
+    - egzoz fanı
+    en:
+    - exhaust fan
+- id: eq_heat_pump
+  subtype: hvac
+  labels:
+    tr: Isı Pompası
+    en: Heat Pump
+  department: engineering_hvac
+  canonical_id: EQ_000071
+  category: hvac
+  synonyms:
+    tr:
+    - isı pompası
+    en:
+    - heat pump
+- id: eq_radiator
+  subtype: hvac
+  labels:
+    tr: Radyatör
+    en: Radiator
+  department: engineering_hvac
+  canonical_id: EQ_000072
+  category: hvac
+  synonyms:
+    tr:
+    - radyatör
+    en:
+    - radiator
+- id: eq_floor_heating
+  subtype: hvac
+  labels:
+    tr: Yerden Isıtma
+    en: Underfloor Heating
+  department: engineering_hvac
+  canonical_id: EQ_000073
+  category: hvac
+  synonyms:
+    tr:
+    - yerden isıtma
+    en:
+    - underfloor heating
+- id: eq_dehumidifier
+  subtype: hvac
+  labels:
+    tr: Nem Alma
+    en: Dehumidifier
+  department: engineering_hvac
+  canonical_id: EQ_000074
+  category: hvac
+  synonyms:
+    tr:
+    - nem alma
+    en:
+    - dehumidifier
+- id: eq_air_purifier
+  subtype: hvac
+  labels:
+    tr: Hava Temizleyici
+    en: Air Purifier
+  department: engineering_hvac
+  canonical_id: EQ_000075
+  category: hvac
+  synonyms:
+    tr:
+    - hava temizleyici
+    en:
+    - air purifier
+- id: eq_duct_sensor
+  subtype: hvac
+  labels:
+    tr: Kanal Sensörü
+    en: Duct Sensor
+  department: engineering_hvac
+  canonical_id: EQ_000076
+  category: hvac
+  synonyms:
+    tr:
+    - kanal sensörü
+    en:
+    - duct sensor
+- id: eq_fiber_switch
+  subtype: internet
+  labels:
+    tr: Fiber Switch
+    en: Fiber Switch
+  department: engineering_internet
+  canonical_id: EQ_000077
+  category: internet
+  synonyms:
+    tr:
+    - fiber switch
+    en:
+    - fiber switch
+- id: eq_modem
+  subtype: internet
+  labels:
+    tr: Modem
+    en: Modem
+  department: engineering_internet
+  canonical_id: EQ_000078
+  category: internet
+  synonyms:
+    tr:
+    - modem
+    en:
+    - modem
+- id: eq_firewall
+  subtype: internet
+  labels:
+    tr: Firewall
+    en: Firewall
+  department: engineering_internet
+  canonical_id: EQ_000079
+  category: internet
+  synonyms:
+    tr:
+    - firewall
+    en:
+    - firewall
+- id: eq_nas
+  subtype: internet
+  labels:
+    tr: NAS
+    en: Network Storage
+  department: engineering_internet
+  canonical_id: EQ_000080
+  category: internet
+  synonyms:
+    tr:
+    - nas
+    en:
+    - network storage
+- id: eq_pbx
+  subtype: telecom
+  labels:
+    tr: Santral
+    en: PBX
+  department: engineering_internet
+  canonical_id: EQ_000081
+  category: telecom
+  synonyms:
+    tr:
+    - santral
+    en:
+    - pbx
+- id: eq_intercom
+  subtype: telecom
+  labels:
+    tr: İnterkom
+    en: Intercom
+  department: teknik
+  canonical_id: EQ_000082
+  category: telecom
+  synonyms:
+    tr:
+    - i̇nterkom
+    en:
+    - intercom
+- id: eq_door_bell
+  subtype: telecom
+  labels:
+    tr: Kapı Zili
+    en: Door Bell
+  department: teknik
+  canonical_id: EQ_000083
+  category: telecom
+  synonyms:
+    tr:
+    - kapı zili
+    en:
+    - door bell
+- id: eq_light_switch
+  subtype: electrical
+  labels:
+    tr: Anahtar
+    en: Light Switch
+  department: engineering_electrical
+  canonical_id: EQ_000084
+  category: electrical
+  synonyms:
+    tr:
+    - anahtar
+    en:
+    - light switch
+- id: eq_dimmer
+  subtype: electrical
+  labels:
+    tr: Dimmer
+    en: Dimmer
+  department: engineering_lighting
+  canonical_id: EQ_000085
+  category: electrical
+  synonyms:
+    tr:
+    - dimmer
+    en:
+    - dimmer
+- id: eq_led_panel
+  subtype: electrical
+  labels:
+    tr: LED Panel
+    en: LED Panel
+  department: engineering_lighting
+  canonical_id: EQ_000086
+  category: electrical
+  synonyms:
+    tr:
+    - led panel
+    en:
+    - led panel
+- id: eq_emergency_light
+  subtype: electrical
+  labels:
+    tr: Acil Aydınlatma
+    en: Emergency Light
+  department: engineering_electrical
+  canonical_id: EQ_000087
+  category: electrical
+  synonyms:
+    tr:
+    - acil aydınlatma
+    en:
+    - emergency light
+- id: eq_power_socket
+  subtype: electrical
+  labels:
+    tr: Priz
+    en: Power Socket
+  department: engineering_electrical
+  canonical_id: EQ_000088
+  category: electrical
+  synonyms:
+    tr:
+    - priz
+    en:
+    - power socket
+- id: eq_circuit_breaker
+  subtype: electrical
+  labels:
+    tr: Sigorta
+    en: Circuit Breaker
+  department: engineering_electrical
+  canonical_id: EQ_000089
+  category: electrical
+  synonyms:
+    tr:
+    - sigorta
+    en:
+    - circuit breaker
+- id: eq_transformer
+  subtype: electrical
+  labels:
+    tr: Trafo
+    en: Transformer
+  department: engineering_electrical
+  canonical_id: EQ_000090
+  category: electrical
+  synonyms:
+    tr:
+    - trafo
+    en:
+    - transformer
+- id: eq_sump_pump
+  subtype: plumbing
+  labels:
+    tr: Dalgaç Pompa
+    en: Sump Pump
+  department: engineering_plumbing
+  canonical_id: EQ_000091
+  category: plumbing
+  synonyms:
+    tr:
+    - dalgaç pompa
+    en:
+    - sump pump
+- id: eq_water_meter
+  subtype: plumbing
+  labels:
+    tr: Su Sayacı
+    en: Water Meter
+  department: engineering_plumbing
+  canonical_id: EQ_000092
+  category: plumbing
+  synonyms:
+    tr:
+    - su sayacı
+    en:
+    - water meter
+- id: eq_backflow_valve
+  subtype: plumbing
+  labels:
+    tr: Geri Tepme Valfi
+    en: Backflow Valve
+  department: engineering_plumbing
+  canonical_id: EQ_000093
+  category: plumbing
+  synonyms:
+    tr:
+    - geri tepme valfi
+    en:
+    - backflow valve
+- id: eq_grease_trap
+  subtype: plumbing
+  labels:
+    tr: Yağ Tutucu
+    en: Grease Trap
+  department: engineering_plumbing
+  canonical_id: EQ_000094
+  category: plumbing
+  synonyms:
+    tr:
+    - yağ tutucu
+    en:
+    - grease trap
+- id: eq_bidet
+  subtype: plumbing
+  labels:
+    tr: Bidet
+    en: Bidet
+  department: engineering_plumbing
+  canonical_id: EQ_000095
+  category: plumbing
+  synonyms:
+    tr:
+    - bidet
+    en:
+    - bidet
+- id: eq_bathtub
+  subtype: plumbing
+  labels:
+    tr: Küvet
+    en: Bathtub
+  department: engineering_plumbing
+  canonical_id: EQ_000096
+  category: plumbing
+  synonyms:
+    tr:
+    - küvet
+    en:
+    - bathtub
+- id: eq_jacuzzi_tub
+  subtype: plumbing
+  labels:
+    tr: Jakuzi Küvet
+    en: Jacuzzi Tub
+  department: spa
+  canonical_id: EQ_000097
+  category: plumbing
+  synonyms:
+    tr:
+    - jakuzi küvet
+    en:
+    - jacuzzi tub
+- id: eq_steam_generator
+  subtype: spa
+  labels:
+    tr: Buhar Jeneratörü
+    en: Steam Generator
+  department: spa
+  canonical_id: EQ_000098
+  category: spa
+  synonyms:
+    tr:
+    - buhar jeneratörü
+    en:
+    - steam generator
+- id: eq_massage_table
+  subtype: spa
+  labels:
+    tr: Masaj Masası
+    en: Massage Table
+  department: spa
+  canonical_id: EQ_000099
+  category: spa
+  synonyms:
+    tr:
+    - masaj masası
+    en:
+    - massage table
+- id: eq_treadmill
+  subtype: gym
+  labels:
+    tr: Koşu Bandı
+    en: Treadmill
+  department: fitness
+  canonical_id: EQ_000100
+  category: gym
+  synonyms:
+    tr:
+    - koşu bandı
+    en:
+    - treadmill
+- id: eq_exercise_bike
+  subtype: gym
+  labels:
+    tr: Bisiklet
+    en: Exercise Bike
+  department: fitness
+  canonical_id: EQ_000101
+  category: gym
+  synonyms:
+    tr:
+    - bisiklet
+    en:
+    - exercise bike
+- id: eq_dumbbell_rack
+  subtype: gym
+  labels:
+    tr: Dambıl Standı
+    en: Dumbbell Rack
+  department: fitness
+  canonical_id: EQ_000102
+  category: gym
+  synonyms:
+    tr:
+    - dambıl standı
+    en:
+    - dumbbell rack
+- id: eq_cooling_tower
+  canonical_id: EQ_000103
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Soğutma Kulesi
+    en: Cooling Tower
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - soğutma kulesi
+    - cooling tower
+    en:
+    - cooling tower
+  related_aspects:
+  - hvac_cooling
+  maintenance_interval: 90
+- id: eq_ahu_filter_bank
+  canonical_id: EQ_000104
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: AHU Filtre Bankası
+    en: AHU Filter Bank
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - ahu filtre bankası
+    - ahu filter bank
+    en:
+    - ahu filter bank
+  related_aspects:
+  - hvac_air_quality
+  maintenance_interval: 30
+- id: eq_vav_box
+  canonical_id: EQ_000105
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: VAV Kutusu
+    en: VAV Box
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - vav kutusu
+    - vav box
+    en:
+    - vav box
+  related_aspects:
+  - hvac_airflow
+  maintenance_interval: 180
+- id: eq_fcu_drain_pan
+  canonical_id: EQ_000106
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: FCU Yoğuşma Tavası
+    en: FCU Drain Pan
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - fcu yoğuşma tavası
+    - fcu drain pan
+    en:
+    - fcu drain pan
+  related_aspects:
+  - hvac_leak
+  maintenance_interval: 90
+- id: eq_chilled_water_pump
+  canonical_id: EQ_000107
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Chiller Su Pompası
+    en: Chilled Water Pump
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - chiller su pompası
+    - chilled water pump
+    en:
+    - chilled water pump
+  related_aspects:
+  - hvac_cooling
+  maintenance_interval: 90
+- id: eq_hot_water_pump
+  canonical_id: EQ_000108
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Sıcak Su Pompası
+    en: Hot Water Pump
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - sıcak su pompası
+    - hot water pump
+    en:
+    - hot water pump
+  related_aspects:
+  - hvac_heating
+  maintenance_interval: 90
+- id: eq_expansion_tank
+  canonical_id: EQ_000109
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Genleşme Tankı
+    en: Expansion Tank
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - genleşme tankı
+    - expansion tank
+    en:
+    - expansion tank
+  related_aspects:
+  - hvac_heating
+  maintenance_interval: 180
+- id: eq_plate_heat_exchanger
+  canonical_id: EQ_000110
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Plakalı Isı Değiştirici
+    en: Plate Heat Exchanger
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - plakalı isı değiştirici
+    - plate heat exchanger
+    en:
+    - plate heat exchanger
+  related_aspects:
+  - hvac_heating
+  maintenance_interval: 180
+- id: eq_vrf_indoor
+  canonical_id: EQ_000111
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: VRF İç Ünite
+    en: VRF Indoor Unit
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - vrf i̇ç ünite
+    - vrf indoor
+    en:
+    - vrf indoor unit
+  related_aspects:
+  - hvac_cooling
+  - hvac_noise
+  maintenance_interval: 90
+- id: eq_vrf_controller
+  canonical_id: EQ_000112
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: VRF Kontrolör
+    en: VRF Controller
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - vrf kontrolör
+    - vrf controller
+    en:
+    - vrf controller
+  related_aspects:
+  - hvac_control
+  maintenance_interval: 180
+- id: eq_bms_controller
+  canonical_id: EQ_000113
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: BMS Kontrolör
+    en: BMS Controller
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - bms kontrolör
+    - bms controller
+    en:
+    - bms controller
+  related_aspects:
+  - hvac_control
+  maintenance_interval: 180
+- id: eq_co2_sensor
+  canonical_id: EQ_000114
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: CO2 Sensörü
+    en: CO2 Sensor
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - co2 sensörü
+    - co2 sensor
+    en:
+    - co2 sensor
+  related_aspects:
+  - hvac_air_quality
+  maintenance_interval: 180
+- id: eq_humidity_sensor
+  canonical_id: EQ_000115
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Nem Sensörü
+    en: Humidity Sensor
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - nem sensörü
+    - humidity sensor
+    en:
+    - humidity sensor
+  related_aspects:
+  - hvac_humidity
+  maintenance_interval: 180
+- id: eq_pressure_sensor_hvac
+  canonical_id: EQ_000116
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: HVAC Basınç Sensörü
+    en: HVAC Pressure Sensor
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - hvac basınç sensörü
+    - pressure sensor hvac
+    en:
+    - hvac pressure sensor
+  related_aspects:
+  - hvac_airflow
+  maintenance_interval: 180
+- id: eq_actuator_damper
+  canonical_id: EQ_000117
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Damper Aktüatörü
+    en: Damper Actuator
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - damper aktüatörü
+    - actuator damper
+    en:
+    - damper actuator
+  related_aspects:
+  - hvac_airflow
+  maintenance_interval: 180
+- id: eq_fresh_air_unit
+  canonical_id: EQ_000118
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Taze Hava Ünitesi
+    en: Fresh Air Unit
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - taze hava ünitesi
+    - fresh air unit
+    en:
+    - fresh air unit
+  related_aspects:
+  - hvac_air_quality
+  maintenance_interval: 90
+- id: eq_kitchen_hood_fan
+  canonical_id: EQ_000119
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Mutfak Davlumbaz Fanı
+    en: Kitchen Hood Fan
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - mutfak davlumbaz fanı
+    - kitchen hood fan
+    en:
+    - kitchen hood fan
+  related_aspects:
+  - hvac_exhaust
+  maintenance_interval: 60
+- id: eq_bathroom_exhaust
+  canonical_id: EQ_000120
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Banyo Egzoz Fanı
+    en: Bathroom Exhaust Fan
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - banyo egzoz fanı
+    - bathroom exhaust
+    en:
+    - bathroom exhaust fan
+  related_aspects:
+  - hvac_exhaust
+  maintenance_interval: 90
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_corridor_ahu
+  canonical_id: EQ_000121
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Koridor AHU
+    en: Corridor AHU
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - koridor ahu
+    - corridor ahu
+    en:
+    - corridor ahu
+  related_aspects:
+  - hvac_airflow
+  maintenance_interval: 90
+- id: eq_lobby_ahu
+  canonical_id: EQ_000122
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Lobi AHU
+    en: Lobby AHU
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - lobi ahu
+    - lobby ahu
+    en:
+    - lobby ahu
+  related_aspects:
+  - hvac_airflow
+  maintenance_interval: 90
+- id: eq_heat_recovery_unit
+  canonical_id: EQ_000123
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Isı Geri Kazanım Ünitesi
+    en: Heat Recovery Unit
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - isı geri kazanım ünitesi
+    - heat recovery unit
+    en:
+    - heat recovery unit
+  related_aspects:
+  - hvac_heating
+  maintenance_interval: 180
+- id: eq_electric_heater_coil
+  canonical_id: EQ_000124
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Elektrikli Isıtıcı Serpantin
+    en: Electric Heater Coil
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - elektrikli isıtıcı serpantin
+    - electric heater coil
+    en:
+    - electric heater coil
+  related_aspects:
+  - hvac_heating
+  maintenance_interval: 180
+- id: eq_chiller_condenser
+  canonical_id: EQ_000125
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Chiller Kondenser
+    en: Chiller Condenser
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - chiller kondenser
+    - chiller condenser
+    en:
+    - chiller condenser
+  related_aspects:
+  - hvac_cooling
+  maintenance_interval: 90
+- id: eq_chiller_evaporator
+  canonical_id: EQ_000126
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Chiller Evaporatör
+    en: Chiller Evaporator
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - chiller evaporatör
+    - chiller evaporator
+    en:
+    - chiller evaporator
+  related_aspects:
+  - hvac_cooling
+  maintenance_interval: 90
+- id: eq_refrigerant_leak_sensor
+  canonical_id: EQ_000127
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Soğutucu Gaz Kaçak Sensörü
+    en: Refrigerant Leak Sensor
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - soğutucu gaz kaçak sensörü
+    - refrigerant leak sensor
+    en:
+    - refrigerant leak sensor
+  related_aspects:
+  - hvac_leak
+  maintenance_interval: 180
+- id: eq_glycol_pump
+  canonical_id: EQ_000128
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Glikol Pompası
+    en: Glycol Pump
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - glikol pompası
+    - glycol pump
+    en:
+    - glycol pump
+  related_aspects:
+  - hvac_cooling
+  maintenance_interval: 90
+- id: eq_makeup_air_unit
+  canonical_id: EQ_000129
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Make-up Air Ünitesi
+    en: Makeup Air Unit
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - make-up air ünitesi
+    - makeup air unit
+    en:
+    - makeup air unit
+  related_aspects:
+  - hvac_air_quality
+  maintenance_interval: 90
+- id: eq_ceiling_cassette_ac
+  canonical_id: EQ_000130
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Kaset Tipi Klima
+    en: Ceiling Cassette AC
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - kaset tipi klima
+    - ceiling cassette ac
+    en:
+    - ceiling cassette ac
+  related_aspects:
+  - hvac_cooling
+  - hvac_noise
+  maintenance_interval: 90
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_window_ac
+  canonical_id: EQ_000131
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Pencere Tipi Klima
+    en: Window AC
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - pencere tipi klima
+    - window ac
+    en:
+    - window ac
+  related_aspects:
+  - hvac_cooling
+  maintenance_interval: 90
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_portable_ac
+  canonical_id: EQ_000132
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Portatif Klima
+    en: Portable AC
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - portatif klima
+    - portable ac
+    en:
+    - portable ac
+  related_aspects:
+  - hvac_cooling
+  maintenance_interval: 90
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_fan_speed_controller
+  canonical_id: EQ_000133
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Fan Hız Kontrolörü
+    en: Fan Speed Controller
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - fan hız kontrolörü
+    - fan speed controller
+    en:
+    - fan speed controller
+  related_aspects:
+  - hvac_airflow
+  maintenance_interval: 180
+- id: eq_zone_thermostat
+  canonical_id: EQ_000134
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Bölge Termostatı
+    en: Zone Thermostat
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - bölge termostatı
+    - zone thermostat
+    en:
+    - zone thermostat
+  related_aspects:
+  - hvac_control
+  maintenance_interval: 180
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_outdoor_temp_sensor
+  canonical_id: EQ_000135
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Dış Sıcaklık Sensörü
+    en: Outdoor Temp Sensor
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - dış sıcaklık sensörü
+    - outdoor temp sensor
+    en:
+    - outdoor temp sensor
+  related_aspects:
+  - hvac_control
+  maintenance_interval: 180
+- id: eq_condensate_pump
+  canonical_id: EQ_000136
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Yoğuşma Pompası
+    en: Condensate Pump
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - yoğuşma pompası
+    - condensate pump
+    en:
+    - condensate pump
+  related_aspects:
+  - hvac_leak
+  maintenance_interval: 90
+- id: eq_air_curtain
+  canonical_id: EQ_000137
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Hava Perdesi
+    en: Air Curtain
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - hava perdesi
+    - air curtain
+    en:
+    - air curtain
+  related_aspects:
+  - hvac_airflow
+  maintenance_interval: 180
+- id: eq_uv_air_sterilizer
+  canonical_id: EQ_000138
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: UV Hava Sterilizatörü
+    en: UV Air Sterilizer
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - uv hava sterilizatörü
+    - uv air sterilizer
+    en:
+    - uv air sterilizer
+  related_aspects:
+  - hvac_air_quality
+  maintenance_interval: 180
+- id: eq_hepa_filter_unit
+  canonical_id: EQ_000139
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: HEPA Filtre Ünitesi
+    en: HEPA Filter Unit
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - hepa filtre ünitesi
+    - hepa filter unit
+    en:
+    - hepa filter unit
+  related_aspects:
+  - hvac_air_quality
+  maintenance_interval: 60
+- id: eq_duct_silencer
+  canonical_id: EQ_000140
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Kanal Susturucu
+    en: Duct Silencer
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - kanal susturucu
+    - duct silencer
+    en:
+    - duct silencer
+  related_aspects:
+  - hvac_noise
+  maintenance_interval: 365
+- id: eq_flexible_duct
+  canonical_id: EQ_000141
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Esnek Hava Kanalı
+    en: Flexible Duct
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - esnek hava kanalı
+    - flexible duct
+    en:
+    - flexible duct
+  related_aspects:
+  - hvac_airflow
+  maintenance_interval: 365
+- id: eq_grilled_diffuser
+  canonical_id: EQ_000142
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Difüzör Izgara
+    en: Grilled Diffuser
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - difüzör izgara
+    - grilled diffuser
+    en:
+    - grilled diffuser
+  related_aspects:
+  - hvac_airflow
+  maintenance_interval: 180
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_return_air_grille
+  canonical_id: EQ_000143
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Dönüş Hava Izgarası
+    en: Return Air Grille
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - dönüş hava izgarası
+    - return air grille
+    en:
+    - return air grille
+  related_aspects:
+  - hvac_airflow
+  maintenance_interval: 180
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_boiler_burner
+  canonical_id: EQ_000144
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Kazan Brülörü
+    en: Boiler Burner
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - kazan brülörü
+    - boiler burner
+    en:
+    - boiler burner
+  related_aspects:
+  - hvac_heating
+  maintenance_interval: 90
+- id: eq_boiler_flue
+  canonical_id: EQ_000145
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Kazan Baca
+    en: Boiler Flue
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - kazan baca
+    - boiler flue
+    en:
+    - boiler flue
+  related_aspects:
+  - hvac_heating
+  maintenance_interval: 180
+- id: eq_steam_humidifier
+  canonical_id: EQ_000146
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Buharlı Nemlendirici
+    en: Steam Humidifier
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - buharlı nemlendirici
+    - steam humidifier
+    en:
+    - steam humidifier
+  related_aspects:
+  - hvac_humidity
+  maintenance_interval: 90
+- id: eq_desiccant_dehumidifier
+  canonical_id: EQ_000147
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Desiccant Nem Alma
+    en: Desiccant Dehumidifier
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - desiccant nem alma
+    - desiccant dehumidifier
+    en:
+    - desiccant dehumidifier
+  related_aspects:
+  - hvac_humidity
+  maintenance_interval: 90
+- id: eq_thermal_wheel
+  canonical_id: EQ_000148
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Isı Çarkı
+    en: Thermal Wheel
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - isı çarkı
+    - thermal wheel
+    en:
+    - thermal wheel
+  related_aspects:
+  - hvac_heating
+  maintenance_interval: 180
+- id: eq_bypass_damper
+  canonical_id: EQ_000149
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Bypass Damper
+    en: Bypass Damper
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - bypass damper
+    - bypass damper
+    en:
+    - bypass damper
+  related_aspects:
+  - hvac_airflow
+  maintenance_interval: 180
+- id: eq_fire_damper
+  canonical_id: EQ_000150
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Yangın Damperi
+    en: Fire Damper
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - yangın damperi
+    - fire damper
+    en:
+    - fire damper
+  related_aspects:
+  - hvac_safety
+  maintenance_interval: 180
+- id: eq_smoke_damper
+  canonical_id: EQ_000151
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Duman Damperi
+    en: Smoke Damper
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - duman damperi
+    - smoke damper
+    en:
+    - smoke damper
+  related_aspects:
+  - hvac_safety
+  maintenance_interval: 180
+- id: eq_chiller_control_panel
+  canonical_id: EQ_000152
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Chiller Kontrol Paneli
+    en: Chiller Control Panel
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - chiller kontrol paneli
+    - chiller control panel
+    en:
+    - chiller control panel
+  related_aspects:
+  - hvac_control
+  maintenance_interval: 180
+- id: eq_hvac_valve_actuator
+  canonical_id: EQ_000153
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: HVAC Vana Aktüatörü
+    en: HVAC Valve Actuator
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - hvac vana aktüatörü
+    - hvac valve actuator
+    en:
+    - hvac valve actuator
+  related_aspects:
+  - hvac_control
+  maintenance_interval: 180
+- id: eq_room_temp_sensor
+  canonical_id: EQ_000154
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Oda Sıcaklık Sensörü
+    en: Room Temp Sensor
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - oda sıcaklık sensörü
+    - room temp sensor
+    en:
+    - room temp sensor
+  related_aspects:
+  - room_temperature
+  maintenance_interval: 180
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_pipe_insulation_hvac
+  canonical_id: EQ_000155
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: HVAC Boru İzolasyonu
+    en: HVAC Pipe Insulation
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - hvac boru i̇zolasyonu
+    - pipe insulation hvac
+    en:
+    - hvac pipe insulation
+  related_aspects:
+  - hvac_efficiency
+  maintenance_interval: 365
+- id: eq_vibration_isolator
+  canonical_id: EQ_000156
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: Titreşim İzolatörü
+    en: Vibration Isolator
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - titreşim i̇zolatörü
+    - vibration isolator
+    en:
+    - vibration isolator
+  related_aspects:
+  - hvac_noise
+  maintenance_interval: 365
+- id: eq_hvac_access_door
+  canonical_id: EQ_000157
+  subtype: hvac
+  category: hvac
+  labels:
+    tr: HVAC Erişim Kapağı
+    en: HVAC Access Door
+  department: engineering_hvac
+  synonyms:
+    tr:
+    - hvac erişim kapağı
+    - hvac access door
+    en:
+    - hvac access door
+  related_aspects:
+  - hvac_maintenance
+  maintenance_interval: 365
+- id: eq_main_water_pump
+  canonical_id: EQ_000158
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Ana Su Pompası
+    en: Main Water Pump
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - ana su pompası
+    en:
+    - main water pump
+  related_aspects:
+  - plumbing_pressure
+  maintenance_interval: 90
+- id: eq_booster_pump
+  canonical_id: EQ_000159
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Basınç Artırma Pompası
+    en: Booster Pump
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - basınç artırma pompası
+    en:
+    - booster pump
+  related_aspects:
+  - plumbing_pressure
+  maintenance_interval: 90
+- id: eq_hot_water_tank
+  canonical_id: EQ_000160
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Sıcak Su Tankı
+    en: Hot Water Tank
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - sıcak su tankı
+    en:
+    - hot water tank
+  related_aspects:
+  - hot_water
+  maintenance_interval: 180
+- id: eq_cold_water_tank
+  canonical_id: EQ_000161
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Soğuk Su Tankı
+    en: Cold Water Tank
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - soğuk su tankı
+    en:
+    - cold water tank
+  related_aspects:
+  - water_supply
+  maintenance_interval: 180
+- id: eq_pressure_reducing_valve
+  canonical_id: EQ_000162
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Basınç Düşürücü Vana
+    en: Pressure Reducing Valve
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - basınç düşürücü vana
+    en:
+    - pressure reducing valve
+  related_aspects:
+  - plumbing_pressure
+  maintenance_interval: 180
+- id: eq_check_valve
+  canonical_id: EQ_000163
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Çekvalf
+    en: Check Valve
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - çekvalf
+    en:
+    - check valve
+  related_aspects:
+  - plumbing_leak
+  maintenance_interval: 180
+- id: eq_gate_valve
+  canonical_id: EQ_000164
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Sürgülü Vana
+    en: Gate Valve
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - sürgülü vana
+    en:
+    - gate valve
+  related_aspects:
+  - plumbing_control
+  maintenance_interval: 365
+- id: eq_ball_valve
+  canonical_id: EQ_000165
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Küresel Vana
+    en: Ball Valve
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - küresel vana
+    en:
+    - ball valve
+  related_aspects:
+  - plumbing_control
+  maintenance_interval: 365
+- id: eq_solenoid_valve
+  canonical_id: EQ_000166
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Solenoid Vana
+    en: Solenoid Valve
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - solenoid vana
+    en:
+    - solenoid valve
+  related_aspects:
+  - plumbing_control
+  maintenance_interval: 180
+- id: eq_water_softener
+  canonical_id: EQ_000167
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Su Yumuşatma Cihazı
+    en: Water Softener
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - su yumuşatma cihazı
+    en:
+    - water softener
+  related_aspects:
+  - water_quality
+  maintenance_interval: 90
+- id: eq_water_filter_main
+  canonical_id: EQ_000168
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Ana Su Filtresi
+    en: Main Water Filter
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - ana su filtresi
+    en:
+    - main water filter
+  related_aspects:
+  - water_quality
+  maintenance_interval: 60
+- id: eq_uv_water_sterilizer
+  canonical_id: EQ_000169
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: UV Su Sterilizatörü
+    en: UV Water Sterilizer
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - uv su sterilizatörü
+    en:
+    - uv water sterilizer
+  related_aspects:
+  - water_quality
+  maintenance_interval: 90
+- id: eq_sewage_pump
+  canonical_id: EQ_000170
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Atık Su Pompası
+    en: Sewage Pump
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - atık su pompası
+    en:
+    - sewage pump
+  related_aspects:
+  - drainage
+  maintenance_interval: 90
+- id: eq_floor_drain
+  canonical_id: EQ_000171
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Yer Süzgeci
+    en: Floor Drain
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - yer süzgeci
+    en:
+    - floor drain
+  related_aspects:
+  - drainage
+  maintenance_interval: 90
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_p_trap
+  canonical_id: EQ_000172
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: P Tipi Sifon
+    en: P-Trap
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - p tipi sifon
+    en:
+    - p-trap
+  related_aspects:
+  - drainage
+  maintenance_interval: 180
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_mixing_valve
+  canonical_id: EQ_000173
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Karışım Vanası
+    en: Mixing Valve
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - karışım vanası
+    en:
+    - mixing valve
+  related_aspects:
+  - hot_water
+  maintenance_interval: 180
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_thermostatic_mixer
+  canonical_id: EQ_000174
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Termostatik Karıştırıcı
+    en: Thermostatic Mixer
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - termostatik karıştırıcı
+    en:
+    - thermostatic mixer
+  related_aspects:
+  - hot_water
+  maintenance_interval: 180
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_shower_mixer
+  canonical_id: EQ_000175
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Duş Bataryası
+    en: Shower Mixer
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - duş bataryası
+    en:
+    - shower mixer
+  related_aspects:
+  - shower
+  maintenance_interval: 180
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_rain_shower
+  canonical_id: EQ_000176
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Yağmur Duşu
+    en: Rain Shower
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - yağmur duşu
+    en:
+    - rain shower
+  related_aspects:
+  - shower
+  maintenance_interval: 180
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_handheld_shower
+  canonical_id: EQ_000177
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: El Duşu
+    en: Handheld Shower
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - el duşu
+    en:
+    - handheld shower
+  related_aspects:
+  - shower
+  maintenance_interval: 180
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_toilet_flush_valve
+  canonical_id: EQ_000178
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Klozet Rezervuar Vanası
+    en: Toilet Flush Valve
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - klozet rezervuar vanası
+    en:
+    - toilet flush valve
+  related_aspects:
+  - toilet
+  maintenance_interval: 180
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_toilet_seat
+  canonical_id: EQ_000179
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Klozet Kapağı
+    en: Toilet Seat
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - klozet kapağı
+    en:
+    - toilet seat
+  related_aspects:
+  - toilet
+  maintenance_interval: 365
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_urinal
+  canonical_id: EQ_000180
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Pisuvar
+    en: Urinal
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - pisuvar
+    en:
+    - urinal
+  related_aspects:
+  - toilet
+  maintenance_interval: 90
+- id: eq_sink_basin
+  canonical_id: EQ_000181
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Lavabo
+    en: Sink Basin
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - lavabo
+    en:
+    - sink basin
+  related_aspects:
+  - bathroom_fixtures
+  maintenance_interval: 365
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_kitchen_sink
+  canonical_id: EQ_000182
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Mutfak Evye
+    en: Kitchen Sink
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - mutfak evye
+    en:
+    - kitchen sink
+  related_aspects:
+  - kitchen_plumbing
+  maintenance_interval: 180
+- id: eq_dishwasher_drain
+  canonical_id: EQ_000183
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Bulaşık Makinesi Tahliyesi
+    en: Dishwasher Drain
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - bulaşık makinesi tahliyesi
+    en:
+    - dishwasher drain
+  related_aspects:
+  - drainage
+  maintenance_interval: 90
+- id: eq_grease_interceptor
+  canonical_id: EQ_000184
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Yağ Ayırıcı
+    en: Grease Interceptor
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - yağ ayırıcı
+    en:
+    - grease interceptor
+  related_aspects:
+  - kitchen_plumbing
+  maintenance_interval: 30
+- id: eq_water_hammer_arrestor
+  canonical_id: EQ_000185
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Su Darbesi Önleyici
+    en: Water Hammer Arrestor
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - su darbesi önleyici
+    en:
+    - water hammer arrestor
+  related_aspects:
+  - plumbing_noise
+  maintenance_interval: 365
+- id: eq_pipe_hanger
+  canonical_id: EQ_000186
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Boru Askısı
+    en: Pipe Hanger
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - boru askısı
+    en:
+    - pipe hanger
+  related_aspects:
+  - plumbing_support
+  maintenance_interval: 365
+- id: eq_expansion_joint_pipe
+  canonical_id: EQ_000187
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Boru Genleşme Derzi
+    en: Pipe Expansion Joint
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - boru genleşme derzi
+    en:
+    - pipe expansion joint
+  related_aspects:
+  - plumbing_support
+  maintenance_interval: 365
+- id: eq_manhole_cover
+  canonical_id: EQ_000188
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Rögar Kapağı
+    en: Manhole Cover
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - rögar kapağı
+    en:
+    - manhole cover
+  related_aspects:
+  - drainage
+  maintenance_interval: 365
+- id: eq_storm_drain
+  canonical_id: EQ_000189
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Yağmur Suyu Drenajı
+    en: Storm Drain
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - yağmur suyu drenajı
+    en:
+    - storm drain
+  related_aspects:
+  - drainage
+  maintenance_interval: 180
+- id: eq_irrigation_valve
+  canonical_id: EQ_000190
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Sulama Vanası
+    en: Irrigation Valve
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - sulama vanası
+    en:
+    - irrigation valve
+  related_aspects:
+  - irrigation
+  maintenance_interval: 90
+- id: eq_irrigation_pump
+  canonical_id: EQ_000191
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Sulama Pompası
+    en: Irrigation Pump
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - sulama pompası
+    en:
+    - irrigation pump
+  related_aspects:
+  - irrigation
+  maintenance_interval: 90
+- id: eq_pool_fill_valve
+  canonical_id: EQ_000192
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Havuz Dolum Vanası
+    en: Pool Fill Valve
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - havuz dolum vanası
+    en:
+    - pool fill valve
+  related_aspects:
+  - pool_water
+  maintenance_interval: 90
+- id: eq_spa_jet_pump
+  canonical_id: EQ_000193
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Spa Jet Pompası
+    en: Spa Jet Pump
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - spa jet pompası
+    en:
+    - spa jet pump
+  related_aspects:
+  - spa_jets
+  maintenance_interval: 90
+- id: eq_water_leak_sensor
+  canonical_id: EQ_000194
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Su Kaçak Sensörü
+    en: Water Leak Sensor
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - su kaçak sensörü
+    en:
+    - water leak sensor
+  related_aspects:
+  - plumbing_leak
+  maintenance_interval: 180
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_instant_water_heater
+  canonical_id: EQ_000195
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Anlık Su Isıtıcı
+    en: Instant Water Heater
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - anlık su isıtıcı
+    en:
+    - instant water heater
+  related_aspects:
+  - hot_water
+  maintenance_interval: 180
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_calorifier
+  canonical_id: EQ_000196
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Kalorifer / Boyler
+    en: Calorifier
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - kalorifer / boyler
+    en:
+    - calorifier
+  related_aspects:
+  - hot_water
+  maintenance_interval: 180
+- id: eq_circulation_pump_hw
+  canonical_id: EQ_000197
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Sıcak Su Sirkülasyon Pompası
+    en: HW Circulation Pump
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - sıcak su sirkülasyon pompası
+    en:
+    - hw circulation pump
+  related_aspects:
+  - hot_water
+  maintenance_interval: 90
+- id: eq_rpz_valve
+  canonical_id: EQ_000198
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: RPZ Vana
+    en: RPZ Backflow Preventer
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - rpz vana
+    en:
+    - rpz backflow preventer
+  related_aspects:
+  - water_safety
+  maintenance_interval: 180
+- id: eq_metering_faucet
+  canonical_id: EQ_000199
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Zaman Ayarlı Musluk
+    en: Metering Faucet
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - zaman ayarlı musluk
+    en:
+    - metering faucet
+  related_aspects:
+  - bathroom_fixtures
+  maintenance_interval: 180
+- id: eq_sensor_faucet
+  canonical_id: EQ_000200
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Sensörlü Musluk
+    en: Sensor Faucet
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - sensörlü musluk
+    en:
+    - sensor faucet
+  related_aspects:
+  - bathroom_fixtures
+  maintenance_interval: 180
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_bidet_spray
+  canonical_id: EQ_000201
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Taharet Musluğu
+    en: Bidet Spray
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - taharet musluğu
+    en:
+    - bidet spray
+  related_aspects:
+  - bathroom_fixtures
+  maintenance_interval: 180
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_bathtub_overflow
+  canonical_id: EQ_000202
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Küvet Taşma Gideri
+    en: Bathtub Overflow
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - küvet taşma gideri
+    en:
+    - bathtub overflow
+  related_aspects:
+  - bathtub
+  maintenance_interval: 365
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_shower_drain
+  canonical_id: EQ_000203
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Duş Gideri
+    en: Shower Drain
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - duş gideri
+    en:
+    - shower drain
+  related_aspects:
+  - drainage
+  maintenance_interval: 90
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_pipe_insulation_plumb
+  canonical_id: EQ_000204
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Tesisat Boru İzolasyonu
+    en: Plumbing Pipe Insulation
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - tesisat boru i̇zolasyonu
+    en:
+    - plumbing pipe insulation
+  related_aspects:
+  - plumbing_efficiency
+  maintenance_interval: 365
+- id: eq_water_pressure_gauge
+  canonical_id: EQ_000205
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Su Basınç Göstergesi
+    en: Water Pressure Gauge
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - su basınç göstergesi
+    en:
+    - water pressure gauge
+  related_aspects:
+  - plumbing_pressure
+  maintenance_interval: 180
+- id: eq_chemical_dosing_pump
+  canonical_id: EQ_000206
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: Kimyasal Dozaj Pompası
+    en: Chemical Dosing Pump
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - kimyasal dozaj pompası
+    en:
+    - chemical dosing pump
+  related_aspects:
+  - water_quality
+  maintenance_interval: 60
+- id: eq_ro_water_system
+  canonical_id: EQ_000207
+  subtype: plumbing
+  category: plumbing
+  labels:
+    tr: RO Su Arıtma Sistemi
+    en: RO Water System
+  department: engineering_plumbing
+  synonyms:
+    tr:
+    - ro su arıtma sistemi
+    en:
+    - ro water system
+  related_aspects:
+  - water_quality
+  maintenance_interval: 90
+- id: eq_main_distribution_board
+  canonical_id: EQ_000208
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Ana Dağıtım Panosu
+    en: Main Distribution Board
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - ana dağıtım panosu
+    en:
+    - main distribution board
+  related_aspects:
+  - electrical_power
+  maintenance_interval: 180
+- id: eq_floor_db_panel
+  canonical_id: EQ_000209
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Kat Dağıtım Panosu
+    en: Floor DB Panel
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - kat dağıtım panosu
+    en:
+    - floor db panel
+  related_aspects:
+  - electrical_power
+  maintenance_interval: 180
+- id: eq_room_db_panel
+  canonical_id: EQ_000210
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Oda Dağıtım Panosu
+    en: Room DB Panel
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - oda dağıtım panosu
+    en:
+    - room db panel
+  related_aspects:
+  - electrical_power
+  maintenance_interval: 180
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_rcd_breaker
+  canonical_id: EQ_000211
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Kaçak Akım Rölesi
+    en: RCD Breaker
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - kaçak akım rölesi
+    en:
+    - rcd breaker
+  related_aspects:
+  - electrical_safety
+  maintenance_interval: 180
+- id: eq_mcb_breaker
+  canonical_id: EQ_000212
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Otomatik Sigorta
+    en: MCB Breaker
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - otomatik sigorta
+    en:
+    - mcb breaker
+  related_aspects:
+  - electrical_safety
+  maintenance_interval: 365
+- id: eq_ats_switch
+  canonical_id: EQ_000213
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Otomatik Transfer Şalteri
+    en: ATS Switch
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - otomatik transfer şalteri
+    en:
+    - ats switch
+  related_aspects:
+  - electrical_backup
+  maintenance_interval: 180
+- id: eq_surge_protector
+  canonical_id: EQ_000214
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Parafudr
+    en: Surge Protector
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - parafudr
+    en:
+    - surge protector
+  related_aspects:
+  - electrical_safety
+  maintenance_interval: 180
+- id: eq_busbar
+  canonical_id: EQ_000215
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Bara
+    en: Busbar
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - bara
+    en:
+    - busbar
+  related_aspects:
+  - electrical_power
+  maintenance_interval: 365
+- id: eq_cable_tray
+  canonical_id: EQ_000216
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Kablo Kanalı
+    en: Cable Tray
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - kablo kanalı
+    en:
+    - cable tray
+  related_aspects:
+  - electrical_infrastructure
+  maintenance_interval: 365
+- id: eq_conduit
+  canonical_id: EQ_000217
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Boru Tesisat (Elektrik)
+    en: Electrical Conduit
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - boru tesisat (elektrik)
+    en:
+    - electrical conduit
+  related_aspects:
+  - electrical_infrastructure
+  maintenance_interval: 365
+- id: eq_emergency_exit_sign
+  canonical_id: EQ_000218
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Acil Çıkış Tabelası
+    en: Emergency Exit Sign
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - acil çıkış tabelası
+    en:
+    - emergency exit sign
+  related_aspects:
+  - emergency_lighting
+  maintenance_interval: 90
+- id: eq_battery_pack_emergency
+  canonical_id: EQ_000219
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Acil Aydınlatma Aküsü
+    en: Emergency Light Battery
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - acil aydınlatma aküsü
+    en:
+    - emergency light battery
+  related_aspects:
+  - emergency_lighting
+  maintenance_interval: 180
+- id: eq_led_downlight
+  canonical_id: EQ_000220
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: LED Spot
+    en: LED Downlight
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - led spot
+    en:
+    - led downlight
+  related_aspects:
+  - room_lighting
+  maintenance_interval: 365
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_led_strip
+  canonical_id: EQ_000221
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: LED Şerit
+    en: LED Strip
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - led şerit
+    en:
+    - led strip
+  related_aspects:
+  - room_lighting
+  maintenance_interval: 365
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_wall_sconce
+  canonical_id: EQ_000222
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Duvar Apliği
+    en: Wall Sconce
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - duvar apliği
+    en:
+    - wall sconce
+  related_aspects:
+  - room_lighting
+  maintenance_interval: 365
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_floor_lamp
+  canonical_id: EQ_000223
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Lambader
+    en: Floor Lamp
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - lambader
+    en:
+    - floor lamp
+  related_aspects:
+  - room_lighting
+  maintenance_interval: 365
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_bedside_lamp
+  canonical_id: EQ_000224
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Başucu Lambası
+    en: Bedside Lamp
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - başucu lambası
+    en:
+    - bedside lamp
+  related_aspects:
+  - room_lighting
+  maintenance_interval: 365
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_bathroom_mirror_light
+  canonical_id: EQ_000225
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Ayna Aydınlatması
+    en: Bathroom Mirror Light
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - ayna aydınlatması
+    en:
+    - bathroom mirror light
+  related_aspects:
+  - bathroom_lighting
+  maintenance_interval: 365
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_corridor_light
+  canonical_id: EQ_000226
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Koridor Aydınlatması
+    en: Corridor Light
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - koridor aydınlatması
+    en:
+    - corridor light
+  related_aspects:
+  - public_lighting
+  maintenance_interval: 180
+- id: eq_lobby_chandelier
+  canonical_id: EQ_000227
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Lobi Avizesi
+    en: Lobby Chandelier
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - lobi avizesi
+    en:
+    - lobby chandelier
+  related_aspects:
+  - public_lighting
+  maintenance_interval: 365
+- id: eq_exterior_floodlight
+  canonical_id: EQ_000228
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Dış Aydınlatma Projektörü
+    en: Exterior Floodlight
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - dış aydınlatma projektörü
+    en:
+    - exterior floodlight
+  related_aspects:
+  - exterior_lighting
+  maintenance_interval: 180
+- id: eq_landscape_light
+  canonical_id: EQ_000229
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Peyzaj Aydınlatması
+    en: Landscape Light
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - peyzaj aydınlatması
+    en:
+    - landscape light
+  related_aspects:
+  - exterior_lighting
+  maintenance_interval: 180
+- id: eq_pool_underwater_light
+  canonical_id: EQ_000230
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Havuz Sualtı Lambası
+    en: Pool Underwater Light
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - havuz sualtı lambası
+    en:
+    - pool underwater light
+  related_aspects:
+  - pool_lighting
+  maintenance_interval: 180
+- id: eq_usb_socket
+  canonical_id: EQ_000231
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: USB Priz
+    en: USB Socket
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - usb priz
+    en:
+    - usb socket
+  related_aspects:
+  - in_room_power
+  maintenance_interval: 365
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_shaver_socket
+  canonical_id: EQ_000232
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Tıraş Prizi
+    en: Shaver Socket
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - tıraş prizi
+    en:
+    - shaver socket
+  related_aspects:
+  - bathroom_fixtures
+  maintenance_interval: 365
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_floor_socket
+  canonical_id: EQ_000233
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Yer Prizi
+    en: Floor Socket
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - yer prizi
+    en:
+    - floor socket
+  related_aspects:
+  - in_room_power
+  maintenance_interval: 365
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_occupancy_sensor
+  canonical_id: EQ_000234
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Hareket Sensörü
+    en: Occupancy Sensor
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - hareket sensörü
+    en:
+    - occupancy sensor
+  related_aspects:
+  - energy_saving
+  maintenance_interval: 180
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_door_contact_sensor
+  canonical_id: EQ_000235
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Kapı Kontak Sensörü
+    en: Door Contact Sensor
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - kapı kontak sensörü
+    en:
+    - door contact sensor
+  related_aspects:
+  - room_security
+  maintenance_interval: 180
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_energy_meter
+  canonical_id: EQ_000236
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Enerji Sayacı
+    en: Energy Meter
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - enerji sayacı
+    en:
+    - energy meter
+  related_aspects:
+  - energy_monitoring
+  maintenance_interval: 180
+- id: eq_power_factor_capacitor
+  canonical_id: EQ_000237
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Güç Faktörü Kondansatörü
+    en: Power Factor Capacitor
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - güç faktörü kondansatörü
+    en:
+    - power factor capacitor
+  related_aspects:
+  - electrical_efficiency
+  maintenance_interval: 180
+- id: eq_transformer_dry
+  canonical_id: EQ_000238
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Kuru Tip Trafo
+    en: Dry-Type Transformer
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - kuru tip trafo
+    en:
+    - dry-type transformer
+  related_aspects:
+  - electrical_power
+  maintenance_interval: 180
+- id: eq_generator_ats_panel
+  canonical_id: EQ_000239
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Jeneratör ATS Paneli
+    en: Generator ATS Panel
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - jeneratör ats paneli
+    en:
+    - generator ats panel
+  related_aspects:
+  - electrical_backup
+  maintenance_interval: 90
+- id: eq_ups_battery_bank
+  canonical_id: EQ_000240
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: UPS Akü Bankası
+    en: UPS Battery Bank
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - ups akü bankası
+    en:
+    - ups battery bank
+  related_aspects:
+  - electrical_backup
+  maintenance_interval: 90
+- id: eq_inverter
+  canonical_id: EQ_000241
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: İnvertör
+    en: Inverter
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - i̇nvertör
+    en:
+    - inverter
+  related_aspects:
+  - electrical_backup
+  maintenance_interval: 180
+- id: eq_solar_inverter
+  canonical_id: EQ_000242
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Güneş İnvertörü
+    en: Solar Inverter
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - güneş i̇nvertörü
+    en:
+    - solar inverter
+  related_aspects:
+  - renewable_energy
+  maintenance_interval: 180
+- id: eq_ev_charger
+  canonical_id: EQ_000243
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: EV Şarj İstasyonu
+    en: EV Charger
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - ev şarj i̇stasyonu
+    en:
+    - ev charger
+  related_aspects:
+  - parking_amenities
+  maintenance_interval: 90
+- id: eq_lightning_rod
+  canonical_id: EQ_000244
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Paratoner
+    en: Lightning Rod
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - paratoner
+    en:
+    - lightning rod
+  related_aspects:
+  - electrical_safety
+  maintenance_interval: 365
+- id: eq_grounding_electrode
+  canonical_id: EQ_000245
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Topraklama Elektrodu
+    en: Grounding Electrode
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - topraklama elektrodu
+    en:
+    - grounding electrode
+  related_aspects:
+  - electrical_safety
+  maintenance_interval: 365
+- id: eq_timer_switch
+  canonical_id: EQ_000246
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Zaman Saatli Anahtar
+    en: Timer Switch
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - zaman saatli anahtar
+    en:
+    - timer switch
+  related_aspects:
+  - energy_saving
+  maintenance_interval: 180
+- id: eq_smart_room_controller
+  canonical_id: EQ_000247
+  subtype: electrical
+  category: electrical
+  labels:
+    tr: Akıllı Oda Kontrolörü
+    en: Smart Room Controller
+  department: engineering_electrical
+  synonyms:
+    tr:
+    - akıllı oda kontrolörü
+    en:
+    - smart room controller
+  related_aspects:
+  - room_automation
+  maintenance_interval: 180
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_elevator_cabin
+  canonical_id: EQ_000248
+  subtype: elevator
+  category: elevator
+  labels:
+    tr: Asansör Kabini
+    en: Elevator Cabin
+  department: engineering_elevators
+  synonyms:
+    tr:
+    - asansör kabini
+    en:
+    - elevator cabin
+  related_aspects:
+  - elevator_service
+  maintenance_interval: 90
+- id: eq_elevator_door
+  canonical_id: EQ_000249
+  subtype: elevator
+  category: elevator
+  labels:
+    tr: Asansör Kapısı
+    en: Elevator Door
+  department: engineering_elevators
+  synonyms:
+    tr:
+    - asansör kapısı
+    en:
+    - elevator door
+  related_aspects:
+  - elevator_service
+  maintenance_interval: 90
+- id: eq_elevator_motor
+  canonical_id: EQ_000250
+  subtype: elevator
+  category: elevator
+  labels:
+    tr: Asansör Motoru
+    en: Elevator Motor
+  department: engineering_elevators
+  synonyms:
+    tr:
+    - asansör motoru
+    en:
+    - elevator motor
+  related_aspects:
+  - elevator_service
+  maintenance_interval: 90
+- id: eq_elevator_controller
+  canonical_id: EQ_000251
+  subtype: elevator
+  category: elevator
+  labels:
+    tr: Asansör Kontrolörü
+    en: Elevator Controller
+  department: engineering_elevators
+  synonyms:
+    tr:
+    - asansör kontrolörü
+    en:
+    - elevator controller
+  related_aspects:
+  - elevator_service
+  maintenance_interval: 90
+- id: eq_elevator_rope
+  canonical_id: EQ_000252
+  subtype: elevator
+  category: elevator
+  labels:
+    tr: Asansör Halatı
+    en: Elevator Rope
+  department: engineering_elevators
+  synonyms:
+    tr:
+    - asansör halatı
+    en:
+    - elevator rope
+  related_aspects:
+  - elevator_safety
+  maintenance_interval: 180
+- id: eq_elevator_brake
+  canonical_id: EQ_000253
+  subtype: elevator
+  category: elevator
+  labels:
+    tr: Asansör Freni
+    en: Elevator Brake
+  department: engineering_elevators
+  synonyms:
+    tr:
+    - asansör freni
+    en:
+    - elevator brake
+  related_aspects:
+  - elevator_safety
+  maintenance_interval: 90
+- id: eq_elevator_call_button
+  canonical_id: EQ_000254
+  subtype: elevator
+  category: elevator
+  labels:
+    tr: Asansör Çağrı Butonu
+    en: Elevator Call Button
+  department: engineering_elevators
+  synonyms:
+    tr:
+    - asansör çağrı butonu
+    en:
+    - elevator call button
+  related_aspects:
+  - elevator_service
+  maintenance_interval: 180
+- id: eq_elevator_display
+  canonical_id: EQ_000255
+  subtype: elevator
+  category: elevator
+  labels:
+    tr: Asansör Kat Göstergesi
+    en: Elevator Display
+  department: engineering_elevators
+  synonyms:
+    tr:
+    - asansör kat göstergesi
+    en:
+    - elevator display
+  related_aspects:
+  - elevator_service
+  maintenance_interval: 180
+- id: eq_elevator_intercom
+  canonical_id: EQ_000256
+  subtype: elevator
+  category: elevator
+  labels:
+    tr: Asansör İnterkom
+    en: Elevator Intercom
+  department: engineering_elevators
+  synonyms:
+    tr:
+    - asansör i̇nterkom
+    en:
+    - elevator intercom
+  related_aspects:
+  - elevator_safety
+  maintenance_interval: 180
+- id: eq_service_elevator
+  canonical_id: EQ_000257
+  subtype: elevator
+  category: elevator
+  labels:
+    tr: Servis Asansörü
+    en: Service Elevator
+  department: engineering_elevators
+  synonyms:
+    tr:
+    - servis asansörü
+    en:
+    - service elevator
+  related_aspects:
+  - elevator_service
+  maintenance_interval: 90
+- id: eq_freight_elevator
+  canonical_id: EQ_000258
+  subtype: elevator
+  category: elevator
+  labels:
+    tr: Yük Asansörü
+    en: Freight Elevator
+  department: engineering_elevators
+  synonyms:
+    tr:
+    - yük asansörü
+    en:
+    - freight elevator
+  related_aspects:
+  - elevator_service
+  maintenance_interval: 90
+- id: eq_escalator
+  canonical_id: EQ_000259
+  subtype: elevator
+  category: elevator
+  labels:
+    tr: Yürüyen Merdiven
+    en: Escalator
+  department: engineering_elevators
+  synonyms:
+    tr:
+    - yürüyen merdiven
+    en:
+    - escalator
+  related_aspects:
+  - vertical_transport
+  maintenance_interval: 90
+- id: eq_moving_walkway
+  canonical_id: EQ_000260
+  subtype: elevator
+  category: elevator
+  labels:
+    tr: Yürüyen Bant
+    en: Moving Walkway
+  department: engineering_elevators
+  synonyms:
+    tr:
+    - yürüyen bant
+    en:
+    - moving walkway
+  related_aspects:
+  - vertical_transport
+  maintenance_interval: 90
+- id: eq_wheelchair_lift
+  canonical_id: EQ_000261
+  subtype: elevator
+  category: elevator
+  labels:
+    tr: Engelli Platform Asansörü
+    en: Wheelchair Lift
+  department: engineering_elevators
+  synonyms:
+    tr:
+    - engelli platform asansörü
+    en:
+    - wheelchair lift
+  related_aspects:
+  - accessibility
+  maintenance_interval: 90
+- id: eq_elevator_buffer
+  canonical_id: EQ_000262
+  subtype: elevator
+  category: elevator
+  labels:
+    tr: Asansör Tamponu
+    en: Elevator Buffer
+  department: engineering_elevators
+  synonyms:
+    tr:
+    - asansör tamponu
+    en:
+    - elevator buffer
+  related_aspects:
+  - elevator_safety
+  maintenance_interval: 365
+- id: eq_fire_alarm_panel
+  canonical_id: EQ_000263
+  subtype: fire
+  category: fire
+  labels:
+    tr: Yangın Alarm Paneli
+    en: Fire Alarm Panel
+  department: engineering_fire
+  synonyms:
+    tr:
+    - yangın alarm paneli
+    en:
+    - fire alarm panel
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 90
+- id: eq_smoke_detector_addressable
+  canonical_id: EQ_000264
+  subtype: fire
+  category: fire
+  labels:
+    tr: Adresli Duman Dedektörü
+    en: Addressable Smoke Detector
+  department: engineering_fire
+  synonyms:
+    tr:
+    - adresli duman dedektörü
+    en:
+    - addressable smoke detector
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 90
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_heat_detector
+  canonical_id: EQ_000265
+  subtype: fire
+  category: fire
+  labels:
+    tr: Isı Dedektörü
+    en: Heat Detector
+  department: engineering_fire
+  synonyms:
+    tr:
+    - isı dedektörü
+    en:
+    - heat detector
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 90
+- id: eq_manual_call_point
+  canonical_id: EQ_000266
+  subtype: fire
+  category: fire
+  labels:
+    tr: Manuel Yangın Butonu
+    en: Manual Call Point
+  department: engineering_fire
+  synonyms:
+    tr:
+    - manuel yangın butonu
+    en:
+    - manual call point
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 90
+- id: eq_fire_sprinkler
+  canonical_id: EQ_000267
+  subtype: fire
+  category: fire
+  labels:
+    tr: Yangın Sprinkler
+    en: Fire Sprinkler
+  department: engineering_fire
+  synonyms:
+    tr:
+    - yangın sprinkler
+    en:
+    - fire sprinkler
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 180
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_sprinkler_valve
+  canonical_id: EQ_000268
+  subtype: fire
+  category: fire
+  labels:
+    tr: Sprinkler Vanası
+    en: Sprinkler Valve
+  department: engineering_fire
+  synonyms:
+    tr:
+    - sprinkler vanası
+    en:
+    - sprinkler valve
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 180
+- id: eq_fire_hose_reel
+  canonical_id: EQ_000269
+  subtype: fire
+  category: fire
+  labels:
+    tr: Yangın Hortum Makarası
+    en: Fire Hose Reel
+  department: engineering_fire
+  synonyms:
+    tr:
+    - yangın hortum makarası
+    en:
+    - fire hose reel
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 90
+- id: eq_fire_hydrant
+  canonical_id: EQ_000270
+  subtype: fire
+  category: fire
+  labels:
+    tr: Yangın Hidrantı
+    en: Fire Hydrant
+  department: engineering_fire
+  synonyms:
+    tr:
+    - yangın hidrantı
+    en:
+    - fire hydrant
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 90
+- id: eq_fire_pump
+  canonical_id: EQ_000271
+  subtype: fire
+  category: fire
+  labels:
+    tr: Yangın Pompası
+    en: Fire Pump
+  department: engineering_fire
+  synonyms:
+    tr:
+    - yangın pompası
+    en:
+    - fire pump
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 90
+- id: eq_fire_extinguisher_co2
+  canonical_id: EQ_000272
+  subtype: fire
+  category: fire
+  labels:
+    tr: CO2 Yangın Söndürücü
+    en: CO2 Fire Extinguisher
+  department: engineering_fire
+  synonyms:
+    tr:
+    - co2 yangın söndürücü
+    en:
+    - co2 fire extinguisher
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 365
+- id: eq_fire_extinguisher_foam
+  canonical_id: EQ_000273
+  subtype: fire
+  category: fire
+  labels:
+    tr: Köpüklü Yangın Söndürücü
+    en: Foam Fire Extinguisher
+  department: engineering_fire
+  synonyms:
+    tr:
+    - köpüklü yangın söndürücü
+    en:
+    - foam fire extinguisher
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 365
+- id: eq_fire_blanket
+  canonical_id: EQ_000274
+  subtype: fire
+  category: fire
+  labels:
+    tr: Yangın Battaniyesi
+    en: Fire Blanket
+  department: engineering_fire
+  synonyms:
+    tr:
+    - yangın battaniyesi
+    en:
+    - fire blanket
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 365
+- id: eq_emergency_speaker
+  canonical_id: EQ_000275
+  subtype: fire
+  category: fire
+  labels:
+    tr: Acil Anons Hoparlörü
+    en: Emergency Speaker
+  department: engineering_fire
+  synonyms:
+    tr:
+    - acil anons hoparlörü
+    en:
+    - emergency speaker
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 180
+- id: eq_fire_door
+  canonical_id: EQ_000276
+  subtype: fire
+  category: fire
+  labels:
+    tr: Yangın Kapısı
+    en: Fire Door
+  department: engineering_fire
+  synonyms:
+    tr:
+    - yangın kapısı
+    en:
+    - fire door
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 180
+- id: eq_fire_door_closer
+  canonical_id: EQ_000277
+  subtype: fire
+  category: fire
+  labels:
+    tr: Yangın Kapı Kapatıcı
+    en: Fire Door Closer
+  department: engineering_fire
+  synonyms:
+    tr:
+    - yangın kapı kapatıcı
+    en:
+    - fire door closer
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 180
+- id: eq_gas_suppression_system
+  canonical_id: EQ_000278
+  subtype: fire
+  category: fire
+  labels:
+    tr: Gazlı Söndürme Sistemi
+    en: Gas Suppression System
+  department: engineering_fire
+  synonyms:
+    tr:
+    - gazlı söndürme sistemi
+    en:
+    - gas suppression system
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 180
+- id: eq_kitchen_ansul_system
+  canonical_id: EQ_000279
+  subtype: fire
+  category: fire
+  labels:
+    tr: Mutfak Ansul Sistemi
+    en: Kitchen Ansul System
+  department: engineering_fire
+  synonyms:
+    tr:
+    - mutfak ansul sistemi
+    en:
+    - kitchen ansul system
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 90
+- id: eq_beam_smoke_detector
+  canonical_id: EQ_000280
+  subtype: fire
+  category: fire
+  labels:
+    tr: Işın Tipi Duman Dedektörü
+    en: Beam Smoke Detector
+  department: engineering_fire
+  synonyms:
+    tr:
+    - işın tipi duman dedektörü
+    en:
+    - beam smoke detector
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 90
+- id: eq_aspirating_smoke_detector
+  canonical_id: EQ_000281
+  subtype: fire
+  category: fire
+  labels:
+    tr: Emme Tipi Duman Dedektörü
+    en: Aspirating Smoke Detector
+  department: engineering_fire
+  synonyms:
+    tr:
+    - emme tipi duman dedektörü
+    en:
+    - aspirating smoke detector
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 90
+- id: eq_fire_control_room_panel
+  canonical_id: EQ_000282
+  subtype: fire
+  category: fire
+  labels:
+    tr: Yangın Kontrol Odası Paneli
+    en: Fire Control Room Panel
+  department: engineering_fire
+  synonyms:
+    tr:
+    - yangın kontrol odası paneli
+    en:
+    - fire control room panel
+  related_aspects:
+  - fire_safety
+  maintenance_interval: 90
+- id: eq_diesel_generator
+  canonical_id: EQ_000283
+  subtype: generator
+  category: generator
+  labels:
+    tr: Dizel Jeneratör
+    en: Diesel Generator
+  department: engineering_generators
+  synonyms:
+    tr:
+    - dizel jeneratör
+    en:
+    - diesel generator
+  related_aspects:
+  - electrical_backup
+  maintenance_interval: 30
+- id: eq_generator_fuel_tank
+  canonical_id: EQ_000284
+  subtype: generator
+  category: generator
+  labels:
+    tr: Jeneratör Yakıt Tankı
+    en: Generator Fuel Tank
+  department: engineering_generators
+  synonyms:
+    tr:
+    - jeneratör yakıt tankı
+    en:
+    - generator fuel tank
+  related_aspects:
+  - electrical_backup
+  maintenance_interval: 90
+- id: eq_generator_radiator
+  canonical_id: EQ_000285
+  subtype: generator
+  category: generator
+  labels:
+    tr: Jeneratör Radyatörü
+    en: Generator Radiator
+  department: engineering_generators
+  synonyms:
+    tr:
+    - jeneratör radyatörü
+    en:
+    - generator radiator
+  related_aspects:
+  - electrical_backup
+  maintenance_interval: 90
+- id: eq_generator_battery
+  canonical_id: EQ_000286
+  subtype: generator
+  category: generator
+  labels:
+    tr: Jeneratör Aküsü
+    en: Generator Battery
+  department: engineering_generators
+  synonyms:
+    tr:
+    - jeneratör aküsü
+    en:
+    - generator battery
+  related_aspects:
+  - electrical_backup
+  maintenance_interval: 90
+- id: eq_generator_control_panel
+  canonical_id: EQ_000287
+  subtype: generator
+  category: generator
+  labels:
+    tr: Jeneratör Kontrol Paneli
+    en: Generator Control Panel
+  department: engineering_generators
+  synonyms:
+    tr:
+    - jeneratör kontrol paneli
+    en:
+    - generator control panel
+  related_aspects:
+  - electrical_backup
+  maintenance_interval: 90
+- id: eq_generator_silencer
+  canonical_id: EQ_000288
+  subtype: generator
+  category: generator
+  labels:
+    tr: Jeneratör Susturucu
+    en: Generator Silencer
+  department: engineering_generators
+  synonyms:
+    tr:
+    - jeneratör susturucu
+    en:
+    - generator silencer
+  related_aspects:
+  - noise_control
+  maintenance_interval: 180
+- id: eq_fuel_transfer_pump
+  canonical_id: EQ_000289
+  subtype: generator
+  category: generator
+  labels:
+    tr: Yakıt Transfer Pompası
+    en: Fuel Transfer Pump
+  department: engineering_generators
+  synonyms:
+    tr:
+    - yakıt transfer pompası
+    en:
+    - fuel transfer pump
+  related_aspects:
+  - electrical_backup
+  maintenance_interval: 90
+- id: eq_day_tank
+  canonical_id: EQ_000290
+  subtype: mechanical
+  category: mechanical
+  labels:
+    tr: Günlük Yakıt Tankı
+    en: Day Tank
+  department: engineering_generators
+  synonyms:
+    tr:
+    - günlük yakıt tankı
+    en:
+    - day tank
+  related_aspects:
+  - electrical_backup
+  maintenance_interval: 90
+- id: eq_mechanical_workshop_lathe
+  canonical_id: EQ_000291
+  subtype: mechanical
+  category: mechanical
+  labels:
+    tr: Atölye Torna
+    en: Workshop Lathe
+  department: engineering_mechanical
+  synonyms:
+    tr:
+    - atölye torna
+    en:
+    - workshop lathe
+  related_aspects:
+  - maintenance_tools
+  maintenance_interval: 180
+- id: eq_welding_machine
+  canonical_id: EQ_000292
+  subtype: mechanical
+  category: mechanical
+  labels:
+    tr: Kaynak Makinesi
+    en: Welding Machine
+  department: engineering_mechanical
+  synonyms:
+    tr:
+    - kaynak makinesi
+    en:
+    - welding machine
+  related_aspects:
+  - maintenance_tools
+  maintenance_interval: 180
+- id: eq_air_compressor_workshop
+  canonical_id: EQ_000293
+  subtype: mechanical
+  category: mechanical
+  labels:
+    tr: Atölye Hava Kompresörü
+    en: Workshop Air Compressor
+  department: engineering_mechanical
+  synonyms:
+    tr:
+    - atölye hava kompresörü
+    en:
+    - workshop air compressor
+  related_aspects:
+  - maintenance_tools
+  maintenance_interval: 90
+- id: eq_scaffold_tower
+  canonical_id: EQ_000294
+  subtype: mechanical
+  category: mechanical
+  labels:
+    tr: İskele Kulesi
+    en: Scaffold Tower
+  department: engineering_mechanical
+  synonyms:
+    tr:
+    - i̇skele kulesi
+    en:
+    - scaffold tower
+  related_aspects:
+  - maintenance_tools
+  maintenance_interval: 180
+- id: eq_ladder_extension
+  canonical_id: EQ_000295
+  subtype: mechanical
+  category: mechanical
+  labels:
+    tr: Uzatmalı Merdiven
+    en: Extension Ladder
+  department: engineering_mechanical
+  synonyms:
+    tr:
+    - uzatmalı merdiven
+    en:
+    - extension ladder
+  related_aspects:
+  - maintenance_tools
+  maintenance_interval: 180
+- id: eq_tool_cart
+  canonical_id: EQ_000296
+  subtype: mechanical
+  category: mechanical
+  labels:
+    tr: Takım Arabası
+    en: Tool Cart
+  department: engineering_mechanical
+  synonyms:
+    tr:
+    - takım arabası
+    en:
+    - tool cart
+  related_aspects:
+  - maintenance_tools
+  maintenance_interval: 365
+- id: eq_multimeter
+  canonical_id: EQ_000297
+  subtype: mechanical
+  category: mechanical
+  labels:
+    tr: Multimetre
+    en: Multimeter
+  department: engineering_mechanical
+  synonyms:
+    tr:
+    - multimetre
+    en:
+    - multimeter
+  related_aspects:
+  - maintenance_tools
+  maintenance_interval: 365
+- id: eq_duvet
+  canonical_id: EQ_000298
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Yorgan
+    en: Duvet
+  department: housekeeping
+  synonyms:
+    tr:
+    - yorgan
+    en:
+    - duvet
+  related_aspects:
+  - bed_comfort
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_bed_sheet
+  canonical_id: EQ_000299
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Çarşaf
+    en: Bed Sheet
+  department: housekeeping
+  synonyms:
+    tr:
+    - çarşaf
+    en:
+    - bed sheet
+  related_aspects:
+  - bed_linen
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_pillowcase
+  canonical_id: EQ_000300
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Yastık Kılıfı
+    en: Pillowcase
+  department: housekeeping
+  synonyms:
+    tr:
+    - yastık kılıfı
+    en:
+    - pillowcase
+  related_aspects:
+  - bed_linen
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_mattress_protector
+  canonical_id: EQ_000301
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Yatak Koruyucu
+    en: Mattress Protector
+  department: housekeeping
+  synonyms:
+    tr:
+    - yatak koruyucu
+    en:
+    - mattress protector
+  related_aspects:
+  - bed_hygiene
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_extra_pillow
+  canonical_id: EQ_000302
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Ekstra Yastık
+    en: Extra Pillow
+  department: housekeeping
+  synonyms:
+    tr:
+    - ekstra yastık
+    en:
+    - extra pillow
+  related_aspects:
+  - bed_comfort
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_orthopedic_pillow
+  canonical_id: EQ_000303
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Ortopedik Yastık
+    en: Orthopedic Pillow
+  department: housekeeping
+  synonyms:
+    tr:
+    - ortopedik yastık
+    en:
+    - orthopedic pillow
+  related_aspects:
+  - bed_comfort
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_crib_mattress
+  canonical_id: EQ_000304
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Beşik Yatağı
+    en: Crib Mattress
+  department: housekeeping
+  synonyms:
+    tr:
+    - beşik yatağı
+    en:
+    - crib mattress
+  related_aspects:
+  - baby_amenities
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_wardrobe
+  canonical_id: EQ_000305
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Gardırop
+    en: Wardrobe
+  department: housekeeping
+  synonyms:
+    tr:
+    - gardırop
+    en:
+    - wardrobe
+  related_aspects:
+  - room_furniture
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_desk_chair
+  canonical_id: EQ_000306
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Çalışma Sandalyesi
+    en: Desk Chair
+  department: housekeeping
+  synonyms:
+    tr:
+    - çalışma sandalyesi
+    en:
+    - desk chair
+  related_aspects:
+  - room_furniture
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_armchair
+  canonical_id: EQ_000307
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Koltuk
+    en: Armchair
+  department: housekeeping
+  synonyms:
+    tr:
+    - koltuk
+    en:
+    - armchair
+  related_aspects:
+  - room_furniture
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_sofa_bed
+  canonical_id: EQ_000308
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Çekyat
+    en: Sofa Bed
+  department: housekeeping
+  synonyms:
+    tr:
+    - çekyat
+    en:
+    - sofa bed
+  related_aspects:
+  - room_furniture
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_coffee_table
+  canonical_id: EQ_000309
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Sehpa
+    en: Coffee Table
+  department: housekeeping
+  synonyms:
+    tr:
+    - sehpa
+    en:
+    - coffee table
+  related_aspects:
+  - room_furniture
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_nightstand
+  canonical_id: EQ_000310
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Komodin
+    en: Nightstand
+  department: housekeeping
+  synonyms:
+    tr:
+    - komodin
+    en:
+    - nightstand
+  related_aspects:
+  - room_furniture
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_luggage_rack
+  canonical_id: EQ_000311
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Bavul Standı
+    en: Luggage Rack
+  department: housekeeping
+  synonyms:
+    tr:
+    - bavul standı
+    en:
+    - luggage rack
+  related_aspects:
+  - room_amenities
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_full_length_mirror
+  canonical_id: EQ_000312
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Boy Aynası
+    en: Full-Length Mirror
+  department: housekeeping
+  synonyms:
+    tr:
+    - boy aynası
+    en:
+    - full-length mirror
+  related_aspects:
+  - room_amenities
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_bathroom_mirror
+  canonical_id: EQ_000313
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Banyo Aynası
+    en: Bathroom Mirror
+  department: housekeeping
+  synonyms:
+    tr:
+    - banyo aynası
+    en:
+    - bathroom mirror
+  related_aspects:
+  - bathroom_amenities
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_towel_rack
+  canonical_id: EQ_000314
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Havlu Askılığı
+    en: Towel Rack
+  department: housekeeping
+  synonyms:
+    tr:
+    - havlu askılığı
+    en:
+    - towel rack
+  related_aspects:
+  - bathroom_amenities
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_bath_towel
+  canonical_id: EQ_000315
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Banyo Havlusu
+    en: Bath Towel
+  department: housekeeping
+  synonyms:
+    tr:
+    - banyo havlusu
+    en:
+    - bath towel
+  related_aspects:
+  - bathroom_amenities
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_hand_towel
+  canonical_id: EQ_000316
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: El Havlusu
+    en: Hand Towel
+  department: housekeeping
+  synonyms:
+    tr:
+    - el havlusu
+    en:
+    - hand towel
+  related_aspects:
+  - bathroom_amenities
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_washcloth
+  canonical_id: EQ_000317
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Yüz Havlusu
+    en: Washcloth
+  department: housekeeping
+  synonyms:
+    tr:
+    - yüz havlusu
+    en:
+    - washcloth
+  related_aspects:
+  - bathroom_amenities
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_bath_mat
+  canonical_id: EQ_000318
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Banyo Paspası
+    en: Bath Mat
+  department: housekeeping
+  synonyms:
+    tr:
+    - banyo paspası
+    en:
+    - bath mat
+  related_aspects:
+  - bathroom_amenities
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_bathrobe
+  canonical_id: EQ_000319
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Bornoz
+    en: Bathrobe
+  department: housekeeping
+  synonyms:
+    tr:
+    - bornoz
+    en:
+    - bathrobe
+  related_aspects:
+  - bathroom_amenities
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_slippers
+  canonical_id: EQ_000320
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Terlik
+    en: Slippers
+  department: housekeeping
+  synonyms:
+    tr:
+    - terlik
+    en:
+    - slippers
+  related_aspects:
+  - room_amenities
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_toiletries_dispenser
+  canonical_id: EQ_000321
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Kozmetik Dispenseri
+    en: Toiletries Dispenser
+  department: housekeeping
+  synonyms:
+    tr:
+    - kozmetik dispenseri
+    en:
+    - toiletries dispenser
+  related_aspects:
+  - bathroom_amenities
+  parent_id: phy_bathroom
+  located_in: phy_bathroom
+- id: eq_tissue_box
+  canonical_id: EQ_000322
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Kağıt Mendil Kutusu
+    en: Tissue Box
+  department: housekeeping
+  synonyms:
+    tr:
+    - kağıt mendil kutusu
+    en:
+    - tissue box
+  related_aspects:
+  - room_amenities
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_waste_bin
+  canonical_id: EQ_000323
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Çöp Kutusu
+    en: Waste Bin
+  department: housekeeping
+  synonyms:
+    tr:
+    - çöp kutusu
+    en:
+    - waste bin
+  related_aspects:
+  - room_cleanliness
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_recycling_bin
+  canonical_id: EQ_000324
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Geri Dönüşüm Kutusu
+    en: Recycling Bin
+  department: housekeeping
+  synonyms:
+    tr:
+    - geri dönüşüm kutusu
+    en:
+    - recycling bin
+  related_aspects:
+  - sustainability
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_ironing_board
+  canonical_id: EQ_000325
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Ütü Masası
+    en: Ironing Board
+  department: housekeeping
+  synonyms:
+    tr:
+    - ütü masası
+    en:
+    - ironing board
+  related_aspects:
+  - room_amenities
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_clothes_hanger
+  canonical_id: EQ_000326
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Askı
+    en: Clothes Hanger
+  department: housekeeping
+  synonyms:
+    tr:
+    - askı
+    en:
+    - clothes hanger
+  related_aspects:
+  - room_amenities
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_laundry_bag
+  canonical_id: EQ_000327
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Çamaşır Torbası
+    en: Laundry Bag
+  department: housekeeping
+  synonyms:
+    tr:
+    - çamaşır torbası
+    en:
+    - laundry bag
+  related_aspects:
+  - laundry_service
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_housekeeping_cart
+  canonical_id: EQ_000328
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Kat Arabası
+    en: Housekeeping Cart
+  department: housekeeping
+  synonyms:
+    tr:
+    - kat arabası
+    en:
+    - housekeeping cart
+  related_aspects:
+  - housekeeping_ops
+  maintenance_interval: 90
+- id: eq_vacuum_robot
+  canonical_id: EQ_000329
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Robot Süpürge
+    en: Robot Vacuum
+  department: housekeeping
+  synonyms:
+    tr:
+    - robot süpürge
+    en:
+    - robot vacuum
+  related_aspects:
+  - room_cleanliness
+  maintenance_interval: 90
+- id: eq_carpet_cleaner
+  canonical_id: EQ_000330
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Halı Yıkama Makinesi
+    en: Carpet Cleaner
+  department: housekeeping
+  synonyms:
+    tr:
+    - halı yıkama makinesi
+    en:
+    - carpet cleaner
+  related_aspects:
+  - room_cleanliness
+  maintenance_interval: 90
+- id: eq_steam_cleaner
+  canonical_id: EQ_000331
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Buharlı Temizlik Makinesi
+    en: Steam Cleaner
+  department: housekeeping
+  synonyms:
+    tr:
+    - buharlı temizlik makinesi
+    en:
+    - steam cleaner
+  related_aspects:
+  - room_cleanliness
+  maintenance_interval: 90
+- id: eq_floor_polisher
+  canonical_id: EQ_000332
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Zemin Cilalama Makinesi
+    en: Floor Polisher
+  department: housekeeping
+  synonyms:
+    tr:
+    - zemin cilalama makinesi
+    en:
+    - floor polisher
+  related_aspects:
+  - public_area_cleanliness
+  maintenance_interval: 90
+- id: eq_trolley_linen
+  canonical_id: EQ_000333
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Çamaşır Arabası
+    en: Linen Trolley
+  department: housekeeping
+  synonyms:
+    tr:
+    - çamaşır arabası
+    en:
+    - linen trolley
+  related_aspects:
+  - laundry_service
+  maintenance_interval: 180
+- id: eq_dryer_machine
+  canonical_id: EQ_000334
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Kurutma Makinesi
+    en: Dryer Machine
+  department: housekeeping
+  synonyms:
+    tr:
+    - kurutma makinesi
+    en:
+    - dryer machine
+  related_aspects:
+  - laundry_service
+  maintenance_interval: 90
+- id: eq_ironing_press
+  canonical_id: EQ_000335
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Pres Ütü
+    en: Ironing Press
+  department: housekeeping
+  synonyms:
+    tr:
+    - pres ütü
+    en:
+    - ironing press
+  related_aspects:
+  - laundry_service
+  maintenance_interval: 90
+- id: eq_sewing_machine_hk
+  canonical_id: EQ_000336
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Dikiş Makinesi
+    en: Sewing Machine
+  department: housekeeping
+  synonyms:
+    tr:
+    - dikiş makinesi
+    en:
+    - sewing machine
+  related_aspects:
+  - housekeeping_ops
+  maintenance_interval: 180
+- id: eq_scale_luggage
+  canonical_id: EQ_000337
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Bavul Tartısı
+    en: Luggage Scale
+  department: housekeeping
+  synonyms:
+    tr:
+    - bavul tartısı
+    en:
+    - luggage scale
+  related_aspects:
+  - front_office_ops
+- id: eq_do_not_disturb_sign
+  canonical_id: EQ_000338
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Rahatsız Etmeyin Tabelası
+    en: Do Not Disturb Sign
+  department: housekeeping
+  synonyms:
+    tr:
+    - rahatsız etmeyin tabelası
+    en:
+    - do not disturb sign
+  related_aspects:
+  - room_privacy
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_make_up_room_sign
+  canonical_id: EQ_000339
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Oda Temizlensin Tabelası
+    en: Make Up Room Sign
+  department: housekeeping
+  synonyms:
+    tr:
+    - oda temizlensin tabelası
+    en:
+    - make up room sign
+  related_aspects:
+  - housekeeping_ops
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_welcome_amenities_tray
+  canonical_id: EQ_000340
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Karşılama İkram Tepsisi
+    en: Welcome Amenities Tray
+  department: housekeeping
+  synonyms:
+    tr:
+    - karşılama i̇kram tepsisi
+    en:
+    - welcome amenities tray
+  related_aspects:
+  - guest_welcome
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_minibar_restock_tray
+  canonical_id: EQ_000341
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Minibar İkmal Tepsisi
+    en: Minibar Restock Tray
+  department: housekeeping
+  synonyms:
+    tr:
+    - minibar i̇kmal tepsisi
+    en:
+    - minibar restock tray
+  related_aspects:
+  - minibar
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_air_freshener_dispenser
+  canonical_id: EQ_000342
+  subtype: housekeeping
+  category: housekeeping
+  labels:
+    tr: Oda Kokusu Dispenseri
+    en: Air Freshener Dispenser
+  department: housekeeping
+  synonyms:
+    tr:
+    - oda kokusu dispenseri
+    en:
+    - air freshener dispenser
+  related_aspects:
+  - room_smell
+  maintenance_interval: 90
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_combi_oven
+  canonical_id: EQ_000343
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Kombi Fırın
+    en: Combi Oven
+  department: kitchen
+  synonyms:
+    tr:
+    - kombi fırın
+    en:
+    - combi oven
+  related_aspects:
+  - food_quality
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_convection_oven
+  canonical_id: EQ_000344
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Konveksiyon Fırın
+    en: Convection Oven
+  department: kitchen
+  synonyms:
+    tr:
+    - konveksiyon fırın
+    en:
+    - convection oven
+  related_aspects:
+  - food_quality
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_induction_cooktop
+  canonical_id: EQ_000345
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: İndüksiyon Ocak
+    en: Induction Cooktop
+  department: kitchen
+  synonyms:
+    tr:
+    - i̇ndüksiyon ocak
+    en:
+    - induction cooktop
+  related_aspects:
+  - food_quality
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_gas_range
+  canonical_id: EQ_000346
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Gazlı Ocak
+    en: Gas Range
+  department: kitchen
+  synonyms:
+    tr:
+    - gazlı ocak
+    en:
+    - gas range
+  related_aspects:
+  - food_quality
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_deep_fryer
+  canonical_id: EQ_000347
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Fritöz
+    en: Deep Fryer
+  department: kitchen
+  synonyms:
+    tr:
+    - fritöz
+    en:
+    - deep fryer
+  related_aspects:
+  - food_quality
+  maintenance_interval: 60
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_griddle
+  canonical_id: EQ_000348
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Izgara Plaka
+    en: Griddle
+  department: kitchen
+  synonyms:
+    tr:
+    - izgara plaka
+    en:
+    - griddle
+  related_aspects:
+  - food_quality
+  maintenance_interval: 60
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_charcoal_grill
+  canonical_id: EQ_000349
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Kömür Izgara
+    en: Charcoal Grill
+  department: kitchen
+  synonyms:
+    tr:
+    - kömür izgara
+    en:
+    - charcoal grill
+  related_aspects:
+  - food_quality
+  maintenance_interval: 60
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_salamander
+  canonical_id: EQ_000350
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Salamander
+    en: Salamander Grill
+  department: kitchen
+  synonyms:
+    tr:
+    - salamander
+    en:
+    - salamander grill
+  related_aspects:
+  - food_quality
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_microwave_oven
+  canonical_id: EQ_000351
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Mikrodalga Fırın
+    en: Microwave Oven
+  department: kitchen
+  synonyms:
+    tr:
+    - mikrodalga fırın
+    en:
+    - microwave oven
+  related_aspects:
+  - food_quality
+  maintenance_interval: 180
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_blast_chiller
+  canonical_id: EQ_000352
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Şok Soğutucu
+    en: Blast Chiller
+  department: kitchen
+  synonyms:
+    tr:
+    - şok soğutucu
+    en:
+    - blast chiller
+  related_aspects:
+  - food_safety
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_walk_in_cooler
+  canonical_id: EQ_000353
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Walk-in Soğuk Oda
+    en: Walk-in Cooler
+  department: kitchen
+  synonyms:
+    tr:
+    - walk-in soğuk oda
+    en:
+    - walk-in cooler
+  related_aspects:
+  - food_safety
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_walk_in_freezer
+  canonical_id: EQ_000354
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Walk-in Dondurucu
+    en: Walk-in Freezer
+  department: kitchen
+  synonyms:
+    tr:
+    - walk-in dondurucu
+    en:
+    - walk-in freezer
+  related_aspects:
+  - food_safety
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_reach_in_fridge
+  canonical_id: EQ_000355
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Dik Tip Buzdolabı
+    en: Reach-in Fridge
+  department: kitchen
+  synonyms:
+    tr:
+    - dik tip buzdolabı
+    en:
+    - reach-in fridge
+  related_aspects:
+  - food_safety
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_prep_table
+  canonical_id: EQ_000356
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Hazırlık Tezgahı
+    en: Prep Table
+  department: kitchen
+  synonyms:
+    tr:
+    - hazırlık tezgahı
+    en:
+    - prep table
+  related_aspects:
+  - kitchen_ops
+  maintenance_interval: 180
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_cutting_board_station
+  canonical_id: EQ_000357
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Kesme Tahtası İstasyonu
+    en: Cutting Board Station
+  department: kitchen
+  synonyms:
+    tr:
+    - kesme tahtası i̇stasyonu
+    en:
+    - cutting board station
+  related_aspects:
+  - food_safety
+  maintenance_interval: 30
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_food_processor
+  canonical_id: EQ_000358
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Mutfak Robotu
+    en: Food Processor
+  department: kitchen
+  synonyms:
+    tr:
+    - mutfak robotu
+    en:
+    - food processor
+  related_aspects:
+  - kitchen_ops
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_stand_mixer
+  canonical_id: EQ_000359
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Mikser
+    en: Stand Mixer
+  department: kitchen
+  synonyms:
+    tr:
+    - mikser
+    en:
+    - stand mixer
+  related_aspects:
+  - kitchen_ops
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_slicer
+  canonical_id: EQ_000360
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Dilimleme Makinesi
+    en: Meat Slicer
+  department: kitchen
+  synonyms:
+    tr:
+    - dilimleme makinesi
+    en:
+    - meat slicer
+  related_aspects:
+  - kitchen_ops
+  maintenance_interval: 60
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_vacuum_sealer
+  canonical_id: EQ_000361
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Vakum Makinesi
+    en: Vacuum Sealer
+  department: kitchen
+  synonyms:
+    tr:
+    - vakum makinesi
+    en:
+    - vacuum sealer
+  related_aspects:
+  - food_safety
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_sous_vide_circulator
+  canonical_id: EQ_000362
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Sous-vide Cihazı
+    en: Sous-vide Circulator
+  department: kitchen
+  synonyms:
+    tr:
+    - sous-vide cihazı
+    en:
+    - sous-vide circulator
+  related_aspects:
+  - food_quality
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_coffee_espresso_machine
+  canonical_id: EQ_000363
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Espresso Makinesi
+    en: Espresso Machine
+  department: kitchen
+  synonyms:
+    tr:
+    - espresso makinesi
+    en:
+    - espresso machine
+  related_aspects:
+  - coffee_quality
+  maintenance_interval: 30
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_coffee_grinder
+  canonical_id: EQ_000364
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Kahve Değirmeni
+    en: Coffee Grinder
+  department: kitchen
+  synonyms:
+    tr:
+    - kahve değirmeni
+    en:
+    - coffee grinder
+  related_aspects:
+  - coffee_quality
+  maintenance_interval: 60
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_juice_extractor
+  canonical_id: EQ_000365
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Meyve Sıkacağı
+    en: Juice Extractor
+  department: kitchen
+  synonyms:
+    tr:
+    - meyve sıkacağı
+    en:
+    - juice extractor
+  related_aspects:
+  - breakfast_quality
+  maintenance_interval: 60
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_toaster_conveyor
+  canonical_id: EQ_000366
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Konveyör Tost Makinesi
+    en: Conveyor Toaster
+  department: kitchen
+  synonyms:
+    tr:
+    - konveyör tost makinesi
+    en:
+    - conveyor toaster
+  related_aspects:
+  - breakfast_quality
+  maintenance_interval: 60
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_waffle_maker
+  canonical_id: EQ_000367
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Waffle Makinesi
+    en: Waffle Maker
+  department: kitchen
+  synonyms:
+    tr:
+    - waffle makinesi
+    en:
+    - waffle maker
+  related_aspects:
+  - breakfast_quality
+  maintenance_interval: 60
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_pancake_griddle
+  canonical_id: EQ_000368
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Pankek Izgarası
+    en: Pancake Griddle
+  department: kitchen
+  synonyms:
+    tr:
+    - pankek izgarası
+    en:
+    - pancake griddle
+  related_aspects:
+  - breakfast_quality
+  maintenance_interval: 60
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_soup_kettle
+  canonical_id: EQ_000369
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Çorba Kazanı
+    en: Soup Kettle
+  department: kitchen
+  synonyms:
+    tr:
+    - çorba kazanı
+    en:
+    - soup kettle
+  related_aspects:
+  - food_quality
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_bain_marie
+  canonical_id: EQ_000370
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Bain-marie
+    en: Bain-marie
+  department: kitchen
+  synonyms:
+    tr:
+    - bain-marie
+    en:
+    - bain-marie
+  related_aspects:
+  - food_temperature
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_hot_holding_cabinet
+  canonical_id: EQ_000371
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Sıcak Tutma Dolabı
+    en: Hot Holding Cabinet
+  department: kitchen
+  synonyms:
+    tr:
+    - sıcak tutma dolabı
+    en:
+    - hot holding cabinet
+  related_aspects:
+  - food_temperature
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_plate_warmer
+  canonical_id: EQ_000372
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Tabak Isıtıcı
+    en: Plate Warmer
+  department: kitchen
+  synonyms:
+    tr:
+    - tabak isıtıcı
+    en:
+    - plate warmer
+  related_aspects:
+  - food_service
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_ice_cream_machine
+  canonical_id: EQ_000373
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Dondurma Makinesi
+    en: Ice Cream Machine
+  department: kitchen
+  synonyms:
+    tr:
+    - dondurma makinesi
+    en:
+    - ice cream machine
+  related_aspects:
+  - dessert_quality
+  maintenance_interval: 60
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_pastry_oven
+  canonical_id: EQ_000374
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Pastane Fırını
+    en: Pastry Oven
+  department: kitchen
+  synonyms:
+    tr:
+    - pastane fırını
+    en:
+    - pastry oven
+  related_aspects:
+  - dessert_quality
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_proofing_cabinet
+  canonical_id: EQ_000375
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Mayalama Dolabı
+    en: Proofing Cabinet
+  department: kitchen
+  synonyms:
+    tr:
+    - mayalama dolabı
+    en:
+    - proofing cabinet
+  related_aspects:
+  - bakery
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_dough_sheeter
+  canonical_id: EQ_000376
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Hamur Açma Makinesi
+    en: Dough Sheeter
+  department: kitchen
+  synonyms:
+    tr:
+    - hamur açma makinesi
+    en:
+    - dough sheeter
+  related_aspects:
+  - bakery
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_bar_blender
+  canonical_id: EQ_000377
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Bar Blender
+    en: Bar Blender
+  department: bar
+  synonyms:
+    tr:
+    - bar blender
+    en:
+    - bar blender
+  related_aspects:
+  - drink_quality
+  maintenance_interval: 60
+  parent_id: fac_bar
+  located_in: fac_bar
+- id: eq_bar_ice_bin
+  canonical_id: EQ_000378
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Bar Buz Haznesi
+    en: Bar Ice Bin
+  department: bar
+  synonyms:
+    tr:
+    - bar buz haznesi
+    en:
+    - bar ice bin
+  related_aspects:
+  - drink_quality
+  maintenance_interval: 30
+  parent_id: fac_bar
+  located_in: fac_bar
+- id: eq_draft_beer_system
+  canonical_id: EQ_000379
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Fıçı Bira Sistemi
+    en: Draft Beer System
+  department: bar
+  synonyms:
+    tr:
+    - fıçı bira sistemi
+    en:
+    - draft beer system
+  related_aspects:
+  - drink_quality
+  maintenance_interval: 60
+  parent_id: fac_bar
+  located_in: fac_bar
+- id: eq_wine_cooler
+  canonical_id: EQ_000380
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Şarap Soğutucu
+    en: Wine Cooler
+  department: bar
+  synonyms:
+    tr:
+    - şarap soğutucu
+    en:
+    - wine cooler
+  related_aspects:
+  - drink_quality
+  maintenance_interval: 90
+  parent_id: fac_bar
+  located_in: fac_bar
+- id: eq_soda_gun
+  canonical_id: EQ_000381
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Soda Tabancası
+    en: Soda Gun
+  department: bar
+  synonyms:
+    tr:
+    - soda tabancası
+    en:
+    - soda gun
+  related_aspects:
+  - drink_quality
+  maintenance_interval: 60
+  parent_id: fac_bar
+  located_in: fac_bar
+- id: eq_glasswasher
+  canonical_id: EQ_000382
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Bardak Yıkama Makinesi
+    en: Glasswasher
+  department: bar
+  synonyms:
+    tr:
+    - bardak yıkama makinesi
+    en:
+    - glasswasher
+  related_aspects:
+  - fb_hygiene
+  maintenance_interval: 60
+  parent_id: fac_bar
+  located_in: fac_bar
+- id: eq_pot_washer
+  canonical_id: EQ_000383
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Tencere Yıkama Makinesi
+    en: Pot Washer
+  department: kitchen
+  synonyms:
+    tr:
+    - tencere yıkama makinesi
+    en:
+    - pot washer
+  related_aspects:
+  - fb_hygiene
+  maintenance_interval: 60
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_kitchen_exhaust_hood
+  canonical_id: EQ_000384
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Mutfak Davlumbazı
+    en: Kitchen Exhaust Hood
+  department: kitchen
+  synonyms:
+    tr:
+    - mutfak davlumbazı
+    en:
+    - kitchen exhaust hood
+  related_aspects:
+  - kitchen_ventilation
+  maintenance_interval: 60
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_grease_filter_hood
+  canonical_id: EQ_000385
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Davlumbaz Yağ Filtresi
+    en: Hood Grease Filter
+  department: kitchen
+  synonyms:
+    tr:
+    - davlumbaz yağ filtresi
+    en:
+    - hood grease filter
+  related_aspects:
+  - kitchen_ventilation
+  maintenance_interval: 30
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_food_temp_probe
+  canonical_id: EQ_000386
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Gıda Sıcaklık Probu
+    en: Food Temp Probe
+  department: kitchen
+  synonyms:
+    tr:
+    - gıda sıcaklık probu
+    en:
+    - food temp probe
+  related_aspects:
+  - food_safety
+  maintenance_interval: 90
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_portion_scale
+  canonical_id: EQ_000387
+  subtype: f_b
+  category: f_b
+  labels:
+    tr: Porsiyon Terazisi
+    en: Portion Scale
+  department: kitchen
+  synonyms:
+    tr:
+    - porsiyon terazisi
+    en:
+    - portion scale
+  related_aspects:
+  - kitchen_ops
+  maintenance_interval: 180
+  parent_id: fac_restaurant
+  located_in: fac_restaurant
+- id: eq_pool_sand_filter
+  canonical_id: EQ_000388
+  subtype: pool
+  category: pool
+  labels:
+    tr: Havuz Kum Filtresi
+    en: Pool Sand Filter
+  department: engineering_pools
+  synonyms:
+    tr:
+    - havuz kum filtresi
+    en:
+    - pool sand filter
+  related_aspects:
+  - pool_cleanliness
+  maintenance_interval: 30
+  parent_id: fac_pool
+  located_in: fac_pool
+- id: eq_pool_chlorinator
+  canonical_id: EQ_000389
+  subtype: pool
+  category: pool
+  labels:
+    tr: Havuz Klorinatörü
+    en: Pool Chlorinator
+  department: engineering_pools
+  synonyms:
+    tr:
+    - havuz klorinatörü
+    en:
+    - pool chlorinator
+  related_aspects:
+  - pool_water_quality
+  maintenance_interval: 30
+  parent_id: fac_pool
+  located_in: fac_pool
+- id: eq_pool_ph_controller
+  canonical_id: EQ_000390
+  subtype: pool
+  category: pool
+  labels:
+    tr: Havuz pH Kontrolörü
+    en: Pool pH Controller
+  department: engineering_pools
+  synonyms:
+    tr:
+    - havuz ph kontrolörü
+    en:
+    - pool ph controller
+  related_aspects:
+  - pool_water_quality
+  maintenance_interval: 30
+  parent_id: fac_pool
+  located_in: fac_pool
+- id: eq_pool_heater
+  canonical_id: EQ_000391
+  subtype: pool
+  category: pool
+  labels:
+    tr: Havuz Isıtıcısı
+    en: Pool Heater
+  department: engineering_pools
+  synonyms:
+    tr:
+    - havuz isıtıcısı
+    en:
+    - pool heater
+  related_aspects:
+  - pool_temperature
+  maintenance_interval: 90
+  parent_id: fac_pool
+  located_in: fac_pool
+- id: eq_pool_heat_pump
+  canonical_id: EQ_000392
+  subtype: pool
+  category: pool
+  labels:
+    tr: Havuz Isı Pompası
+    en: Pool Heat Pump
+  department: engineering_pools
+  synonyms:
+    tr:
+    - havuz isı pompası
+    en:
+    - pool heat pump
+  related_aspects:
+  - pool_temperature
+  maintenance_interval: 90
+  parent_id: fac_pool
+  located_in: fac_pool
+- id: eq_pool_vacuum
+  canonical_id: EQ_000393
+  subtype: pool
+  category: pool
+  labels:
+    tr: Havuz Süpürgesi
+    en: Pool Vacuum
+  department: engineering_pools
+  synonyms:
+    tr:
+    - havuz süpürgesi
+    en:
+    - pool vacuum
+  related_aspects:
+  - pool_cleanliness
+  maintenance_interval: 60
+  parent_id: fac_pool
+  located_in: fac_pool
+- id: eq_pool_skimmer
+  canonical_id: EQ_000394
+  subtype: pool
+  category: pool
+  labels:
+    tr: Havuz Skimmer
+    en: Pool Skimmer
+  department: engineering_pools
+  synonyms:
+    tr:
+    - havuz skimmer
+    en:
+    - pool skimmer
+  related_aspects:
+  - pool_cleanliness
+  maintenance_interval: 60
+  parent_id: fac_pool
+  located_in: fac_pool
+- id: eq_pool_ladder
+  canonical_id: EQ_000395
+  subtype: pool
+  category: pool
+  labels:
+    tr: Havuz Merdiveni
+    en: Pool Ladder
+  department: engineering_pools
+  synonyms:
+    tr:
+    - havuz merdiveni
+    en:
+    - pool ladder
+  related_aspects:
+  - pool_safety
+  maintenance_interval: 180
+  parent_id: fac_pool
+  located_in: fac_pool
+- id: eq_pool_handrail
+  canonical_id: EQ_000396
+  subtype: pool
+  category: pool
+  labels:
+    tr: Havuz Korkuluğu
+    en: Pool Handrail
+  department: engineering_pools
+  synonyms:
+    tr:
+    - havuz korkuluğu
+    en:
+    - pool handrail
+  related_aspects:
+  - pool_safety
+  maintenance_interval: 180
+  parent_id: fac_pool
+  located_in: fac_pool
+- id: eq_lifeguard_chair
+  canonical_id: EQ_000397
+  subtype: pool
+  category: pool
+  labels:
+    tr: Cankurtaran Kulesi
+    en: Lifeguard Chair
+  department: engineering_pools
+  synonyms:
+    tr:
+    - cankurtaran kulesi
+    en:
+    - lifeguard chair
+  related_aspects:
+  - pool_safety
+  maintenance_interval: 180
+  parent_id: fac_pool
+  located_in: fac_pool
+- id: eq_pool_cover
+  canonical_id: EQ_000398
+  subtype: pool
+  category: pool
+  labels:
+    tr: Havuz Örtüsü
+    en: Pool Cover
+  department: engineering_pools
+  synonyms:
+    tr:
+    - havuz örtüsü
+    en:
+    - pool cover
+  related_aspects:
+  - pool_ops
+  maintenance_interval: 180
+  parent_id: fac_pool
+  located_in: fac_pool
+- id: eq_jacuzzi_filter
+  canonical_id: EQ_000399
+  subtype: pool
+  category: pool
+  labels:
+    tr: Jakuzi Filtresi
+    en: Jacuzzi Filter
+  department: spa
+  synonyms:
+    tr:
+    - jakuzi filtresi
+    en:
+    - jacuzzi filter
+  related_aspects:
+  - spa_cleanliness
+  maintenance_interval: 30
+  parent_id: fac_spa
+  located_in: fac_spa
+- id: eq_sauna_thermometer
+  canonical_id: EQ_000400
+  subtype: spa
+  category: spa
+  labels:
+    tr: Sauna Termometresi
+    en: Sauna Thermometer
+  department: spa
+  synonyms:
+    tr:
+    - sauna termometresi
+    en:
+    - sauna thermometer
+  related_aspects:
+  - spa_temperature
+  maintenance_interval: 90
+  parent_id: fac_spa
+  located_in: fac_spa
+- id: eq_sauna_bucket
+  canonical_id: EQ_000401
+  subtype: spa
+  category: spa
+  labels:
+    tr: Sauna Kovası
+    en: Sauna Bucket
+  department: spa
+  synonyms:
+    tr:
+    - sauna kovası
+    en:
+    - sauna bucket
+  related_aspects:
+  - spa_amenities
+  parent_id: fac_spa
+  located_in: fac_spa
+- id: eq_steam_room_bench
+  canonical_id: EQ_000402
+  subtype: spa
+  category: spa
+  labels:
+    tr: Buhar Odası Bankı
+    en: Steam Room Bench
+  department: spa
+  synonyms:
+    tr:
+    - buhar odası bankı
+    en:
+    - steam room bench
+  related_aspects:
+  - spa_amenities
+  maintenance_interval: 180
+  parent_id: fac_spa
+  located_in: fac_spa
+- id: eq_spa_shower
+  canonical_id: EQ_000403
+  subtype: spa
+  category: spa
+  labels:
+    tr: Spa Duşu
+    en: Spa Shower
+  department: spa
+  synonyms:
+    tr:
+    - spa duşu
+    en:
+    - spa shower
+  related_aspects:
+  - spa_amenities
+  maintenance_interval: 90
+  parent_id: fac_spa
+  located_in: fac_spa
+- id: eq_treatment_bed_spa
+  canonical_id: EQ_000404
+  subtype: spa
+  category: spa
+  labels:
+    tr: Tedavi Yatağı
+    en: Treatment Bed
+  department: spa
+  synonyms:
+    tr:
+    - tedavi yatağı
+    en:
+    - treatment bed
+  related_aspects:
+  - spa_service
+  maintenance_interval: 90
+  parent_id: fac_spa
+  located_in: fac_spa
+- id: eq_hot_stone_warmer
+  canonical_id: EQ_000405
+  subtype: spa
+  category: spa
+  labels:
+    tr: Sıcak Taş Isıtıcı
+    en: Hot Stone Warmer
+  department: spa
+  synonyms:
+    tr:
+    - sıcak taş isıtıcı
+    en:
+    - hot stone warmer
+  related_aspects:
+  - spa_service
+  maintenance_interval: 90
+  parent_id: fac_spa
+  located_in: fac_spa
+- id: eq_aromatherapy_diffuser
+  canonical_id: EQ_000406
+  subtype: spa
+  category: spa
+  labels:
+    tr: Aromaterapi Difüzörü
+    en: Aromatherapy Diffuser
+  department: spa
+  synonyms:
+    tr:
+    - aromaterapi difüzörü
+    en:
+    - aromatherapy diffuser
+  related_aspects:
+  - spa_ambiance
+  maintenance_interval: 90
+  parent_id: fac_spa
+  located_in: fac_spa
+- id: eq_towel_warmer_spa
+  canonical_id: EQ_000407
+  subtype: spa
+  category: spa
+  labels:
+    tr: Spa Havlu Isıtıcı
+    en: Spa Towel Warmer
+  department: spa
+  synonyms:
+    tr:
+    - spa havlu isıtıcı
+    en:
+    - spa towel warmer
+  related_aspects:
+  - spa_amenities
+  maintenance_interval: 90
+  parent_id: fac_spa
+  located_in: fac_spa
+- id: eq_kids_pool_slide
+  canonical_id: EQ_000408
+  subtype: pool
+  category: pool
+  labels:
+    tr: Çocuk Havuzu Kaydırağı
+    en: Kids Pool Slide
+  department: engineering_pools
+  synonyms:
+    tr:
+    - çocuk havuzu kaydırağı
+    en:
+    - kids pool slide
+  related_aspects:
+  - pool_kids
+  maintenance_interval: 90
+  parent_id: fac_pool
+  located_in: fac_pool
+- id: eq_infinity_edge_pump
+  canonical_id: EQ_000409
+  subtype: pool
+  category: pool
+  labels:
+    tr: Infinity Kenar Pompası
+    en: Infinity Edge Pump
+  department: engineering_pools
+  synonyms:
+    tr:
+    - infinity kenar pompası
+    en:
+    - infinity edge pump
+  related_aspects:
+  - pool_ops
+  maintenance_interval: 90
+  parent_id: fac_pool
+  located_in: fac_pool
+- id: eq_beach_umbrella_stand
+  canonical_id: EQ_000410
+  subtype: pool
+  category: pool
+  labels:
+    tr: Plaj Şemsiye Standı
+    en: Beach Umbrella Stand
+  department: havuz
+  synonyms:
+    tr:
+    - plaj şemsiye standı
+    en:
+    - beach umbrella stand
+  related_aspects:
+  - beach_amenities
+  parent_id: fac_beach
+  located_in: fac_beach
+- id: eq_beach_lounger
+  canonical_id: EQ_000411
+  subtype: pool
+  category: pool
+  labels:
+    tr: Plaj Şezlongu
+    en: Beach Lounger
+  department: havuz
+  synonyms:
+    tr:
+    - plaj şezlongu
+    en:
+    - beach lounger
+  related_aspects:
+  - beach_amenities
+  parent_id: fac_beach
+  located_in: fac_beach
+- id: eq_beach_shower
+  canonical_id: EQ_000412
+  subtype: pool
+  category: pool
+  labels:
+    tr: Plaj Duşu
+    en: Beach Shower
+  department: havuz
+  synonyms:
+    tr:
+    - plaj duşu
+    en:
+    - beach shower
+  related_aspects:
+  - beach_amenities
+  maintenance_interval: 90
+  parent_id: fac_beach
+  located_in: fac_beach
+- id: eq_smart_tv
+  canonical_id: EQ_000413
+  subtype: av
+  category: av
+  labels:
+    tr: Akıllı TV
+    en: Smart TV
+  department: engineering_tv
+  synonyms:
+    tr:
+    - akıllı tv
+    en:
+    - smart tv
+  related_aspects:
+  - tv_service
+  maintenance_interval: 180
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_set_top_box
+  canonical_id: EQ_000414
+  subtype: av
+  category: av
+  labels:
+    tr: Uydu Alıcısı
+    en: Set-Top Box
+  department: engineering_tv
+  synonyms:
+    tr:
+    - uydu alıcısı
+    en:
+    - set-top box
+  related_aspects:
+  - tv_service
+  maintenance_interval: 180
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_soundbar
+  canonical_id: EQ_000415
+  subtype: av
+  category: av
+  labels:
+    tr: Soundbar
+    en: Soundbar
+  department: teknik
+  synonyms:
+    tr:
+    - soundbar
+    en:
+    - soundbar
+  related_aspects:
+  - in_room_entertainment
+  maintenance_interval: 180
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_bluetooth_speaker
+  canonical_id: EQ_000416
+  subtype: av
+  category: av
+  labels:
+    tr: Bluetooth Hoparlör
+    en: Bluetooth Speaker
+  department: teknik
+  synonyms:
+    tr:
+    - bluetooth hoparlör
+    en:
+    - bluetooth speaker
+  related_aspects:
+  - in_room_entertainment
+  maintenance_interval: 180
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_conference_mic
+  canonical_id: EQ_000417
+  subtype: av
+  category: av
+  labels:
+    tr: Konferans Mikrofonu
+    en: Conference Mic
+  department: teknik
+  synonyms:
+    tr:
+    - konferans mikrofonu
+    en:
+    - conference mic
+  related_aspects:
+  - meeting_av
+  maintenance_interval: 180
+- id: eq_conference_speaker
+  canonical_id: EQ_000418
+  subtype: av
+  category: av
+  labels:
+    tr: Konferans Hoparlörü
+    en: Conference Speaker
+  department: teknik
+  synonyms:
+    tr:
+    - konferans hoparlörü
+    en:
+    - conference speaker
+  related_aspects:
+  - meeting_av
+  maintenance_interval: 180
+- id: eq_video_conference_cam
+  canonical_id: EQ_000419
+  subtype: av
+  category: av
+  labels:
+    tr: Video Konferans Kamerası
+    en: Video Conference Camera
+  department: teknik
+  synonyms:
+    tr:
+    - video konferans kamerası
+    en:
+    - video conference camera
+  related_aspects:
+  - meeting_av
+  maintenance_interval: 180
+- id: eq_digital_signage
+  canonical_id: EQ_000420
+  subtype: av
+  category: av
+  labels:
+    tr: Dijital Tabela
+    en: Digital Signage
+  department: teknik
+  synonyms:
+    tr:
+    - dijital tabela
+    en:
+    - digital signage
+  related_aspects:
+  - guest_communication
+  maintenance_interval: 180
+- id: eq_wifi_controller
+  canonical_id: EQ_000421
+  subtype: internet
+  category: internet
+  labels:
+    tr: WiFi Kontrolör
+    en: WiFi Controller
+  department: engineering_internet
+  synonyms:
+    tr:
+    - wifi kontrolör
+    en:
+    - wifi controller
+  related_aspects:
+  - internet_speed
+  maintenance_interval: 90
+- id: eq_poe_switch
+  canonical_id: EQ_000422
+  subtype: internet
+  category: internet
+  labels:
+    tr: PoE Switch
+    en: PoE Switch
+  department: engineering_internet
+  synonyms:
+    tr:
+    - poe switch
+    en:
+    - poe switch
+  related_aspects:
+  - internet_infrastructure
+  maintenance_interval: 180
+- id: eq_guest_portal_server
+  canonical_id: EQ_000423
+  subtype: internet
+  category: internet
+  labels:
+    tr: Misafir Portal Sunucusu
+    en: Guest Portal Server
+  department: engineering_internet
+  synonyms:
+    tr:
+    - misafir portal sunucusu
+    en:
+    - guest portal server
+  related_aspects:
+  - internet_login
+  maintenance_interval: 90
+- id: eq_nvr_recorder
+  canonical_id: EQ_000424
+  subtype: security
+  category: security
+  labels:
+    tr: NVR Kayıt Cihazı
+    en: NVR Recorder
+  department: guvenlik
+  synonyms:
+    tr:
+    - nvr kayıt cihazı
+    en:
+    - nvr recorder
+  related_aspects:
+  - security_cctv
+  maintenance_interval: 90
+- id: eq_ptz_camera
+  canonical_id: EQ_000425
+  subtype: security
+  category: security
+  labels:
+    tr: PTZ Kamera
+    en: PTZ Camera
+  department: guvenlik
+  synonyms:
+    tr:
+    - ptz kamera
+    en:
+    - ptz camera
+  related_aspects:
+  - security_cctv
+  maintenance_interval: 90
+- id: eq_access_control_panel
+  canonical_id: EQ_000426
+  subtype: security
+  category: security
+  labels:
+    tr: Geçiş Kontrol Paneli
+    en: Access Control Panel
+  department: guvenlik
+  synonyms:
+    tr:
+    - geçiş kontrol paneli
+    en:
+    - access control panel
+  related_aspects:
+  - security_access
+  maintenance_interval: 90
+- id: eq_biometric_reader
+  canonical_id: EQ_000427
+  subtype: security
+  category: security
+  labels:
+    tr: Biyometrik Okuyucu
+    en: Biometric Reader
+  department: guvenlik
+  synonyms:
+    tr:
+    - biyometrik okuyucu
+    en:
+    - biometric reader
+  related_aspects:
+  - security_access
+  maintenance_interval: 90
+- id: eq_metal_detector_gate
+  canonical_id: EQ_000428
+  subtype: security
+  category: security
+  labels:
+    tr: Metal Dedektör Kapısı
+    en: Metal Detector Gate
+  department: guvenlik
+  synonyms:
+    tr:
+    - metal dedektör kapısı
+    en:
+    - metal detector gate
+  related_aspects:
+  - security_access
+  maintenance_interval: 90
+- id: eq_xray_baggage
+  canonical_id: EQ_000429
+  subtype: security
+  category: security
+  labels:
+    tr: Bavul X-Ray
+    en: Baggage X-Ray
+  department: guvenlik
+  synonyms:
+    tr:
+    - bavul x-ray
+    en:
+    - baggage x-ray
+  related_aspects:
+  - security_access
+  maintenance_interval: 90
+- id: eq_panic_button
+  canonical_id: EQ_000430
+  subtype: security
+  category: security
+  labels:
+    tr: Panik Butonu
+    en: Panic Button
+  department: guvenlik
+  synonyms:
+    tr:
+    - panik butonu
+    en:
+    - panic button
+  related_aspects:
+  - security_emergency
+  maintenance_interval: 90
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_guest_tablet
+  canonical_id: EQ_000431
+  subtype: av
+  category: av
+  labels:
+    tr: Misafir Tableti
+    en: Guest Tablet
+  department: teknik
+  synonyms:
+    tr:
+    - misafir tableti
+    en:
+    - guest tablet
+  related_aspects:
+  - in_room_tech
+  maintenance_interval: 180
+  parent_id: phy_room
+  located_in: phy_room
+- id: eq_chromecast_device
+  canonical_id: EQ_000432
+  subtype: av
+  category: av
+  labels:
+    tr: Chromecast
+    en: Chromecast
+  department: engineering_tv
+  synonyms:
+    tr:
+    - chromecast
+    en:
+    - chromecast
+  related_aspects:
+  - in_room_entertainment
+  maintenance_interval: 180
+  parent_id: phy_room
+  located_in: phy_room
