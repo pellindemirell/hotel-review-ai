@@ -1,0 +1,5164 @@
+version: '1.0'
+lang: en
+synonyms:
+- entity_id: eq_air_conditioner
+  terms:
+  - AC
+  - air conditioner
+  - air conditioning
+  - aircon
+  - HVAC
+  - climate control
+  - cooling unit
+  - A/C
+  - room AC
+  - cooling unit noise
+  - AC broken
+  - AC loud
+  - aircon unit
+  - HVAC unit
+  - climate unit
+  - AC not working
+  - A/C unit
+  - room cooler
+  - climate control unit
+  - cooling appliance
+  - AC panel
+  - in-room air conditioning
+  - airconditioning
+  - air-conditioning unit
+  - room AC unit
+  - coolair
+  - in room AC
+  - climate appliance
+  - guest room AC
+  - cooling appliance unit
+- entity_id: eq_split_ac
+  terms:
+  - split AC
+  - split unit
+  - split system
+  - split ac
+- entity_id: eq_chiller
+  terms:
+  - chiller
+  - cooling machine
+  - chiller fault
+  - cooling plant issue
+  - central chiller
+  - chiller plant down
+  - central chiller fault
+  - cooling plant failure
+  - chiller trip
+- entity_id: eq_boiler
+  terms:
+  - boiler
+  - heating boiler
+  - boiler fault
+  - hot water boiler
+  - boiler failure
+  - heating boiler down
+  - hot water boiler trip
+  - boiler maintenance overdue
+- entity_id: eq_thermostat
+  terms:
+  - thermostat
+  - temperature control
+  - temp dial
+  - temperature knob
+  - thermostat broken
+  - setpoint control
+  - wall thermostat
+  - room temp panel
+  - thermostat inaccurate
+  - setpoint won't hold
+- entity_id: eq_ac_remote
+  terms:
+  - AC remote
+  - remote control
+  - controller
+  - ac remote
+  - AC zapper
+  - remote control AC
+  - dead remote batteries
+  - HVAC remote
+- entity_id: eq_wifi_router
+  terms:
+  - wifi
+  - WiFi
+  - internet
+  - wireless
+  - network
+  - Wi-Fi
+  - wifi router
+- entity_id: eq_access_point
+  terms:
+  - access point
+  - AP
+  - hotspot
+- entity_id: eq_tv
+  terms:
+  - TV
+  - television
+  - flat screen
+- entity_id: eq_minibar
+  terms:
+  - minibar
+  - mini bar
+  - mini-bar
+  - mini bar fridge
+  - in-room minibar
+  - minibar empty
+  - minibar unstocked
+  - bedroom fridge bar
+  - in-room bar fridge
+  - honor bar
+  - bedroom minibar unit
+  - in-room mini bar unit
+  - minibar fridge unit
+  - bedroom drinks fridge
+- entity_id: eq_bed
+  terms:
+  - bed
+  - beds
+- entity_id: eq_mattress
+  terms:
+  - mattress
+  - bed mattress
+- entity_id: eq_pillow
+  terms:
+  - pillow
+  - pillows
+- entity_id: eq_elevator
+  terms:
+  - elevator
+  - lift
+  - elevator broken
+  - lift out of order
+  - stuck elevator
+  - elevator fault
+- entity_id: eq_safe
+  terms:
+  - safe
+  - in-room safe
+  - electronic safe fault
+  - safe box broken
+- entity_id: phy_room
+  terms:
+  - room
+  - rooms
+  - our room
+- entity_id: phy_bathroom
+  terms:
+  - bathroom
+  - toilet
+  - washroom
+  - restroom
+- entity_id: phy_lobby
+  terms:
+  - lobby
+  - reception area
+- entity_id: fac_pool
+  terms:
+  - pool
+  - swimming pool
+  - water park
+- entity_id: fac_restaurant
+  terms:
+  - restaurant
+  - dining
+  - buffet
+- entity_id: fac_spa
+  terms:
+  - spa
+  - wellness center
+  - massage center
+- entity_id: fac_bar
+  terms:
+  - bar
+  - lounge bar
+- entity_id: fac_beach
+  terms:
+  - beach
+  - seaside
+  - shore
+- entity_id: hum_housekeeper
+  terms:
+  - housekeeper
+  - room attendant
+  - maid
+- entity_id: hum_waiter
+  terms:
+  - waiter
+  - server
+  - waitress
+- entity_id: hum_front_desk_agent
+  terms:
+  - receptionist
+  - front desk agent
+- entity_id: hum_hvac_technician
+  terms:
+  - HVAC technician
+  - AC technician
+  - maintenance
+- aspect_key: room_cleanliness
+  terms:
+  - clean room
+  - spotless
+  - dirty room
+  - messy
+  - hygiene
+  - filthy room
+  - unhygienic room
+  - room not cleaned
+  - dusty room
+  - dirty stay
+  - poor housekeeping
+  - unclean room
+  - grimy room
+  - room not spotless
+  - cleaning skipped
+  - dusty furniture
+  - unswept floor
+  - hygiene fail
+  - grimy surfaces
+  - uncleaned stay
+  - housekeeping miss
+- aspect_key: hvac_noise
+  terms:
+  - noisy AC
+  - loud air conditioner
+  - AC noise
+  - too noisy
+  - noisy air conditioner
+  - AC humming
+  - AC rattling
+  - loud HVAC
+  - AC buzz
+  - noisy cooling
+  - HVAC racket
+  - AC drone
+  - fan whirring
+  - HVAC hum loud
+  - cooling unit racket
+  - noisy climate system
+- aspect_key: hvac_cooling
+  terms:
+  - not cooling
+  - no cold air
+  - too hot
+  - cooling system weak
+  - room cooling fail
+  - inadequate cooling
+- aspect_key: food_quality
+  terms:
+  - food
+  - meal quality
+  - delicious
+  - tasty
+  - cuisine
+  - bad food
+  - poor food quality
+  - terrible meal
+  - mediocre food
+  - subpar cuisine
+  - weak kitchen
+  - food disappointing
+- aspect_key: breakfast_variety
+  terms:
+  - breakfast
+  - morning meal
+  - buffet breakfast
+  - breakfast lacks variety
+  - few breakfast options
+  - monotonous breakfast
+  - few breakfast choices
+  - poor breakfast selection
+  - thin morning spread
+  - monotone breakfast
+- aspect_key: wifi_speed
+  terms:
+  - slow internet
+  - fast wifi
+  - connection speed
+  - slow wifi
+  - internet crawling
+  - poor wifi speed
+  - sluggish connection
+- aspect_key: staff_behavior
+  terms:
+  - rude staff
+  - friendly staff
+  - staff attitude
+  - disrespectful staff
+  - unfriendly employees
+  - poor staff attitude
+  - staff unpleasant
+  - staff dismissive
+  - bad staff behavior
+  - rude employees
+  - disrespectful attitude
+  - poor treatment
+  - cold staff manner
+- aspect_key: bed_comfort
+  terms:
+  - hard bed
+  - soft bed
+  - comfortable bed
+  - uncomfortable bed
+  - hard mattress bed
+  - poor sleep quality
+  - bad bed
+- aspect_key: shower_pressure
+  terms:
+  - shower pressure
+  - weak water
+  - water pressure
+  - low shower pressure
+  - weak water flow
+  - trickling shower
+- aspect_key: hot_water
+  terms:
+  - hot water
+  - lukewarm water
+  - cold water
+  - no hot water
+  - water won't heat
+  - cold shower
+  - hot water cut
+- aspect_key: room_cleanliness
+  terms:
+  - hotel
+- aspect_key: staff_behavior
+  terms:
+  - accommodation
+- aspect_key: food_quality
+  terms:
+  - guest
+- aspect_key: hvac_cooling
+  terms:
+  - room service
+- aspect_key: wifi_speed
+  terms:
+  - housekeeping
+- aspect_key: room_cleanliness
+  terms:
+  - reception
+- aspect_key: room_cleanliness
+  terms:
+  - wellness
+- aspect_key: staff_behavior
+  terms:
+  - fitness
+- aspect_key: hvac_cooling
+  terms:
+  - sea
+- aspect_key: wifi_speed
+  terms:
+  - sand
+- aspect_key: room_cleanliness
+  terms:
+  - umbrella
+- aspect_key: staff_behavior
+  terms:
+  - sunbed
+- aspect_key: hvac_cooling
+  terms:
+  - slide
+- aspect_key: wifi_speed
+  terms:
+  - animation
+- aspect_key: room_cleanliness
+  terms:
+  - kids club
+- aspect_key: staff_behavior
+  terms:
+  - disco
+- aspect_key: food_quality
+  terms:
+  - stage
+- aspect_key: hvac_cooling
+  terms:
+  - concert
+- aspect_key: wifi_speed
+  terms:
+  - event
+- aspect_key: room_cleanliness
+  terms:
+  - tour
+- aspect_key: staff_behavior
+  terms:
+  - transfer
+- aspect_key: food_quality
+  terms:
+  - airport
+- aspect_key: hvac_cooling
+  terms:
+  - valet
+- aspect_key: wifi_speed
+  terms:
+  - parking
+- aspect_key: room_cleanliness
+  terms:
+  - security
+- aspect_key: staff_behavior
+  terms:
+  - camera
+- aspect_key: food_quality
+  terms:
+  - fire
+- aspect_key: hvac_cooling
+  terms:
+  - emergency exit
+- aspect_key: wifi_speed
+  terms:
+  - first aid
+- aspect_key: room_cleanliness
+  terms:
+  - doctor
+- aspect_key: staff_behavior
+  terms:
+  - pharmacy
+- aspect_key: food_quality
+  terms:
+  - health
+- aspect_key: hvac_cooling
+  terms:
+  - allergy
+- aspect_key: wifi_speed
+  terms:
+  - diet
+- aspect_key: room_cleanliness
+  terms:
+  - vegan
+- aspect_key: staff_behavior
+  terms:
+  - halal
+- aspect_key: food_quality
+  terms:
+  - kosher
+- aspect_key: hvac_cooling
+  terms:
+  - gluten free
+- aspect_key: room_cleanliness
+  terms:
+  - lunch
+- aspect_key: staff_behavior
+  terms:
+  - dinner
+- aspect_key: hvac_cooling
+  terms:
+  - snack
+- aspect_key: wifi_speed
+  terms:
+  - pastry
+- aspect_key: room_cleanliness
+  terms:
+  - pizza
+- aspect_key: staff_behavior
+  terms:
+  - pasta
+- aspect_key: food_quality
+  terms:
+  - salad
+- aspect_key: hvac_cooling
+  terms:
+  - soup
+- aspect_key: wifi_speed
+  terms:
+  - dessert
+- aspect_key: room_cleanliness
+  terms:
+  - cake
+- aspect_key: staff_behavior
+  terms:
+  - ice cream
+- aspect_key: food_quality
+  terms:
+  - fruit
+- aspect_key: hvac_cooling
+  terms:
+  - drink
+- aspect_key: wifi_speed
+  terms:
+  - water
+- aspect_key: room_cleanliness
+  terms:
+  - soda
+- aspect_key: staff_behavior
+  terms:
+  - beer
+- aspect_key: food_quality
+  terms:
+  - wine
+- aspect_key: hvac_cooling
+  terms:
+  - cocktail
+- aspect_key: wifi_speed
+  terms:
+  - whisky
+- aspect_key: room_cleanliness
+  terms:
+  - tea
+- aspect_key: staff_behavior
+  terms:
+  - coffee
+- aspect_key: food_quality
+  terms:
+  - espresso
+- aspect_key: hvac_cooling
+  terms:
+  - latte
+- aspect_key: room_cleanliness
+  terms:
+  - fridge
+- aspect_key: wifi_speed
+  terms:
+  - fan coil
+- aspect_key: wifi_speed
+  terms:
+  - heat
+- aspect_key: room_cleanliness
+  terms:
+  - cold
+- aspect_key: staff_behavior
+  terms:
+  - temperature
+- aspect_key: food_quality
+  terms:
+  - humidity
+- aspect_key: hvac_cooling
+  terms:
+  - ventilation
+- aspect_key: wifi_speed
+  terms:
+  - filter
+- aspect_key: room_cleanliness
+  terms:
+  - compressor
+- aspect_key: wifi_speed
+  terms:
+  - signal
+- aspect_key: room_cleanliness
+  terms:
+  - modem
+- aspect_key: staff_behavior
+  terms:
+  - router
+- aspect_key: room_cleanliness
+  terms:
+  - channel
+- aspect_key: staff_behavior
+  terms:
+  - netflix
+- aspect_key: food_quality
+  terms:
+  - phone
+- aspect_key: hvac_cooling
+  terms:
+  - intercom
+- aspect_key: staff_behavior
+  terms:
+  - sheet
+- aspect_key: food_quality
+  terms:
+  - duvet
+- aspect_key: hvac_cooling
+  terms:
+  - blanket
+- aspect_key: wifi_speed
+  terms:
+  - towel
+- aspect_key: room_cleanliness
+  terms:
+  - robe
+- aspect_key: staff_behavior
+  terms:
+  - slippers
+- aspect_key: food_quality
+  terms:
+  - soap
+- aspect_key: hvac_cooling
+  terms:
+  - shampoo
+- aspect_key: wifi_speed
+  terms:
+  - shower
+- aspect_key: room_cleanliness
+  terms:
+  - bathtub
+- aspect_key: food_quality
+  terms:
+  - sink
+- aspect_key: hvac_cooling
+  terms:
+  - mirror
+- aspect_key: wifi_speed
+  terms:
+  - hair dryer
+- aspect_key: room_cleanliness
+  terms:
+  - iron
+- aspect_key: food_quality
+  terms:
+  - key
+- aspect_key: hvac_cooling
+  terms:
+  - card
+- aspect_key: wifi_speed
+  terms:
+  - door
+- aspect_key: room_cleanliness
+  terms:
+  - window
+- aspect_key: staff_behavior
+  terms:
+  - balcony
+- aspect_key: food_quality
+  terms:
+  - view
+- aspect_key: hvac_cooling
+  terms:
+  - sea view
+- aspect_key: wifi_speed
+  terms:
+  - mountain view
+- aspect_key: room_cleanliness
+  terms:
+  - clean
+- aspect_key: staff_behavior
+  terms:
+  - dirty
+- aspect_key: food_quality
+  terms:
+  - stain
+- aspect_key: hvac_cooling
+  terms:
+  - smell
+- aspect_key: wifi_speed
+  terms:
+  - mold
+- aspect_key: room_cleanliness
+  terms:
+  - damp
+- aspect_key: staff_behavior
+  terms:
+  - insect
+- aspect_key: food_quality
+  terms:
+  - fly
+- aspect_key: hvac_cooling
+  terms:
+  - ant
+- aspect_key: wifi_speed
+  terms:
+  - noise
+- aspect_key: room_cleanliness
+  terms:
+  - quiet
+- aspect_key: staff_behavior
+  terms:
+  - comfort
+- aspect_key: food_quality
+  terms:
+  - comfortable
+- aspect_key: hvac_cooling
+  terms:
+  - fast
+- aspect_key: wifi_speed
+  terms:
+  - slow
+- aspect_key: room_cleanliness
+  terms:
+  - late
+- aspect_key: staff_behavior
+  terms:
+  - wait
+- aspect_key: food_quality
+  terms:
+  - queue
+- aspect_key: hvac_cooling
+  terms:
+  - professional
+- aspect_key: wifi_speed
+  terms:
+  - polite
+- aspect_key: room_cleanliness
+  terms:
+  - rude
+- aspect_key: staff_behavior
+  terms:
+  - unhelpful
+- aspect_key: food_quality
+  terms:
+  - friendly
+- aspect_key: hvac_cooling
+  terms:
+  - smile
+- aspect_key: wifi_speed
+  terms:
+  - staff
+- aspect_key: staff_behavior
+  terms:
+  - chef
+- aspect_key: hvac_cooling
+  terms:
+  - technician
+- aspect_key: wifi_speed
+  terms:
+  - security guard
+- aspect_key: room_cleanliness
+  terms:
+  - animator
+- aspect_key: staff_behavior
+  terms:
+  - masseur
+- aspect_key: food_quality
+  terms:
+  - therapist
+- aspect_key: hvac_cooling
+  terms:
+  - lifeguard
+- aspect_key: wifi_speed
+  terms:
+  - manager
+- aspect_key: room_cleanliness
+  terms:
+  - management
+- aspect_key: staff_behavior
+  terms:
+  - complaint
+- aspect_key: food_quality
+  terms:
+  - resolution
+- aspect_key: hvac_cooling
+  terms:
+  - compensation
+- aspect_key: wifi_speed
+  terms:
+  - discount
+- aspect_key: room_cleanliness
+  terms:
+  - upgrade
+- aspect_key: staff_behavior
+  terms:
+  - check in
+- aspect_key: food_quality
+  terms:
+  - check out
+- aspect_key: hvac_cooling
+  terms:
+  - reservation
+- aspect_key: wifi_speed
+  terms:
+  - booking
+- aspect_key: room_cleanliness
+  terms:
+  - cancel
+- aspect_key: staff_behavior
+  terms:
+  - overbooking
+- aspect_key: food_quality
+  terms:
+  - price
+- aspect_key: hvac_cooling
+  terms:
+  - expensive
+- aspect_key: wifi_speed
+  terms:
+  - cheap
+- aspect_key: room_cleanliness
+  terms:
+  - value
+- aspect_key: staff_behavior
+  terms:
+  - all inclusive
+- aspect_key: food_quality
+  terms:
+  - ultra all inclusive
+- aspect_key: hvac_cooling
+  terms:
+  - a la carte
+- aspect_key: wifi_speed
+  terms:
+  - child
+- aspect_key: room_cleanliness
+  terms:
+  - baby
+- aspect_key: staff_behavior
+  terms:
+  - family
+- aspect_key: food_quality
+  terms:
+  - couple
+- aspect_key: hvac_cooling
+  terms:
+  - honeymoon
+- aspect_key: wifi_speed
+  terms:
+  - group
+- aspect_key: room_cleanliness
+  terms:
+  - conference
+- aspect_key: staff_behavior
+  terms:
+  - meeting
+- aspect_key: food_quality
+  terms:
+  - wedding
+- aspect_key: hvac_cooling
+  terms:
+  - banquet
+- aspect_key: wifi_speed
+  terms:
+  - projector
+- aspect_key: room_cleanliness
+  terms:
+  - microphone
+- aspect_key: staff_behavior
+  terms:
+  - sound system
+- aspect_key: food_quality
+  terms:
+  - lighting
+- aspect_key: hvac_cooling
+  terms:
+  - decor
+- aspect_key: wifi_speed
+  terms:
+  - flower
+- aspect_key: room_cleanliness
+  terms:
+  - lost and found
+- aspect_key: staff_behavior
+  terms:
+  - laundry
+- aspect_key: food_quality
+  terms:
+  - ironing
+- aspect_key: hvac_cooling
+  terms:
+  - linen
+- aspect_key: wifi_speed
+  terms:
+  - towel change
+- aspect_key: room_cleanliness
+  terms:
+  - turndown
+- aspect_key: staff_behavior
+  terms:
+  - minibar restock
+- aspect_key: food_quality
+  terms:
+  - deep clean
+- aspect_key: hvac_cooling
+  terms:
+  - stay over
+- aspect_key: wifi_speed
+  terms:
+  - checkout cleaning
+- aspect_key: room_cleanliness
+  terms:
+  - inspection
+- aspect_key: staff_behavior
+  terms:
+  - out of order
+- aspect_key: food_quality
+  terms:
+  - broken
+- aspect_key: hvac_cooling
+  terms:
+  - not working
+- aspect_key: wifi_speed
+  terms:
+  - repair
+- aspect_key: staff_behavior
+  terms:
+  - work order
+- aspect_key: food_quality
+  terms:
+  - sla
+- aspect_key: hvac_cooling
+  terms:
+  - priority
+- aspect_key: wifi_speed
+  terms:
+  - critical
+- aspect_key: room_cleanliness
+  terms:
+  - urgent
+- aspect_key: staff_behavior
+  terms:
+  - escalation
+- aspect_key: food_quality
+  terms:
+  - duty manager
+- aspect_key: hvac_cooling
+  terms:
+  - general manager
+- aspect_key: wifi_speed
+  terms:
+  - guest relations
+- aspect_key: room_cleanliness
+  terms:
+  - vip
+- aspect_key: staff_behavior
+  terms:
+  - concierge
+- aspect_key: food_quality
+  terms:
+  - bellboy
+- aspect_key: hvac_cooling
+  terms:
+  - luggage
+- aspect_key: wifi_speed
+  terms:
+  - shuttle
+- aspect_key: room_cleanliness
+  terms:
+  - taxi
+- aspect_key: staff_behavior
+  terms:
+  - excursion
+- aspect_key: food_quality
+  terms:
+  - diving
+- aspect_key: hvac_cooling
+  terms:
+  - snorkeling
+- aspect_key: wifi_speed
+  terms:
+  - jet ski
+- aspect_key: room_cleanliness
+  terms:
+  - tennis
+- aspect_key: staff_behavior
+  terms:
+  - volleyball
+- aspect_key: food_quality
+  terms:
+  - football
+- aspect_key: hvac_cooling
+  terms:
+  - golf
+- aspect_key: wifi_speed
+  terms:
+  - yoga
+- aspect_key: room_cleanliness
+  terms:
+  - pilates
+- aspect_key: staff_behavior
+  terms:
+  - hamam
+- aspect_key: food_quality
+  terms:
+  - sauna
+- aspect_key: hvac_cooling
+  terms:
+  - steam room
+- aspect_key: wifi_speed
+  terms:
+  - massage
+- aspect_key: room_cleanliness
+  terms:
+  - peeling
+- aspect_key: staff_behavior
+  terms:
+  - facial
+- aspect_key: food_quality
+  terms:
+  - manicure
+- aspect_key: hvac_cooling
+  terms:
+  - pedicure
+- aspect_key: wifi_speed
+  terms:
+  - haircut
+- aspect_key: room_cleanliness
+  terms:
+  - beauty salon
+- aspect_key: staff_behavior
+  terms:
+  - spa package
+- aspect_key: hvac_cooling
+  terms:
+  - detox
+- aspect_key: wifi_speed
+  terms:
+  - aromatherapy
+- aspect_key: room_cleanliness
+  terms:
+  - hot stone
+- aspect_key: staff_behavior
+  terms:
+  - couples massage
+- aspect_key: food_quality
+  terms:
+  - private pool
+- aspect_key: hvac_cooling
+  terms:
+  - jacuzzi
+- aspect_key: wifi_speed
+  terms:
+  - infinity pool
+- aspect_key: room_cleanliness
+  terms:
+  - heated pool
+- aspect_key: staff_behavior
+  terms:
+  - kids pool
+- aspect_key: food_quality
+  terms:
+  - adult only
+- aspect_key: hvac_cooling
+  terms:
+  - pool bar
+- aspect_key: wifi_speed
+  terms:
+  - beach bar
+- aspect_key: room_cleanliness
+  terms:
+  - lobby bar
+- aspect_key: staff_behavior
+  terms:
+  - night club
+- aspect_key: food_quality
+  terms:
+  - live music
+- aspect_key: hvac_cooling
+  terms:
+  - show program
+- aspect_key: wifi_speed
+  terms:
+  - kids animation
+- aspect_key: room_cleanliness
+  terms:
+  - teen club
+- aspect_key: staff_behavior
+  terms:
+  - water polo
+- aspect_key: food_quality
+  terms:
+  - aerobics
+- aspect_key: hvac_cooling
+  terms:
+  - gym
+- aspect_key: wifi_speed
+  terms:
+  - personal trainer
+- aspect_key: room_cleanliness
+  terms:
+  - cardio
+- aspect_key: staff_behavior
+  terms:
+  - weights
+- aspect_key: food_quality
+  terms:
+  - turkish bath
+- aspect_key: hvac_cooling
+  terms:
+  - foam massage
+- aspect_key: wifi_speed
+  terms:
+  - mud bath
+- aspect_key: room_cleanliness
+  terms:
+  - salt room
+- aspect_key: staff_behavior
+  terms:
+  - standard room
+- aspect_key: food_quality
+  terms:
+  - superior room
+- aspect_key: hvac_cooling
+  terms:
+  - deluxe room
+- aspect_key: wifi_speed
+  terms:
+  - suite
+- aspect_key: room_cleanliness
+  terms:
+  - family room
+- aspect_key: staff_behavior
+  terms:
+  - connecting room
+- aspect_key: food_quality
+  terms:
+  - accessible room
+- aspect_key: hvac_cooling
+  terms:
+  - non smoking
+- aspect_key: wifi_speed
+  terms:
+  - smoking room
+- aspect_key: room_cleanliness
+  terms:
+  - garden view
+- aspect_key: staff_behavior
+  terms:
+  - pool view
+- aspect_key: food_quality
+  terms:
+  - city view
+- aspect_key: hvac_cooling
+  terms:
+  - quiet room
+- aspect_key: wifi_speed
+  terms:
+  - honeymoon suite
+- aspect_key: room_cleanliness
+  terms:
+  - presidential suite
+- aspect_key: staff_behavior
+  terms:
+  - villa
+- aspect_key: food_quality
+  terms:
+  - bungalow
+- aspect_key: hvac_cooling
+  terms:
+  - allergy free
+- aspect_key: wifi_speed
+  terms:
+  - extra pillow
+- aspect_key: room_cleanliness
+  terms:
+  - baby cot
+- aspect_key: staff_behavior
+  terms:
+  - high chair
+- aspect_key: food_quality
+  terms:
+  - wheelchair access
+- aspect_key: hvac_cooling
+  terms:
+  - fire alarm
+- aspect_key: wifi_speed
+  terms:
+  - smoke detector
+- aspect_key: staff_behavior
+  terms:
+  - CCTV
+- aspect_key: food_quality
+  terms:
+  - in room safe
+- aspect_key: hvac_cooling
+  terms:
+  - currency exchange
+- aspect_key: wifi_speed
+  terms:
+  - atm
+- aspect_key: room_cleanliness
+  terms:
+  - invoice
+- aspect_key: staff_behavior
+  terms:
+  - receipt
+- aspect_key: food_quality
+  terms:
+  - folio
+- aspect_key: hvac_cooling
+  terms:
+  - minibar bill
+- aspect_key: wifi_speed
+  terms:
+  - room charge
+- aspect_key: room_cleanliness
+  terms:
+  - late checkout fee
+- aspect_key: staff_behavior
+  terms:
+  - resort fee
+- aspect_key: food_quality
+  terms:
+  - city tax
+- aspect_key: hvac_cooling
+  terms:
+  - deposit
+- aspect_key: wifi_speed
+  terms:
+  - cancellation policy
+- aspect_key: room_cleanliness
+  terms:
+  - no show
+- aspect_key: staff_behavior
+  terms:
+  - room move
+- aspect_key: food_quality
+  terms:
+  - maintenance noise
+- aspect_key: hvac_cooling
+  terms:
+  - renovation
+- aspect_key: wifi_speed
+  terms:
+  - power outage
+- aspect_key: room_cleanliness
+  terms:
+  - water outage
+- aspect_key: staff_behavior
+  terms:
+  - generator
+- aspect_key: food_quality
+  terms:
+  - pool closed
+- aspect_key: hvac_cooling
+  terms:
+  - restaurant closed
+- aspect_key: wifi_speed
+  terms:
+  - 24h reception
+- aspect_key: room_cleanliness
+  terms:
+  - express checkout
+- aspect_key: staff_behavior
+  terms:
+  - mobile checkin
+- aspect_key: food_quality
+  terms:
+  - smart room
+- aspect_key: hvac_cooling
+  terms:
+  - automation
+- aspect_key: wifi_speed
+  terms:
+  - do not disturb
+- aspect_key: room_cleanliness
+  terms:
+  - make up room
+- aspect_key: staff_behavior
+  terms:
+  - wake up call
+- aspect_key: food_quality
+  terms:
+  - blackout curtains
+- aspect_key: hvac_cooling
+  terms:
+  - soundproof
+- aspect_key: wifi_speed
+  terms:
+  - mosquito net
+- aspect_key: room_cleanliness
+  terms:
+  - welcome drink
+- aspect_key: staff_behavior
+  terms:
+  - birthday setup
+- aspect_key: food_quality
+  terms:
+  - anniversary
+- aspect_key: hvac_cooling
+  terms:
+  - pillow menu
+- aspect_key: wifi_speed
+  terms:
+  - king bed
+- aspect_key: room_cleanliness
+  terms:
+  - queen bed
+- aspect_key: staff_behavior
+  terms:
+  - sofa bed
+- aspect_key: food_quality
+  terms:
+  - extra bed
+- aspect_key: hvac_cooling
+  terms:
+  - crib
+- aspect_key: wifi_speed
+  terms:
+  - baby amenities
+- aspect_key: room_cleanliness
+  terms:
+  - pool towel
+- aspect_key: staff_behavior
+  terms:
+  - beach towel
+- aspect_key: food_quality
+  terms:
+  - sunbed reservation
+- aspect_key: hvac_cooling
+  terms:
+  - cabana
+- aspect_key: wifi_speed
+  terms:
+  - private beach
+- aspect_key: room_cleanliness
+  terms:
+  - boat trip
+- aspect_key: staff_behavior
+  terms:
+  - bike rental
+- aspect_key: food_quality
+  terms:
+  - car rental
+- aspect_key: hvac_cooling
+  terms:
+  - ev charging
+- aspect_key: wifi_speed
+  terms:
+  - pet friendly
+- aspect_key: room_cleanliness
+  terms:
+  - pet fee
+- aspect_key: staff_behavior
+  terms:
+  - smoking policy
+- aspect_key: food_quality
+  terms:
+  - smoke smell
+- aspect_key: hvac_cooling
+  terms:
+  - chemical smell
+- aspect_key: wifi_speed
+  terms:
+  - sewage smell
+- aspect_key: room_cleanliness
+  terms:
+  - chlorine
+- aspect_key: staff_behavior
+  terms:
+  - green pool
+- aspect_key: food_quality
+  terms:
+  - cloudy pool
+- aspect_key: hvac_cooling
+  terms:
+  - cold pool
+- aspect_key: wifi_speed
+  terms:
+  - pool crowded
+- aspect_key: room_cleanliness
+  terms:
+  - sunbed shortage
+- aspect_key: staff_behavior
+  terms:
+  - beach rocky
+- aspect_key: food_quality
+  terms:
+  - beach clean
+- aspect_key: hvac_cooling
+  terms:
+  - beach service
+- aspect_key: wifi_speed
+  terms:
+  - premium drinks
+- aspect_key: room_cleanliness
+  terms:
+  - cocktail quality
+- aspect_key: staff_behavior
+  terms:
+  - cold beer
+- aspect_key: food_quality
+  terms:
+  - wine selection
+- aspect_key: hvac_cooling
+  terms:
+  - bar queue
+- aspect_key: wifi_speed
+  terms:
+  - bar closed
+- aspect_key: room_cleanliness
+  terms:
+  - kitchen hours
+- aspect_key: staff_behavior
+  terms:
+  - breakfast hours
+- aspect_key: food_quality
+  terms:
+  - late snack
+- aspect_key: hvac_cooling
+  terms:
+  - room service slow
+- aspect_key: wifi_speed
+  terms:
+  - room service cold
+- aspect_key: room_cleanliness
+  terms:
+  - minibar expensive
+- aspect_key: staff_behavior
+  terms:
+  - minibar empty
+- aspect_key: food_quality
+  terms:
+  - minibar broken
+- aspect_key: hvac_cooling
+  terms:
+  - fridge noisy
+- aspect_key: wifi_speed
+  terms:
+  - coffee machine broken
+- aspect_key: room_cleanliness
+  terms:
+  - kettle missing
+- aspect_key: staff_behavior
+  terms:
+  - water bottle
+- aspect_key: food_quality
+  terms:
+  - sustainability
+- aspect_key: hvac_cooling
+  terms:
+  - recycling
+- aspect_key: wifi_speed
+  terms:
+  - green hotel
+- aspect_key: room_cleanliness
+  terms:
+  - key card power
+- aspect_key: staff_behavior
+  terms:
+  - usb port
+- aspect_key: food_quality
+  terms:
+  - outlet not working
+- aspect_key: hvac_cooling
+  terms:
+  - flickering light
+- aspect_key: wifi_speed
+  terms:
+  - bulb burned
+- aspect_key: room_cleanliness
+  terms:
+  - exhaust fan noisy
+- aspect_key: staff_behavior
+  terms:
+  - heated mirror
+- aspect_key: food_quality
+  terms:
+  - hair dryer broken
+- aspect_key: hvac_cooling
+  terms:
+  - grab bar
+- aspect_key: wifi_speed
+  terms:
+  - walk in shower
+- aspect_key: room_cleanliness
+  terms:
+  - shower leak
+- aspect_key: staff_behavior
+  terms:
+  - shower mold
+- aspect_key: food_quality
+  terms:
+  - toilet blocked
+- aspect_key: hvac_cooling
+  terms:
+  - faucet drip
+- aspect_key: wifi_speed
+  terms:
+  - cold shower
+- aspect_key: room_cleanliness
+  terms:
+  - rusty water
+- aspect_key: staff_behavior
+  terms:
+  - low pressure
+- aspect_key: food_quality
+  terms:
+  - rain shower
+- aspect_key: hvac_cooling
+  terms:
+  - jacuzzi not working
+- aspect_key: wifi_speed
+  terms:
+  - soap empty
+- aspect_key: room_cleanliness
+  terms:
+  - slippers missing
+- aspect_key: staff_behavior
+  terms:
+  - robe missing
+- aspect_key: food_quality
+  terms:
+  - towel thin
+- aspect_key: hvac_cooling
+  terms:
+  - towel smell
+- aspect_key: wifi_speed
+  terms:
+  - laundry slow
+- aspect_key: room_cleanliness
+  terms:
+  - laundry expensive
+- aspect_key: staff_behavior
+  terms:
+  - lost item
+- aspect_key: food_quality
+  terms:
+  - room not ready
+- aspect_key: hvac_cooling
+  terms:
+  - waiting for room
+- aspect_key: wifi_speed
+  terms:
+  - luggage storage
+- aspect_key: room_cleanliness
+  terms:
+  - luggage lost
+- aspect_key: staff_behavior
+  terms:
+  - charge dispute
+- aspect_key: food_quality
+  terms:
+  - wrong charge
+- aspect_key: hvac_cooling
+  terms:
+  - double charge
+- aspect_key: wifi_speed
+  terms:
+  - refund slow
+- aspect_key: room_cleanliness
+  terms:
+  - invoice error
+- aspect_key: staff_behavior
+  terms:
+  - ac not cooling
+- aspect_key: food_quality
+  terms:
+  - ac not heating
+- aspect_key: hvac_cooling
+  terms:
+  - ac noisy
+- aspect_key: wifi_speed
+  terms:
+  - ac leaking
+- aspect_key: room_cleanliness
+  terms:
+  - ac smell
+- aspect_key: staff_behavior
+  terms:
+  - ac remote broken
+- aspect_key: food_quality
+  terms:
+  - room too hot
+- aspect_key: hvac_cooling
+  terms:
+  - room too cold
+- aspect_key: wifi_speed
+  terms:
+  - wifi slow
+- aspect_key: room_cleanliness
+  terms:
+  - wifi disconnect
+- aspect_key: staff_behavior
+  terms:
+  - no internet
+- aspect_key: food_quality
+  terms:
+  - tv not working
+- aspect_key: hvac_cooling
+  terms:
+  - no signal
+- aspect_key: wifi_speed
+  terms:
+  - elevator broken
+- aspect_key: room_cleanliness
+  terms:
+  - elevator slow
+- aspect_key: staff_behavior
+  terms:
+  - elevator scary
+- aspect_key: hvac_cooling
+  terms:
+  - hair in bathroom
+- aspect_key: wifi_speed
+  terms:
+  - blood stain
+- aspect_key: room_cleanliness
+  terms:
+  - bed bugs
+- aspect_key: staff_behavior
+  terms:
+  - cockroach
+- aspect_key: food_quality
+  terms:
+  - ant in room
+- aspect_key: hvac_cooling
+  terms:
+  - broken lock
+- aspect_key: wifi_speed
+  terms:
+  - door wont close
+- aspect_key: room_cleanliness
+  terms:
+  - window wont open
+- aspect_key: staff_behavior
+  terms:
+  - broken balcony door
+- aspect_key: food_quality
+  terms:
+  - no hot water
+- aspect_key: hvac_cooling
+  terms:
+  - weak shower
+- aspect_key: wifi_speed
+  terms:
+  - flooded bathroom
+- aspect_key: room_cleanliness
+  terms:
+  - leaking ceiling
+- aspect_key: staff_behavior
+  terms:
+  - peeling paint
+- aspect_key: food_quality
+  terms:
+  - broken furniture
+- aspect_key: hvac_cooling
+  terms:
+  - sagging mattress
+- aspect_key: wifi_speed
+  terms:
+  - lumpy pillow
+- aspect_key: room_cleanliness
+  terms:
+  - itchy sheets
+- aspect_key: staff_behavior
+  terms:
+  - no housekeeping
+- aspect_key: food_quality
+  terms:
+  - rude reception
+- aspect_key: hvac_cooling
+  terms:
+  - slow checkin
+- aspect_key: wifi_speed
+  terms:
+  - long queue reception
+- aspect_key: room_cleanliness
+  terms:
+  - overbooked
+- aspect_key: staff_behavior
+  terms:
+  - downgraded room
+- aspect_key: food_quality
+  terms:
+  - wrong room type
+- aspect_key: hvac_cooling
+  terms:
+  - view blocked
+- aspect_key: wifi_speed
+  terms:
+  - construction view
+- aspect_key: room_cleanliness
+  terms:
+  - noisy neighbors
+- aspect_key: staff_behavior
+  terms:
+  - thin walls
+- aspect_key: food_quality
+  terms:
+  - party noise
+- aspect_key: hvac_cooling
+  terms:
+  - music too loud
+- aspect_key: wifi_speed
+  terms:
+  - animation too loud
+- aspect_key: room_cleanliness
+  terms:
+  - food poisoning
+- aspect_key: staff_behavior
+  terms:
+  - undercooked chicken
+- aspect_key: food_quality
+  terms:
+  - raw meat
+- aspect_key: hvac_cooling
+  terms:
+  - foreign object food
+- aspect_key: wifi_speed
+  terms:
+  - hair in food
+- aspect_key: room_cleanliness
+  terms:
+  - fly in restaurant
+- aspect_key: staff_behavior
+  terms:
+  - dirty plates buffet
+- aspect_key: food_quality
+  terms:
+  - empty buffet tray
+- aspect_key: hvac_cooling
+  terms:
+  - long buffet queue
+- aspect_key: wifi_speed
+  terms:
+  - no vegetarian option
+- aspect_key: room_cleanliness
+  terms:
+  - bad coffee
+- aspect_key: staff_behavior
+  terms:
+  - watery soup
+- aspect_key: food_quality
+  terms:
+  - salty food
+- aspect_key: hvac_cooling
+  terms:
+  - bland food
+- aspect_key: wifi_speed
+  terms:
+  - amazing food
+- aspect_key: room_cleanliness
+  terms:
+  - great breakfast
+- aspect_key: staff_behavior
+  terms:
+  - excellent staff
+- aspect_key: food_quality
+  terms:
+  - wonderful spa
+- aspect_key: hvac_cooling
+  terms:
+  - beautiful pool
+- aspect_key: wifi_speed
+  terms:
+  - perfect beach
+- aspect_key: room_cleanliness
+  terms:
+  - best holiday
+- aspect_key: staff_behavior
+  terms:
+  - will come again
+- aspect_key: food_quality
+  terms:
+  - never again
+- aspect_key: hvac_cooling
+  terms:
+  - disappointed
+- aspect_key: wifi_speed
+  terms:
+  - waste of money
+- aspect_key: room_cleanliness
+  terms:
+  - not worth it
+- aspect_key: staff_behavior
+  terms:
+  - hidden fees
+- aspect_key: food_quality
+  terms:
+  - misleading photos
+- aspect_key: hvac_cooling
+  terms:
+  - false advertising
+- aspect_key: wifi_speed
+  terms:
+  - different from website
+- aspect_key: room_cleanliness
+  terms:
+  - five star service
+- aspect_key: staff_behavior
+  terms:
+  - three star quality
+- aspect_key: food_quality
+  terms:
+  - luxury feel
+- aspect_key: hvac_cooling
+  terms:
+  - budget feel
+- aspect_key: wifi_speed
+  terms:
+  - dated hotel
+- aspect_key: room_cleanliness
+  terms:
+  - modern hotel
+- aspect_key: staff_behavior
+  terms:
+  - recently renovated
+- aspect_key: food_quality
+  terms:
+  - needs renovation
+- aspect_key: hvac_cooling
+  terms:
+  - run down
+- aspect_key: wifi_speed
+  terms:
+  - well maintained
+- aspect_key: room_cleanliness
+  terms:
+  - family friendly
+- aspect_key: staff_behavior
+  terms:
+  - adult oriented
+- aspect_key: food_quality
+  terms:
+  - party hotel
+- aspect_key: hvac_cooling
+  terms:
+  - quiet resort
+- entity_id: eq_fan_coil
+  terms:
+  - fan coil unit
+  - FCU noise
+  - fan-coil leak
+  - FCU not cooling
+  - fan coil rattling
+- entity_id: eq_network_switch
+  terms:
+  - network switch
+- entity_id: eq_tv_remote
+  terms:
+  - tv remote
+  - no TV remote
+  - TV zapper missing
+  - broken remote buttons
+- entity_id: eq_shower_head
+  terms:
+  - shower head
+- entity_id: eq_toilet
+  terms:
+  - toilet
+- entity_id: eq_faucet
+  terms:
+  - faucet
+- entity_id: eq_water_heater
+  terms:
+  - water heater
+  - water heater broken
+  - boiler not heating water
+  - hot water heater fault
+- entity_id: eq_coffee_machine
+  terms:
+  - coffee machine
+  - coffee machine broken
+  - no in-room coffee maker
+- entity_id: eq_refrigerator
+  terms:
+  - refrigerator
+- entity_id: eq_oven
+  terms:
+  - oven
+- entity_id: eq_dishwasher
+  terms:
+  - dishwasher
+- entity_id: eq_pool_pump
+  terms:
+  - pool pump
+  - pool pump failure
+  - pump noise
+  - circulation pump down
+- entity_id: eq_pool_filter
+  terms:
+  - pool filter
+  - dirty pool filter
+  - filter overdue
+  - sand filter clogged
+- entity_id: eq_spa_jacuzzi
+  terms:
+  - jacuzzi
+  - jacuzzi broken
+  - spa jacuzzi closed
+  - jets not working
+- entity_id: eq_sauna_heater
+  terms:
+  - sauna heater
+  - sauna heater broken
+  - sauna stove cold
+  - heater failure
+- entity_id: eq_iron
+  terms:
+  - iron
+  - no iron
+  - ironing board missing
+  - broken iron
+- entity_id: eq_hair_dryer
+  terms:
+  - hair dryer
+  - no hair dryer
+  - broken hairdryer
+  - weak dryer
+- entity_id: eq_door_lock
+  terms:
+  - door lock
+  - door lock broken
+  - electronic lock fail
+  - door won't lock
+- entity_id: eq_smoke_detector
+  terms:
+  - smoke detector
+- entity_id: eq_fire_extinguisher
+  terms:
+  - fire extinguisher
+- entity_id: eq_laundry_machine
+  terms:
+  - washing machine
+- entity_id: eq_vacuum_cleaner
+  terms:
+  - vacuum cleaner
+  - vacuum noise
+  - loud vacuuming
+  - hoover racket
+- entity_id: eq_projector
+  terms:
+  - projector
+- entity_id: eq_pos_terminal
+  terms:
+  - pos terminal
+  - POS terminal down
+  - payment terminal fault
+  - card machine broken
+- entity_id: eq_ice_machine
+  terms:
+  - ice machine
+  - ice machine broken
+  - no ice available
+  - empty ice maker
+- entity_id: eq_blender
+  terms:
+  - blender
+- entity_id: eq_gym_treadmill
+  terms:
+  - treadmill
+- entity_id: eq_solar_panel
+  terms:
+  - solar panel
+- entity_id: eq_generator
+  terms:
+  - generator
+  - generator fault
+  - no backup power
+  - noisy generator
+- entity_id: eq_cctv_camera
+  terms:
+  - cctv camera
+- entity_id: eq_key_card_reader
+  terms:
+  - key card reader
+  - card reader broken
+  - door card reader
+  - keycard scanner fault
+  - magnetic reader fail
+- entity_id: eq_phone
+  terms:
+  - room phone
+- entity_id: eq_curtain_motor
+  terms:
+  - curtain motor
+- entity_id: eq_blackout_blind
+  terms:
+  - blackout blind
+- entity_id: eq_desk_lamp
+  terms:
+  - desk lamp
+- entity_id: eq_balcony_railing
+  terms:
+  - balcony railing
+- entity_id: eq_water_dispenser
+  terms:
+  - water dispenser
+- entity_id: eq_toaster
+  terms:
+  - toaster
+- entity_id: eq_kettle
+  terms:
+  - kettle
+  - no kettle
+  - broken water heater kettle
+  - no electric kettle
+- entity_id: eq_bath_towel_warmer
+  terms:
+  - towel warmer
+- entity_id: eq_aquapark_slide
+  terms:
+  - water slide
+  - aquapark chute
+  - damaged slide surface
+  - tube slide
+- entity_id: eq_pool_lounger
+  terms:
+  - pool lounger
+  - broken lounger
+  - damaged sunbed
+  - broken bed frame
+- entity_id: eq_umbrella
+  terms:
+  - beach umbrella
+- entity_id: eq_baby_cot
+  terms:
+  - baby cot
+- entity_id: eq_wheelchair
+  terms:
+  - wheelchair
+- entity_id: eq_pms_terminal
+  terms:
+  - pms terminal
+  - PMS terminal lag
+  - front desk computer slow
+  - check-in system down
+  - PMS crash
+- entity_id: eq_printer
+  terms:
+  - printer
+- entity_id: eq_backup_ups
+  terms:
+  - ups
+- entity_id: eq_hvac_filter
+  terms:
+  - hvac filter
+  - HVAC filter dirty
+  - clogged AC filter
+  - filter never replaced
+  - dusty filter media
+- entity_id: eq_compressor
+  terms:
+  - compressor
+  - compressor noise
+  - AC compressor fault
+  - compressor vibration
+  - compressor short cycling
+- entity_id: eq_ductwork
+  terms:
+  - ductwork
+- entity_id: eq_vrf_outdoor
+  terms:
+  - vrf outdoor unit
+  - outdoor condenser noise
+  - VRF plant noise
+  - multi-split outdoor
+- entity_id: eq_ahu
+  terms:
+  - air handling unit
+  - AHU fault
+  - AHU filter dirty
+  - central AHU noise
+- entity_id: eq_damper
+  terms:
+  - damper
+- entity_id: eq_exhaust_fan
+  terms:
+  - exhaust fan
+  - exhaust fan broken
+  - bathroom extractor dead
+  - ventilation fan noise
+  - extract fan seized
+- entity_id: eq_heat_pump
+  terms:
+  - heat pump
+  - heat pump noise
+  - heat pump failure
+  - HP not heating
+- entity_id: eq_radiator
+  terms:
+  - radiator
+  - radiator cold
+  - heater panel cold
+  - radiator knocking
+  - radiator not warming
+- entity_id: eq_floor_heating
+  terms:
+  - underfloor heating
+  - underfloor heating cold
+  - floor heat not working
+  - radiant floor fail
+- entity_id: eq_dehumidifier
+  terms:
+  - dehumidifier
+  - dehumidifier missing
+  - dehumidifier broken
+  - humidity unit fault
+  - no dehumidification
+- entity_id: eq_air_purifier
+  terms:
+  - air purifier
+  - air purifier missing
+  - HEPA unit broken
+  - room air cleaner
+  - purifier filter clogged
+- entity_id: eq_duct_sensor
+  terms:
+  - duct sensor
+- entity_id: eq_fiber_switch
+  terms:
+  - fiber switch
+- entity_id: eq_modem
+  terms:
+  - modem
+- entity_id: eq_firewall
+  terms:
+  - firewall
+- entity_id: eq_nas
+  terms:
+  - network storage
+- entity_id: eq_pbx
+  terms:
+  - pbx
+- entity_id: eq_intercom
+  terms:
+  - intercom
+- entity_id: eq_door_bell
+  terms:
+  - door bell
+- entity_id: eq_light_switch
+  terms:
+  - light switch
+- entity_id: eq_dimmer
+  terms:
+  - dimmer
+- entity_id: eq_led_panel
+  terms:
+  - led panel
+- entity_id: eq_emergency_light
+  terms:
+  - emergency light
+- entity_id: eq_power_socket
+  terms:
+  - power socket
+- entity_id: eq_circuit_breaker
+  terms:
+  - circuit breaker
+- entity_id: eq_transformer
+  terms:
+  - transformer
+- entity_id: eq_sump_pump
+  terms:
+  - sump pump
+- entity_id: eq_water_meter
+  terms:
+  - water meter
+- entity_id: eq_backflow_valve
+  terms:
+  - backflow valve
+- entity_id: eq_grease_trap
+  terms:
+  - grease trap
+- entity_id: eq_bidet
+  terms:
+  - bidet
+- entity_id: eq_bathtub
+  terms:
+  - bathtub
+- entity_id: eq_jacuzzi_tub
+  terms:
+  - jacuzzi tub
+- entity_id: eq_steam_generator
+  terms:
+  - steam generator
+  - steam generator down
+  - no steam in steam room
+  - steam room cold
+- entity_id: eq_massage_table
+  terms:
+  - massage table
+  - old massage table
+  - squeaky table
+  - uncomfortable massage bed
+- entity_id: eq_treadmill
+  terms:
+  - treadmill
+- entity_id: eq_exercise_bike
+  terms:
+  - exercise bike
+- entity_id: eq_dumbbell_rack
+  terms:
+  - dumbbell rack
+- entity_id: eq_cooling_tower
+  terms:
+  - cooling tower
+  - cooling tower noise
+  - tower drift
+  - cooling tower maintenance
+- entity_id: eq_ahu_filter_bank
+  terms:
+  - ahu filter bank
+- entity_id: eq_vav_box
+  terms:
+  - vav box
+- entity_id: eq_fcu_drain_pan
+  terms:
+  - fcu drain pan
+- entity_id: eq_chilled_water_pump
+  terms:
+  - chilled water pump
+- entity_id: eq_hot_water_pump
+  terms:
+  - hot water pump
+- entity_id: eq_expansion_tank
+  terms:
+  - expansion tank
+- entity_id: eq_plate_heat_exchanger
+  terms:
+  - plate heat exchanger
+- entity_id: eq_vrf_indoor
+  terms:
+  - vrf indoor unit
+  - cassette unit drip
+  - ceiling VRF
+  - indoor VRF fault
+- entity_id: eq_vrf_controller
+  terms:
+  - vrf controller
+- entity_id: eq_bms_controller
+  terms:
+  - bms controller
+- entity_id: eq_co2_sensor
+  terms:
+  - co2 sensor
+- entity_id: eq_humidity_sensor
+  terms:
+  - humidity sensor
+- entity_id: eq_pressure_sensor_hvac
+  terms:
+  - hvac pressure sensor
+- entity_id: eq_actuator_damper
+  terms:
+  - damper actuator
+- entity_id: eq_fresh_air_unit
+  terms:
+  - fresh air unit
+- entity_id: eq_kitchen_hood_fan
+  terms:
+  - kitchen hood fan
+- entity_id: eq_bathroom_exhaust
+  terms:
+  - bathroom exhaust fan
+- entity_id: eq_corridor_ahu
+  terms:
+  - corridor ahu
+- entity_id: eq_lobby_ahu
+  terms:
+  - lobby ahu
+- entity_id: eq_heat_recovery_unit
+  terms:
+  - heat recovery unit
+- entity_id: eq_electric_heater_coil
+  terms:
+  - electric heater coil
+- entity_id: eq_chiller_condenser
+  terms:
+  - chiller condenser
+- entity_id: eq_chiller_evaporator
+  terms:
+  - chiller evaporator
+- entity_id: eq_refrigerant_leak_sensor
+  terms:
+  - refrigerant leak sensor
+- entity_id: eq_glycol_pump
+  terms:
+  - glycol pump
+- entity_id: eq_makeup_air_unit
+  terms:
+  - makeup air unit
+- entity_id: eq_ceiling_cassette_ac
+  terms:
+  - ceiling cassette ac
+  - 4-way cassette
+  - cassette drip
+  - cassette unit noise
+- entity_id: eq_window_ac
+  terms:
+  - window ac
+  - window AC unit
+  - through-wall AC
+  - noisy window aircon
+- entity_id: eq_portable_ac
+  terms:
+  - portable ac
+  - portable AC provided
+  - mobile cooler
+  - temporary AC unit
+  - spot cooler
+- entity_id: eq_fan_speed_controller
+  terms:
+  - fan speed controller
+- entity_id: eq_zone_thermostat
+  terms:
+  - zone thermostat
+  - zone thermostat fault
+  - floor thermostat
+  - zoned climate control
+- entity_id: eq_outdoor_temp_sensor
+  terms:
+  - outdoor temp sensor
+- entity_id: eq_condensate_pump
+  terms:
+  - condensate pump
+  - condensate pump failure
+  - AC drain pump
+  - condensate lift pump
+- entity_id: eq_air_curtain
+  terms:
+  - air curtain
+- entity_id: eq_uv_air_sterilizer
+  terms:
+  - uv air sterilizer
+- entity_id: eq_hepa_filter_unit
+  terms:
+  - hepa filter unit
+- entity_id: eq_duct_silencer
+  terms:
+  - duct silencer
+- entity_id: eq_flexible_duct
+  terms:
+  - flexible duct
+- entity_id: eq_grilled_diffuser
+  terms:
+  - grilled diffuser
+- entity_id: eq_return_air_grille
+  terms:
+  - return air grille
+- entity_id: eq_boiler_burner
+  terms:
+  - boiler burner
+- entity_id: eq_boiler_flue
+  terms:
+  - boiler flue
+- entity_id: eq_steam_humidifier
+  terms:
+  - steam humidifier
+- entity_id: eq_desiccant_dehumidifier
+  terms:
+  - desiccant dehumidifier
+- entity_id: eq_thermal_wheel
+  terms:
+  - thermal wheel
+- entity_id: eq_bypass_damper
+  terms:
+  - bypass damper
+- entity_id: eq_fire_damper
+  terms:
+  - fire damper
+- entity_id: eq_smoke_damper
+  terms:
+  - smoke damper
+- entity_id: eq_chiller_control_panel
+  terms:
+  - chiller control panel
+- entity_id: eq_hvac_valve_actuator
+  terms:
+  - hvac valve actuator
+- entity_id: eq_room_temp_sensor
+  terms:
+  - room temp sensor
+- entity_id: eq_pipe_insulation_hvac
+  terms:
+  - hvac pipe insulation
+- entity_id: eq_vibration_isolator
+  terms:
+  - vibration isolator
+- entity_id: eq_hvac_access_door
+  terms:
+  - hvac access door
+- entity_id: eq_main_water_pump
+  terms:
+  - main water pump
+- entity_id: eq_booster_pump
+  terms:
+  - booster pump
+- entity_id: eq_hot_water_tank
+  terms:
+  - hot water tank
+- entity_id: eq_cold_water_tank
+  terms:
+  - cold water tank
+- entity_id: eq_pressure_reducing_valve
+  terms:
+  - pressure reducing valve
+- entity_id: eq_check_valve
+  terms:
+  - check valve
+- entity_id: eq_gate_valve
+  terms:
+  - gate valve
+- entity_id: eq_ball_valve
+  terms:
+  - ball valve
+- entity_id: eq_solenoid_valve
+  terms:
+  - solenoid valve
+- entity_id: eq_water_softener
+  terms:
+  - water softener
+- entity_id: eq_water_filter_main
+  terms:
+  - main water filter
+- entity_id: eq_uv_water_sterilizer
+  terms:
+  - uv water sterilizer
+- entity_id: eq_sewage_pump
+  terms:
+  - sewage pump
+- entity_id: eq_floor_drain
+  terms:
+  - floor drain
+- entity_id: eq_p_trap
+  terms:
+  - p-trap
+- entity_id: eq_mixing_valve
+  terms:
+  - mixing valve
+- entity_id: eq_thermostatic_mixer
+  terms:
+  - thermostatic mixer
+- entity_id: eq_shower_mixer
+  terms:
+  - shower mixer
+- entity_id: eq_rain_shower
+  terms:
+  - rain shower
+- entity_id: eq_handheld_shower
+  terms:
+  - handheld shower
+- entity_id: eq_toilet_flush_valve
+  terms:
+  - toilet flush valve
+- entity_id: eq_toilet_seat
+  terms:
+  - toilet seat
+- entity_id: eq_urinal
+  terms:
+  - urinal
+- entity_id: eq_sink_basin
+  terms:
+  - sink basin
+- entity_id: eq_kitchen_sink
+  terms:
+  - kitchen sink
+- entity_id: eq_dishwasher_drain
+  terms:
+  - dishwasher drain
+- entity_id: eq_grease_interceptor
+  terms:
+  - grease interceptor
+- entity_id: eq_water_hammer_arrestor
+  terms:
+  - water hammer arrestor
+- entity_id: eq_pipe_hanger
+  terms:
+  - pipe hanger
+- entity_id: eq_expansion_joint_pipe
+  terms:
+  - pipe expansion joint
+- entity_id: eq_manhole_cover
+  terms:
+  - manhole cover
+- entity_id: eq_storm_drain
+  terms:
+  - storm drain
+- entity_id: eq_irrigation_valve
+  terms:
+  - irrigation valve
+- entity_id: eq_irrigation_pump
+  terms:
+  - irrigation pump
+- entity_id: eq_pool_fill_valve
+  terms:
+  - pool fill valve
+- entity_id: eq_spa_jet_pump
+  terms:
+  - spa jet pump
+- entity_id: eq_water_leak_sensor
+  terms:
+  - water leak sensor
+- entity_id: eq_instant_water_heater
+  terms:
+  - instant water heater
+- entity_id: eq_calorifier
+  terms:
+  - calorifier
+- entity_id: eq_circulation_pump_hw
+  terms:
+  - hw circulation pump
+- entity_id: eq_rpz_valve
+  terms:
+  - rpz backflow preventer
+- entity_id: eq_metering_faucet
+  terms:
+  - metering faucet
+- entity_id: eq_sensor_faucet
+  terms:
+  - sensor faucet
+- entity_id: eq_bidet_spray
+  terms:
+  - bidet spray
+- entity_id: eq_bathtub_overflow
+  terms:
+  - bathtub overflow
+- entity_id: eq_shower_drain
+  terms:
+  - shower drain
+- entity_id: eq_pipe_insulation_plumb
+  terms:
+  - plumbing pipe insulation
+- entity_id: eq_water_pressure_gauge
+  terms:
+  - water pressure gauge
+- entity_id: eq_chemical_dosing_pump
+  terms:
+  - chemical dosing pump
+- entity_id: eq_ro_water_system
+  terms:
+  - ro water system
+- entity_id: eq_main_distribution_board
+  terms:
+  - main distribution board
+- entity_id: eq_floor_db_panel
+  terms:
+  - floor db panel
+- entity_id: eq_room_db_panel
+  terms:
+  - room db panel
+- entity_id: eq_rcd_breaker
+  terms:
+  - rcd breaker
+- entity_id: eq_mcb_breaker
+  terms:
+  - mcb breaker
+- entity_id: eq_ats_switch
+  terms:
+  - ats switch
+- entity_id: eq_surge_protector
+  terms:
+  - surge protector
+- entity_id: eq_busbar
+  terms:
+  - busbar
+- entity_id: eq_cable_tray
+  terms:
+  - cable tray
+- entity_id: eq_conduit
+  terms:
+  - electrical conduit
+- entity_id: eq_emergency_exit_sign
+  terms:
+  - emergency exit sign
+- entity_id: eq_battery_pack_emergency
+  terms:
+  - emergency light battery
+- entity_id: eq_led_downlight
+  terms:
+  - led downlight
+- entity_id: eq_led_strip
+  terms:
+  - led strip
+- entity_id: eq_wall_sconce
+  terms:
+  - wall sconce
+- entity_id: eq_floor_lamp
+  terms:
+  - floor lamp
+- entity_id: eq_bedside_lamp
+  terms:
+  - bedside lamp
+- entity_id: eq_bathroom_mirror_light
+  terms:
+  - bathroom mirror light
+- entity_id: eq_corridor_light
+  terms:
+  - corridor light
+- entity_id: eq_lobby_chandelier
+  terms:
+  - lobby chandelier
+- entity_id: eq_exterior_floodlight
+  terms:
+  - exterior floodlight
+- entity_id: eq_landscape_light
+  terms:
+  - landscape light
+- entity_id: eq_pool_underwater_light
+  terms:
+  - pool underwater light
+- entity_id: eq_usb_socket
+  terms:
+  - usb socket
+- entity_id: eq_shaver_socket
+  terms:
+  - shaver socket
+- entity_id: eq_floor_socket
+  terms:
+  - floor socket
+- entity_id: eq_occupancy_sensor
+  terms:
+  - occupancy sensor
+- entity_id: eq_door_contact_sensor
+  terms:
+  - door contact sensor
+- entity_id: eq_energy_meter
+  terms:
+  - energy meter
+- entity_id: eq_power_factor_capacitor
+  terms:
+  - power factor capacitor
+- entity_id: eq_transformer_dry
+  terms:
+  - dry-type transformer
+- entity_id: eq_generator_ats_panel
+  terms:
+  - generator ats panel
+- entity_id: eq_ups_battery_bank
+  terms:
+  - ups battery bank
+- entity_id: eq_inverter
+  terms:
+  - inverter
+- entity_id: eq_solar_inverter
+  terms:
+  - solar inverter
+- entity_id: eq_ev_charger
+  terms:
+  - ev charger
+- entity_id: eq_lightning_rod
+  terms:
+  - lightning rod
+- entity_id: eq_grounding_electrode
+  terms:
+  - grounding electrode
+- entity_id: eq_timer_switch
+  terms:
+  - timer switch
+- entity_id: eq_smart_room_controller
+  terms:
+  - smart room controller
+- entity_id: eq_elevator_cabin
+  terms:
+  - elevator cabin
+- entity_id: eq_elevator_door
+  terms:
+  - elevator door
+- entity_id: eq_elevator_motor
+  terms:
+  - elevator motor
+- entity_id: eq_elevator_controller
+  terms:
+  - elevator controller
+- entity_id: eq_elevator_rope
+  terms:
+  - elevator rope
+- entity_id: eq_elevator_brake
+  terms:
+  - elevator brake
+- entity_id: eq_elevator_call_button
+  terms:
+  - elevator call button
+- entity_id: eq_elevator_display
+  terms:
+  - elevator display
+- entity_id: eq_elevator_intercom
+  terms:
+  - elevator intercom
+- entity_id: eq_service_elevator
+  terms:
+  - service elevator
+- entity_id: eq_freight_elevator
+  terms:
+  - freight elevator
+- entity_id: eq_escalator
+  terms:
+  - escalator
+- entity_id: eq_moving_walkway
+  terms:
+  - moving walkway
+- entity_id: eq_wheelchair_lift
+  terms:
+  - wheelchair lift
+- entity_id: eq_elevator_buffer
+  terms:
+  - elevator buffer
+- entity_id: eq_fire_alarm_panel
+  terms:
+  - fire alarm panel
+- entity_id: eq_smoke_detector_addressable
+  terms:
+  - addressable smoke detector
+- entity_id: eq_heat_detector
+  terms:
+  - heat detector
+- entity_id: eq_manual_call_point
+  terms:
+  - manual call point
+- entity_id: eq_fire_sprinkler
+  terms:
+  - fire sprinkler
+- entity_id: eq_sprinkler_valve
+  terms:
+  - sprinkler valve
+- entity_id: eq_fire_hose_reel
+  terms:
+  - fire hose reel
+- entity_id: eq_fire_hydrant
+  terms:
+  - fire hydrant
+- entity_id: eq_fire_pump
+  terms:
+  - fire pump
+- entity_id: eq_fire_extinguisher_co2
+  terms:
+  - co2 fire extinguisher
+- entity_id: eq_fire_extinguisher_foam
+  terms:
+  - foam fire extinguisher
+- entity_id: eq_fire_blanket
+  terms:
+  - fire blanket
+- entity_id: eq_emergency_speaker
+  terms:
+  - emergency speaker
+- entity_id: eq_fire_door
+  terms:
+  - fire door
+- entity_id: eq_fire_door_closer
+  terms:
+  - fire door closer
+- entity_id: eq_gas_suppression_system
+  terms:
+  - gas suppression system
+- entity_id: eq_kitchen_ansul_system
+  terms:
+  - kitchen ansul system
+- entity_id: eq_beam_smoke_detector
+  terms:
+  - beam smoke detector
+- entity_id: eq_aspirating_smoke_detector
+  terms:
+  - aspirating smoke detector
+- entity_id: eq_fire_control_room_panel
+  terms:
+  - fire control room panel
+- entity_id: eq_diesel_generator
+  terms:
+  - diesel generator
+- entity_id: eq_generator_fuel_tank
+  terms:
+  - generator fuel tank
+- entity_id: eq_generator_radiator
+  terms:
+  - generator radiator
+- entity_id: eq_generator_battery
+  terms:
+  - generator battery
+- entity_id: eq_generator_control_panel
+  terms:
+  - generator control panel
+- entity_id: eq_generator_silencer
+  terms:
+  - generator silencer
+- entity_id: eq_fuel_transfer_pump
+  terms:
+  - fuel transfer pump
+- entity_id: eq_day_tank
+  terms:
+  - day tank
+- entity_id: eq_mechanical_workshop_lathe
+  terms:
+  - workshop lathe
+- entity_id: eq_welding_machine
+  terms:
+  - welding machine
+- entity_id: eq_air_compressor_workshop
+  terms:
+  - workshop air compressor
+- entity_id: eq_scaffold_tower
+  terms:
+  - scaffold tower
+- entity_id: eq_ladder_extension
+  terms:
+  - extension ladder
+- entity_id: eq_tool_cart
+  terms:
+  - tool cart
+- entity_id: eq_multimeter
+  terms:
+  - multimeter
+- entity_id: eq_duvet
+  terms:
+  - duvet
+- entity_id: eq_bed_sheet
+  terms:
+  - bed sheet
+- entity_id: eq_pillowcase
+  terms:
+  - pillowcase
+- entity_id: eq_mattress_protector
+  terms:
+  - mattress protector
+- entity_id: eq_extra_pillow
+  terms:
+  - extra pillow
+- entity_id: eq_orthopedic_pillow
+  terms:
+  - orthopedic pillow
+- entity_id: eq_crib_mattress
+  terms:
+  - crib mattress
+- entity_id: eq_wardrobe
+  terms:
+  - wardrobe
+- entity_id: eq_desk_chair
+  terms:
+  - desk chair
+- entity_id: eq_armchair
+  terms:
+  - armchair
+- entity_id: eq_sofa_bed
+  terms:
+  - sofa bed
+- entity_id: eq_coffee_table
+  terms:
+  - coffee table
+- entity_id: eq_nightstand
+  terms:
+  - nightstand
+- entity_id: eq_luggage_rack
+  terms:
+  - luggage rack
+- entity_id: eq_full_length_mirror
+  terms:
+  - full-length mirror
+- entity_id: eq_bathroom_mirror
+  terms:
+  - bathroom mirror
+- entity_id: eq_towel_rack
+  terms:
+  - towel rack
+- entity_id: eq_bath_towel
+  terms:
+  - bath towel
+- entity_id: eq_hand_towel
+  terms:
+  - hand towel
+- entity_id: eq_washcloth
+  terms:
+  - washcloth
+- entity_id: eq_bath_mat
+  terms:
+  - bath mat
+- entity_id: eq_bathrobe
+  terms:
+  - bathrobe
+- entity_id: eq_slippers
+  terms:
+  - slippers
+- entity_id: eq_toiletries_dispenser
+  terms:
+  - toiletries dispenser
+- entity_id: eq_tissue_box
+  terms:
+  - tissue box
+- entity_id: eq_waste_bin
+  terms:
+  - waste bin
+- entity_id: eq_recycling_bin
+  terms:
+  - recycling bin
+- entity_id: eq_ironing_board
+  terms:
+  - ironing board
+- entity_id: eq_clothes_hanger
+  terms:
+  - clothes hanger
+- entity_id: eq_laundry_bag
+  terms:
+  - laundry bag
+- entity_id: eq_housekeeping_cart
+  terms:
+  - housekeeping cart
+- entity_id: eq_vacuum_robot
+  terms:
+  - robot vacuum
+- entity_id: eq_carpet_cleaner
+  terms:
+  - carpet cleaner
+- entity_id: eq_steam_cleaner
+  terms:
+  - steam cleaner
+- entity_id: eq_floor_polisher
+  terms:
+  - floor polisher
+- entity_id: eq_trolley_linen
+  terms:
+  - linen trolley
+- entity_id: eq_dryer_machine
+  terms:
+  - dryer machine
+- entity_id: eq_ironing_press
+  terms:
+  - ironing press
+- entity_id: eq_sewing_machine_hk
+  terms:
+  - sewing machine
+- entity_id: eq_scale_luggage
+  terms:
+  - luggage scale
+- entity_id: eq_do_not_disturb_sign
+  terms:
+  - do not disturb sign
+- entity_id: eq_make_up_room_sign
+  terms:
+  - make up room sign
+- entity_id: eq_welcome_amenities_tray
+  terms:
+  - welcome amenities tray
+- entity_id: eq_minibar_restock_tray
+  terms:
+  - minibar restock tray
+- entity_id: eq_air_freshener_dispenser
+  terms:
+  - air freshener dispenser
+- entity_id: eq_combi_oven
+  terms:
+  - combi oven
+- entity_id: eq_convection_oven
+  terms:
+  - convection oven
+- entity_id: eq_induction_cooktop
+  terms:
+  - induction cooktop
+- entity_id: eq_gas_range
+  terms:
+  - gas range
+- entity_id: eq_deep_fryer
+  terms:
+  - deep fryer
+- entity_id: eq_griddle
+  terms:
+  - griddle
+- entity_id: eq_charcoal_grill
+  terms:
+  - charcoal grill
+- entity_id: eq_salamander
+  terms:
+  - salamander grill
+- entity_id: eq_microwave_oven
+  terms:
+  - microwave oven
+- entity_id: eq_blast_chiller
+  terms:
+  - blast chiller
+- entity_id: eq_walk_in_cooler
+  terms:
+  - walk-in cooler
+- entity_id: eq_walk_in_freezer
+  terms:
+  - walk-in freezer
+- entity_id: eq_reach_in_fridge
+  terms:
+  - reach-in fridge
+- entity_id: eq_prep_table
+  terms:
+  - prep table
+- entity_id: eq_cutting_board_station
+  terms:
+  - cutting board station
+- entity_id: eq_food_processor
+  terms:
+  - food processor
+- entity_id: eq_stand_mixer
+  terms:
+  - stand mixer
+- entity_id: eq_slicer
+  terms:
+  - meat slicer
+- entity_id: eq_vacuum_sealer
+  terms:
+  - vacuum sealer
+- entity_id: eq_sous_vide_circulator
+  terms:
+  - sous-vide circulator
+- entity_id: eq_coffee_espresso_machine
+  terms:
+  - espresso machine
+- entity_id: eq_coffee_grinder
+  terms:
+  - coffee grinder
+- entity_id: eq_juice_extractor
+  terms:
+  - juice extractor
+- entity_id: eq_toaster_conveyor
+  terms:
+  - conveyor toaster
+- entity_id: eq_waffle_maker
+  terms:
+  - waffle maker
+- entity_id: eq_pancake_griddle
+  terms:
+  - pancake griddle
+- entity_id: eq_soup_kettle
+  terms:
+  - soup kettle
+- entity_id: eq_bain_marie
+  terms:
+  - bain-marie
+- entity_id: eq_hot_holding_cabinet
+  terms:
+  - hot holding cabinet
+- entity_id: eq_plate_warmer
+  terms:
+  - plate warmer
+- entity_id: eq_ice_cream_machine
+  terms:
+  - ice cream machine
+- entity_id: eq_pastry_oven
+  terms:
+  - pastry oven
+- entity_id: eq_proofing_cabinet
+  terms:
+  - proofing cabinet
+- entity_id: eq_dough_sheeter
+  terms:
+  - dough sheeter
+- entity_id: eq_bar_blender
+  terms:
+  - bar blender
+- entity_id: eq_bar_ice_bin
+  terms:
+  - bar ice bin
+- entity_id: eq_draft_beer_system
+  terms:
+  - draft beer system
+- entity_id: eq_wine_cooler
+  terms:
+  - wine cooler
+- entity_id: eq_soda_gun
+  terms:
+  - soda gun
+- entity_id: eq_glasswasher
+  terms:
+  - glasswasher
+- entity_id: eq_pot_washer
+  terms:
+  - pot washer
+- entity_id: eq_kitchen_exhaust_hood
+  terms:
+  - kitchen exhaust hood
+- entity_id: eq_grease_filter_hood
+  terms:
+  - hood grease filter
+- entity_id: eq_food_temp_probe
+  terms:
+  - food temp probe
+- entity_id: eq_portion_scale
+  terms:
+  - portion scale
+- entity_id: eq_pool_sand_filter
+  terms:
+  - pool sand filter
+- entity_id: eq_pool_chlorinator
+  terms:
+  - pool chlorinator
+- entity_id: eq_pool_ph_controller
+  terms:
+  - pool ph controller
+- entity_id: eq_pool_heater
+  terms:
+  - pool heater
+- entity_id: eq_pool_heat_pump
+  terms:
+  - pool heat pump
+- entity_id: eq_pool_vacuum
+  terms:
+  - pool vacuum
+- entity_id: eq_pool_skimmer
+  terms:
+  - pool skimmer
+- entity_id: eq_pool_ladder
+  terms:
+  - pool ladder
+- entity_id: eq_pool_handrail
+  terms:
+  - pool handrail
+- entity_id: eq_lifeguard_chair
+  terms:
+  - lifeguard chair
+- entity_id: eq_pool_cover
+  terms:
+  - pool cover
+- entity_id: eq_jacuzzi_filter
+  terms:
+  - jacuzzi filter
+- entity_id: eq_sauna_thermometer
+  terms:
+  - sauna thermometer
+- entity_id: eq_sauna_bucket
+  terms:
+  - sauna bucket
+- entity_id: eq_steam_room_bench
+  terms:
+  - steam room bench
+- entity_id: eq_spa_shower
+  terms:
+  - spa shower
+- entity_id: eq_treatment_bed_spa
+  terms:
+  - treatment bed
+- entity_id: eq_hot_stone_warmer
+  terms:
+  - hot stone warmer
+- entity_id: eq_aromatherapy_diffuser
+  terms:
+  - aromatherapy diffuser
+- entity_id: eq_towel_warmer_spa
+  terms:
+  - spa towel warmer
+- entity_id: eq_kids_pool_slide
+  terms:
+  - kids pool slide
+- entity_id: eq_infinity_edge_pump
+  terms:
+  - infinity edge pump
+- entity_id: eq_beach_umbrella_stand
+  terms:
+  - beach umbrella stand
+- entity_id: eq_beach_lounger
+  terms:
+  - beach lounger
+- entity_id: eq_beach_shower
+  terms:
+  - beach shower
+- entity_id: eq_smart_tv
+  terms:
+  - smart tv
+- entity_id: eq_set_top_box
+  terms:
+  - set-top box
+- entity_id: eq_soundbar
+  terms:
+  - soundbar
+- entity_id: eq_bluetooth_speaker
+  terms:
+  - bluetooth speaker
+- entity_id: eq_conference_mic
+  terms:
+  - conference mic
+- entity_id: eq_conference_speaker
+  terms:
+  - conference speaker
+- entity_id: eq_video_conference_cam
+  terms:
+  - video conference camera
+- entity_id: eq_digital_signage
+  terms:
+  - digital signage
+- entity_id: eq_wifi_controller
+  terms:
+  - wifi controller
+- entity_id: eq_poe_switch
+  terms:
+  - poe switch
+- entity_id: eq_guest_portal_server
+  terms:
+  - guest portal server
+- entity_id: eq_nvr_recorder
+  terms:
+  - nvr recorder
+- entity_id: eq_ptz_camera
+  terms:
+  - ptz camera
+- entity_id: eq_access_control_panel
+  terms:
+  - access control panel
+- entity_id: eq_biometric_reader
+  terms:
+  - biometric reader
+- entity_id: eq_metal_detector_gate
+  terms:
+  - metal detector gate
+- entity_id: eq_xray_baggage
+  terms:
+  - baggage x-ray
+- entity_id: eq_panic_button
+  terms:
+  - panic button
+- entity_id: eq_guest_tablet
+  terms:
+  - guest tablet
+- entity_id: eq_chromecast_device
+  terms:
+  - chromecast
+- aspect_key: hvac_not_cooling
+  terms:
+  - not cooling
+  - blows warm air
+  - won't cool down
+  - AC warm
+  - no cold air
+  - fails to cool
+  - AC not cooling enough
+  - blows lukewarm
+  - no cold output
+  - cooling failed
+  - won't chill room
+- aspect_key: hvac_not_heating
+  terms:
+  - not heating
+  - no heat
+  - won't warm
+  - cold room AC
+  - heater broken
+  - heating failed
+  - no warm air
+  - winter room cold
+  - heat mode useless
+- aspect_key: hvac_too_cold
+  terms:
+  - freezing room
+  - AC too cold
+  - overcooled
+  - ice cold room
+  - arctic AC
+  - room freezing cold
+  - overcooled space
+  - AC arctic blast
+  - too chilly indoors
+- aspect_key: hvac_too_hot
+  terms:
+  - sweltering room
+  - stifling heat
+  - AC inadequate
+  - room overheating
+  - too hot indoors
+  - room like an oven
+  - stifling indoors
+  - AC can't keep up
+  - oppressively hot
+- aspect_key: hvac_filter_dirty
+  terms:
+  - dirty filter
+  - clogged filter
+  - filter never changed
+  - dusty HVAC filter
+  - never changed filter
+  - blowing dust
+  - filthy AC filter
+  - no filter PM
+- aspect_key: hvac_musty_smell
+  terms:
+  - musty AC
+  - moldy air from AC
+  - stale HVAC smell
+  - mildew from vents
+  - musty vent smell
+  - moldy AC odor
+  - stale air blow
+  - rank HVAC smell
+- aspect_key: hvac_water_leak
+  terms:
+  - AC leaking water
+  - condensate leak
+  - dripping AC
+  - indoor unit leak
+  - AC dripping on bed
+  - indoor unit leaking
+  - condensate overflow
+  - water dripping from AC
+- aspect_key: hvac_remote_missing
+  terms:
+  - missing remote
+  - no AC remote
+  - remote lost
+  - thermostat remote missing
+  - no remote in room
+  - AC remote missing
+  - can't find thermostat remote
+- aspect_key: hvac_vibration
+  terms:
+  - AC vibration
+  - vibrating unit
+  - shaking AC
+  - rattling vibration
+  - unit shaking
+  - wall vibration from AC
+  - vibrating indoor unit
+- aspect_key: hvac_night_noise
+  terms:
+  - night AC noise
+  - sleep disturbed by AC
+  - nighttime HVAC hum
+  - nighttime AC drone
+  - sleep ruined by HVAC
+  - night cooling noise
+- aspect_key: bathroom_mold
+  terms:
+  - moldy bathroom
+  - black mold
+  - bathroom mildew
+  - moldy grout
+  - mold in bathroom
+  - shower mold
+  - moldy tiles
+  - black mold spots
+- aspect_key: bathroom_grout
+  terms:
+  - dirty grout
+  - grout grime
+  - stained tile joints
+- aspect_key: shower_glass_clean
+  terms:
+  - limescale shower glass
+  - spotty shower door
+  - dirty shower screen
+- aspect_key: bathtub_cleanliness
+  terms:
+  - dirty bathtub
+  - stained tub
+  - tub soap scum
+- aspect_key: sheet_stain
+  terms:
+  - stained sheets
+  - dirty linen
+  - soiled bedding
+  - marked sheets
+  - stained bedsheet
+  - marked duvet cover
+  - yellow sheet stain
+  - soiled linen
+- aspect_key: bathroom_towel_stain
+  terms:
+  - stained towels
+  - dingy towels
+  - yellowed towels
+  - dirty towels
+  - stained bath towel
+  - dingy towel
+  - yellow towel marks
+  - soiled towels
+- aspect_key: room_trash_overflow
+  terms:
+  - overflowing bin
+  - trash not emptied
+  - full wastebasket
+  - bin overflowing
+  - trash not collected
+  - full room bin
+  - wastebasket ignored
+- aspect_key: room_pest_control
+  terms:
+  - bugs in room
+  - cockroach
+  - ants infestation
+  - pest problem
+  - bugs in the room
+  - ant infestation
+  - saw a cockroach
+  - pest issue
+  - mosquitoes indoors
+- aspect_key: lobby_cleanliness
+  terms:
+  - dirty lobby
+  - dusty lobby
+  - unclean entrance
+  - dirty entrance area
+  - lobby hygiene poor
+- aspect_key: pool_cleanliness
+  terms:
+  - dirty pool
+  - unclean pool
+  - cloudy pool
+  - debris in pool
+  - cloudy pool water
+  - leaves in pool
+  - poor pool hygiene
+- aspect_key: plate_cleanliness
+  terms:
+  - dirty plates
+  - food residue on plate
+  - greasy plate
+  - unclean dishware
+- aspect_key: cutlery_cleanliness
+  terms:
+  - dirty cutlery
+  - greasy fork
+  - stained knife
+  - unclean utensils
+- aspect_key: glass_cleanliness
+  terms:
+  - dirty glass
+  - lipstick on glass
+  - smudged glassware
+  - unclean cup
+- aspect_key: table_cleanliness
+  terms:
+  - dirty table
+  - uncleared table
+  - stained tablecloth
+- aspect_key: bed_making_quality
+  terms:
+  - unmade bed
+  - messy bed
+  - poorly made bed
+  - wrinkled sheets left
+  - messy bed presentation
+- aspect_key: room_odor_smoke
+  terms:
+  - smells of smoke
+  - cigarette smell
+  - smoky room
+  - cigarette odor
+  - smoky smell room
+  - tobacco smell
+  - ashtray smell
+- aspect_key: room_mold_smell
+  terms:
+  - smells moldy
+  - damp smell
+  - musty room odor
+  - musty room
+  - damp mildew smell
+  - mold odor strong
+- aspect_key: bathroom_smell
+  terms:
+  - bathroom stinks
+  - foul bathroom smell
+  - sewer smell bath
+- aspect_key: bathroom_hair
+  terms:
+  - hair left behind
+  - hair in shower
+  - hair in sink
+  - previous guest hair
+  - hair in shower drain
+  - hair on sink
+  - hair not cleaned
+- aspect_key: spa_cleanliness
+  terms:
+  - dirty spa
+  - unhygienic spa
+  - messy treatment room
+  - dirty spa area
+  - unclean treatment room
+  - messy spa changing
+- aspect_key: food_taste
+  terms:
+  - tasteless
+  - bland food
+  - flavorless
+  - overly salty
+  - underseasoned
+  - off taste
+  - bland buffet
+  - tasteless dishes
+  - dull flavor
+  - poor seasoning
+- aspect_key: food_freshness
+  terms:
+  - stale food
+  - not fresh
+  - old leftovers
+  - spoiled taste
+  - not fresh food
+  - stale salad
+  - tired ingredients
+- aspect_key: food_variety
+  terms:
+  - limited variety
+  - poor selection
+  - same dishes daily
+  - buffet lacks options
+  - menu monotonous
+  - lack of variety
+  - repetitive menu
+  - same food daily
+  - few choices
+  - monotonous buffet
+  - limited dishes
+- aspect_key: breakfast_quality
+  terms:
+  - weak breakfast
+  - poor breakfast
+  - bad breakfast
+  - disappointing breakfast
+  - breakfast inadequate
+  - weak morning meal
+  - poor breakfast quality
+- aspect_key: breakfast_queue
+  terms:
+  - breakfast queue
+  - long breakfast line
+  - morning wait
+  - breakfast backlog
+- aspect_key: buffet_hygiene
+  terms:
+  - buffet hygiene
+  - flies at buffet
+  - unclean buffet
+  - buffet sanitation
+  - flies on buffet
+  - open buffet hygiene
+  - dirty serving spoons
+  - no sneeze guard
+- aspect_key: buffet_refill
+  terms:
+  - empty buffet
+  - slow refill
+  - trays empty
+  - no replenishment
+  - buffet not refilled
+  - trays stay empty
+  - slow replenishment
+  - buffet ran out
+- aspect_key: dinner_quality
+  terms:
+  - poor dinner
+  - bad evening meal
+  - disappointing dinner
+  - poor dinner quality
+  - weak evening meal
+  - bad dinner menu
+- aspect_key: meat_quality
+  terms:
+  - poor meat
+  - tough meat
+  - low grade mince
+  - bad meat quality
+  - meat tastes off
+  - flavorless meat
+  - bad meat dishes
+- aspect_key: seafood_quality
+  terms:
+  - stale fish
+  - poor seafood
+  - fishy smell food
+  - poor seafood quality
+  - fish freshness doubtful
+- aspect_key: grill_quality
+  terms:
+  - poor grill
+  - burnt grill items
+  - weak BBQ
+  - burnt grill
+  - dry grilled meat
+- aspect_key: dessert_quality
+  terms:
+  - poor dessert
+  - stale pastry
+  - bad sweets
+  - poor desserts
+  - stale cakes
+  - few sweets
+  - weak dessert selection
+- aspect_key: coffee_quality
+  terms:
+  - bad coffee
+  - weak coffee
+  - watery coffee
+  - awful coffee
+  - bad espresso
+  - weak filter coffee
+  - poor coffee machine
+- aspect_key: a_la_carte_wait
+  terms:
+  - long alacarte wait
+  - order took forever
+  - hour for food
+  - slow a la carte
+  - long a la carte wait
+  - order delayed
+  - slow specialty service
+- aspect_key: a_la_carte_quality
+  terms:
+  - poor a la carte
+  - disappointing specialty restaurant
+  - alacarte weak
+  - weak a la carte
+  - specialty restaurant disappointing
+  - poor alacarte
+- aspect_key: food_portion_size
+  terms:
+  - tiny portion
+  - small serving
+  - not enough food
+  - meagre portion
+  - tiny portions
+  - small servings
+  - meagre plates
+- aspect_key: fly_insect_food
+  terms:
+  - fly on food
+  - insect on plate
+  - bug in dish
+  - dead fly food
+  - fly in food
+  - bug on plate
+  - insect in dish
+- aspect_key: bar_queue
+  terms:
+  - bar queue
+  - drink line
+  - long wait at bar
+  - long bar queue
+  - crowded bar
+- aspect_key: alcohol_quality
+  terms:
+  - cheap alcohol
+  - poor spirits
+  - bad liquor
+  - low grade drinks
+  - cheap alcohol brands
+  - low-grade liquor
+- aspect_key: cocktail_knowledge
+  terms:
+  - can't make cocktails
+  - no cocktail knowledge
+  - bartender clueless
+- aspect_key: kids_menu
+  terms:
+  - no kids menu
+  - poor kids meal
+  - inadequate children's food
+- aspect_key: vegetarian_options
+  terms:
+  - no vegetarian options
+  - few meat-free dishes
+  - weak veggie menu
+- aspect_key: allergen_info
+  terms:
+  - no allergen info
+  - missing allergy labels
+  - unclear ingredients
+  - missing allergen info
+  - no ingredient list
+  - allergy warnings absent
+- aspect_key: room_service_speed
+  terms:
+  - slow room service
+  - late room order
+  - room service delay
+  - room service late
+  - slow in-room dining
+  - delayed room order
+- aspect_key: pancake_queue
+  terms:
+  - pancake queue
+  - long waffle line
+  - 20 min for pancakes
+  - long pancake line
+  - waffle queue
+  - crepe station wait
+- aspect_key: honey_kaymak
+  terms:
+  - honey cream empty
+  - no kaymak
+  - out of honey
+  - honey and kaymak
+  - honey cream
+  - clotted cream honey
+  - out of kaymak
+  - honey finished
+  - Turkish breakfast honey cream
+  - no kaymak left
+  - honey with cream
+  - buffet kaymak
+  - cream and honey station
+  - kaymak empty
+  - no honey kaymak at breakfast
+  - empty kaymak bowl
+  - honey jar empty
+- aspect_key: staff_friendliness
+  terms:
+  - not friendly
+  - cold staff
+  - no warmth
+  - unwelcoming staff
+  - lacking friendliness
+  - insincere welcome
+  - not warm
+  - cold greeting
+- aspect_key: staff_helpfulness
+  terms:
+  - unhelpful staff
+  - won't help
+  - indifferent staff
+  - couldn't care less
+  - won't assist
+  - indifferent attitude
+  - help refused
+  - couldn't-care-less staff
+- aspect_key: staff_shortage
+  terms:
+  - understaffed
+  - not enough staff
+  - short staffed
+  - can't keep up
+  - skeleton crew
+  - staff shortage
+  - too few employees
+  - understaffed service
+  - can't keep up staffing
+- aspect_key: staff_checkin_speed
+  terms:
+  - slow check-in
+  - long check-in
+  - front desk queue
+  - check-in wait
+  - very slow check-in
+  - long arrival wait
+  - reception queue long
+  - 30 min check-in
+- aspect_key: staff_checkout_speed
+  terms:
+  - slow check-out
+  - checkout queue
+  - long departure wait
+  - slow checkout staff
+  - waited to leave
+  - settlement delayed
+- aspect_key: staff_front_desk_attitude
+  terms:
+  - rude reception
+  - front desk unfriendly
+  - cold check-in staff
+  - poor welcome
+  - rude front desk
+  - cold FO staff
+  - unfriendly check-in team
+  - dismissive reception
+- aspect_key: staff_complaint_handling
+  terms:
+  - ignored complaint
+  - complaint unresolved
+  - dismissed complaint
+  - complaint ignored
+  - didn't listen to complaint
+  - no complaint response
+  - unresolved issue
+- aspect_key: staff_language
+  terms:
+  - language barrier
+  - no English
+  - can't communicate
+  - poor language skills
+  - language barrier staff
+  - weak foreign language
+  - no translation help
+- aspect_key: staff_training
+  terms:
+  - untrained staff
+  - inexperienced
+  - doesn't know job
+  - newbie staff
+  - untrained team
+  - don't know the job
+  - rookie staff
+  - inexperienced crew
+- aspect_key: staff_restaurant_service
+  terms:
+  - rude waiter
+  - inattentive server
+  - poor table service
+  - bad F&B staff
+  - inattentive waiter
+  - poor restaurant service
+  - weak table service
+  - rude server
+- aspect_key: staff_bar_service
+  terms:
+  - rude bartender
+  - slow bar staff
+  - poor drink service
+  - slow bartender
+  - poor bar service
+  - waited for drinks
+- aspect_key: staff_housekeeping_attitude
+  terms:
+  - rude housekeeper
+  - disrespectful HK
+  - poor housekeeping attitude
+  - unfriendly HK staff
+  - disrespectful cleaner
+- aspect_key: staff_animation_quality
+  terms:
+  - weak animation
+  - poor entertainers
+  - bad activity staff
+  - weak animation team
+  - unenthusiastic entertainers
+  - poor activity quality
+- aspect_key: staff_duty_manager
+  terms:
+  - no manager
+  - duty manager missing
+  - manager invisible
+  - no duty manager
+  - manager unreachable
+  - DM not available
+- aspect_key: staff_proactivity
+  terms:
+  - not proactive
+  - won't anticipate needs
+  - must ask for everything
+  - no anticipation
+- aspect_key: staff_follow_up
+  terms:
+  - no follow-up
+  - never called back
+  - no callback
+  - no follow-up call
+  - didn't follow up
+  - never got back
+- aspect_key: ops_checkin_process
+  terms:
+  - messy check-in process
+  - complicated arrival
+  - lengthy registration
+  - check-in procedure
+  - arrival process
+  - registration desk wait
+  - ID check delay
+  - passport processing slow
+  - key card delay
+  - checkin formalities
+  - messy arrival process
+  - long registration
+  - front office check-in
+  - arrival formalities
+  - check in desk process
+  - FO checkin flow
+  - arrival desk processing
+  - lengthy FO registration
+  - check-in backlog
+- aspect_key: ops_billing_accuracy
+  terms:
+  - billing error
+  - wrong charge
+  - incorrect invoice
+  - phantom charges
+  - incorrect bill
+  - double charged
+  - wrong line item
+  - billing mistake
+  - invoice error FO
+- aspect_key: ops_extra_charges
+  terms:
+  - hidden fees
+  - surprise charges
+  - not included extras
+  - surprise extras
+  - thought it was included
+  - hidden charge FO
+  - extra fee forced
+- aspect_key: ops_capacity_management
+  terms:
+  - over capacity
+  - too many guests
+  - overcrowded resort
+- aspect_key: hvac_draft
+  terms:
+  - drafty AC
+  - cold draft from vent
+  - blows directly on bed
+  - annoying airflow
+- aspect_key: hvac_uneven_temp
+  terms:
+  - uneven temperature
+  - hot and cold spots
+  - inconsistent climate
+  - uneven room temp
+  - temperature imbalance
+- aspect_key: hvac_dust_blow
+  terms:
+  - blows dust
+  - dusty air from AC
+  - vents dusty
+- aspect_key: hvac_ice_formation
+  terms:
+  - AC iced up
+  - frozen coil
+  - ice on unit
+- aspect_key: hvac_response_time
+  terms:
+  - slow HVAC response
+  - tech arrived late
+  - AC fix delayed
+- aspect_key: hvac_fresh_air
+  terms:
+  - stale air
+  - no fresh air
+  - stuffy climate
+- aspect_key: hvac_lobby_climate
+  terms:
+  - lobby too hot
+  - lobby too cold
+  - entrance climate bad
+  - poor lobby climate
+  - stifling entrance
+- aspect_key: room_carpet_stain
+  terms:
+  - stained carpet
+  - dirty rug
+  - carpet marks
+  - dirty carpet
+- aspect_key: room_ceiling_stain
+  terms:
+  - ceiling stain
+  - water stain ceiling
+  - damp ceiling mark
+  - water mark on ceiling
+  - stained ceiling
+- aspect_key: room_balcony_cleanliness
+  terms:
+  - dirty balcony
+  - unswept balcony
+  - dusty balcony
+- aspect_key: shower_curtain_mold
+  terms:
+  - moldy shower curtain
+  - mildew curtain
+  - black curtain mold
+  - black curtain spots
+  - smelly shower curtain
+- aspect_key: toilet_paper_stock
+  terms:
+  - out of toilet paper
+  - no TP
+  - empty paper roll
+- aspect_key: bathroom_amenities_refill
+  terms:
+  - shampoo empty
+  - toiletries missing
+  - soap ran out
+  - amenities not refilled
+  - no toilet paper left
+- aspect_key: bed_bug_concern
+  terms:
+  - bed bug scare
+  - bugs in bed
+  - bite marks bedding
+- aspect_key: sheet_fit
+  terms:
+  - sheet slips off
+  - sheet too small
+  - ill-fitting sheet
+- aspect_key: duvet_cover_quality
+  terms:
+  - torn duvet cover
+  - worn cover
+  - poor duvet cover
+- aspect_key: beach_cleanliness
+  terms:
+  - dirty beach
+  - trash on beach
+  - unclean shoreline
+- aspect_key: sauna_cleanliness
+  terms:
+  - dirty sauna
+  - unhygienic sauna
+  - grimy sauna bench
+  - grimy sauna benches
+  - poor sauna hygiene
+- aspect_key: jacuzzi_cleanliness
+  terms:
+  - dirty jacuzzi
+  - unclean hot tub
+  - grimy spa tub
+- aspect_key: gym_cleanliness
+  terms:
+  - dirty gym
+  - sweaty equipment
+  - unhygienic fitness
+- aspect_key: breakfast_hot_items
+  terms:
+  - hot breakfast cold
+  - cold omelette
+  - no hot items
+  - hot items cold
+  - no hot eggs
+  - weak hot buffet
+  - hot dishes empty
+- aspect_key: breakfast_coffee
+  terms:
+  - breakfast coffee poor
+  - weak filter coffee
+  - bad morning coffee
+  - bad breakfast coffee
+  - watery morning coffee
+  - weak coffee station
+- aspect_key: breakfast_fruit
+  terms:
+  - stale fruit
+  - little fruit
+  - poor fruit selection
+  - fruit not fresh
+  - empty fruit platter
+- aspect_key: lunch_quality
+  terms:
+  - poor lunch
+  - weak midday meal
+  - mediocre lunch
+- aspect_key: soup_quality
+  terms:
+  - cold soup
+  - bland soup
+  - watery soup
+- aspect_key: salad_freshness
+  terms:
+  - wilted salad
+  - stale greens
+  - unfresh salad
+- aspect_key: food_presentation
+  terms:
+  - poor plating
+  - messy presentation
+  - unappetizing look
+  - poor presentation
+  - messy plating
+  - mediocre look
+- aspect_key: live_cooking_station
+  terms:
+  - no live cooking
+  - weak show station
+  - station closed
+- aspect_key: halal_options
+  terms:
+  - no halal options
+  - halal unclear
+  - missing halal menu
+- aspect_key: gluten_free_options
+  terms:
+  - no gluten free
+  - no celiac options
+  - GF menu missing
+- aspect_key: vegan_options
+  terms:
+  - no vegan options
+  - weak vegan menu
+  - few plant-based
+- aspect_key: bar_cocktail_quality
+  terms:
+  - bad cocktail
+  - unbalanced drink
+  - watery cocktail
+- aspect_key: bar_price
+  terms:
+  - expensive bar
+  - rip-off drinks
+  - high bar prices
+- aspect_key: room_service_temperature
+  terms:
+  - room service cold
+  - food arrived lukewarm
+  - cold tray
+- aspect_key: minibar_food
+  terms:
+  - empty minibar snacks
+  - no minibar food
+  - bare minibar
+  - stale minibar snacks
+  - expired minibar food
+  - old mini bar items
+- aspect_key: ice_cream_quality
+  terms:
+  - poor ice cream
+  - melted ice cream
+  - few ice cream flavors
+- aspect_key: staff_attentiveness
+  terms:
+  - inattentive
+  - ignores guests
+  - not paying attention
+  - inattentive staff
+  - no eye contact service
+- aspect_key: staff_speed
+  terms:
+  - slow service staff
+  - takes forever
+  - sluggish service
+- aspect_key: staff_empathy
+  terms:
+  - no empathy
+  - doesnt understand
+  - cold response
+  - unsympathetic staff
+  - cold approach
+- aspect_key: staff_apology
+  terms:
+  - no apology
+  - wouldnt apologize
+  - no regret shown
+  - didn't apologize
+  - no remorse shown
+- aspect_key: staff_problem_solving
+  terms:
+  - no solution
+  - cant solve issue
+  - dead end help
+  - can't solve problems
+  - no solutions offered
+  - weak problem solving
+- aspect_key: staff_compensation
+  terms:
+  - no compensation
+  - no gesture
+  - nothing offered
+  - no compensation offered
+  - no goodwill gesture
+  - no discount given
+- aspect_key: staff_language_english
+  terms:
+  - no English spoken
+  - poor English staff
+  - English barrier
+  - poor English skills
+  - English incomprehensible
+- aspect_key: staff_language_russian
+  terms:
+  - no Russian speakers
+  - Russian staff missing
+  - Russian not available
+- aspect_key: staff_language_german
+  terms:
+  - no German speakers
+  - German staff missing
+  - German not available
+- aspect_key: staff_night_reception
+  terms:
+  - no night reception
+  - night desk empty
+  - overnight staff poor
+  - night reception unhelpful
+  - empty night desk
+  - no night staff
+- aspect_key: staff_manager_visibility
+  terms:
+  - manager invisible
+  - no duty manager around
+  - boss never seen
+- aspect_key: staff_bellboy
+  terms:
+  - no bellboy
+  - no porter help
+  - luggage help missing
+  - slow luggage help
+  - indifferent porter
+- aspect_key: staff_valet
+  terms:
+  - no valet
+  - slow valet
+  - car retrieval issue
+  - car delivery delayed
+- aspect_key: staff_lifeguard
+  terms:
+  - no lifeguard
+  - pool safety staff missing
+  - inattentive lifeguard
+  - distracted lifeguard
+- aspect_key: staff_kids_club
+  terms:
+  - kids club understaffed
+  - mini club staff poor
+  - weak kids club staff
+  - indifferent kids club
+  - entertainers ignore kids
+- aspect_key: staff_spa_therapist
+  terms:
+  - weak therapist
+  - poor massage skill
+  - bad spa staff
+  - inexperienced therapist
+  - poor masseur
+  - bad spa therapist
+- aspect_key: staff_guest_relations
+  terms:
+  - weak guest relations
+  - GR desk unhelpful
+  - complaint desk poor
+  - no GR desk
+  - indifferent GR
+- aspect_key: staff_overwork
+  terms:
+  - overworked staff
+  - 14 hour shifts
+  - burned out employees
+- aspect_key: staff_tipping_pressure
+  terms:
+  - tip pressure
+  - forced tipping
+  - asks for tips
+  - tipping pressure
+  - forced tips
+  - aggressive tip expectation
+- aspect_key: staff_discrimination
+  terms:
+  - discrimination
+  - unequal treatment
+  - biased staff
+- aspect_key: staff_name_recognition
+  terms:
+  - no name recognition
+  - doesnt remember guests
+  - impersonal
+  - never remembered
+- aspect_key: staff_uniform_cleanliness
+  terms:
+  - dirty uniform
+  - unkempt attire
+  - messy staff look
+  - dirty uniforms
+  - unkempt appearance
+- aspect_key: staff_engineering_response
+  terms:
+  - engineering late
+  - slow tech response
+  - maintenance delay
+  - slow engineering response
+  - tech never came
+  - engineer delayed
+  - maintenance slow to arrive
+  - no tech team
+- aspect_key: staff_housekeeping_timing
+  terms:
+  - bad HK timing
+  - too early cleaning
+  - entered without knock
+  - late housekeeping
+  - room cleaned late
+  - HK timing poor
+  - still dirty afternoon
+- aspect_key: staff_housekeeping_thorough
+  terms:
+  - superficial clean
+  - missed details
+  - corners dirty
+  - corners ignored
+  - HK not thorough
+  - rushed housekeeping
+- aspect_key: staff_concierge_knowledge
+  terms:
+  - clueless concierge
+  - weak local tips
+  - poor recommendations
+  - no local knowledge
+- aspect_key: staff_restaurant_upsell
+  terms:
+  - pushy upsell
+  - forced sales
+  - constant extras pitch
+- aspect_key: staff_bar_friendliness
+  terms:
+  - cold bartender
+  - unfriendly bar
+  - sour drink service
+- aspect_key: ops_key_card
+  terms:
+  - key card fails
+  - door card broken
+  - wont unlock
+  - key card not working
+  - magnetic stripe dead
+  - door card rejected
+  - keycard demagnetized
+  - need new key card
+- aspect_key: ops_early_checkin
+  terms:
+  - no early check-in
+  - early arrival refused
+  - early check-in denied
+  - early arrival room
+  - pre-noon room request
+  - early checkin fee
+  - morning room unavailable
+- aspect_key: ops_late_checkout
+  terms:
+  - no late checkout
+  - late departure refused
+  - late check-out denied
+  - late departure fee
+  - extended checkout
+  - afternoon departure
+  - checkout extension refused
+  - late checkout charge
+- aspect_key: ops_room_upgrade
+  terms:
+  - no upgrade
+  - room upgrade denied
+  - no complimentary upgrade
+  - suite upgrade failed
+  - category upgrade
+  - promised upgrade missing
+  - upgrade not granted
+- aspect_key: ops_reservation_accuracy
+  terms:
+  - wrong reservation
+  - incorrect room type
+  - booking mixup
+  - booking mismatch
+  - lost reservation
+  - incorrect room type booked
+  - reservation error
+  - booking not found
+- aspect_key: ops_value_for_money
+  terms:
+  - poor value
+  - not worth the money
+  - overpriced stay
+  - not worth the price
+  - bad value for money
+- aspect_key: reception_service
+  terms:
+  - reception desk
+  - front office
+  - FO desk
+  - welcome desk
+  - check-in counter
+  - reception service
+  - front desk staff
+  - concierge desk
+  - lobby reception
+  - guest services desk
+  - slow reception
+  - unhelpful reception
+  - front-desk
+  - receptionists
+  - desk clerk
+  - lobby desk
+  - wait at reception
+  - FO queue
+  - weak welcome desk
+  - desk personnel
+  - lobby clerk
+  - check-in agent
+- aspect_key: ops_checkout_process
+  terms:
+  - check-out procedure
+  - departure process
+  - checkout formalities
+  - bill settlement wait
+  - account close delay
+  - checkout line
+  - slow departure desk
+  - departure formalities
+  - FO checkout flow
+  - leaving process
+- aspect_key: ops_rate_transparency
+  terms:
+  - unclear rates
+  - price not transparent
+  - what's included unclear
+  - opaque pricing
+  - confusing tariff
+- aspect_key: ops_deposit_refund
+  terms:
+  - deposit not refunded
+  - security deposit delay
+  - deposit refund missing
+  - hold not released
+- aspect_key: ops_luggage_storage
+  terms:
+  - luggage storage full
+  - bag hold unavailable
+  - cloakroom delay
+  - left luggage issue
+  - baggage room crowded
+- aspect_key: ops_queue_lobby
+  terms:
+  - lobby queue
+  - long lobby line
+  - crowded front desk
+  - wait in lobby
+  - queue at reception
+- aspect_key: ops_online_checkin
+  terms:
+  - online check-in broken
+  - web checkin failed
+  - mobile check-in error
+  - digital arrival failed
+- aspect_key: ops_mobile_key
+  terms:
+  - mobile key failed
+  - digital key error
+  - phone unlock broken
+  - app room key not working
+- aspect_key: ops_room_assignment
+  terms:
+  - bad room assignment
+  - wrong floor assigned
+  - undesirable room
+  - poor room allocation
+  - assignment mistake
+- aspect_key: ops_overbooking
+  terms:
+  - overbooked hotel
+  - no room on arrival
+  - overbooking incident
+  - walked to another hotel
+  - sold out despite booking
+- aspect_key: ops_walk_to_other_hotel
+  terms:
+  - walked to other hotel
+  - relocated to sister property
+  - sent to another hotel
+  - involuntary walk
+- aspect_key: ops_minibar_billing
+  terms:
+  - wrong minibar charge
+  - minibar billed incorrectly
+  - charged for untouched items
+  - minibar invoice error
+- aspect_key: ops_invoice
+  terms:
+  - invoice delayed
+  - no corporate invoice
+  - e-invoice missing
+  - bill print failed
+- aspect_key: ops_all_inclusive_scope
+  terms:
+  - AI scope unclear
+  - all-inclusive limits
+  - not actually included
+  - narrow AI package
+- aspect_key: ops_vip_handling
+  terms:
+  - VIP not recognized
+  - loyalty ignored
+  - special guest neglected
+  - no VIP handling
+- aspect_key: ops_loyalty_program
+  terms:
+  - loyalty points missing
+  - membership not applied
+  - points not credited
+  - rewards ignored
+- aspect_key: ops_signage
+  terms:
+  - poor signage
+  - missing wayfinding
+  - couldn't find direction
+  - unclear floor signs
+  - no directional signs
+- aspect_key: hvac_airflow_weak
+  terms:
+  - weak airflow
+  - poor air throw
+  - fan too weak
+  - barely blowing
+- aspect_key: hvac_airflow_strong
+  terms:
+  - blasting air
+  - too strong airflow
+  - direct draft uncomfortable
+- aspect_key: hvac_after_hours
+  terms:
+  - no after-hours tech
+  - night HVAC unrepaired
+  - overnight engineer missing
+- aspect_key: hvac_parts_delay
+  terms:
+  - parts on order
+  - waiting for AC parts
+  - spare part delay
+- aspect_key: hvac_temporary_fan
+  terms:
+  - gave us a fan
+  - temporary desk fan
+  - fan instead of AC
+- aspect_key: hvac_room_move_climate
+  terms:
+  - moved rooms for AC
+  - climate-related room move
+  - relocated due to cooling
+- aspect_key: bathroom_cleanliness
+  terms:
+  - dirty bathroom
+  - unclean toilet area
+  - bathroom not cleaned
+  - grimy sink
+  - poor bath hygiene
+- aspect_key: room_odor_sewage
+  terms:
+  - sewer smell room
+  - drain odor
+  - sewage stench
+- aspect_key: bed_linen_change_freq
+  terms:
+  - sheets not changed
+  - linen unchanged for days
+  - no linen refresh
+- aspect_key: room_turndown_timing
+  terms:
+  - no turndown
+  - evening service missed
+  - late turndown
+- aspect_key: ops_laundry_quality
+  terms:
+  - laundry stains remain
+  - poor ironing
+  - laundry smells
+  - bad laundry quality
+- aspect_key: ops_laundry_turnaround
+  terms:
+  - laundry late
+  - slow laundry turnaround
+  - same-day laundry failed
+- aspect_key: room_minibar_stock
+  terms:
+  - minibar empty stock
+  - drinks not restocked
+  - minibar items missing
+  - unstocked fridge
+- aspect_key: room_minibar_price
+  terms:
+  - expensive minibar
+  - ripoff minibar prices
+  - overpriced mini bar
+- aspect_key: food_repeat_menu
+  terms:
+  - menu repeats
+  - same weekly cycle
+  - no new dishes
+  - stale rotation
+- aspect_key: breakfast_pastry
+  terms:
+  - stale pastry
+  - few baked goods
+  - stale croissant
+  - no fresh pastries
+- aspect_key: breakfast_eggs
+  terms:
+  - egg station slow
+  - omelette queue
+  - no egg options
+- aspect_key: buffet_crowd
+  terms:
+  - crowded buffet
+  - packed dining room
+  - buffet stampede
+- aspect_key: buffet_labels
+  terms:
+  - no food labels
+  - unlabeled dishes
+  - missing allergen tags
+- aspect_key: food_meat_quality
+  terms:
+  - poor meat quality
+  - tough chewy meat
+  - fatty low-grade meat
+- aspect_key: food_seafood
+  terms:
+  - stale seafood
+  - fishy smell
+  - poor fish quality
+- aspect_key: food_vegetarian
+  terms:
+  - no vegetarian options
+  - few meat-free dishes
+  - weak veggie spread
+- aspect_key: food_halal
+  terms:
+  - halal unclear
+  - no halal certification
+  - few halal options
+- aspect_key: food_gluten_free
+  terms:
+  - no gluten-free
+  - celiac options missing
+  - GF menu absent
+- aspect_key: food_children_menu
+  terms:
+  - no kids menu
+  - inadequate children's food
+  - few kid dishes
+- aspect_key: food_temperature_hot
+  terms:
+  - hot food lukewarm
+  - served cold
+  - not kept hot
+- aspect_key: food_salad_bar
+  terms:
+  - weak salad bar
+  - few salad options
+  - wilted greens
+- aspect_key: food_juice_bar
+  terms:
+  - no juice bar
+  - no fresh squeezed
+  - empty juice station
+- aspect_key: food_poisoning_concern
+  terms:
+  - food poisoning concern
+  - sick after meal
+  - food safety worry
+- aspect_key: aquapark
+  terms:
+  - aqua park
+  - waterpark
+  - water park slides
+  - aquapark closed
+  - slide park
+  - water rides
+  - aqua park poorly maintained
+  - aqua-park
+  - water slides park
+  - splash park
+  - aquapark area
+  - closed aquapark
+  - water slide complex
+  - neglected aqua park
+- aspect_key: pool_aquapark_queue
+  terms:
+  - aquapark queue
+  - long slide line
+  - waterpark wait
+  - slide queue
+- aspect_key: pool_aquapark_maintenance
+  terms:
+  - aquapark under maintenance
+  - slide closed
+  - broken water slide
+  - waterpark out of order
+- aspect_key: pool_water_clarity
+  terms:
+  - cloudy water
+  - poor clarity
+  - murky pool
+- aspect_key: pool_chlorine_smell
+  terms:
+  - strong chlorine smell
+  - over-chlorinated
+  - chlorine burns eyes
+- aspect_key: pool_temperature
+  terms:
+  - cold pool
+  - unheated pool
+  - low water temp
+  - freezing pool
+- aspect_key: pool_crowd
+  terms:
+  - crowded pool
+  - no space in pool
+  - packed pool deck
+- aspect_key: pool_lounger
+  terms:
+  - no loungers left
+  - sunbeds reserved with towels
+  - lounger shortage
+  - towel hogging beds
+- aspect_key: pool_sunbed
+  terms:
+  - no sunbeds
+  - sunbed wars
+  - all beds taken early
+- aspect_key: pool_sunbed_reservation
+  terms:
+  - unfair sunbed reservation
+  - towel reserving
+  - early bed hogging
+- aspect_key: pool_towel_service
+  terms:
+  - no pool towels
+  - towel card issue
+  - poor towel service
+- aspect_key: pool_shade
+  terms:
+  - no shade
+  - umbrella shortage
+  - no sun protection
+- aspect_key: pool_kids_area
+  terms:
+  - dirty kids pool
+  - unsafe kids area
+  - neglected children's pool
+- aspect_key: pool_slide_safety
+  terms:
+  - unsafe slide
+  - dangerous chute
+  - no slide attendant
+- aspect_key: pool_lifeguard_presence
+  terms:
+  - no lifeguard
+  - lifeguard absent
+  - unattended pool
+- aspect_key: pool_chemical_balance
+  terms:
+  - chemical imbalance
+  - pH off
+  - poor pool chemistry
+- aspect_key: pool_algae
+  terms:
+  - algae in pool
+  - green walls
+  - algae bloom
+- aspect_key: spa_service
+  terms:
+  - poor spa service
+  - weak wellness
+  - disappointing spa
+- aspect_key: spa_booking
+  terms:
+  - can't book spa
+  - spa fully booked
+  - hard to reserve spa
+- aspect_key: spa_price
+  terms:
+  - expensive spa
+  - overpriced massage
+  - high spa rates
+- aspect_key: spa_massage_quality
+  terms:
+  - poor massage
+  - bad massage technique
+  - weak therapist
+- aspect_key: massage_quality
+  terms:
+  - disappointing massage
+  - short massage time
+  - careless massage
+- aspect_key: spa_wait_time
+  terms:
+  - long spa wait
+  - appointment delayed
+  - waited for therapist
+- aspect_key: spa_robe_slippers
+  terms:
+  - no spa robe
+  - slippers missing
+  - robe not provided
+- aspect_key: sauna_temperature
+  terms:
+  - sauna too cold
+  - low sauna heat
+  - sauna not hot enough
+- aspect_key: hammam_quality
+  terms:
+  - poor hammam
+  - neglected hammam
+  - disappointing Turkish bath
+- aspect_key: turkish_bath_quality
+  terms:
+  - weak Turkish bath
+  - poor scrub service
+  - indifferent hammam staff
+- aspect_key: spa_staff
+  terms:
+  - indifferent spa staff
+  - rude spa team
+  - weak wellness staff
+- aspect_key: staff_spa_attitude
+  terms:
+  - unfriendly spa staff
+  - cold spa welcome
+- aspect_key: ops_spa_hours
+  terms:
+  - short spa hours
+  - spa closes early
+  - late spa opening
+- aspect_key: staff_complaint_resolution
+  terms:
+  - issue unresolved
+  - no resolution offered
+  - no compensation path
+- aspect_key: staff_security
+  terms:
+  - indifferent security
+  - inadequate security staff
+  - security invisible
+- aspect_key: staff_welcome_drink
+  terms:
+  - no welcome drink
+  - welcome drink missing
+- aspect_key: staff_farewell
+  terms:
+  - no farewell
+  - ignored at departure
+  - weak goodbye
+- aspect_key: staff_lost_found
+  terms:
+  - lost item not found
+  - no lost and found
+  - ignored lost property
+- aspect_key: staff_special_request
+  terms:
+  - special request ignored
+  - request forgotten
+  - custom ask denied
+- aspect_key: staff_overworked
+  terms:
+  - overworked staff
+  - exhausted employees
+  - stressed team
+- aspect_key: animation_staff
+  terms:
+  - weak animation crew
+  - indifferent animators
+  - poor show quality
+- aspect_key: ops_response_sla
+  terms:
+  - response SLA missed
+  - late reply
+  - slow response time
+- aspect_key: hvac_heating
+  terms:
+  - heating system fail
+  - inadequate heating
+  - room heating weak
+- aspect_key: wifi_coverage
+  terms:
+  - no wifi coverage
+  - dead zone room
+  - weak wifi signal
+  - wifi doesn't reach
+- aspect_key: room_noise
+  terms:
+  - noisy room
+  - no sound insulation
+  - hallway noise
+  - neighbor noise
+- aspect_key: pillow_quality
+  terms:
+  - bad pillow
+  - flat pillow
+  - hard pillow
+  - smelly pillow
+- aspect_key: towel_quality
+  terms:
+  - rough towels
+  - old towels
+  - thin towels
+  - poor towel quality
+- aspect_key: ops_elevator_capacity
+  terms:
+  - insufficient elevators
+  - lift queue
+  - slow elevator
+  - cramped lift
+- aspect_key: pool_bar_service
+  terms:
+  - slow pool bar
+  - poor pool bar service
+  - no drinks at lounger
+- aspect_key: staff_pool_service
+  terms:
+  - indifferent pool staff
+  - no pool waiter
+- aspect_key: staff_beach_service
+  terms:
+  - no beach service
+  - slow beach waiter
+- aspect_key: ops_airport_transfer
+  terms:
+  - airport transfer late
+  - no transfer driver
+  - transfer cancelled
+- aspect_key: ops_shuttle
+  terms:
+  - no shuttle
+  - hotel bus late
+  - shuttle not running
+- aspect_key: ops_noise_construction
+  terms:
+  - construction noise
+  - renovation racket
+  - drilling noise
+- aspect_key: ops_renovation_impact
+  terms:
+  - renovation impact
+  - disturbed by works
+  - refurbishment noise
+- aspect_key: ops_wake_up_call
+  terms:
+  - no wake-up call
+  - wake-up missed
+  - morning call forgotten
+  - alarm service fail
+- aspect_key: ops_safe_deposit
+  terms:
+  - safe not working
+  - couldn't open safe
+  - deposit box fault
+  - room safe PIN issue
+- aspect_key: ops_currency_exchange
+  terms:
+  - no currency exchange
+  - bad exchange rate
+  - slow money change
+- aspect_key: ops_group_handling
+  terms:
+  - chaotic group check-in
+  - poor group handling
+  - tour group mess
+- aspect_key: ops_connecting_request
+  terms:
+  - connecting rooms denied
+  - no adjoining rooms
+  - side-by-side request refused
+- aspect_key: ops_view_guarantee
+  terms:
+  - view guarantee broken
+  - no sea view
+  - promised view missing
+- aspect_key: ops_bed_type_mismatch
+  terms:
+  - wrong bed type
+  - twin instead of double
+  - no king bed
+- aspect_key: ops_allergy_note
+  terms:
+  - allergy note ignored
+  - allergy request forgotten
+- aspect_key: ops_birthday_setup
+  terms:
+  - no birthday setup
+  - birthday decoration missing
+- aspect_key: ops_honeymoon_package
+  terms:
+  - honeymoon package missing
+  - no honeymoon decor
+- aspect_key: ops_medical_help
+  terms:
+  - couldn't get doctor
+  - medical help delayed
+  - no infirmary
+- aspect_key: ops_taxi
+  terms:
+  - couldn't get taxi
+  - slow taxi call
+  - no taxi desk
+- aspect_key: ops_tour_desk
+  terms:
+  - clueless tour desk
+  - expensive excursions
+  - poor tour desk
+- aspect_key: ops_kids_club_hours
+  terms:
+  - short kids club hours
+  - kids club closed
+- aspect_key: ops_babysitting
+  terms:
+  - no babysitting
+  - babysitter unavailable
+- aspect_key: ops_power_backup
+  terms:
+  - no generator
+  - dark during outage
+  - UPS inadequate
+- aspect_key: ops_water_outage
+  terms:
+  - water outage
+  - no tap water
+  - water cut
+- aspect_key: ops_key_encoding
+  terms:
+  - key encoding failed
+  - couldn't reprogram card
+  - card encoding error
+- aspect_key: ops_complaint_log
+  terms:
+  - no complaint log
+  - complaint not recorded
+- aspect_key: ops_pos_system
+  terms:
+  - POS system crash
+  - payment software error
+  - slow POS
+- aspect_key: hvac_slow_cool
+  terms:
+  - slow to cool
+  - takes forever to chill
+  - hours before cool
+- aspect_key: hvac_slow_heat
+  terms:
+  - slow to heat
+  - takes forever to warm
+  - hours before warm
+- aspect_key: hvac_fan_noise
+  terms:
+  - loud fan noise
+  - fan whirring loud
+  - noisy blower
+- aspect_key: hvac_rattle
+  terms:
+  - AC rattling
+  - metal rattle from unit
+  - rattling HVAC
+- aspect_key: hvac_whistle
+  terms:
+  - AC whistling
+  - air whistle
+  - duct whistle
+- aspect_key: hvac_display_error
+  terms:
+  - AC error code
+  - display error
+  - fault on display
+- aspect_key: hvac_mode_stuck
+  terms:
+  - mode stuck
+  - can't change mode
+  - locked in heat/cool
+- aspect_key: hvac_temp_display
+  terms:
+  - wrong temp display
+  - inaccurate degree readout
+- aspect_key: hvac_condensate
+  terms:
+  - condensate buildup
+  - overflowing drip
+  - full condensate pan
+- aspect_key: hvac_eco_mode
+  terms:
+  - eco mode inadequate
+  - eco won't cool
+- aspect_key: hvac_quiet_mode
+  terms:
+  - quiet mode still loud
+  - silent mode useless
+- aspect_key: hvac_turbo_mode
+  terms:
+  - no turbo mode
+  - no rapid cool
+- aspect_key: hvac_restaurant_climate
+  terms:
+  - restaurant too warm
+  - poor dining climate
+  - weak restaurant AC
+- aspect_key: hvac_spa_climate
+  terms:
+  - spa stifling
+  - poor spa ventilation
+- aspect_key: hvac_gym_climate
+  terms:
+  - gym too hot
+  - no gym AC
+- aspect_key: hvac_pool_dehumid
+  terms:
+  - indoor pool humid
+  - foggy pool hall
+  - weak dehumidification
+- aspect_key: hvac_central_lock
+  terms:
+  - central AC locked
+  - guest can't adjust
+  - thermostat locked
+- aspect_key: hvac_guest_override
+  terms:
+  - no guest override
+  - manual adjust blocked
+- aspect_key: hvac_bms_issue
+  terms:
+  - BMS fault
+  - automation error
+  - plant control issue
+- aspect_key: room_dampness
+  terms:
+  - damp room
+  - humid walls
+  - moisture in room
+- aspect_key: room_paint_peeling
+  terms:
+  - peeling paint
+  - plaster falling
+  - paint flaking
+- aspect_key: room_tile_broken
+  terms:
+  - broken tile
+  - cracked tile
+  - chipped flooring
+- aspect_key: room_insects
+  terms:
+  - insect problem room
+  - pests indoors
+  - flies in room
+- aspect_key: bathroom_drain
+  terms:
+  - clogged drain
+  - water won't go down
+  - blocked sink
+- aspect_key: bathroom_leak
+  terms:
+  - bathroom leak
+  - dripping tap
+  - water leak bath
+- aspect_key: bathroom_exhaust
+  terms:
+  - no bath ventilation
+  - exhaust dead
+  - steam won't clear
+- aspect_key: shower_drain_clog
+  terms:
+  - shower drain clogged
+  - water pooling in shower
+- aspect_key: toilet_clog
+  terms:
+  - clogged toilet
+  - blocked WC
+  - won't flush properly
+- aspect_key: food_hygiene
+  terms:
+  - questionable food hygiene
+  - kitchen hygiene concern
+  - poor food sanitation
+- aspect_key: food_queue
+  terms:
+  - long food queue
+  - restaurant line
+  - buffet wait
+- aspect_key: food_local_cuisine
+  terms:
+  - weak local cuisine
+  - few Turkish dishes
+  - no local specialties
+- aspect_key: food_spice_level
+  terms:
+  - too spicy
+  - uneven spice
+  - over-spiced
+- aspect_key: buffet_organization
+  terms:
+  - disorganized buffet
+  - messy stations
+  - poor buffet layout
+- aspect_key: buffet_quality
+  terms:
+  - low buffet quality
+  - weak open buffet
+  - mediocre buffet
+- aspect_key: pool_safety
+  terms:
+  - poor pool safety
+  - slippery pool deck
+  - no safety warnings
+- aspect_key: pool_maintenance
+  terms:
+  - poor pool maintenance
+  - pool equipment broken
+- aspect_key: pool_heater
+  terms:
+  - pool heater broken
+  - heating off pool
+- aspect_key: pool_lighting_night
+  terms:
+  - no night pool lighting
+  - dark pool
+- aspect_key: pool_adult_only
+  terms:
+  - adult-only ignored
+  - no adult pool enforcement
+- aspect_key: pool_music_volume
+  terms:
+  - pool music too loud
+  - animation noise at pool
+- aspect_key: spa_therapist_gender
+  terms:
+  - no therapist gender choice
+  - female therapist unavailable
+- aspect_key: staff_knowledge
+  terms:
+  - unknowledgeable staff
+  - no hotel knowledge
+  - can't answer questions
+- aspect_key: staff_complaint_escalation
+  terms:
+  - complaint not escalated
+  - couldn't reach manager
+  - no escalation
+- aspect_key: staff_multilingual
+  terms:
+  - no multilingual staff
+  - language diversity lacking
+- aspect_key: staff_teamwork
+  terms:
+  - poor teamwork
+  - departments don't talk
+- aspect_key: staff_identification
+  terms:
+  - no name badge
+  - can't identify staff
+- aspect_key: staff_transfer_driver
+  terms:
+  - rude transfer driver
+  - driver late
+- aspect_key: staff_minibar_attendant
+  terms:
+  - minibar attendant missing
+  - wrong minibar check
+- aspect_key: staff_room_service_waiter
+  terms:
+  - rude room service waiter
+  - indifferent RS staff

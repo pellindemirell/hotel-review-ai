@@ -1,0 +1,199 @@
+{
+  "hotel": {
+    "name": "Blue Sea Resort",
+    "stars": 5,
+    "address": "Antalya, Belek",
+    "phone": "+90 242 000 00 00",
+    "email": "info@bluesearesort.com"
+  },
+  "check_in": "14:00",
+  "check_out": "12:00",
+  "breakfast": {
+    "hours": "07:00-10:30",
+    "location": "Ana Restoran",
+    "vegan": true,
+    "gluten_free": true,
+    "halal": true,
+    "menu_items": [
+      "Peynir ve zeytin çeşitleri",
+      "Sıcak/soğuk omlet ve yumurta çeşitleri",
+      "Reçel, bal, tereyağı",
+      "Taze meyve ve sebze",
+      "Sıcak yemekler (menemen, sucuk-yumurta)",
+      "Glutensiz ekmek ve vegan süt alternatifleri"
+    ]
+  },
+  "lunch": {
+    "hours": "12:30-14:30",
+    "location": "Ana Restoran",
+    "menu_items": [
+      "Çorba ve salata büfesi",
+      "Izgara et ve tavuk çeşitleri",
+      "Günlük balık ve deniz ürünleri",
+      "Makarna ve pilav istasyonu",
+      "Tatlı ve meyve büfesi"
+    ]
+  },
+  "dinner": {
+    "hours": "19:00-21:30",
+    "location": "Ana Restoran",
+    "menu_items": [
+      "Açık büfe ana yemekler",
+      "Izgara ve sıcak servis",
+      "Salata ve meze çeşitleri",
+      "Tatlı büfesi ve dondurma",
+      "À la carte restoran seçenekleri (rezervasyonla)"
+    ]
+  },
+  "daily_menu_note": "Günün özel menüsü resepsiyon ve restoran girişinde duyurulur.",
+  "pool": {
+    "hours": "08:00-20:00",
+    "children_pool": true,
+    "heated": true,
+    "towels": "Havuz havluları havuz girişinde ücretsiz"
+  },
+  "beach": {
+    "hours": "08:00-19:00",
+    "private": true,
+    "sunbeds": "Ücretsiz"
+  },
+  "spa": {
+    "hours": "10:00-22:00",
+    "hamam_free": false,
+    "reservation_required": true
+  },
+  "gym": {
+    "hours": "07:00-22:00",
+    "free": true
+  },
+  "wifi": {
+    "free": true,
+    "password_location": "Oda kartında ve resepsiyonda"
+  },
+  "parking": {
+    "free": true,
+    "valet": false
+  },
+  "airport_transfer": {
+    "available": true,
+    "paid": true,
+    "booking": "Resepsiyon veya concierge"
+  },
+  "deposit": {
+    "required": true,
+    "amount": "1 night",
+    "currency": "TRY or card pre-auth"
+  },
+  "early_checkin": {
+    "available": true,
+    "fee": "subject to availability"
+  },
+  "late_checkout": {
+    "available": true,
+    "fee": "subject to availability, half-day charge may apply"
+  },
+  "room_service": {
+    "hours": "24:00",
+    "menu": "Oda servisi menüsü odada"
+  },
+  "services": [
+    "Açık büfe kahvaltı (07:00-10:30)",
+    "Öğle ve akşam yemeği — ana restoran",
+    "4 à la carte restoran (İtalyan, Çin, Latin, Türk)",
+    "Oda servisi (24 saat)",
+    "Spa, hamam, masaj ve wellness",
+    "Fitness salonu (07:00-22:00)",
+    "Havuz ve aquapark (08:00-20:00)",
+    "Özel plaj ve şezlong",
+    "Animasyon ve günlük etkinlikler",
+    "Kids club (4-12 yaş, 10:00-18:00)",
+    "Ücretsiz WiFi",
+    "Ücretsiz otopark",
+    "Havalimanı transferi (ücretli)",
+    "Çamaşırhane ve ütü hizmeti",
+    "Concierge — tur ve aktivite organizasyonu"
+  ],
+  "minibar": {
+    "charged_on_consumption": true
+  },
+  "laundry": {
+    "available": true,
+    "express": true
+  },
+  "kids_club": {
+    "hours": "10:00-18:00",
+    "age_range": "4-12"
+  },
+  "departments": {
+    "resepsiyon": {
+      "label": "Resepsiyon / Front Office",
+      "phone_ext": "100",
+      "sop_summary": "Check-in/out, rezervasyon, misafir bilgilendirme, anahtar kart, depozito işlemleri.",
+      "common_issues": ["geç check-in", "oda upgrade", "fatura talebi", "kayıp kart"],
+      "solutions": ["Müsaitlik kontrolü yapılır", "Kimlik doğrulama sonrası işlem", "Depozito iade prosedürü uygulanır"]
+    },
+    "housekeeping": {
+      "label": "Kat Hizmetleri / Housekeeping",
+      "phone_ext": "200",
+      "sop_summary": "Oda temizliği, havlu/çarşaf değişimi, minibar kontrolü, lost & found ile koordinasyon.",
+      "common_issues": ["havlu eksik", "oda temizlenmedi", "yatak düzeni", "minibar"],
+      "solutions": ["15 dk içinde kat görevlisi yönlendirilir", "Temizlik önceliği güncellenir", "Ek havlu seti gönderilir"]
+    },
+    "restaurant": {
+      "label": "Yiyecek & İçecek / F&B",
+      "phone_ext": "300",
+      "sop_summary": "Açık büfe, à la carte, oda servisi, diyet/alerjen bilgilendirme.",
+      "common_issues": ["vegan seçenek", "alerjen", "rezervasyon", "soğuk yemek"],
+      "solutions": ["Şef ile diyet menüsü paylaşılır", "Masa rezervasyonu alınır", "Sıcaklık kontrolü yapılır"]
+    },
+    "spa": {
+      "label": "Spa & Wellness",
+      "phone_ext": "400",
+      "sop_summary": "Masaj, hamam, sauna, cilt bakımı randevu yönetimi.",
+      "common_issues": ["randevu iptali", "hamam ücreti", "spa saatleri"],
+      "solutions": ["Randevu defteri kontrol edilir", "Ücret tablosu paylaşılır", "Alternatif saat önerilir"]
+    },
+    "teknik": {
+      "label": "Teknik Servis / Engineering",
+      "phone_ext": "500",
+      "sop_summary": "Klima, TV, WiFi, elektrik, su tesisatı arızaları — acil müdahale protokolü.",
+      "common_issues": ["klima arızası", "wifi", "tv", "su basıncı", "priz"],
+      "solutions": ["30 dk içinde teknik ekip yönlendirilir", "Geçici oda değişikliği değerlendirilir", "Arıza kaydı açılır"]
+    },
+    "guvenlik": {
+      "label": "Güvenlik / Security",
+      "phone_ext": "600",
+      "sop_summary": "7/24 güvenlik, kamera, kayıp eşya, acil durum prosedürleri.",
+      "common_issues": ["kayıp eşya", "gürültü", "acil durum", "güvenlik endişesi"],
+      "solutions": ["Lost & found kaydı açılır", "Güvenlik devriyesi bilgilendirilir", "Acil prosedür uygulanır"]
+    },
+    "muhasebe": {
+      "label": "Muhasebe / Finance",
+      "phone_ext": "700",
+      "sop_summary": "Fatura, depozito iadesi, kur farkı, ekstra harcamalar.",
+      "common_issues": ["fatura talebi", "depozito iade", "minibar ücreti", "kur farkı"],
+      "solutions": ["E-fatura veya kağıt fatura hazırlanır", "Depozito iade süreci başlatılır", "Detay döküm paylaşılır"]
+    },
+    "satis": {
+      "label": "Satış / Sales",
+      "phone_ext": "800",
+      "sop_summary": "Grup rezervasyon, kurumsal anlaşmalar, özel paketler.",
+      "common_issues": ["grup fiyat", "kurumsal anlaşma", "sezon kampanyası"],
+      "solutions": ["Satış müdürü ile görüşme planlanır", "Teklif hazırlanır"]
+    },
+    "transfer": {
+      "label": "Transfer / Ulaşım",
+      "phone_ext": "850",
+      "sop_summary": "Havalimanı transfer, shuttle, taksi organizasyonu.",
+      "common_issues": ["havalimanı transfer", "gecikme", "taksi"],
+      "solutions": ["Transfer saati teyit edilir", "Alternatif araç ayarlanır"]
+    },
+    "turizm": {
+      "label": "Concierge / Turizm",
+      "phone_ext": "900",
+      "sop_summary": "Tur, aktivite, restoran önerisi, bölge bilgisi.",
+      "common_issues": ["tur rezervasyonu", "aktivite", "restoran önerisi"],
+      "solutions": ["Günlük tur programı paylaşılır", "Rezervasyon yapılır"]
+    }
+  }
+}

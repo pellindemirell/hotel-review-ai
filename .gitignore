@@ -24,6 +24,9 @@ ai-service/__pycache__/
 ai-service/*.pyc
 ai-service/.venv/
 ai-service/.env
+ai-service/**/*.db
+ai-service/**/*.bak
+ai-service/**/__pycache__/
 
 # ===== Docker / ENV =====
 .env

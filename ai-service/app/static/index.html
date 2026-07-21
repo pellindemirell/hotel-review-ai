@@ -1,0 +1,2825 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akıllı Yorum Analizi & AI Kontrol Paneli - Stajyer 5</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(17, 24, 39, 0.6);
+            --border-color: rgba(255, 255, 255, 0.07);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-glow: rgba(99, 102, 241, 0.15);
+            --success: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.1);
+            --warning: #f59e0b;
+            --warning-glow: rgba(245, 158, 11, 0.1);
+            --danger: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.1);
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-title: 'Outfit', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 10% 20%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
+                radial-gradient(at 90% 80%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Layout Grid */
+        header {
+            backdrop-filter: blur(12px);
+            background: rgba(11, 15, 25, 0.7);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.2rem 2.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--primary), var(--success));
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        h1 {
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #ffffff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .api-badge {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            color: #818cf8;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .api-pulse {
+            width: 8px;
+            height: 8px;
+            background-color: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--success);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 15px var(--success); }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+            flex-grow: 1;
+        }
+
+        /* Sidebar Tabs Navigation */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            padding: 1.1rem 1.4rem;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .tab-btn i {
+            font-size: 1.15rem;
+            width: 24px;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-primary);
+        }
+
+        .tab-btn.active {
+            background: var(--card-bg);
+            border-color: var(--border-color);
+            color: var(--primary);
+            box-shadow: inset 4px 0 0 var(--primary);
+        }
+
+        /* Main Content View */
+        .main-view {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            backdrop-filter: blur(16px);
+            padding: 2.2rem;
+            min-height: 550px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .view-panel {
+            display: none;
+            flex-direction: column;
+            gap: 1.8rem;
+            height: 100%;
+        }
+
+        .view-panel.active {
+            display: flex;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.2rem;
+        }
+
+        .panel-title {
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .panel-title i {
+            color: var(--primary);
+        }
+
+        .panel-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Form Controls */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        textarea {
+            background: rgba(11, 15, 25, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            padding: 1rem;
+            font-family: var(--font-main);
+            font-size: 0.95rem;
+            resize: vertical;
+            min-height: 120px;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .inputs-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        select, input[type="text"] {
+            background: rgba(11, 15, 25, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            padding: 0.9rem 1.1rem;
+            font-family: var(--font-main);
+            font-size: 0.95rem;
+            outline: none;
+            width: 100%;
+        }
+
+        select:focus, input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 1.8rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--primary-glow);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-success {
+            background: var(--success);
+            box-shadow: 0 4px 15px var(--success-glow);
+        }
+        .btn-success:hover {
+            background: #059669;
+            box-shadow: 0 6px 20px var(--success-glow);
+        }
+
+        /* Result Display Cards */
+        .results-container {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 1.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .result-card {
+            background: rgba(11, 15, 25, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .result-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .result-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .result-value {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .sentiment-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.2rem;
+            font-weight: 800;
+            padding: 0.4rem 1rem;
+            border-radius: 10px;
+            width: fit-content;
+        }
+
+        .sentiment-Positive, .sentiment-OLUMLU {
+            background: var(--success-glow);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .sentiment-Negative, .sentiment-OLUMSUZ {
+            background: var(--danger-glow);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .sentiment-Neutral, .sentiment-NOTR, .sentiment-NÖTR {
+            background: var(--warning-glow);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .keyword-tag {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .priority-critical { color: #dc2626; font-weight: 800; }
+        .priority-high { color: #ea580c; font-weight: 700; }
+        .priority-medium { color: #ca8a04; font-weight: 600; }
+        .priority-low { color: #16a34a; font-weight: 600; }
+        .priority-info { color: #2563eb; font-weight: 500; }
+        .absa-dept-chip { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.65rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2); }
+        #absa-table td { font-size: 0.82rem; vertical-align: top; max-width: 220px; word-break: break-word; }
+
+        .satisfaction-badge {
+            display: inline-block;
+            padding: 0.25rem 0.55rem;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .sat-Çok-İyi { background: rgba(22,163,74,0.15); color: #16a34a; border: 1px solid rgba(22,163,74,0.35); }
+        .sat-İyi { background: rgba(132,204,22,0.15); color: #84cc16; border: 1px solid rgba(132,204,22,0.35); }
+        .sat-Kararsız { background: rgba(202,138,4,0.15); color: #ca8a04; border: 1px solid rgba(202,138,4,0.35); }
+        .sat-Az-Memnun { background: rgba(234,88,12,0.15); color: #ea580c; border: 1px solid rgba(234,88,12,0.35); }
+        .sat-Hiç-Memnun-Değil { background: rgba(220,38,38,0.15); color: #dc2626; border: 1px solid rgba(220,38,38,0.35); }
+
+        .sat-stacked-bar { display: flex; height: 10px; border-radius: 6px; overflow: hidden; background: rgba(255,255,255,0.06); margin-top: 0.25rem; }
+        .sat-stacked-seg { height: 100%; min-width: 2px; }
+
+        .score-bar-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            height: 10px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            margin-top: 0.3rem;
+        }
+
+        .score-bar {
+            height: 100%;
+            border-radius: 10px;
+            width: 0%;
+        }
+
+        /* Image OCR Styles */
+        .ocr-upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .ocr-upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.02);
+        }
+
+        .ocr-upload-area i {
+            font-size: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .ocr-upload-area.active {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.02);
+        }
+
+        #image-preview {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 12px;
+            margin-top: 1rem;
+            display: none;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Chat Styles */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 480px;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            background: rgba(11, 15, 25, 0.3);
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .chat-bubble {
+            max-width: 80%;
+            padding: 1rem 1.2rem;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            line-height: 1.45;
+        }
+
+        .chat-bubble.user {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+        }
+
+        .chat-bubble.bot {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .room-issue-card {
+            margin-top: 0.75rem;
+            padding: 0.85rem 1rem;
+            border-radius: 12px;
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            font-size: 0.88rem;
+        }
+
+        .room-issue-card h4 {
+            margin: 0 0 0.5rem 0;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        .room-issue-card .issue-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .room-issue-card .badge-open { color: #f87171; }
+        .room-issue-card .badge-resolved { color: #4ade80; }
+        .room-issue-card .badge-scheduled { color: #fbbf24; }
+
+        .room-pattern-warning {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            color: #fbbf24;
+            font-size: 0.85rem;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 0.8rem;
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            background: rgba(11, 15, 25, 0.7);
+        }
+
+        .chat-input-area input {
+            flex-grow: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.8rem 1.2rem;
+            color: white;
+            outline: none;
+        }
+
+        .chat-input-area input:focus {
+            border-color: var(--primary);
+        }
+
+        .hotel-agent-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 1.25rem;
+        }
+
+        .hotel-profile-sidebar {
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1rem;
+            background: rgba(11, 15, 25, 0.45);
+            font-size: 0.85rem;
+            max-height: 520px;
+            overflow-y: auto;
+        }
+
+        .hotel-profile-sidebar h3 {
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+        }
+
+        .hotel-profile-item {
+            padding: 0.35rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            color: var(--text-secondary);
+        }
+
+        .hotel-profile-item strong { color: var(--text-primary); }
+
+        .agent-meta-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.65rem;
+        }
+
+        .agent-badge {
+            font-size: 0.72rem;
+            padding: 0.2rem 0.55rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .agent-badge.intent { background: rgba(99,102,241,0.2); color: #a5b4fc; }
+        .agent-badge.dept { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+        .agent-badge.priority-high { background: rgba(239,68,68,0.2); color: #fca5a5; }
+        .agent-badge.priority-medium { background: rgba(245,158,11,0.2); color: #fcd34d; }
+        .agent-badge.priority-low { background: rgba(156,163,175,0.15); color: #d1d5db; }
+        .agent-badge.action { background: rgba(239,68,68,0.25); color: #fecaca; border: 1px solid rgba(239,68,68,0.4); }
+
+        .quick-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .quick-chip {
+            background: rgba(99,102,241,0.12);
+            border: 1px solid rgba(99,102,241,0.25);
+            color: #c7d2fe;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .quick-chip:hover { background: rgba(99,102,241,0.25); }
+
+        /* Platform badge */
+        .platform-badge {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            background: rgba(99,102,241,0.2);
+            color: var(--primary);
+            margin-top: 0.2rem;
+        }
+        .lang-flag { font-size: 0.75rem; font-weight: 600; }
+        .urgency-high { color: #dc2626; font-weight: 700; }
+        .urgency-medium { color: #ea580c; font-weight: 600; }
+        .urgency-low { color: var(--text-secondary); }
+        .translated-text { font-size: 0.8rem; color: var(--text-secondary); font-style: italic; margin-top: 0.3rem; }
+
+        /* Scraper Styles */
+        .scraper-table-container {
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            background: rgba(11, 15, 25, 0.4);
+            margin-top: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-secondary);
+            font-weight: 700;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.8px;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            vertical-align: top;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .rec-box {
+            background: rgba(16, 185, 129, 0.03);
+            border-left: 4px solid var(--success);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+
+        .loader {
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .platform-badge {
+            display: inline-block;
+            padding: 0.12rem 0.45rem;
+            border-radius: 5px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 0.25rem;
+        }
+
+        .source-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin: 1rem 0 0.5rem;
+            padding: 0.6rem 0.9rem;
+            background: rgba(99,102,241,0.08);
+            border-radius: 8px;
+            font-size: 0.82rem;
+        }
+
+        .scraper-controls {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin: 0.75rem 0;
+            align-items: center;
+        }
+
+        .most-helpful-star { color: #F59E0B; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-section">
+            <div class="logo-icon">
+                <i class="fa-solid fa-brain"></i>
+            </div>
+            <div>
+                <h1>Akıllı Yorum Analizi & AI Kontrol Paneli</h1>
+                <p style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">Stajyer 5 (NLP & AI Modeli Mükemmelleştirme)</p>
+            </div>
+        </div>
+        
+        <div style="display: flex; align-items: center; gap: 1.2rem;">
+            <div class="api-badge" id="api-status">
+                <div class="api-pulse"></div>
+                <span>FastAPI Aktif (8M Interleaved)</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <button class="tab-btn active" onclick="switchTab('analyze-tab')">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                Yorum Analiz Et
+            </button>
+            <button class="tab-btn" onclick="switchTab('ocr-tab')">
+                <i class="fa-solid fa-file-image"></i>
+                Görsel Metin Okuma (OCR)
+            </button>
+            <button class="tab-btn" onclick="switchTab('chatbot-tab'); loadHotelProfile();">
+                <i class="fa-solid fa-hotel"></i>
+                Otel AI Asistanı
+            </button>
+            <button class="tab-btn" onclick="switchTab('scraper-tab')">
+                <i class="fa-solid fa-globe"></i>
+                Yasaklanmadan Yorum Çek
+            </button>
+            <button class="tab-btn" onclick="switchTab('dashboard-tab'); loadDashboard();">
+                <i class="fa-solid fa-chart-pie"></i>
+                Yönetici Dashboard
+            </button>
+        </div>
+
+        <!-- Main View Area -->
+        <div class="main-view">
+            
+            <!-- PANEL 1: ANALYZE REVIEW -->
+            <div id="analyze-tab" class="view-panel active">
+                <div class="panel-header">
+                    <h2 class="panel-title"><i class="fa-solid fa-magnifying-glass-chart"></i> Metinsel Yorum Analizi</h2>
+                    <p class="panel-subtitle">Yerel veya Gemini API ile anlık sentiment, kategori tespiti, özetleme ve departmansal aksiyon önerisi.</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="analyze-comment">Müşteri Yorumu</label>
+                    <textarea id="analyze-comment" placeholder="Müşteri deneyimini buraya yazın veya yapıştırın... (Örn: Odalar tertemizdi ancak restorandaki garson çok kaba davrandı.)"></textarea>
+                </div>
+                
+                <div class="inputs-row">
+                    <div class="form-group">
+                        <label for="analyze-rating">Yorum Puanı (1 - 5 Yıldız)</label>
+                        <select id="analyze-rating">
+                            <option value="">Seçilmedi (AI Kendisi Tahmin Edecek)</option>
+                            <option value="5">5 Yıldız (Mükemmel)</option>
+                            <option value="4">4 Yıldız (Çok İyi)</option>
+                            <option value="3">3 Yıldız (Ortalama)</option>
+                            <option value="2">2 Yıldız (Kötü)</option>
+                            <option value="1">1 Yıldız (Çok Kötü)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="analyze-api-key">Gemini API Anahtarı (Opsiyonel)</label>
+                        <input type="text" id="analyze-api-key" placeholder="API Anahtarı girilmezse yerel 8M modeli otomatik çalışır" value="">
+                    </div>
+                </div>
+                
+                <div>
+                    <button class="btn" onclick="analyzeSingleReview()" id="btn-analyze">
+                        <i class="fa-solid fa-circle-play"></i> Analiz Et
+                    </button>
+                </div>
+
+                <!-- Analysis Results Dashboard -->
+                <div class="results-container" id="analysis-results" style="display: none;">
+                    <div class="result-card">
+                        <h3 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> AI Analiz Raporu
+                        </h3>
+                        
+                        <div class="result-item">
+                            <span class="result-label">Tahmin Edilen Departman / Kategori</span>
+                            <span class="result-value" id="res-category" style="color: var(--primary); font-size: 1.2rem; font-weight: 800;">-</span>
+                        </div>
+                        
+                        <div class="result-item">
+                            <span class="result-label">Model Güven/Eminlik Oranı</span>
+                            <span class="result-value" id="res-confidence">-</span>
+                            <span id="res-class-method" style="font-size: 0.75rem; color: var(--text-muted); margin-left: 0.5rem;"></span>
+                            <div id="res-mixed-note" style="display:none; margin-top:0.4rem; font-size:0.8rem; color:#2563eb; font-weight:500;"></div>
+                        </div>
+                        
+                        <div class="result-item">
+                            <span class="result-label">Özetlenmiş Müşteri Şikayeti / Detayı</span>
+                            <span class="result-value" id="res-summary" style="font-style: italic; font-weight: 500;">-</span>
+                        </div>
+
+                        <div class="result-item">
+                            <span class="result-label">Önerilen Departman Aksiyonu</span>
+                            <span class="result-value" id="res-suggestion" style="background: rgba(99, 102, 241, 0.05); padding: 0.8rem; border-radius: 8px; border-left: 3px solid var(--primary);">-</span>
+                        </div>
+
+                        <div id="learn-badge-row" style="display:none; margin-top:1rem; padding:0.6rem 1rem; background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.35); border-radius:8px; font-size:0.85rem; color:#059669; font-weight:600;">
+                            <i class="fa-solid fa-brain"></i> Öğrenildi ✓ — Yorum eğitim buffer'ına eklendi
+                            <span id="learn-review-id" style="font-weight:500; color:var(--text-muted); margin-left:0.5rem; font-size:0.75rem;"></span>
+                        </div>
+
+                        <div id="correction-form" style="display:none; margin-top:1rem; padding:1rem; background:rgba(255,255,255,0.03); border-radius:8px; border:1px dashed rgba(99,102,241,0.3);">
+                            <div style="font-size:0.85rem; font-weight:600; margin-bottom:0.75rem; color:var(--text-secondary);">
+                                <i class="fa-solid fa-pen-to-square"></i> Tahmin Düzelt (3x ağırlıklı öğrenme)
+                            </div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:0.75rem;">
+                                <div>
+                                    <label style="font-size:0.75rem; color:var(--text-muted);">Doğru Kategori</label>
+                                    <select id="corr-category" class="form-input" style="width:100%; margin-top:0.25rem;">
+                                        <option value="Kat Hizmetleri & Temizlik">Kat Hizmetleri & Temizlik</option>
+                                        <option value="Yiyecek & İçecek & Yemekler">Yiyecek & İçecek & Yemekler</option>
+                                        <option value="Resepsiyon & Ön Büro">Resepsiyon & Ön Büro</option>
+                                        <option value="Teknik Servis (Maintenance)">Teknik Servis (Maintenance)</option>
+                                        <option value="Spa & Wellness / Aktivite">Spa & Wellness / Aktivite</option>
+                                        <option value="Muhasebe & Finans">Muhasebe & Finans</option>
+                                        <option value="Personel Davranışı & İletişim">Personel Davranışı & İletişim</option>
+                                        <option value="Diğer">Diğer</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="font-size:0.75rem; color:var(--text-muted);">Doğru Duygu</label>
+                                    <select id="corr-sentiment" class="form-input" style="width:100%; margin-top:0.25rem;">
+                                        <option value="Positive">Olumlu</option>
+                                        <option value="Negative">Olumsuz</option>
+                                        <option value="Neutral">Nötr</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="text" id="corr-notes" class="form-input" placeholder="Not (opsiyonel)" style="width:100%; margin-bottom:0.75rem;">
+                            <button class="btn btn-primary" onclick="submitCorrection()" id="btn-correct" style="font-size:0.85rem;">
+                                <i class="fa-solid fa-check"></i> Düzeltmeyi Kaydet
+                            </button>
+                            <span id="corr-status" style="margin-left:0.75rem; font-size:0.8rem; color:var(--success);"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="result-card" style="justify-content: space-between;">
+                        <div>
+                            <h3 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fa-solid fa-face-smile" style="color: var(--success);"></i> Duygu Durumu
+                            </h3>
+                            
+                            <div class="result-item" style="margin-bottom: 1.5rem;">
+                                <span class="result-label">Duygu Etiketi</span>
+                                <div class="sentiment-badge" id="res-sentiment">-</div>
+                                <div id="res-manipulation-badge" style="display:none; margin-top:0.5rem; padding:0.35rem 0.75rem; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.4); border-radius:6px; font-size:0.8rem; color:#ef4444; font-weight:600;">
+                                    ⚠ Sahte puan manipülasyonu tespit edildi
+                                </div>
+                            </div>
+                            
+                            <div class="result-item">
+                                <span class="result-label">Duygu Skoru (-1.0 ile 1.0 arası)</span>
+                                <span class="result-value" id="res-sentiment-score">-</span>
+                                <div class="score-bar-container">
+                                    <div class="score-bar" id="res-score-bar"></div>
+                                </div>
+                            </div>
+
+                            <div class="result-item" id="res-user-rating-row" style="display:none; margin-top: 1rem;">
+                                <span class="result-label">Girdiğiniz Puan</span>
+                                <span class="result-value" id="res-user-rating" style="color: var(--primary); font-weight: 700;">-</span>
+                            </div>
+
+                            <div class="result-item" id="res-predicted-rating-row" style="display:none; margin-top: 1rem;">
+                                <span class="result-label">AI Tahmini Yıldız Puanı</span>
+                                <span class="result-value" id="res-predicted-rating" style="color: var(--warning); font-weight: 700;">-</span>
+                            </div>
+                        </div>
+
+                        <div class="result-item" style="margin-top: 1rem;">
+                            <span class="result-label">Önemli Anahtar Kelimeler (Keywords)</span>
+                            <div id="res-keywords" style="margin-top: 0.5rem;">-</div>
+                        </div>
+                    </div>
+
+                    <!-- ABSA Multi-Department Report -->
+                    <div class="result-card" id="absa-report-card" style="display:none; grid-column: 1 / -1;">
+                        <h3 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-layer-group" style="color: var(--primary);"></i>
+                            ABSA — Çok Alanlı / Çoklu Departman Raporu
+                            <span id="absa-aspect-count" style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-left: 0.5rem;"></span>
+                        </h3>
+                        <p id="absa-overall-note" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;"></p>
+                        <div style="overflow-x: auto;">
+                            <table class="data-table" id="absa-table">
+                                <thead>
+                                    <tr>
+                                        <th>Öncelik</th>
+                                        <th>Cümlecik</th>
+                                        <th>Domain</th>
+                                        <th>Alan</th>
+                                        <th>Aspect</th>
+                                        <th>Departman</th>
+                                        <th>Duygu</th>
+                                        <th>Memnuniyet</th>
+                                        <th>Skor</th>
+                                        <th>Öneri</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="absa-table-body"></tbody>
+                            </table>
+                        </div>
+                        <div id="absa-dept-summary" style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
+                    </div>
+
+                    <!-- Review Intelligence (DOC-004) -->
+                    <div class="result-card" id="ri-report-card" style="display:none; grid-column: 1 / -1;">
+                        <h3 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-brain" style="color: var(--primary);"></i>
+                            Review Intelligence — Cümlecik Analizi
+                            <span id="ri-clause-count" style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-left: 0.5rem;"></span>
+                        </h3>
+                        <p id="ri-headline" style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.75rem;"></p>
+                        <div style="overflow-x: auto;">
+                            <table class="data-table" id="ri-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cümlecik</th>
+                                        <th>Aspect</th>
+                                        <th>Departman</th>
+                                        <th>Duygu</th>
+                                        <th>Önem</th>
+                                        <th>Öneri</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ri-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL 2: OCR (IMAGE TO TEXT) -->
+            <div id="ocr-tab" class="view-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title"><i class="fa-solid fa-file-image"></i> Görsel Metin Okuma (OCR)</h2>
+                    <p class="panel-subtitle">Fotoğraflanmış müşteri anket formu, şikayet dilekçesi veya evraklardaki metni çıkarıp analiz edin.</p>
+                </div>
+
+                <div class="ocr-upload-area" id="ocr-dropzone" onclick="document.getElementById('ocr-file-input').click()">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <p style="font-weight: 600;">Metin içeren bir görsel sürükleyin veya buraya tıklayarak seçin</p>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Desteklenen formatlar: JPG, PNG, WEBP</p>
+                    <input type="file" id="ocr-file-input" style="display: none;" accept="image/*" onchange="handleOcrFileSelect(event)">
+                    <img id="image-preview" alt="Seçilen görsel">
+                </div>
+
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <button class="btn" onclick="uploadAndRunOcr()" id="btn-ocr" style="display: none;">
+                        <i class="fa-solid fa-receipt"></i> Metni Oku (OCR)
+                    </button>
+                    <div id="ocr-loader-container" style="display: none;">
+                        <span class="loader"></span> <span style="font-size: 0.9rem; color: var(--text-secondary); margin-left: 0.5rem;">Görsel işleniyor...</span>
+                    </div>
+                </div>
+
+                <div class="results-container" id="ocr-results" style="display: none;">
+                    <div class="result-card" style="grid-column: span 2;">
+                        <h3 style="font-family: var(--font-title); font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-file-lines" style="color: var(--primary);"></i> Görselden Okunan Metin
+                        </h3>
+                        <div class="result-item" style="margin-top: 0.5rem;">
+                            <span class="result-label">Netlik / Kalite Skoru (Blur Skoru)</span>
+                            <span class="result-value" id="ocr-quality">-</span>
+                        </div>
+                        <div class="result-item" style="margin-top: 1rem;">
+                            <span class="result-label">Okunan Ham Metin</span>
+                            <textarea id="ocr-text-output" readonly style="min-height: 150px; background: rgba(0,0,0,0.3); font-family: monospace;"></textarea>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <button class="btn btn-success" onclick="analyzeOcrText()">
+                                <i class="fa-solid fa-chart-line"></i> Bu Metni AI ile Analiz Et
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL 3: HOTEL AI AGENT -->
+            <div id="chatbot-tab" class="view-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title"><i class="fa-solid fa-hotel"></i> Otel AI Asistanı</h2>
+                    <p class="panel-subtitle">Personel / yetkili operasyon asistanı — oda durumu, şikayet trendi, açık arızalar, F&B. İndeks: <span id="chat-index-info">yükleniyor...</span></p>
+                </div>
+
+                <div class="quick-chips">
+                    <span class="quick-chip" onclick="askHotelQuick('Kahvaltı kaçta?')">Kahvaltı kaçta?</span>
+                    <span class="quick-chip" onclick="askHotelQuick('Havuz saatleri?')">Havuz saatleri?</span>
+                    <span class="quick-chip" onclick="askHotelQuick('Check-in saat kaçta?')">Check-in saati</span>
+                    <span class="quick-chip" onclick="askHotelQuick('WiFi çekmiyor')">WiFi çekmiyor</span>
+                    <span class="quick-chip" onclick="askHotelQuick('Havlu istiyorum')">Havlu istiyorum</span>
+                    <span class="quick-chip" onclick="askHotelQuick('Vegan seçenek var mı?')">Vegan seçenek</span>
+                </div>
+
+                <div class="hotel-agent-layout">
+                    <aside class="hotel-profile-sidebar" id="hotel-profile-sidebar">
+                        <h3><i class="fa-solid fa-circle-info"></i> Otel Profili</h3>
+                        <div id="hotel-profile-content">Yükleniyor...</div>
+                    </aside>
+
+                    <div class="chat-container" style="height: 480px;">
+                        <div class="chat-messages" id="chat-box">
+                            <div class="chat-bubble bot">
+                                Merhaba! Ben <strong>Otel AI Asistanı</strong>yım. Check-in, kahvaltı, havuz, spa, oda talepleri ve teknik sorunlarınızda yardımcı olabilirim. Örnek: <em>"Havuz kaçta kapanıyor?"</em> veya <em>"Oda 504'te hangi sorunlar kaldı?"</em>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" id="chat-input" placeholder="Sorunuzu yazın..." onkeydown="if(event.key === 'Enter') sendChatMessage()">
+                            <button class="btn" onclick="sendChatMessage()">
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL 4: SCRAPER -->
+            <div id="scraper-tab" class="view-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title"><i class="fa-solid fa-globe"></i> Çok Platformlu Yorum Kazıma</h2>
+                    <p class="panel-subtitle">Google Places API (yasal) + CSV import (Booking/TripAdvisor/Agoda/Expedia). Engellenen platformlar için CSV export kullanın — <a href="#" onclick="loadScraperSources();return false;" style="color:var(--primary);">Kaynak yasal durumu</a></p>
+                </div>
+
+                <div id="scraper-sources-info" style="display:none; margin-bottom:1rem; padding:0.75rem; background:rgba(99,102,241,0.1); border-radius:8px; font-size:0.85rem;"></div>
+
+                <div class="form-group" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.75rem;">
+                    <div>
+                        <label for="scraper-hotel-name">Otel Adı</label>
+                        <input type="text" id="scraper-hotel-name" placeholder="Crystal Waterworld" value="Crystal Waterworld">
+                    </div>
+                    <div>
+                        <label for="scraper-city">Şehir</label>
+                        <input type="text" id="scraper-city" placeholder="Antalya" value="Antalya">
+                    </div>
+                    <div>
+                        <label for="scraper-country">Ülke</label>
+                        <input type="text" id="scraper-country" placeholder="Turkey" value="Turkey">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Kaynak Seçimi</label>
+                    <div style="display:flex; flex-wrap:wrap; gap:0.75rem; margin-top:0.4rem;">
+                        <label style="display:flex;align-items:center;gap:0.3rem;cursor:pointer;"><input type="checkbox" id="src-google" checked> <i class="fa-brands fa-google"></i> Google (API)</label>
+                        <label style="display:flex;align-items:center;gap:0.3rem;cursor:pointer;"><input type="checkbox" id="src-csv"> <i class="fa-solid fa-file-csv"></i> CSV Import</label>
+                        <label style="display:flex;align-items:center;gap:0.3rem;cursor:pointer;"><input type="checkbox" id="src-booking"> Booking (CSV)</label>
+                        <label style="display:flex;align-items:center;gap:0.3rem;cursor:pointer;"><input type="checkbox" id="src-tripadvisor"> TripAdvisor (CSV/Demo)</label>
+                        <label style="display:flex;align-items:center;gap:0.3rem;cursor:pointer;"><input type="checkbox" id="src-agoda"> Agoda (CSV)</label>
+                        <label style="display:flex;align-items:center;gap:0.3rem;cursor:pointer;"><input type="checkbox" id="src-expedia"> Expedia (CSV)</label>
+                        <label style="display:flex;align-items:center;gap:0.3rem;cursor:pointer;"><input type="checkbox" id="src-academic" checked> Akademik Demo</label>
+                        <label style="display:flex;align-items:center;gap:0.3rem;cursor:pointer;background:rgba(16,185,129,0.1);padding:0.2rem 0.6rem;border-radius:6px;"><input type="checkbox" id="src-playwright" checked> <i class="fa-brands fa-chrome"></i> Google Maps (Playwright Browser) <span style="font-size:0.7rem;color:var(--text-muted);">1500+ yorum</span></label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="google-places-api-key"><i class="fa-brands fa-google"></i> Google Places API Key</label>
+                    <input type="password" id="google-places-api-key" placeholder="AIza... (GOOGLE_PLACES_API_KEY — gerçek Google yorumları için zorunlu)" value="">
+                    <small style="color: var(--text-secondary); font-size: 0.8rem;">Ortam değişkeni tanımlıysa boş bırakabilirsiniz. Google en fazla ~5 yorum döndürür.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="scraper-google-place-id"><i class="fa-brands fa-google"></i> Google Place ID</label>
+                    <input type="text" id="scraper-google-place-id" placeholder="ChIJ... (veya aşağıdaki Maps linki)">
+                </div>
+
+                <div class="form-group">
+                    <label for="scraper-url">Google Maps Linki</label>
+                    <input type="text" id="scraper-url" placeholder="https://www.google.com/maps/place/Otel+Adi/..." value="https://www.google.com/maps/place/Crystal+Waterworld+Resort+%26+Spa/">
+                </div>
+
+                <div style="margin-top:1rem; padding:1rem; border:2px solid var(--primary); border-radius:12px; background:rgba(99,102,241,0.05);">
+                    <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+                        <div style="flex:1; min-width:200px;">
+                            <label for="scraper-playwright-url" style="font-weight:700; font-size:0.9rem;">
+                                <i class="fa-brands fa-chrome"></i> Google Maps URL (Playwright ile otomatik çekim)
+                            </label>
+                            <input type="text" id="scraper-playwright-url" placeholder="https://www.google.com/maps/place/..." value="https://www.google.com/maps/place/Crystal+Waterworld+Resort+%26+Spa/">
+                        </div>
+                        <div>
+                            <label style="display:flex;align-items:center;gap:0.3rem;cursor:pointer; margin-top:1.2rem;">
+                                <input type="checkbox" id="scraper-playwright-allsorts" checked>
+                                Tüm sıralamaları tara (4× daha fazla yorum)
+                            </label>
+                        </div>
+                    </div>
+                    <div style="margin-top:0.75rem; display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+                        <button class="btn btn-success" onclick="runPlaywrightScraper()" id="btn-playwright" style="font-size:1rem; padding:0.75rem 1.5rem;">
+                            <i class="fa-brands fa-chrome"></i> Playwright ile Çek ve Analiz Et
+                        </button>
+                        <span id="playwright-status" style="font-size:0.85rem; color:var(--text-secondary);"></span>
+                    </div>
+                    <div id="playwright-log" style="display:none; margin-top:0.75rem; padding:0.75rem; background:#1e1e2e; color:#cdd6f4; border-radius:8px; font-family:monospace; font-size:0.78rem; max-height:300px; overflow-y:auto;"></div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+                    <div class="form-group">
+                        <label for="scraper-booking-url"><i class="fa-solid fa-bed" style="color:#003580;"></i> Booking.com URL</label>
+                        <input type="text" id="scraper-booking-url" placeholder="https://www.booking.com/hotel/...">
+                    </div>
+                    <div class="form-group">
+                        <label for="scraper-tripadvisor-url"><i class="fa-solid fa-map-location-dot" style="color:#00AF87;"></i> TripAdvisor URL</label>
+                        <input type="text" id="scraper-tripadvisor-url" placeholder="https://www.tripadvisor.com/Hotel_Review-...">
+                    </div>
+                    <div class="form-group">
+                        <label for="scraper-agoda-url"><i class="fa-solid fa-plane" style="color:#5392F9;"></i> Agoda URL</label>
+                        <input type="text" id="scraper-agoda-url" placeholder="https://www.agoda.com/...">
+                    </div>
+                    <div class="form-group">
+                        <label for="scraper-expedia-url"><i class="fa-solid fa-suitcase" style="color:#FFCC00;"></i> Expedia URL</label>
+                        <input type="text" id="scraper-expedia-url" placeholder="https://www.expedia.com/...">
+                    </div>
+                </div>
+
+                <div class="form-group" style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+                    <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer; margin:0;">
+                        <input type="checkbox" id="scraper-allow-fallback">
+                        Demo yorumları kullan (API başarısız olursa)
+                    </label>
+                    <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer; margin:0;">
+                        <input type="checkbox" id="scraper-show-translated" checked>
+                        Türkçe çeviri göster
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="scraper-csv-file">CSV Dosyası İçe Aktar (Booking/TripAdvisor/Agoda/Expedia export)</label>
+                    <input type="file" id="scraper-csv-file" accept=".csv,text/csv" style="max-width:100%;">
+                    <small style="color: var(--text-secondary); font-size: 0.8rem;">Şablonlar: simulation/datasets/booking_import_template.csv, tripadvisor_import_template.csv — veya <a href="#" onclick="downloadCollectorTemplate();return false;" style="color:var(--primary);">Yorum Toplayıcı şablonu</a></small>
+                </div>
+
+                <!-- Yorum Toplayıcı -->
+                <div style="margin-top:2rem; padding:1.25rem; border:1px solid var(--border-color); border-radius:12px; background:rgba(99,102,241,0.05);">
+                    <h3 style="font-family:var(--font-title); font-weight:700; margin:0 0 0.5rem 0; display:flex; align-items:center; gap:0.5rem;">
+                        <i class="fa-solid fa-clipboard-list" style="color:var(--primary);"></i> Yorum Toplayıcı
+                    </h3>
+                    <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1rem;">
+                        Google Maps veya TripAdvisor'dan kopyaladığınız yorumları doğrudan yapıştırın (her yorum: isim → puan → platform satırı → metin). Klasik format için blokları boş satırla ayırın.
+                    </p>
+
+                    <div class="form-group" style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:0.75rem;">
+                        <div>
+                            <label for="collector-hotel">Otel Adı</label>
+                            <input type="text" id="collector-hotel" placeholder="Crystal Waterworld Resort & Spa" value="Crystal Waterworld Resort & Spa">
+                        </div>
+                        <div>
+                            <label for="collector-platform">Platform</label>
+                            <select id="collector-platform">
+                                <option value="manual">Manuel</option>
+                                <option value="google">Google</option>
+                                <option value="tripadvisor">TripAdvisor</option>
+                                <option value="booking">Booking.com</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="collector-city">Şehir</label>
+                            <input type="text" id="collector-city" value="Belek">
+                        </div>
+                        <div>
+                            <label for="collector-country">Ülke</label>
+                            <input type="text" id="collector-country" value="TR">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="collector-paste-text">Yorumları buraya yapıştırın (her yorum ayrı blok)</label>
+                        <textarea id="collector-paste-text" rows="8" placeholder="Anıl Özgül&#10;4/5&#10;Google (4 hafta önce)&#10;Odalar temizdi...&#10;&#10;Seaside01410206931&#10;4/5&#10;Tripadvisor (bir ay önce)&#10;Mayıs ayında konakladık..." style="width:100%; font-family:monospace; font-size:0.85rem;"></textarea>
+                    </div>
+
+                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+                        <button class="btn btn-success" onclick="submitCollectorPaste()" id="btn-collector-paste">
+                            <i class="fa-solid fa-file-csv"></i> CSV'ye Kaydet ve Analiz Et
+                        </button>
+                        <span id="collector-status" style="font-size:0.85rem; color:var(--text-secondary);"></span>
+                    </div>
+
+                    <div id="collector-preview-area" style="display:none; margin-top:1rem;">
+                        <h4 style="font-size:0.9rem; margin-bottom:0.5rem;">Önizleme (<span id="collector-count">0</span> yorum)</h4>
+                        <div class="scraper-table-container">
+                            <table id="collector-preview-table">
+                                <thead><tr><th>Puan</th><th>Tarih</th><th>Yorum</th><th>Dil</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <details style="margin-top:1rem; font-size:0.82rem; color:var(--text-secondary);">
+                        <summary style="cursor:pointer; font-weight:600; color:var(--primary);">Playwright CLI &amp; Yasal Uyarı</summary>
+                        <div style="margin-top:0.75rem; padding:0.75rem; background:rgba(0,0,0,0.03); border-radius:8px;">
+                            <p><strong>Terminal (Cursor):</strong></p>
+                            <pre style="background:#1e1e2e; color:#cdd6f4; padding:0.75rem; border-radius:6px; overflow-x:auto; font-size:0.78rem;">pip install -r simulation/requirements-collector.txt
+playwright install chromium
+
+# Playwright — sayfayı siz açın, araç görünür yorumları okur
+python simulation/collect_reviews.py --url "https://..." --platform tripadvisor --hotel "Rixos" --scroll --max 50
+
+# Yapıştır modu
+python simulation/collect_reviews.py --paste-file simulation/data/paste_example.txt --hotel "Rixos"
+
+# Analiz ile birlikte
+python simulation/collect_reviews.py --paste-file simulation/data/paste_example.txt --analyze --api-url http://127.0.0.1:8000</pre>
+                            <p style="margin-top:0.75rem;"><strong>⚠ Yasal Uyarı:</strong> Booking.com ve TripAdvisor otomatik toplu kazıma yapmayın. Captcha bypass, proxy rotation veya bot koruması aşma <em>desteklenmez</em>. İzinli yöntemler: Google Places API, kendi otel sayfanız, manuel kopyala-yapıştır, açık veri setleri.</p>
+                            <p>Detaylı rehber: <code>simulation/COLLECTOR_GUIDE.md</code></p>
+                        </div>
+                    </details>
+                </div>
+
+                <div>
+                    <button class="btn btn-success" onclick="startMultiScrapingPipeline()" id="btn-scraper">
+                        <i class="fa-solid fa-cloud-arrow-down"></i> Çoklu Kaynaktan Çek ve Analiz Et
+                    </button>
+                    <button class="btn btn-primary" onclick="importCsvReviews()" id="btn-csv-import" style="margin-left:0.5rem;">
+                        <i class="fa-solid fa-file-csv"></i> CSV'den İçe Aktar
+                    </button>
+                    <div id="scraper-loader-container" style="display: none; margin-left: 1rem; display: inline-block; vertical-align: middle;">
+                        <span class="loader"></span> <span style="font-size: 0.9rem; color: var(--text-secondary); margin-left: 0.5rem;">Yorumlar işleniyor...</span>
+                    </div>
+                </div>
+
+                <div id="scraper-results-area" style="display: none;">
+                    <div id="source-summary" class="source-summary" style="display:none;"></div>
+                    <div class="scraper-controls">
+                        <label>Platform:</label>
+                        <select id="scraper-platform-filter" onchange="filterScraperTable()">
+                            <option value="">Tümü</option>
+                        </select>
+                        <label><input type="checkbox" id="scraper-sort-helpful" onchange="filterScraperTable()"> En çok beğenilene göre sırala</label>
+                    </div>
+                    <h3 style="font-family: var(--font-title); font-weight: 700; margin-top: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fa-solid fa-table-list" style="color: var(--primary);"></i> Canlı Yorum Çıktısı (Yapay Zeka Etiketli)
+                    </h3>
+                    
+                    <div class="scraper-table-container">
+                        <table id="scraper-table">
+                            <thead>
+                                <tr>
+                                    <th>Platform</th>
+                                    <th>Misafir</th>
+                                    <th>Yorum</th>
+                                    <th>Dil</th>
+                                    <th>Departman</th>
+                                    <th>Duygu</th>
+                                    <th>Puan</th>
+                                    <th>Beğeni</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="rec-box" id="scraper-recommendations">
+                        <h4 style="font-family: var(--font-title); font-weight: 700; color: var(--success); margin-bottom: 0.5rem;">
+                            <i class="fa-solid fa-lightbulb"></i> Yapay Zeka Önerilen Aksiyon Raporu
+                        </h4>
+                        <div id="scraper-recs-content" style="font-size: 0.95rem; line-height: 1.6; color: var(--text-primary);">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL 5: MANAGER DASHBOARD -->
+            <div id="dashboard-tab" class="view-panel">
+                <div class="panel-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
+                    <div>
+                        <h2 class="panel-title"><i class="fa-solid fa-chart-pie"></i> Yönetici Dashboard</h2>
+                        <p class="panel-subtitle">Toplu yorum analizi, departman dağılımı, anahtar kelimeler ve aksiyon önerileri.</p>
+                    </div>
+                    <div style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
+                        <select id="dash-domain-filter" class="form-input" style="min-width:180px;" onchange="loadDashboard()">
+                            <option value="">Tüm Domainler</option>
+                            <option value="turizm">Turizm / Otel</option>
+                        </select>
+                        <select id="dash-role-filter" class="form-input" style="min-width:200px;" onchange="loadDashboard()">
+                            <option value="">Genel Müdür (tüm departmanlar)</option>
+                            <option value="housekeeping">Housekeeping — Temizlik/Oda</option>
+                            <option value="fb">F&B — Yemek & İçecek</option>
+                            <option value="personel">Personel Davranışı</option>
+                            <option value="teknik">Teknik Servis</option>
+                            <option value="spa">Spa & Aktivite</option>
+                            <option value="on_buro">Ön Büro / Resepsiyon</option>
+                            <option value="crm">Müşteri İlişkileri (tümü)</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="loadDashboard(true)" id="btn-refresh-dashboard">
+                            <i class="fa-solid fa-rotate"></i> Yenile
+                        </button>
+                    </div>
+                </div>
+
+                <div id="dash-loading" style="display:none; padding:2rem; text-align:center;">
+                    <span class="loader"></span> Dashboard yükleniyor...
+                </div>
+
+                <div id="dash-content" style="display:none;">
+                    <!-- KPI Cards -->
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:1rem; margin-bottom:1.5rem;">
+                        <div class="result-card" style="text-align:center; padding:1.2rem;">
+                            <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">TOPLAM YORUM</div>
+                            <div id="dash-total" style="font-size:2rem; font-weight:800; color:var(--primary);">-</div>
+                        </div>
+                        <div class="result-card" style="text-align:center; padding:1.2rem;">
+                            <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">OLUMSUZ %</div>
+                            <div id="dash-neg-pct" style="font-size:2rem; font-weight:800; color:#dc2626;">-</div>
+                        </div>
+                        <div class="result-card" style="text-align:center; padding:1.2rem;">
+                            <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">OLUMLU %</div>
+                            <div id="dash-pos-pct" style="font-size:2rem; font-weight:800; color:#16a34a;">-</div>
+                        </div>
+                        <div class="result-card" style="text-align:center; padding:1.2rem;">
+                            <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">ORT. PUAN</div>
+                            <div id="dash-avg-rating" style="font-size:2rem; font-weight:800; color:#ca8a04;">-</div>
+                        </div>
+                        <div class="result-card" style="text-align:center; padding:1.2rem;">
+                            <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">RAG KAYIT</div>
+                            <div id="dash-rag-count" style="font-size:1.4rem; font-weight:800; color:var(--primary);">-</div>
+                            <div id="dash-rag-status" style="font-size:0.7rem; color:var(--text-muted);"></div>
+                        </div>
+                        <div class="result-card" style="text-align:center; padding:1.2rem;">
+                            <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">ÖĞRENME BUFFER</div>
+                            <div id="dash-learn-buffer" style="font-size:1.4rem; font-weight:800; color:#7c3aed;">-</div>
+                            <div id="dash-learn-status" style="font-size:0.7rem; color:var(--text-muted);"></div>
+                        </div>
+                    </div>
+
+                    <!-- Öğrenme İstatistikleri -->
+                    <div class="result-card" style="margin-bottom:1.5rem; border-left:4px solid #7c3aed;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:1rem;">
+                            <h3 style="font-family:var(--font-title); font-weight:700; margin:0;">
+                                <i class="fa-solid fa-brain"></i> Öğrenme İstatistikleri
+                            </h3>
+                            <button class="btn btn-primary" onclick="triggerRetrain()" id="btn-retrain-models" style="font-size:0.85rem;">
+                                <i class="fa-solid fa-rotate"></i> Modelleri Güncelle
+                            </button>
+                        </div>
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:1rem; margin-bottom:1rem;">
+                            <div style="text-align:center;">
+                                <div style="font-size:0.7rem; color:var(--text-muted);">BUFFER YORUM</div>
+                                <div id="learn-stat-reviews" style="font-size:1.5rem; font-weight:800; color:#7c3aed;">-</div>
+                            </div>
+                            <div style="text-align:center;">
+                                <div style="font-size:0.7rem; color:var(--text-muted);">DÜZELTME</div>
+                                <div id="learn-stat-corrections" style="font-size:1.5rem; font-weight:800; color:#ea580c;">-</div>
+                            </div>
+                            <div style="text-align:center;">
+                                <div style="font-size:0.7rem; color:var(--text-muted);">SON EĞİTİM</div>
+                                <div id="learn-stat-last" style="font-size:0.85rem; font-weight:600; color:var(--text-primary);">-</div>
+                            </div>
+                            <div style="text-align:center;">
+                                <div style="font-size:0.7rem; color:var(--text-muted);">DOĞRULUK</div>
+                                <div id="learn-stat-accuracy" style="font-size:1.2rem; font-weight:800; color:#16a34a;">-</div>
+                            </div>
+                        </div>
+                        <div id="learn-retrain-status" style="font-size:0.85rem; color:var(--text-muted);"></div>
+                    </div>
+
+                    <!-- Executive Summary -->
+                    <div class="result-card" style="margin-bottom:1.5rem; border-left:4px solid var(--primary);">
+                        <h3 style="font-family:var(--font-title); font-weight:700; margin-bottom:0.75rem;">
+                            <i class="fa-solid fa-file-lines"></i> Yönetici Özeti
+                        </h3>
+                        <pre id="dash-exec-summary" style="white-space:pre-wrap; font-family:inherit; font-size:0.9rem; line-height:1.7; color:var(--text-primary); margin:0;"></pre>
+                    </div>
+
+                    <!-- Trends + Category Positive Rates -->
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem; margin-bottom:1.5rem;">
+                        <div class="result-card">
+                            <h3 style="font-family:var(--font-title); font-weight:700; margin-bottom:1rem;">
+                                <i class="fa-solid fa-chart-line"></i> Son 7 Gün Trendleri
+                            </h3>
+                            <div id="dash-trends"></div>
+                        </div>
+                        <div class="result-card">
+                            <h3 style="font-family:var(--font-title); font-weight:700; margin-bottom:1rem;">
+                                <i class="fa-solid fa-thumbs-up"></i> Kategori Olumlu Oranları
+                            </h3>
+                            <div id="dash-pos-rates"></div>
+                        </div>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem; margin-bottom:1.5rem;">
+                        <!-- Dept Distribution -->
+                        <div class="result-card">
+                            <h3 style="font-family:var(--font-title); font-weight:700; margin-bottom:1rem;">
+                                <i class="fa-solid fa-building"></i> Departman Dağılımı
+                            </h3>
+                            <div id="dash-dept-bars"></div>
+                        </div>
+                        <!-- Top Keywords -->
+                        <div class="result-card">
+                            <h3 style="font-family:var(--font-title); font-weight:700; margin-bottom:1rem;">
+                                <i class="fa-solid fa-tags"></i> En Sık Negatif Kelimeler
+                            </h3>
+                            <div id="dash-keywords"></div>
+                        </div>
+                    </div>
+
+                    <!-- Dept Satisfaction Breakdown -->
+                    <div class="result-card" style="margin-bottom:1.5rem;">
+                        <h3 style="font-family:var(--font-title); font-weight:700; margin-bottom:1rem;">
+                            <i class="fa-solid fa-chart-bar"></i> Birim Bazlı Memnuniyet Dağılımı
+                        </h3>
+                        <div id="dash-sat-breakdown"></div>
+                    </div>
+
+                    <!-- Entity/Alan Satisfaction Breakdown -->
+                    <div class="result-card" style="margin-bottom:1.5rem;">
+                        <h3 style="font-family:var(--font-title); font-weight:700; margin-bottom:1rem;">
+                            <i class="fa-solid fa-map-location-dot"></i> Birim/Alan Bazlı Memnuniyet
+                        </h3>
+                        <div id="dash-entity-sat-breakdown"></div>
+                    </div>
+
+                    <!-- Domain Satisfaction -->
+                    <div class="result-card" style="margin-bottom:1.5rem;">
+                        <h3 style="font-family:var(--font-title); font-weight:700; margin-bottom:1rem;">
+                            <i class="fa-solid fa-globe"></i> Domain Bazlı Memnuniyet
+                        </h3>
+                        <div id="dash-domain-sat-breakdown"></div>
+                    </div>
+
+                    <!-- Dept Recommendations -->
+                    <div class="result-card" style="margin-bottom:1.5rem;">
+                        <h3 style="font-family:var(--font-title); font-weight:700; margin-bottom:1rem;">
+                            <i class="fa-solid fa-list-check"></i> Departman Aksiyon Önerileri
+                        </h3>
+                        <div id="dash-recommendations"></div>
+                    </div>
+
+                    <!-- Recent Reviews Table -->
+                    <div class="result-card">
+                        <h3 style="font-family:var(--font-title); font-weight:700; margin-bottom:1rem;">
+                            <i class="fa-solid fa-table"></i> Son Yorumlar
+                        </h3>
+                        <div style="overflow-x:auto;">
+                            <table class="data-table" id="dash-reviews-table">
+                                <thead>
+                                    <tr>
+                                        <th>Yorum</th>
+                                        <th>Departman</th>
+                                        <th>Duygu</th>
+                                        <th>Puan</th>
+                                        <th>Kaynak</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dash-reviews-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        const apiBase = window.location.origin;
+        const API_TIMEOUT_MS = 30000;
+
+        async function fetchWithTimeout(url, options = {}, timeoutMs = API_TIMEOUT_MS) {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), timeoutMs);
+            try {
+                return await fetch(url, { ...options, signal: controller.signal });
+            } catch (err) {
+                if (err.name === 'AbortError') {
+                    throw new Error(`İstek zaman aşımına uğradı (${timeoutMs / 1000}s). Sunucu yoğun olabilir — tekrar deneyin.`);
+                }
+                throw err;
+            } finally {
+                clearTimeout(timer);
+            }
+        }
+
+        // RAG indeks bilgisini yükle
+        fetch(`${apiBase}/chat/info`).then(r => r.json()).then(info => {
+            const el = document.getElementById('chat-index-info');
+            if (el && info.indexed_records) {
+                el.textContent = `${info.indexed_records.toLocaleString('tr-TR')} kayıt (${info.index_path || 'rag_index.joblib'})`;
+            } else if (el) {
+                el.textContent = 'rag_index.joblib henüz oluşturulmamış';
+            }
+        }).catch(() => {
+            const el = document.getElementById('chat-index-info');
+            if (el) el.textContent = 'sunucu bağlantısı bekleniyor';
+        });
+
+        // Tab switcher
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
+            
+            // Find button trigger
+            const triggerBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.getAttribute('onclick').includes(tabId));
+            if (triggerBtn) triggerBtn.classList.add('active');
+            
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        const SATISFACTION_COLORS = {
+            'Çok İyi': '#16a34a',
+            'İyi': '#84cc16',
+            'Kararsız': '#ca8a04',
+            'Az Memnun': '#ea580c',
+            'Hiç Memnun Değil': '#dc2626',
+        };
+
+        function satisfactionBadgeClass(label) {
+            return 'sat-' + (label || '').replace(/\s+/g, '-');
+        }
+
+        function renderSatisfactionBadge(label) {
+            const cls = satisfactionBadgeClass(label);
+            return `<span class="satisfaction-badge ${cls}">${label || '—'}</span>`;
+        }
+
+        // ABSA multi-department / multi-domain report
+        async function renderAbsaReport(comment, rating, prefetchedAbsa) {
+            const card = document.getElementById('absa-report-card');
+            const tbody = document.getElementById('absa-table-body');
+            const summaryEl = document.getElementById('absa-dept-summary');
+            if (!card || !tbody) return;
+
+            try {
+                let absa = prefetchedAbsa;
+                if (!absa) {
+                    const payload = { comment };
+                    if (rating >= 1 && rating <= 5) payload.rating = rating;
+                    let resp = await fetch(`${apiBase}/analyze-multidomain`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                    });
+                    if (!resp.ok) {
+                        resp = await fetch(`${apiBase}/analyze-absa`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload),
+                        });
+                    }
+                    if (!resp.ok) { card.style.display = 'none'; return; }
+                    absa = await resp.json();
+                }
+
+                if (!absa || !absa.aspects || !absa.aspects.length) {
+                    card.style.display = 'none';
+                    return;
+                }
+
+                const isMultiDomain = absa.aspects.some(a => a.domain || a.domainLabel);
+                card.style.display = 'block';
+                document.getElementById('absa-aspect-count').innerText =
+                    `${absa.aspectCount} aspect${absa.isMultiAspect ? ' (çoklu)' : ''}${isMultiDomain ? ' · çok alanlı' : ''}`;
+                document.getElementById('absa-overall-note').innerText =
+                    `Genel duygu: ${absa.overallSentiment} (${absa.overallScore})`;
+
+                tbody.innerHTML = '';
+                const priorityLabels = { critical: 'KRİTİK', high: 'YÜKSEK', medium: 'ORTA', low: 'DÜŞÜK', info: 'BİLGİ' };
+                absa.aspects.forEach(a => {
+                    const tr = document.createElement('tr');
+                    const entityTypeMap = { generic_unit: 'Genel Alan', room: 'Oda', bar: 'Bar', restaurant: 'Restoran', pool: 'Havuz', beach: 'Plaj', spa: 'Spa' };
+                    const rawType = a.entity?.type || a.entityType || 'generic_unit';
+                    const typeText = entityTypeMap[rawType] || rawType;
+                    const entityLabel = (rawType === 'generic_unit' && !a.entity?.id) ? '—' : `${typeText}${a.entity?.id ? ' (' + a.entity.id + ')' : ''}`;
+                    tr.innerHTML = `
+                        <td><span class="priority-${a.priority}">${priorityLabels[a.priority] || a.priority}</span></td>
+                        <td>${a.clause}</td>
+                        <td>${a.domainLabel || a.domain || '—'}</td>
+                        <td>${entityLabel}</td>
+                        <td>${a.aspectLabel || a.aspect}</td>
+                        <td>${a.departmentLabel || a.department}</td>
+                        <td><span class="sentiment-badge sentiment-${a.sentiment}">${(a.sentiment === 'Positive' || a.sentiment === 'OLUMLU') ? 'OLUMLU' : (a.sentiment === 'Negative' || a.sentiment === 'OLUMSUZ') ? 'OLUMSUZ' : 'NÖTR'}</span></td>
+                        <td>${renderSatisfactionBadge(a.satisfactionLevel)}</td>
+                        <td>${a.sentimentScore}</td>
+                        <td style="font-size:0.78rem;">${(a.suggestion || '').substring(0, 120)}${(a.suggestion || '').length > 120 ? '…' : ''}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                summaryEl.innerHTML = '';
+                Object.entries(absa.departmentSummary || {}).forEach(([dept, stats]) => {
+                    const chip = document.createElement('span');
+                    chip.className = 'absa-dept-chip';
+                    const label = stats.departmentLabel || stats.label || dept;
+                    const domainTag = stats.domainLabel ? `[${stats.domainLabel}] ` : '';
+                    const satParts = stats.satisfaction
+                        ? Object.entries(stats.satisfaction).filter(([, c]) => c > 0).map(([l, c]) => `${l}:${c}`).join(' · ')
+                        : '';
+                    chip.innerHTML = `<i class="fa-solid fa-building"></i> ${domainTag}${label}: ${stats.total} (🔴${stats.negative || 0} 🟢${stats.positive || 0})${satParts ? `<br><span style="font-size:0.7rem;font-weight:500;">${satParts}</span>` : ''}`;
+                    summaryEl.appendChild(chip);
+                });
+                if (absa.domainSummary) {
+                    Object.entries(absa.domainSummary).forEach(([domId, stats]) => {
+                        const chip = document.createElement('span');
+                        chip.className = 'absa-dept-chip';
+                        chip.style.borderColor = 'rgba(16,185,129,0.3)';
+                        chip.innerHTML = `<i class="fa-solid fa-globe"></i> ${stats.label || domId}: ${stats.total} aspect`;
+                        summaryEl.appendChild(chip);
+                    });
+                }
+            } catch (e) {
+                card.style.display = 'none';
+            }
+        }
+
+        function renderReviewIntelligence(ri) {
+            const card = document.getElementById('ri-report-card');
+            if (!card) return;
+            if (!ri || !ri.segments || !ri.segments.length) {
+                card.style.display = 'none';
+                return;
+            }
+            card.style.display = 'block';
+            const headline = ri.summary?.headline || 'Analiz tamamlandı';
+            document.getElementById('ri-headline').innerText = headline;
+            const countEl = document.getElementById('ri-clause-count');
+            if (countEl) countEl.innerText = `(${ri.segments.length} cümlecik)`;
+            const tbody = document.getElementById('ri-table-body');
+            tbody.innerHTML = '';
+            ri.segments.forEach(seg => {
+                const tr = document.createElement('tr');
+                const sev = seg.severity || 'low';
+                const rec = seg.recommendation?.action || '—';
+                tr.innerHTML = `
+                    <td>${seg.text || '—'}</td>
+                    <td>${seg.aspect?.label || seg.aspect?.key || '—'}</td>
+                    <td>${seg.department?.label || seg.department?.key || '—'}</td>
+                    <td>${seg.sentiment?.label || '—'}</td>
+                    <td><span class="priority-badge priority-${sev}">${sev}</span></td>
+                    <td style="font-size:0.8rem;">${rec}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Analyze single review
+        async function analyzeSingleReview() {
+            const comment = document.getElementById('analyze-comment').value.trim();
+            const ratingVal = document.getElementById('analyze-rating').value;
+            const apiKey = document.getElementById('analyze-api-key').value.trim();
+            const btn = document.getElementById('btn-analyze');
+
+            if (!comment) {
+                alert("Lütfen bir yorum girin.");
+                return;
+            }
+
+            btn.innerHTML = `<span class="loader"></span> Analiz ediliyor...`;
+            btn.disabled = true;
+
+            const payload = { comment: comment };
+            const parsedRating = ratingVal !== "" && ratingVal != null ? parseInt(ratingVal, 10) : null;
+            if (parsedRating >= 1 && parsedRating <= 5) payload.rating = parsedRating;
+            if (apiKey) payload.api_key = apiKey;
+
+            try {
+                const response = await fetchWithTimeout(`${apiBase}/analyze-review`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    let detail = 'API hatası oluştu.';
+                    try {
+                        const errBody = await response.json();
+                        detail = errBody.detail || detail;
+                    } catch (_) {}
+                    throw new Error(detail);
+                }
+                
+                const data = await response.json();
+                
+                // Show results panel
+                document.getElementById('analysis-results').style.display = 'grid';
+                
+                // Populate fields
+                document.getElementById('res-category').innerText = data.category;
+                const confPct = Math.round(data.confidence * 100);
+                const confEl = document.getElementById('res-confidence');
+                confEl.innerText = `%${confPct}`;
+                if (confPct >= 85) {
+                    confEl.style.color = 'var(--success)';
+                } else if (confPct >= 70) {
+                    confEl.style.color = '#ca8a04';
+                } else if (confPct >= 55) {
+                    confEl.style.color = '#ea580c';
+                } else {
+                    confEl.style.color = '#dc2626';
+                }
+                confEl.style.fontWeight = '700';
+                const methodLabels = { rules: 'Kural', model: 'ML Model', gemini: 'Gemini', fallback: 'Fallback' };
+                const methodEl = document.getElementById('res-class-method');
+                if (data.classificationMethod && methodEl) {
+                    methodEl.innerText = `(${methodLabels[data.classificationMethod] || data.classificationMethod})`;
+                } else if (methodEl) {
+                    methodEl.innerText = '';
+                }
+                const mixedNote = document.getElementById('res-mixed-note');
+                if (data.isMixedReview && mixedNote) {
+                    mixedNote.style.display = 'block';
+                    const sec = data.secondaryCategory ? ` (olumlu: ${data.secondaryCategory})` : '';
+                    mixedNote.innerText = `ℹ Karışık yorum — birincil şikayet kategorisi önceliklendirildi${sec}`;
+                } else if (mixedNote) {
+                    mixedNote.style.display = 'none';
+                }
+                document.getElementById('res-summary').innerText = `"${data.summary}"`;
+                document.getElementById('res-suggestion').innerText = data.suggestion;
+                
+                // Sentiment Setup
+                const badge = document.getElementById('res-sentiment');
+                badge.className = `sentiment-badge sentiment-${data.sentiment}`;
+                badge.innerText = (data.sentiment === 'Positive' || data.sentiment === 'OLUMLU') ? 'OLUMLU' : (data.sentiment === 'Negative' || data.sentiment === 'OLUMSUZ') ? 'OLUMSUZ' : 'NÖTR';
+
+                const manipBadge = document.getElementById('res-manipulation-badge');
+                if (data.isManipulation && manipBadge) {
+                    manipBadge.style.display = 'block';
+                } else if (manipBadge) {
+                    manipBadge.style.display = 'none';
+                }
+                
+                document.getElementById('res-sentiment-score').innerText = data.sentimentScore;
+
+                // Kullanıcı puanı vs AI tahmini
+                const userRatingRow = document.getElementById('res-user-rating-row');
+                const predRow = document.getElementById('res-predicted-rating-row');
+                const displayUserRating = data.userRating || parsedRating;
+                if (displayUserRating >= 1 && displayUserRating <= 5) {
+                    userRatingRow.style.display = 'block';
+                    document.getElementById('res-user-rating').innerText = `⭐ ${displayUserRating} Yıldız`;
+                    predRow.style.display = 'none';
+                } else {
+                    userRatingRow.style.display = 'none';
+                    if (data.predictedRating) {
+                        predRow.style.display = 'block';
+                        document.getElementById('res-predicted-rating').innerText = `⭐ ${data.predictedRating} Yıldız (AI Tahmini)`;
+                    } else {
+                        predRow.style.display = 'none';
+                    }
+                }
+                
+                // Score bar
+                const bar = document.getElementById('res-score-bar');
+                // Map [-1.0, 1.0] to [0%, 100%]
+                const percentage = ((data.sentimentScore + 1) / 2) * 100;
+                bar.style.width = `${percentage}%`;
+                if (data.sentiment === 'Positive' || data.sentiment === 'OLUMLU') {
+                    bar.style.backgroundColor = 'var(--success)';
+                } else if (data.sentiment === 'Negative' || data.sentiment === 'OLUMSUZ') {
+                    bar.style.backgroundColor = 'var(--danger)';
+                } else {
+                    bar.style.backgroundColor = 'var(--warning)';
+                }
+
+                // Keywords Setup
+                const kwContainer = document.getElementById('res-keywords');
+                kwContainer.innerHTML = '';
+                if (data.keywords && data.keywords.length > 0) {
+                    data.keywords.forEach(kw => {
+                        const span = document.createElement('span');
+                        span.className = 'keyword-tag';
+                        span.innerText = kw;
+                        kwContainer.appendChild(span);
+                    });
+                } else {
+                    kwContainer.innerText = 'Anahtar kelime bulunamadı.';
+                }
+
+                if (data.absaAspects && data.absaAspects.length) {
+                    renderAbsaReport(comment, parsedRating, {
+                        aspects: data.absaAspects,
+                        departmentSummary: data.absaDepartmentSummary || {},
+                        aspectCount: data.absaAspects.length,
+                        isMultiAspect: data.absaAspects.length >= 2,
+                        overallSentiment: data.sentiment,
+                        overallScore: data.sentimentScore,
+                    });
+                } else {
+                    renderAbsaReport(comment, parsedRating);
+                }
+
+                renderReviewIntelligence(data.reviewIntelligence);
+
+                // Öğrenme badge + düzeltme formu
+                window._lastReviewId = data.reviewId || null;
+                window._lastComment = comment;
+                const learnBadge = document.getElementById('learn-badge-row');
+                const corrForm = document.getElementById('correction-form');
+                if (data.learned && learnBadge) {
+                    learnBadge.style.display = 'block';
+                    const ridEl = document.getElementById('learn-review-id');
+                    if (ridEl && data.reviewId) ridEl.innerText = `(ID: ${data.reviewId})`;
+                } else if (learnBadge) {
+                    learnBadge.style.display = 'none';
+                }
+                if (corrForm) {
+                    corrForm.style.display = 'block';
+                    const catSel = document.getElementById('corr-category');
+                    if (catSel && data.category) catSel.value = data.category;
+                    const sentSel = document.getElementById('corr-sentiment');
+                    if (sentSel && data.sentiment) sentSel.value = data.sentiment;
+                    document.getElementById('corr-status').innerText = '';
+                }
+
+            } catch (err) {
+                alert(`Hata: ${err.message}`);
+            } finally {
+                btn.innerHTML = `<i class="fa-solid fa-circle-play"></i> Analiz Et`;
+                btn.disabled = false;
+            }
+        }
+
+        // OCR file drag & drop & select
+        function handleOcrFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('image-preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    document.getElementById('btn-ocr').style.display = 'inline-flex';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Run OCR
+        async function uploadAndRunOcr() {
+            const fileInput = document.getElementById('ocr-file-input');
+            const file = fileInput.files[0];
+            const btn = document.getElementById('btn-ocr');
+            const loader = document.getElementById('ocr-loader-container');
+
+            if (!file) return;
+
+            btn.style.display = 'none';
+            loader.style.display = 'inline-block';
+
+            const formData = new FormData();
+            formData.append("image", file);
+
+            try {
+                const response = await fetch(`${apiBase}/ocr-image`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) throw new Error("OCR servisi hata verdi.");
+                
+                const data = await response.json();
+                
+                // Show OCR result panel
+                document.getElementById('ocr-results').style.display = 'grid';
+                document.getElementById('ocr-quality').innerText = `${Math.round(data.quality_score * 100)} / 100`;
+                document.getElementById('ocr-text-output').value = data.ocr_text || "[Görselde metin tespit edilemedi]";
+
+            } catch (err) {
+                alert(`Hata: ${err.message}`);
+            } finally {
+                loader.style.display = 'none';
+                btn.style.display = 'inline-flex';
+            }
+        }
+
+        // Analyze OCR read text
+        function analyzeOcrText() {
+            const text = document.getElementById('ocr-text-output').value;
+            if (text && !text.startsWith("[")) {
+                switchTab('analyze-tab');
+                document.getElementById('analyze-comment').value = text;
+            }
+        }
+
+        function renderEntityIssueCard(entityReport) {
+            if (!entityReport || !entityReport.issues || !entityReport.issues.length) return '';
+            const label = entityReport.entity_label || entityReport.room_number || entityReport.entity_id;
+            const open = entityReport.issues.filter(i => i.status === 'open' || i.status === 'scheduled');
+            const resolved = entityReport.issues.filter(i => i.status === 'resolved');
+            let html = `<div class="room-issue-card"><h4>📍 ${label} Özet Kartı</h4>`;
+            open.forEach(i => {
+                const cls = i.status === 'scheduled' ? 'badge-scheduled' : 'badge-open';
+                const statusLabel = i.status === 'scheduled' ? 'Planlandı' : 'Açık';
+                html += `<div class="issue-row"><span>${i.issue_type}</span><span class="${cls}">${statusLabel}</span></div>`;
+            });
+            resolved.forEach(i => {
+                html += `<div class="issue-row"><span>${i.issue_type}</span><span class="badge-resolved">Çözüldü</span></div>`;
+            });
+            html += `<div style="margin-top:0.4rem;font-size:0.8rem;color:var(--text-secondary);">Açık: ${entityReport.open_count || 0} | Çözülen: ${entityReport.resolved_count || 0}</div></div>`;
+            return html;
+        }
+
+        function renderRoomIssueCard(roomReport) {
+            return renderEntityIssueCard(roomReport);
+        }
+
+        function renderMultidomainAspectCard(aspects) {
+            if (!aspects || !aspects.length) return '';
+            let html = '<div class="room-issue-card" style="border-left:3px solid var(--primary);"><h4>🔍 Çok Alanlı Aspect Özeti</h4>';
+            aspects.slice(0, 6).forEach(a => {
+                const domain = a.domainLabel || a.domain || '—';
+                const aspect = a.aspectLabel || a.aspect || '—';
+                const sent = a.sentiment === 'Positive' ? '🟢' : a.sentiment === 'Negative' ? '🔴' : '⚪';
+                const sat = a.satisfactionLevel ? ` · ${a.satisfactionLevel}` : '';
+                html += `<div class="issue-row"><span>${sent} [${domain}] ${aspect}${sat}</span><span style="font-size:0.75rem;">${(a.clause || '').substring(0, 50)}</span></div>`;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        function askHotelQuick(text) {
+            document.getElementById('chat-input').value = text;
+            sendChatMessage();
+        }
+
+        async function loadHotelProfile() {
+            const el = document.getElementById('hotel-profile-content');
+            if (!el) return;
+            try {
+                const resp = await fetch(`${apiBase}/hotel/profile`);
+                if (!resp.ok) throw new Error('Profil yüklenemedi');
+                const p = await resp.json();
+                const hotel = p.hotel || {};
+                el.innerHTML = `
+                    <div class="hotel-profile-item"><strong>${hotel.name || 'Otel'}</strong> ${'★'.repeat(hotel.stars || 0)}</div>
+                    <div class="hotel-profile-item">Check-in: <strong>${p.check_in || '—'}</strong></div>
+                    <div class="hotel-profile-item">Check-out: <strong>${p.check_out || '—'}</strong></div>
+                    <div class="hotel-profile-item">Kahvaltı: <strong>${(p.breakfast || {}).hours || '—'}</strong></div>
+                    <div class="hotel-profile-item">Havuz: <strong>${(p.pool || {}).hours || '—'}</strong></div>
+                    <div class="hotel-profile-item">Spa: <strong>${(p.spa || {}).hours || '—'}</strong></div>
+                    <div class="hotel-profile-item">Otopark: <strong>${(p.parking || {}).free ? 'Ücretsiz' : 'Ücretli'}</strong></div>
+                    <div class="hotel-profile-item">Depozito: <strong>${(p.deposit || {}).amount || '—'}</strong></div>
+                `;
+            } catch (e) {
+                el.innerText = 'Profil yüklenemedi.';
+            }
+        }
+
+        function renderAgentBadges(data) {
+            if (!data.intent && !data.department) return '';
+            const priClass = data.priority === 'high' ? 'priority-high' : (data.priority === 'medium' ? 'priority-medium' : 'priority-low');
+            let html = '<div class="agent-meta-badges">';
+            if (data.intent) html += `<span class="agent-badge intent">Intent: ${data.intent}</span>`;
+            if (data.department) html += `<span class="agent-badge dept">${data.department}</span>`;
+            if (data.priority) html += `<span class="agent-badge ${priClass}">${data.priority}</span>`;
+            if (data.action_required) html += `<span class="agent-badge action">Aksiyon Gerekli</span>`;
+            html += '</div>';
+            return html;
+        }
+
+        // Chatbot (Hotel AI Agent)
+        async function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            const chatBox = document.getElementById('chat-box');
+            const apiKey = document.getElementById('analyze-api-key').value.trim();
+
+            if (!text) return;
+
+            // Add user bubble
+            const userBubble = document.createElement('div');
+            userBubble.className = 'chat-bubble user';
+            userBubble.innerText = text;
+            chatBox.appendChild(userBubble);
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Add loading bot bubble
+            const botLoadingBubble = document.createElement('div');
+            botLoadingBubble.className = 'chat-bubble bot';
+            botLoadingBubble.innerHTML = `<span class="loader"></span> Düşünülüyor...`;
+            chatBox.appendChild(botLoadingBubble);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            const payload = { query: text };
+            if (apiKey) payload.api_key = apiKey;
+
+            try {
+                const response = await fetch(`${apiBase}/hotel/agent`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) throw new Error("Hotel Agent hata verdi.");
+                const data = await response.json();
+                
+                let meta = '';
+                const rag = data.rag_meta || {};
+                // Staff ops cevaplarında debug footer yok; yalnızca RAG indeks bilgisi
+                const staffModes = new Set([
+                    'conversational', 'static_help', 'entity_tracker',
+                    'hotel_knowledge', 'intent_action', 'analytics',
+                ]);
+                if (rag.indexed_records && data.mode && String(data.mode).includes('rag')) {
+                    meta = `\n\n<span style="opacity:0.55;font-size:0.8em">${rag.matches_found || 0} benzer | ${data.mode}</span>`;
+                } else if (data.mode && !staffModes.has(data.mode) && rag.indexed_records) {
+                    meta = `\n\n<span style="opacity:0.55;font-size:0.8em">${rag.matches_found || 0} benzer</span>`;
+                }
+                let cardHtml = '';
+                const roomNum = (data.entities || {}).room_number;
+                if (data.mode === 'entity_tracker' && roomNum) {
+                    try {
+                        const rr = await fetch(`${apiBase}/rooms/${roomNum}/report`);
+                        if (rr.ok) cardHtml = renderRoomIssueCard(await rr.json());
+                    } catch (_) {}
+                }
+                botLoadingBubble.innerHTML = (data.answer + meta).replace(/\n/g, '<br>') + renderAgentBadges(data) + cardHtml;
+            } catch (err) {
+                botLoadingBubble.innerText = `Hata: ${err.message}`;
+            } finally {
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+
+        // Manager Dashboard
+        async function loadDashboard(forceRefresh) {
+            const loading = document.getElementById('dash-loading');
+            const content = document.getElementById('dash-content');
+            const role = (document.getElementById('dash-role-filter') || {}).value || '';
+            const domain = (document.getElementById('dash-domain-filter') || {}).value || '';
+            const params = new URLSearchParams();
+            if (role) params.set('role', role);
+            if (domain) params.set('domain', domain);
+            const queryStr = params.toString() ? `?${params.toString()}` : '';
+            loading.style.display = 'block';
+            content.style.display = 'none';
+            try {
+                if (forceRefresh) {
+                    await fetch(`${apiBase}/dashboard/seed?force=false`);
+                }
+                const [fullResp, reviewsResp] = await Promise.all([
+                    fetch(`${apiBase}/dashboard/full${queryStr}`),
+                    fetch(`${apiBase}/dashboard/reviews?limit=20`),
+                ]);
+                if (!fullResp.ok) throw new Error('Dashboard API hatası');
+                const data = await fullResp.json();
+                const reviewsData = reviewsResp.ok ? await reviewsResp.json() : { reviews: [] };
+
+                const st = data.stats || {};
+                const sent = st.sentiment || {};
+                document.getElementById('dash-total').innerText = st.total || 0;
+                document.getElementById('dash-neg-pct').innerText = `%${sent.negative_pct || 0}`;
+                document.getElementById('dash-pos-pct').innerText = `%${sent.positive_pct || 0}`;
+                document.getElementById('dash-avg-rating').innerText = st.avg_rating ? `${st.avg_rating}/5` : '—';
+
+                const chat = data.chatbot || {};
+                document.getElementById('dash-rag-count').innerText = (chat.indexed_records || 0).toLocaleString('tr-TR');
+                document.getElementById('dash-rag-status').innerText = chat.status === 'ready'
+                    ? `RAG hazır (${chat.data_source || 'local'})` : 'RAG indeks yok';
+
+                document.getElementById('dash-exec-summary').innerText = data.executive_summary || '—';
+
+                const trendsEl = document.getElementById('dash-trends');
+                trendsEl.innerHTML = '';
+                (st.trends || []).slice(0, 6).forEach(t => {
+                    const arrow = t.direction === 'up' ? '↑' : t.direction === 'down' ? '↓' : '→';
+                    const color = t.direction === 'up' ? '#dc2626' : t.direction === 'down' ? '#16a34a' : 'var(--text-muted)';
+                    trendsEl.innerHTML += `
+                        <div style="margin-bottom:0.6rem; font-size:0.88rem;">
+                            <strong>${t.short_name}</strong> şikayetleri
+                            <span style="color:${color}; font-weight:700;">${arrow} %${Math.abs(t.change_pct)}</span>
+                            <span style="color:var(--text-muted);"> (${t.prior_negative} → ${t.recent_negative} olumsuz)</span>
+                        </div>`;
+                });
+                if (!(st.trends || []).length) {
+                    trendsEl.innerHTML = '<span style="color:var(--text-muted);">Trend için tarihli yorum gerekir. Demo yenile ile 14 günlük veri yükleyin.</span>';
+                }
+
+                const posEl = document.getElementById('dash-pos-rates');
+                posEl.innerHTML = '';
+                (st.category_positive_rates || []).forEach(r => {
+                    posEl.innerHTML += `
+                        <div style="margin-bottom:0.65rem;">
+                            <div style="display:flex; justify-content:space-between; font-size:0.82rem; margin-bottom:0.2rem;">
+                                <span>${r.department}</span>
+                                <span style="font-weight:700; color:#16a34a;">%${r.positive_pct} olumlu</span>
+                            </div>
+                            <div style="background:rgba(255,255,255,0.06); border-radius:6px; height:8px;">
+                                <div style="width:${r.positive_pct}%; height:100%; background:#16a34a; border-radius:6px;"></div>
+                            </div>
+                        </div>`;
+                });
+
+                const deptEl = document.getElementById('dash-dept-bars');
+                deptEl.innerHTML = '';
+                const maxCat = Math.max(...(st.category_distribution || []).map(c => c.count), 1);
+                (st.category_distribution || []).forEach(c => {
+                    const pct = Math.round(c.count / maxCat * 100);
+                    deptEl.innerHTML += `
+                        <div style="margin-bottom:0.65rem;">
+                            <div style="display:flex; justify-content:space-between; font-size:0.82rem; margin-bottom:0.2rem;">
+                                <span>${c.department}</span>
+                                <span style="font-weight:700;">${c.count} (%${c.pct})</span>
+                            </div>
+                            <div style="background:rgba(255,255,255,0.06); border-radius:6px; height:8px;">
+                                <div style="width:${pct}%; height:100%; background:var(--primary); border-radius:6px;"></div>
+                            </div>
+                        </div>`;
+                });
+
+                const kwEl = document.getElementById('dash-keywords');
+                kwEl.innerHTML = '';
+                const negKws = st.top_negative_keywords || st.top_keywords || [];
+                negKws.slice(0, 15).forEach(k => {
+                    const span = document.createElement('span');
+                    span.className = 'keyword-tag';
+                    span.innerText = `${k.keyword} (${k.count})`;
+                    kwEl.appendChild(span);
+                });
+
+                const satEl = document.getElementById('dash-sat-breakdown');
+                satEl.innerHTML = '';
+                const satData = st.department_satisfaction_breakdown || [];
+                if (!satData.length) {
+                    satEl.innerHTML = '<span style="color:var(--text-muted); font-size:0.88rem;">ABSA analizi yapılmış çoklu aspect yorum bulunmuyor. Karışık yorum analiz edin.</span>';
+                } else {
+                    satData.forEach(item => {
+                        const total = item.total || 1;
+                        let segs = '';
+                        (item.levels || []).forEach(lvl => {
+                            if (!lvl.count) return;
+                            const w = Math.max(2, Math.round(lvl.count / total * 100));
+                            segs += `<div class="sat-stacked-seg" style="width:${w}%; background:${lvl.color || SATISFACTION_COLORS[lvl.label]};" title="${lvl.label}: ${lvl.count}"></div>`;
+                        });
+                        let legend = '';
+                        (item.levels || []).forEach(lvl => {
+                            if (!lvl.count) return;
+                            legend += `<span style="font-size:0.72rem; margin-right:0.6rem; color:${lvl.color};">${lvl.label}: ${lvl.count}</span>`;
+                        });
+                        satEl.innerHTML += `
+                            <div style="margin-bottom:1rem;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.82rem; margin-bottom:0.25rem;">
+                                    <strong>${item.department}</strong>
+                                    <span style="color:var(--text-muted);">${item.total} aspect</span>
+                                </div>
+                                <div class="sat-stacked-bar">${segs}</div>
+                                <div style="margin-top:0.35rem;">${legend}</div>
+                            </div>`;
+                    });
+                }
+
+                function renderSatBreakdown(elId, data, labelField) {
+                    const el = document.getElementById(elId);
+                    if (!el) return;
+                    el.innerHTML = '';
+                    if (!data.length) {
+                        el.innerHTML = '<span style="color:var(--text-muted); font-size:0.88rem;">Henüz veri yok — çoklu aspect yorum analiz edin.</span>';
+                        return;
+                    }
+                    data.forEach(item => {
+                        const total = item.total || 1;
+                        let segs = '';
+                        (item.levels || []).forEach(lvl => {
+                            if (!lvl.count) return;
+                            const w = Math.max(2, Math.round(lvl.count / total * 100));
+                            segs += `<div class="sat-stacked-seg" style="width:${w}%; background:${lvl.color || SATISFACTION_COLORS[lvl.label]};" title="${lvl.label}: ${lvl.count}"></div>`;
+                        });
+                        let legend = '';
+                        (item.levels || []).forEach(lvl => {
+                            if (!lvl.count) return;
+                            legend += `<span style="font-size:0.72rem; margin-right:0.6rem; color:${lvl.color};">${lvl.label}: ${lvl.count}</span>`;
+                        });
+                        const label = item[labelField] || item.entity_label || item.domain_label || '—';
+                        el.innerHTML += `
+                            <div style="margin-bottom:1rem;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.82rem; margin-bottom:0.25rem;">
+                                    <strong>${label}</strong>
+                                    <span style="color:var(--text-muted);">${item.total} aspect</span>
+                                </div>
+                                <div class="sat-stacked-bar">${segs}</div>
+                                <div style="margin-top:0.35rem;">${legend}</div>
+                            </div>`;
+                    });
+                }
+
+                renderSatBreakdown('dash-entity-sat-breakdown', st.entity_satisfaction_breakdown || [], 'entity_label');
+                renderSatBreakdown('dash-domain-sat-breakdown', st.domain_satisfaction_breakdown || [], 'domain_label');
+
+                const recEl = document.getElementById('dash-recommendations');
+                recEl.innerHTML = '';
+                (data.recommendations || []).forEach(rec => {
+                    const priClass = `priority-${rec.priority}`;
+                    recEl.innerHTML += `
+                        <div style="border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:1rem; margin-bottom:0.75rem;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                                <strong>${rec.department}</strong>
+                                <span class="${priClass}">${rec.priority.toUpperCase()} · ${rec.issue_count} şikayet</span>
+                            </div>
+                            <p style="font-size:0.88rem; line-height:1.6; margin:0 0 0.5rem 0;">${rec.recommendation}</p>
+                            <div style="font-size:0.78rem; color:var(--text-muted);">Anahtar: ${(rec.top_keywords || []).join(', ')}</div>
+                        </div>`;
+                });
+
+                const tbody = document.getElementById('dash-reviews-body');
+                tbody.innerHTML = '';
+                (reviewsData.reviews || []).forEach(r => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${(r.comment || '').substring(0, 80)}${r.comment && r.comment.length > 80 ? '…' : ''}</td>
+                        <td>${r.category || '-'}</td>
+                        <td><span class="sentiment-badge sentiment-${r.sentiment}">${r.sentiment}</span></td>
+                        <td>${r.rating || '—'}</td>
+                        <td>${r.source || '-'}</td>`;
+                    tbody.appendChild(tr);
+                });
+
+                await loadLearningStats();
+
+                loading.style.display = 'none';
+                content.style.display = 'block';
+            } catch (err) {
+                loading.innerHTML = `<span style="color:#dc2626;">Hata: ${err.message}. Sunucu çalışıyor mu?</span>`;
+            }
+        }
+
+        function showLearnToast(msg, isError) {
+            const toast = document.getElementById('learn-toast');
+            const msgEl = document.getElementById('learn-toast-msg');
+            if (!toast || !msgEl) return;
+            msgEl.innerText = msg;
+            toast.className = isError ? 'error' : '';
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        }
+
+        function showCorrectionForm() {
+            const corrForm = document.getElementById('correction-form');
+            if (corrForm) corrForm.style.display = 'block';
+        }
+
+        async function submitAccepted() {
+            const reviewId = window._lastReviewId;
+            if (!reviewId) { alert('Önce bir yorum analiz edin.'); return; }
+            const btn = document.getElementById('btn-accept');
+            btn.disabled = true;
+            try {
+                const resp = await fetch(`${apiBase}/learning/feedback`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        review_id: reviewId,
+                        comment: window._lastComment || '',
+                        accepted: true,
+                        source: 'manual',
+                    }),
+                });
+                if (!resp.ok) throw new Error('Geri bildirim kaydedilemedi');
+                const data = await resp.json();
+                showLearnToast(data.message || 'Bu yorum eğitim verisine eklendi');
+                document.getElementById('feedback-actions').style.display = 'none';
+            } catch (err) {
+                showLearnToast(`Hata: ${err.message}`, true);
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function loadLearningStats() {
+            try {
+                let s;
+                const resp = await fetch(`${apiBase}/learning/stats`);
+                if (resp.ok) {
+                    s = await resp.json();
+                    if (s.training_data) {
+                        s = Object.assign({}, s.learning_buffer || {}, s.training_data, {
+                            buffer: (s.learning_buffer || {}).buffer || s.buffer,
+                        });
+                    }
+                } else {
+                    const fallback = await fetch(`${apiBase}/learn/stats`);
+                    if (!fallback.ok) return;
+                    s = await fallback.json();
+                }
+                const buf = s.buffer || {};
+                const set = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+                set('dash-learn-buffer', (buf.reviews || s.total_samples || 0).toLocaleString('tr-TR'));
+                set('learn-stat-reviews', buf.reviews || s.incremental_reviews || s.total_samples || 0);
+                set('learn-stat-corrections', buf.corrections || s.corrections || 0);
+                const lastEl = document.getElementById('learn-stat-last');
+                if (lastEl) {
+                    const last = s.last_retrain;
+                    lastEl.innerText = last ? new Date(last).toLocaleString('tr-TR') : 'Henüz eğitilmedi';
+                }
+                const accEl = document.getElementById('learn-stat-accuracy');
+                if (accEl) {
+                    const acc = s.accuracy_after;
+                    accEl.innerText = acc != null ? `%${Math.round(acc * 100)}` : '—';
+                }
+                const statusEl = document.getElementById('dash-learn-status');
+                if (statusEl) {
+                    statusEl.innerText = s.should_retrain
+                        ? `Eşik aşıldı — güncelleme önerilir (${s.retrain_threshold || 50})`
+                        : `${s.pending_until_retrain || 0} yorum sonra otomatik eşik`;
+                }
+                const catDistEl = document.getElementById('learn-category-dist');
+                if (catDistEl) {
+                    const cats = s.category_distribution || [];
+                    if (cats.length) {
+                        catDistEl.innerHTML = '<strong style="color:var(--text-muted);">Kategori Dağılımı:</strong><br>' +
+                            cats.slice(0, 8).map(c =>
+                                `<span style="display:inline-block;margin:0.25rem 0.5rem 0.25rem 0;padding:0.2rem 0.5rem;background:rgba(124,58,237,0.1);border-radius:6px;">${c.category}: ${c.count}</span>`
+                            ).join('');
+                    }
+                }
+            } catch (_) {}
+        }
+
+        async function submitCorrection() {
+            const reviewId = window._lastReviewId;
+            if (!reviewId) {
+                alert('Önce bir yorum analiz edin.');
+                return;
+            }
+            const btn = document.getElementById('btn-correct');
+            const statusEl = document.getElementById('corr-status');
+            btn.disabled = true;
+            statusEl.innerText = 'Kaydediliyor...';
+            const kwRaw = (document.getElementById('corr-keywords')?.value || '').trim();
+            const keywords = kwRaw ? kwRaw.split(',').map(k => k.trim()).filter(Boolean) : [];
+            try {
+                const resp = await fetch(`${apiBase}/learning/feedback`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        review_id: reviewId,
+                        comment: window._lastComment || '',
+                        accepted: false,
+                        corrections: {
+                            category: document.getElementById('corr-category').value,
+                            sentiment: document.getElementById('corr-sentiment').value,
+                            keywords: keywords,
+                            notes: document.getElementById('corr-notes').value || '',
+                        },
+                        source: 'manual',
+                    }),
+                });
+                if (!resp.ok) throw new Error('Düzeltme kaydedilemedi');
+                const data = await resp.json();
+                statusEl.innerText = `✓ ${data.message || 'Kaydedildi'}`;
+                statusEl.style.color = 'var(--success)';
+                showLearnToast('Düzeltme eğitim verisine eklendi (3x ağırlık)');
+                document.getElementById('feedback-actions').style.display = 'none';
+            } catch (err) {
+                statusEl.innerText = `Hata: ${err.message}`;
+                statusEl.style.color = '#dc2626';
+                showLearnToast(`Hata: ${err.message}`, true);
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function triggerRetrain() {
+            const btn = document.getElementById('btn-retrain-models');
+            const statusEl = document.getElementById('learn-retrain-status');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loader"></span> Eğitiliyor...';
+            statusEl.innerText = 'Incremental retrain başlatıldı...';
+            try {
+                const resp = await fetch(`${apiBase}/learn/retrain`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ force: true }),
+                });
+                const data = await resp.json();
+                if (!resp.ok) throw new Error(data.detail || data.message || 'Eğitim hatası');
+                statusEl.innerText = `✓ ${data.message || 'Tamamlandı'} — ${data.samples_trained || 0} örnek, doğruluk: ${data.accuracy_after != null ? '%' + Math.round(data.accuracy_after * 100) : '—'}`;
+                await loadLearningStats();
+            } catch (err) {
+                statusEl.innerText = `Hata: ${err.message}`;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-rotate"></i> Modelleri Güncelle';
+            }
+        }
+
+        // Scraper — POST /scrape-reviews/multi veya /import-reviews-csv
+        const LANG_FLAGS = { tr: '🇹🇷 TR', en: '🇬🇧 EN', de: '🇩🇪 DE', ru: '🇷🇺 RU', fr: '🇫🇷 FR', es: '🇪🇸 ES' };
+
+        function getSelectedSources() {
+            const sources = [];
+            if (document.getElementById('src-google')?.checked) sources.push('google');
+            if (document.getElementById('src-csv')?.checked) sources.push('csv');
+            if (document.getElementById('src-booking')?.checked) sources.push('booking');
+            if (document.getElementById('src-tripadvisor')?.checked) sources.push('tripadvisor');
+            if (document.getElementById('src-agoda')?.checked) sources.push('agoda');
+            if (document.getElementById('src-expedia')?.checked) sources.push('expedia');
+            if (document.getElementById('src-academic')?.checked) sources.push('academic');
+            if (document.getElementById('src-playwright')?.checked) sources.push('google_maps_playwright');
+            return sources.length ? sources : ['academic'];
+        }
+
+        async function runPlaywrightScraper() {
+            const btn = document.getElementById('btn-playwright');
+            const statusEl = document.getElementById('playwright-status');
+            const logEl = document.getElementById('playwright-log');
+            const url = document.getElementById('scraper-playwright-url').value.trim();
+            const allSorts = document.getElementById('scraper-playwright-allsorts').checked;
+            const geminiKey = document.getElementById('analyze-api-key').value.trim();
+
+            if (!url) { alert('Lütfen bir Google Maps URL girin.'); return; }
+
+            btn.disabled = true;
+            statusEl.textContent = '⏳ Yorumlar yükleniyor...';
+            logEl.style.display = 'block';
+            logEl.innerHTML = 'Google Maps yorumları getiriliyor...\n';
+
+            try {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 120000);
+                const response = await fetch(`${apiBase}/scrape-reviews/playwright`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        url: url,
+                        max_reviews: 0,
+                        all_sorts: allSorts,
+                        analyze: false,
+                        api_key: geminiKey || undefined,
+                    }),
+                    signal: controller.signal,
+                });
+                clearTimeout(timeout);
+                if (!response.ok) {
+                    const err = await response.text();
+                    throw new Error(err || `API hatası ${response.status}`);
+                }
+                const data = await response.json();
+                if (data.total > 0) {
+                    logEl.innerHTML += `✔ ${data.total} yorum alındı (kaynak: ${data.method || '?'})\n`;
+                    if (data.warning) logEl.innerHTML += `⚠ ${data.warning}\n`;
+                    renderScraperResults(data);
+                    statusEl.textContent = `✔ ${data.total} yorum başarıyla çekildi`;
+                } else {
+                    logEl.innerHTML += `⚠ Yorum bulunamadı: ${data.warning || 'Bilinmeyen neden'}\n`;
+                    statusEl.textContent = '❌ ' + (data.warning || 'Yorum alınamadı');
+                }
+            } catch (err) {
+                logEl.innerHTML += '❌ HATA: ' + err.message + '\n';
+                statusEl.textContent = '❌ Hata: ' + err.message;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function loadScraperSources() {
+            const el = document.getElementById('scraper-sources-info');
+            try {
+                const r = await fetch(`${apiBase}/scraper/sources`);
+                const data = await r.json();
+                el.style.display = 'block';
+                el.innerHTML = data.sources.map(s => {
+                    const icon = s.status === 'allowed' ? '✅' : s.status === 'restricted' ? '⚠️' : '❌';
+                    return `<div><strong>${icon} ${s.name}</strong> — ${s.method} ${s.recommended ? '(önerilen)' : ''}<br><small>${s.description?.substring(0,120)}...</small></div>`;
+                }).join('<hr style="margin:0.4rem 0;border-color:var(--border-color);">');
+            } catch (e) {
+                el.style.display = 'block';
+                el.textContent = 'Kaynak bilgisi yüklenemedi: ' + e.message;
+            }
+        }
+
+        function renderScraperResults(data, isMulti = false) {
+            const tbody = document.querySelector('#scraper-table tbody');
+            tbody.innerHTML = '';
+            const showTranslated = document.getElementById('scraper-show-translated')?.checked !== false;
+
+            const warnings = [];
+            if (data.warning) warnings.push(data.warning);
+            if (data.warnings) warnings.push(...data.warnings);
+            if (data.errors) warnings.push(...data.errors);
+
+            const analyzedResults = [];
+            for (const rev of data.reviews) {
+                const a = rev.analysis || {};
+                analyzedResults.push({
+                    guest: rev.guest_name,
+                    comment: rev.comment,
+                    translated: a.translated_comment || a.translatedComment || '',
+                    language: rev.language || a.detected_language || a.detectedLanguage || '',
+                    category: a.category || a.department || '-',
+                    aspect: a.aspect || '',
+                    sentiment: a.sentiment || 'Neutral',
+                    urgency: a.urgency || 'low',
+                    rating: rev.rating || '-',
+                    suggestion: a.action_item || a.suggestion || '',
+                    source: rev.source || rev.platform || 'unknown',
+                    platform: rev.platform || rev.source || 'unknown',
+                });
+            }
+
+            document.getElementById('scraper-results-area').style.display = 'block';
+
+            const headerNote = document.querySelector('#scraper-results-area h3');
+            if (headerNote) {
+                const method = data.method || (data.methods || []).join(', ') || 'multi';
+                const total = data.total || data.reviews?.length || 0;
+                headerNote.innerHTML = `
+                    <i class="fa-solid fa-table-list" style="color: var(--primary);"></i>
+                    Yorum Çıktısı (${total} adet — ${method})
+                    ${warnings.length ? `<span style="font-size:0.75rem;color:var(--warning);display:block;margin-top:0.3rem;">⚠ ${warnings.slice(0,2).join(' | ')}</span>` : ''}
+                `;
+            }
+
+            analyzedResults.forEach(res => {
+                const tr = document.createElement('tr');
+                const sentimentBadgeClass = (res.sentiment === 'Positive' || res.sentiment === 'OLUMLU') ? 'sentiment-Positive' : (res.sentiment === 'Negative' || res.sentiment === 'OLUMSUZ') ? 'sentiment-Negative' : 'sentiment-Neutral';
+                const langLabel = LANG_FLAGS[res.language] || (res.language ? res.language.toUpperCase() : '-');
+                const urgencyClass = res.urgency === 'high' ? 'urgency-high' : res.urgency === 'medium' ? 'urgency-medium' : 'urgency-low';
+                const commentHtml = showTranslated && res.translated && res.translated !== res.comment
+                    ? `${res.comment}<div class="translated-text">🇹🇷 ${res.translated}</div>`
+                    : res.comment;
+                tr.innerHTML = `
+                    <td style="font-weight:600;">${res.guest}<br><span class="platform-badge">${res.platform}</span></td>
+                    <td style="max-width:320px;">${commentHtml}</td>
+                    <td><span class="lang-flag">${langLabel}</span></td>
+                    <td style="color:var(--primary); font-weight:600;">${res.category}${res.aspect && res.aspect !== res.category ? '<br><small>' + res.aspect + '</small>' : ''}</td>
+                    <td><span class="sentiment-badge ${sentimentBadgeClass}" style="font-size:0.8rem; padding:0.2rem 0.6rem;">${(res.sentiment === 'Positive' || res.sentiment === 'OLUMLU') ? 'OLUMLU' : (res.sentiment === 'Negative' || res.sentiment === 'OLUMSUZ') ? 'OLUMSUZ' : 'NÖTR'}</span></td>
+                    <td class="${urgencyClass}">${(res.urgency || 'low').toUpperCase()}</td>
+                    <td style="font-weight:700;">${res.rating} / 5</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            const recContent = document.getElementById('scraper-recs-content');
+            recContent.innerHTML = '';
+            const negativeResults = analyzedResults.filter(r => r.sentiment === 'Negative' || r.sentiment === 'OLUMSUZ' || r.urgency === 'high');
+            if (negativeResults.length > 0) {
+                const ul = document.createElement('ul');
+                ul.style.listStyle = 'none';
+                ul.style.display = 'flex';
+                ul.style.flexDirection = 'column';
+                ul.style.gap = '0.8rem';
+                negativeResults.forEach(r => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong style="color:var(--danger); font-size:0.9rem;">[${r.category}] ${r.platform}</strong>: ${r.suggestion || 'İnceleme gerekli'}`;
+                    ul.appendChild(li);
+                });
+                recContent.appendChild(ul);
+            } else {
+                recContent.innerHTML = '<strong>Tüm analiz sonuçları pozitif! Acil aksiyon önerilmemektedir.</strong>';
+            }
+        }
+
+        async function startMultiScrapingPipeline() {
+            const btn = document.getElementById('btn-scraper');
+            const loader = document.getElementById('scraper-loader-container');
+            const url = document.getElementById('scraper-url').value.trim();
+            const hotel = document.getElementById('scraper-hotel-name').value.trim();
+            const city = document.getElementById('scraper-city').value.trim();
+            const country = document.getElementById('scraper-country').value.trim();
+            const geminiKey = document.getElementById('analyze-api-key').value.trim();
+            const placesKey = document.getElementById('google-places-api-key').value.trim();
+            const allowFallback = document.getElementById('scraper-allow-fallback').checked;
+            const sources = getSelectedSources();
+
+            btn.style.display = 'none';
+            loader.style.display = 'inline-block';
+
+            try {
+                const payload = {
+                    hotel_name: hotel || 'Hotel',
+                    city: city,
+                    country: country,
+                    sources: sources,
+                    limit: 15,
+                    analyze: true,
+                    allow_fallback: allowFallback,
+                    urls: {},
+                };
+                if (url) payload.urls.google = url;
+                if (geminiKey) payload.api_key = geminiKey;
+                if (placesKey) payload.google_places_api_key = placesKey;
+
+                const response = await fetch(`${apiBase}/scrape-reviews/multi`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const err = await response.text();
+                    throw new Error(err || `API hatası ${response.status}`);
+                }
+
+                const data = await response.json();
+                // Map multi response to render format
+                const mapped = {
+                    ...data,
+                    reviews: data.reviews.map(r => ({
+                        ...r,
+                        guest_name: r.guest_name,
+                        source: r.platform,
+                        analysis: r.analysis,
+                    })),
+                };
+                renderScraperResults(mapped, true);
+            } catch (err) {
+                alert("Kazıma hatası: " + err.message);
+            } finally {
+                btn.style.display = 'inline-block';
+                loader.style.display = 'none';
+            }
+        }
+
+        async function startScrapingPipeline() {
+            await startMultiScrapingPipeline();
+        }
+
+        async function importCsvReviews() {
+            const btn = document.getElementById('btn-csv-import');
+            const loader = document.getElementById('scraper-loader-container');
+            const fileInput = document.getElementById('scraper-csv-file');
+            const geminiKey = document.getElementById('analyze-api-key').value.trim();
+
+            if (!fileInput.files || !fileInput.files[0]) {
+                alert("Lütfen bir CSV dosyası seçin.");
+                return;
+            }
+
+            btn.disabled = true;
+            loader.style.display = 'inline-block';
+
+            try {
+                const formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+                let url = `${apiBase}/import-reviews-csv?limit=10&analyze=true`;
+                if (geminiKey) url += `&api_key=${encodeURIComponent(geminiKey)}`;
+
+                const response = await fetch(url, { method: 'POST', body: formData });
+
+                if (!response.ok) {
+                    const err = await response.text();
+                    throw new Error(err || `API hatası ${response.status}`);
+                }
+
+                const data = await response.json();
+                renderScraperResults(data);
+            } catch (err) {
+                alert("CSV içe aktarma hatası: " + err.message);
+            } finally {
+                btn.disabled = false;
+                loader.style.display = 'none';
+            }
+        }
+
+        async function downloadCollectorTemplate() {
+            try {
+                const resp = await fetch(`${apiBase}/collector/template`);
+                const text = await resp.text();
+                const blob = new Blob([text], { type: 'text/csv' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'review_collector_template.csv';
+                a.click();
+            } catch (e) {
+                alert('Şablon indirilemedi: ' + e.message);
+            }
+        }
+
+        function renderCollectorPreview(preview, count) {
+            const area = document.getElementById('collector-preview-area');
+            const tbody = document.querySelector('#collector-preview-table tbody');
+            document.getElementById('collector-count').textContent = count;
+            tbody.innerHTML = '';
+            (preview || []).forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight:700;">${row.rating || '-'} / 5</td>
+                    <td>${row.review_date || '-'}</td>
+                    <td style="max-width:400px;">${(row.review_text || '').substring(0, 120)}${(row.review_text || '').length > 120 ? '…' : ''}</td>
+                    <td>${row.language || '-'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            area.style.display = preview && preview.length ? 'block' : 'none';
+        }
+
+        function isGoogleBulkPaste(text) {
+            const ratingHits = (text.match(/^\d\/5\s*$/gm) || []).length;
+            const platformHits = (text.match(/^(Google|Tripadvisor|TripAdvisor)\s*\(/gim) || []).length;
+            return ratingHits >= 2 && platformHits >= 2;
+        }
+
+        async function submitCollectorPaste() {
+            const btn = document.getElementById('btn-collector-paste');
+            const statusEl = document.getElementById('collector-status');
+            const text = (document.getElementById('collector-paste-text')?.value || '').trim();
+            const geminiKey = document.getElementById('analyze-api-key')?.value.trim();
+
+            if (!text) {
+                alert('Lütfen en az bir yorum yapıştırın.');
+                return;
+            }
+
+            btn.disabled = true;
+            statusEl.textContent = 'Kaydediliyor ve analiz ediliyor...';
+
+            try {
+                const bulk = isGoogleBulkPaste(text);
+                const payload = {
+                    text,
+                    hotel_name: document.getElementById('collector-hotel')?.value || 'Hotel',
+                    country: document.getElementById('collector-country')?.value || 'TR',
+                    city: document.getElementById('collector-city')?.value || '',
+                    analyze: true,
+                    limit: 50,
+                    force: true,
+                };
+                if (!bulk) {
+                    payload.platform = document.getElementById('collector-platform')?.value || 'manual';
+                }
+                if (geminiKey) payload.api_key = geminiKey;
+
+                const endpoint = bulk ? '/collector/import-bulk' : '/collector/paste';
+                const resp = await fetch(`${apiBase}${endpoint}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                const data = await resp.json();
+                if (!resp.ok || !data.success) {
+                    throw new Error(data.error || data.detail || 'Toplayıcı hatası');
+                }
+
+                const fmt = data.format_detected === 'google_bulk' ? ' (Google bulk)' : '';
+                statusEl.textContent = `✓ ${data.count} yorum CSV'ye kaydedildi${fmt}${data.analysis_total != null ? `, ${data.analysis_total} analiz edildi` : ''} → ${data.path || ''}`;
+                statusEl.style.color = 'var(--success)';
+                renderCollectorPreview(data.preview, data.count);
+
+                if (data.analysis_reviews && data.analysis_reviews.length > 0) {
+                    renderScraperResults({
+                        reviews: data.analysis_reviews.map(r => ({
+                            ...r,
+                            guest_name: r.guest_name || 'Anonim',
+                            source: r.platform || payload.platform,
+                            analysis: r.analysis,
+                        })),
+                        total: data.analysis_total || data.analysis_reviews.length,
+                        method: 'collector_paste',
+                    });
+                }
+            } catch (err) {
+                statusEl.textContent = `Hata: ${err.message}`;
+                statusEl.style.color = '#dc2626';
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
