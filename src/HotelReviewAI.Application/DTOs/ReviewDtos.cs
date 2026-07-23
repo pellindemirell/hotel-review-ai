@@ -8,6 +8,7 @@ public class ReviewListItemDto
     public int Rating { get; set; }
     public DateTime ReviewDate { get; set; }
     public string Source { get; set; } = string.Empty;
+    public string? PhotoUrl { get; set; }
 }
 
 public class ReviewDetailDto : ReviewListItemDto

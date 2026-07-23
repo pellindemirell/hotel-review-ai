@@ -55,7 +55,7 @@ def translate_long_text(text: str, max_chunk: int = 4000) -> str:
     return " ".join(parts)
 
 
-app = FastAPI(title="HCOS ABSA Review Platform v2", version="2.0.0")
+app = FastAPI(title="AI (Python) - HCOS ABSA Review Platform v2 (Etiketleme Platformu)", version="2.0.0")
 
 # --- Auth helpers (simple token-based for stajyers) ---
 

@@ -9,4 +9,7 @@ public class User : BaseEntity
 
     public Guid? DepartmentId { get; set; }
     public Department? Department { get; set; }
+
+    public Guid? HotelId { get; set; }
+    public Hotel? Hotel { get; set; }
 }

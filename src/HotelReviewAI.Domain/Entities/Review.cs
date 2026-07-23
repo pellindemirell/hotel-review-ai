@@ -12,6 +12,8 @@ public class Review : BaseEntity
     public int Rating { get; private set; }
     public DateTime ReviewDate { get; private set; }
     public Guid? CreatedBy { get; private set; }
+    public Guid? HotelId { get; set; }
+    public Hotel? Hotel { get; set; }
 
     public ICollection<ReviewAnalysis> Analyses { get; set; } = [];
     public ICollection<ReviewAttachment> Attachments { get; set; } = [];
@@ -28,7 +30,8 @@ public class Review : BaseEntity
         string language,
         ReviewSource source,
         DateTime reviewDate,
-        Guid? createdBy)
+        Guid? createdBy,
+        Guid? hotelId = null)
     {
         if (string.IsNullOrWhiteSpace(comment) || comment.Length < 10)
         {
@@ -48,7 +51,8 @@ public class Review : BaseEntity
             Language = language,
             Source = source,
             ReviewDate = reviewDate,
-            CreatedBy = createdBy
+            CreatedBy = createdBy,
+            HotelId = hotelId
         };
     }
 }

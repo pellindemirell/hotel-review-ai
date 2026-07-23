@@ -1744,8 +1744,7 @@ def _apply_encyclopedia_extensions() -> None:
     """
     try:
         from app.services.encyclopedia_loader import (
-            get_category_keywords,
-            merge_phrase_list,
+            get_category_keywords
         )
 
         global CATEGORY_KEYWORDS, HOTEL_TERMS, DEPT_HINTS

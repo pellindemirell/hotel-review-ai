@@ -3,9 +3,15 @@ using HotelReviewAI.Application.DTOs;
 using HotelReviewAI.Application.Interfaces;
 using HotelReviewAI.Shared.Responses;
 
+using Microsoft.AspNetCore.Http;
+
 namespace HotelReviewAI.Api.Controllers;
 
+/// <summary>
+/// Target Clients: Mobile (Flutter) & Web Panel (Angular)
+/// </summary>
 [ApiController]
+[Tags("Common (Shared)")]
 [Route("api/auth")]
 public class AuthController : ControllerBase
 {

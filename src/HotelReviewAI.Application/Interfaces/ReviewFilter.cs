@@ -10,6 +10,7 @@ public class ReviewFilter
     public Guid? CategoryId { get; set; }
     public Guid? DepartmentId { get; set; }
     public ReviewSource? Source { get; set; }
+    public Guid? HotelId { get; set; }
     public int Page { get; set; } = 1;
     public int PageSize { get; set; } = 20;
 }

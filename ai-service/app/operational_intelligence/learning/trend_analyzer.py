@@ -73,7 +73,7 @@ class TrendAnalyzer:
         self._weekly_counts[failure_key][week_key] = self._weekly_counts[failure_key].get(week_key, 0) + 1
         self._monthly_counts[failure_key][month_key] = self._monthly_counts[failure_key].get(month_key, 0) + 1
 
-    def get_trend(self, failure_key: str, window_days: int = 28) -> dict[str, Any]:
+    def get_trend(self, failure_key: str) -> dict[str, Any]:
         """
         Analyze trend for a specific failure type.
 

@@ -12,4 +12,5 @@ public record GetReviewsQuery(
     Guid? DepartmentId,
     ReviewSource? Source,
     int PageNumber = 1,
-    int PageSize = 20) : IRequest<PagedResponse<List<HotelReviewAI.Application.DTOs.ReviewListItemDto>>>;
+    int PageSize = 20,
+    Guid? HotelId = null) : IRequest<PagedResponse<List<HotelReviewAI.Application.DTOs.ReviewListItemDto>>>;

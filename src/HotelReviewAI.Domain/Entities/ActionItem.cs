@@ -13,6 +13,9 @@ public class ActionItem : BaseEntity
     public Guid? AssignedTo { get; set; }
     public User? AssignedUser { get; set; }
 
+    public Guid? HotelId { get; set; }
+    public Hotel? Hotel { get; set; }
+
     public string Title { get; set; } = string.Empty;
     public ActionItemStatus Status { get; set; } = ActionItemStatus.Open;
     public DateTime? DueDate { get; set; }

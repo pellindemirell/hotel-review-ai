@@ -47,8 +47,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("ai_service")
 
 app = FastAPI(
-    title="Otel / Restoran Akıllı Yorum Analiz Sistemi - Yapay Zeka Servisi",
-    description="Sentiment, Kategori Sınıflandırma, Anahtar Kelime Çıkarma, OCR ve RAG Servisi",
+    title="AI (Python) - Otel / Restoran Akıllı Yorum Analiz Servisi",
+    description="Sentiment, Kategori Sınıflandırma, Anahtar Kelime Çıkarma, OCR ve RAG Servisi (C# Backend & Panel Entegrasyonu)",
     version="1.1.0"
 )
 

@@ -23,7 +23,7 @@ import hashlib
 from datetime import datetime
 from difflib import SequenceMatcher
 from typing import List, Dict, Optional, Tuple, Any
-from urllib.parse import urlparse, unquote
+from urllib.parse import unquote
 
 import requests
 from bs4 import BeautifulSoup
@@ -120,7 +120,7 @@ class ScraperService:
         if not comment or len(comment.strip()) < 3:
             return "unknown"
         try:
-            from langdetect import detect, LangDetectException
+            from langdetect import detect
             lang = detect(comment)
             return lang if lang in SUPPORTED_LANGUAGES else lang[:2]
         except Exception:

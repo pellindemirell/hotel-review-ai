@@ -20,11 +20,13 @@ public class MappingConfig : IRegister
 
         // Review → ReviewListItemDto
         config.NewConfig<Review, ReviewListItemDto>()
-            .Map(dest => dest.Source, src => src.Source.ToString());
+            .Map(dest => dest.Source, src => src.Source.ToString())
+            .Map(dest => dest.PhotoUrl, src => src.Attachments != null && src.Attachments.Any() ? src.Attachments.First().FileUrl : null);
 
         // Review → ReviewDetailDto (nested collections)
         config.NewConfig<Review, ReviewDetailDto>()
-            .Map(dest => dest.Source, src => src.Source.ToString());
+            .Map(dest => dest.Source, src => src.Source.ToString())
+            .Map(dest => dest.PhotoUrl, src => src.Attachments != null && src.Attachments.Any() ? src.Attachments.First().FileUrl : null);
 
         // ReviewAttachment → ReviewAttachmentDto
         config.NewConfig<ReviewAttachment, ReviewAttachmentDto>();

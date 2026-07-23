@@ -6,16 +6,10 @@ from app.services.turkish_nlp_utils import (
     detect_strong_sentiment,
     predict_star_rating,
 )
-from app.services.sentiment_ml_service import SentimentMLService
 
 
 class SentimentService:
-    """ML-öncelikli duygu analizi servisi. Düşük güvende kural tabanlına düşer."""
-
-    POSITIVE_WORDS = None
-    NEGATIVE_WORDS = None
-
-    _ml_service = SentimentMLService()
+    """Duygu analizi servisi — merkezi turkish_nlp_utils sarmalayıcısı."""
 
     @classmethod
     def predict_rating(cls, text: str, sentiment: str, sentiment_score: float) -> int:
@@ -27,8 +21,7 @@ class SentimentService:
 
     @classmethod
     def analyze_sentiment(cls, text: str, rating: Optional[int] = None) -> tuple[str, float]:
-        sent, score = cls._ml_service.analyze(text, rating)
-        return sent, score
+        return analyze_sentiment_with_rating(text, rating)
 
     @classmethod
     def detect_sentiment(cls, text: str) -> tuple[str, float]:
