@@ -1,0 +1,293 @@
+2026-07-21 16:38:43.582 +03:00 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT pg_advisory_xact_lock(888123);
+2026-07-21 16:38:43.752 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."IsActive")
+2026-07-21 16:38:43.820 +03:00 [INF] User profile is available. Using 'C:\Users\monster\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-21 16:38:43.853 +03:00 [ERR] Hosting failed to start
+System.IO.IOException: Failed to bind to address http://127.0.0.1:5012: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Normal olarak her yuva adresi (iletişim kuralı/ağ adresi/bağlantı noktası) için yalnızca bir kullanıma izin veriliyor.
+ ---> System.Net.Sockets.SocketException (10048): Normal olarak her yuva adresi (iletişim kuralı/ağ adresi/bağlantı noktası) için yalnızca bir kullanıma izin veriliyor.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+2026-07-21 16:38:57.354 +03:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT pg_advisory_xact_lock(888123);
+2026-07-21 16:38:57.514 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."IsActive")
+2026-07-21 16:38:57.584 +03:00 [INF] User profile is available. Using 'C:\Users\monster\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-21 16:38:57.613 +03:00 [INF] Now listening on: http://localhost:5012
+2026-07-21 16:38:57.614 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-21 16:38:57.614 +03:00 [INF] Hosting environment: Development
+2026-07-21 16:38:57.614 +03:00 [INF] Content root path: C:\Users\monster\OneDrive\Masaüstü\stajproje\HotelReviewAI\src\HotelReviewAI.Api
+2026-07-21 16:39:10.227 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/auth/login - null 0
+2026-07-21 16:39:10.245 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-07-21 16:39:10.257 +03:00 [INF] Executing endpoint '405 HTTP Method Not Supported'
+2026-07-21 16:39:10.257 +03:00 [INF] Executed endpoint '405 HTTP Method Not Supported'
+2026-07-21 16:39:10.259 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/auth/login - 405 0 null 33.7169ms
+2026-07-21 16:39:18.031 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/auth/login - null 0
+2026-07-21 16:39:18.033 +03:00 [INF] Executing endpoint '405 HTTP Method Not Supported'
+2026-07-21 16:39:18.033 +03:00 [INF] Executed endpoint '405 HTTP Method Not Supported'
+2026-07-21 16:39:18.034 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/auth/login - 405 0 null 2.2482ms
+2026-07-21 16:39:26.869 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5012/api/auth/login - application/json 67
+2026-07-21 16:39:26.872 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api)'
+2026-07-21 16:39:26.883 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[HotelReviewAI.Shared.Responses.BaseResponse`1[HotelReviewAI.Application.DTOs.LoginResponse]]] Login(HotelReviewAI.Application.DTOs.LoginRequest) on controller HotelReviewAI.Api.Controllers.AuthController (HotelReviewAI.Api).
+2026-07-21 16:39:27.120 +03:00 [INF] Executed DbCommand (11ms) [Parameters=[@email='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."Email", u."FullName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND u."Email" = @email
+LIMIT 1
+2026-07-21 16:39:27.329 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[HotelReviewAI.Application.DTOs.LoginResponse, HotelReviewAI.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-21 16:39:27.339 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api) in 453.6334ms
+2026-07-21 16:39:27.340 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api)'
+2026-07-21 16:39:27.343 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5012/api/auth/login - 200 null application/json; charset=utf-8 473.4385ms
+2026-07-21 16:39:27.351 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5012/api/reviews - application/json; charset=utf-8 252
+2026-07-21 16:39:27.375 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.Create (HotelReviewAI.Api)'
+2026-07-21 16:39:27.379 +03:00 [INF] Route matched with {action = "Create", controller = "Reviews"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(HotelReviewAI.Application.Commands.Reviews.CreateReviewCommand) on controller HotelReviewAI.Api.Controllers.ReviewsController (HotelReviewAI.Api).
+2026-07-21 16:39:27.383 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software MediatR. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-07-21 16:39:27.413 +03:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-07-21 16:39:27.422 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.ReviewsController.Create (HotelReviewAI.Api) in 42.2079ms
+2026-07-21 16:39:27.422 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.Create (HotelReviewAI.Api)'
+2026-07-21 16:39:27.422 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5012/api/reviews - 400 null application/problem+json; charset=utf-8 70.6128ms
+2026-07-21 16:39:55.115 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5012/api/auth/login - application/json 67
+2026-07-21 16:39:55.115 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api)'
+2026-07-21 16:39:55.115 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[HotelReviewAI.Shared.Responses.BaseResponse`1[HotelReviewAI.Application.DTOs.LoginResponse]]] Login(HotelReviewAI.Application.DTOs.LoginRequest) on controller HotelReviewAI.Api.Controllers.AuthController (HotelReviewAI.Api).
+2026-07-21 16:39:55.164 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@email='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."Email", u."FullName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND u."Email" = @email
+LIMIT 1
+2026-07-21 16:39:55.315 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[HotelReviewAI.Application.DTOs.LoginResponse, HotelReviewAI.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-21 16:39:55.316 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api) in 200.758ms
+2026-07-21 16:39:55.316 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api)'
+2026-07-21 16:39:55.316 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5012/api/auth/login - 200 null application/json; charset=utf-8 201.502ms
+2026-07-21 16:39:55.325 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5012/api/reviews - application/json; charset=utf-8 276
+2026-07-21 16:39:55.326 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.Create (HotelReviewAI.Api)'
+2026-07-21 16:39:55.326 +03:00 [INF] Route matched with {action = "Create", controller = "Reviews"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(HotelReviewAI.Application.Commands.Reviews.CreateReviewCommand) on controller HotelReviewAI.Api.Controllers.ReviewsController (HotelReviewAI.Api).
+2026-07-21 16:39:55.456 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?' (DbType = DateTime), @p3='?' (DbType = Guid), @p4='?', @p5='?' (DbType = Boolean), @p6='?' (DbType = DateTime), @p7='?' (DbType = Guid), @p8='?' (DbType = Guid), @p9='?', @p10='?' (DbType = DateTime), @p11='?' (DbType = Guid), @p12='?', @p13='?' (DbType = Boolean), @p14='?', @p15='?' (DbType = Int32), @p16='?' (DbType = DateTime), @p17='?' (DbType = Int32), @p18='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AuditLogs" ("Id", "Action", "CreatedAt", "EntityId", "EntityName", "IsActive", "UpdatedAt", "UserId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+INSERT INTO "Reviews" ("Id", "Comment", "CreatedAt", "CreatedBy", "GuestName", "IsActive", "Language", "Rating", "ReviewDate", "Source", "UpdatedAt")
+VALUES (@p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18);
+2026-07-21 16:39:55.473 +03:00 [INF] Start processing HTTP request POST http://localhost:8000/analyze-review
+2026-07-21 16:39:55.479 +03:00 [INF] Sending HTTP request POST http://localhost:8000/analyze-review
+2026-07-21 16:39:58.184 +03:00 [INF] Received HTTP response headers after 2703.1864ms - 200
+2026-07-21 16:39:58.185 +03:00 [INF] End processing HTTP request after 2712.3844ms - 200
+2026-07-21 16:39:58.200 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive"
+2026-07-21 16:39:58.218 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CreatedAt", r."DepartmentId", r."IsActive", r."Key", r."Keywords", r."Name", r."UpdatedAt"
+FROM "ReviewCategories" AS r
+WHERE r."IsActive"
+2026-07-21 16:39:58.285 +03:00 [INF] Executed DbCommand (9ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?' (DbType = DateTime), @p3='?' (DbType = Guid), @p4='?', @p5='?' (DbType = Boolean), @p6='?' (DbType = DateTime), @p7='?' (DbType = Guid), @p8='?' (DbType = Guid), @p9='?' (DbType = Guid), @p10='?' (DbType = Int32), @p11='?', @p12='?' (DbType = Double), @p13='?' (DbType = DateTime), @p14='?' (DbType = Boolean), @p15='?' (DbType = Object), @p16='?' (DbType = Int32), @p17='?' (DbType = Guid), @p18='?' (DbType = Int32), @p19='?' (DbType = Double), @p20='?', @p21='?', @p22='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AuditLogs" ("Id", "Action", "CreatedAt", "EntityId", "EntityName", "IsActive", "UpdatedAt", "UserId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+INSERT INTO "ReviewAnalyses" ("Id", "CategoryId", "ClauseIndex", "ClauseText", "Confidence", "CreatedAt", "IsActive", "Keywords", "Priority", "ReviewId", "Sentiment", "SentimentScore", "Suggestion", "Summary", "UpdatedAt")
+VALUES (@p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, @p22);
+2026-07-21 16:39:58.311 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (DbType = DateTime), @p3='?' (DbType = Guid), @p4='?' (DbType = DateTime), @p5='?' (DbType = Boolean), @p6='?' (DbType = Guid), @p7='?' (DbType = Int32), @p8='?', @p9='?' (DbType = DateTime), @p10='?' (DbType = Guid), @p11='?', @p12='?' (DbType = DateTime), @p13='?' (DbType = Guid), @p14='?', @p15='?' (DbType = Boolean), @p16='?' (DbType = DateTime), @p17='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "ActionItems" ("Id", "AssignedTo", "CreatedAt", "DepartmentId", "DueDate", "IsActive", "ReviewId", "Status", "Title", "UpdatedAt")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9);
+INSERT INTO "AuditLogs" ("Id", "Action", "CreatedAt", "EntityId", "EntityName", "IsActive", "UpdatedAt", "UserId")
+VALUES (@p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17);
+2026-07-21 16:39:58.315 +03:00 [INF] Negatif aspect için otomatik aksiyon oluşturuldu. ReviewId: "c6901e19-ec4c-4823-8fff-530424879886", Dept: housekeeping
+2026-07-21 16:39:58.318 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive"
+2026-07-21 16:39:58.323 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CreatedAt", r."DepartmentId", r."IsActive", r."Key", r."Keywords", r."Name", r."UpdatedAt"
+FROM "ReviewCategories" AS r
+WHERE r."IsActive"
+2026-07-21 16:39:58.328 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?' (DbType = DateTime), @p3='?' (DbType = Guid), @p4='?', @p5='?' (DbType = Boolean), @p6='?' (DbType = DateTime), @p7='?' (DbType = Guid), @p8='?' (DbType = Guid), @p9='?' (DbType = Guid), @p10='?' (DbType = Int32), @p11='?', @p12='?' (DbType = Double), @p13='?' (DbType = DateTime), @p14='?' (DbType = Boolean), @p15='?' (DbType = Object), @p16='?' (DbType = Int32), @p17='?' (DbType = Guid), @p18='?' (DbType = Int32), @p19='?' (DbType = Double), @p20='?', @p21='?', @p22='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AuditLogs" ("Id", "Action", "CreatedAt", "EntityId", "EntityName", "IsActive", "UpdatedAt", "UserId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+INSERT INTO "ReviewAnalyses" ("Id", "CategoryId", "ClauseIndex", "ClauseText", "Confidence", "CreatedAt", "IsActive", "Keywords", "Priority", "ReviewId", "Sentiment", "SentimentScore", "Suggestion", "Summary", "UpdatedAt")
+VALUES (@p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, @p22);
+2026-07-21 16:39:58.333 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive"
+2026-07-21 16:39:58.335 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CreatedAt", r."DepartmentId", r."IsActive", r."Key", r."Keywords", r."Name", r."UpdatedAt"
+FROM "ReviewCategories" AS r
+WHERE r."IsActive"
+2026-07-21 16:39:58.340 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?' (DbType = DateTime), @p3='?' (DbType = Guid), @p4='?', @p5='?' (DbType = Boolean), @p6='?' (DbType = DateTime), @p7='?' (DbType = Guid), @p8='?' (DbType = Guid), @p9='?' (DbType = Guid), @p10='?' (DbType = Int32), @p11='?', @p12='?' (DbType = Double), @p13='?' (DbType = DateTime), @p14='?' (DbType = Boolean), @p15='?' (DbType = Object), @p16='?' (DbType = Int32), @p17='?' (DbType = Guid), @p18='?' (DbType = Int32), @p19='?' (DbType = Double), @p20='?', @p21='?', @p22='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AuditLogs" ("Id", "Action", "CreatedAt", "EntityId", "EntityName", "IsActive", "UpdatedAt", "UserId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+INSERT INTO "ReviewAnalyses" ("Id", "CategoryId", "ClauseIndex", "ClauseText", "Confidence", "CreatedAt", "IsActive", "Keywords", "Priority", "ReviewId", "Sentiment", "SentimentScore", "Suggestion", "Summary", "UpdatedAt")
+VALUES (@p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, @p22);
+2026-07-21 16:39:58.345 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-21 16:39:58.347 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.ReviewsController.Create (HotelReviewAI.Api) in 3021.065ms
+2026-07-21 16:39:58.348 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.Create (HotelReviewAI.Api)'
+2026-07-21 16:39:58.348 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5012/api/reviews - 200 null application/json; charset=utf-8 3022.6972ms
+2026-07-21 16:40:00.359 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/reviews/c6901e19-ec4c-4823-8fff-530424879886 - null null
+2026-07-21 16:40:00.369 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.GetById (HotelReviewAI.Api)'
+2026-07-21 16:40:00.374 +03:00 [INF] Route matched with {action = "GetById", controller = "Reviews"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetById(System.Guid) on controller HotelReviewAI.Api.Controllers.ReviewsController (HotelReviewAI.Api).
+2026-07-21 16:40:00.424 +03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-07-21 16:40:00.447 +03:00 [INF] Executed DbCommand (7ms) [Parameters=[@id='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT r4."Id", r4."Comment", r4."CreatedAt", r4."CreatedBy", r4."GuestName", r4."IsActive", r4."Language", r4."Rating", r4."ReviewDate", r4."Source", r4."UpdatedAt", s."Id", s."CategoryId", s."ClauseIndex", s."ClauseText", s."Confidence", s."CreatedAt", s."IsActive", s."Keywords", s."Priority", s."ReviewId", s."Sentiment", s."SentimentScore", s."Suggestion", s."Summary", s."UpdatedAt", s."Id0", s."CreatedAt0", s."DepartmentId", s."IsActive0", s."Key", s."Keywords0", s."Name", s."UpdatedAt0", r5."Id", r5."CreatedAt", r5."FileType", r5."FileUrl", r5."IsActive", r5."OcrText", r5."ReviewId", r5."UpdatedAt", a0."Id", a0."AssignedTo", a0."CreatedAt", a0."DepartmentId", a0."DueDate", a0."IsActive", a0."ReviewId", a0."Status", a0."Title", a0."UpdatedAt"
+FROM (
+    SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+    FROM "Reviews" AS r
+    WHERE r."IsActive" AND r."Id" = @id
+    LIMIT 1
+) AS r4
+LEFT JOIN (
+    SELECT r0."Id", r0."CategoryId", r0."ClauseIndex", r0."ClauseText", r0."Confidence", r0."CreatedAt", r0."IsActive", r0."Keywords", r0."Priority", r0."ReviewId", r0."Sentiment", r0."SentimentScore", r0."Suggestion", r0."Summary", r0."UpdatedAt", r2."Id" AS "Id0", r2."CreatedAt" AS "CreatedAt0", r2."DepartmentId", r2."IsActive" AS "IsActive0", r2."Key", r2."Keywords" AS "Keywords0", r2."Name", r2."UpdatedAt" AS "UpdatedAt0"
+    FROM "ReviewAnalyses" AS r0
+    LEFT JOIN (
+        SELECT r1."Id", r1."CreatedAt", r1."DepartmentId", r1."IsActive", r1."Key", r1."Keywords", r1."Name", r1."UpdatedAt"
+        FROM "ReviewCategories" AS r1
+        WHERE r1."IsActive"
+    ) AS r2 ON r0."CategoryId" = r2."Id"
+    WHERE r0."IsActive"
+) AS s ON r4."Id" = s."ReviewId"
+LEFT JOIN (
+    SELECT r3."Id", r3."CreatedAt", r3."FileType", r3."FileUrl", r3."IsActive", r3."OcrText", r3."ReviewId", r3."UpdatedAt"
+    FROM "ReviewAttachments" AS r3
+    WHERE r3."IsActive"
+) AS r5 ON r4."Id" = r5."ReviewId"
+LEFT JOIN (
+    SELECT a."Id", a."AssignedTo", a."CreatedAt", a."DepartmentId", a."DueDate", a."IsActive", a."ReviewId", a."Status", a."Title", a."UpdatedAt"
+    FROM "ActionItems" AS a
+    WHERE a."IsActive"
+) AS a0 ON r4."Id" = a0."ReviewId"
+ORDER BY r4."Id", s."Id", s."Id0", r5."Id"
+2026-07-21 16:40:00.522 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-21 16:40:00.529 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.ReviewsController.GetById (HotelReviewAI.Api) in 155.3548ms
+2026-07-21 16:40:00.530 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.GetById (HotelReviewAI.Api)'
+2026-07-21 16:40:00.530 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/reviews/c6901e19-ec4c-4823-8fff-530424879886 - 200 null application/json; charset=utf-8 170.4657ms
+2026-07-21 16:42:45.305 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5012/api/auth/login - application/json 67
+2026-07-21 16:42:45.305 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api)'
+2026-07-21 16:42:45.305 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[HotelReviewAI.Shared.Responses.BaseResponse`1[HotelReviewAI.Application.DTOs.LoginResponse]]] Login(HotelReviewAI.Application.DTOs.LoginRequest) on controller HotelReviewAI.Api.Controllers.AuthController (HotelReviewAI.Api).
+2026-07-21 16:42:45.312 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@email='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."Email", u."FullName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND u."Email" = @email
+LIMIT 1
+2026-07-21 16:42:45.428 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[HotelReviewAI.Application.DTOs.LoginResponse, HotelReviewAI.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-21 16:42:45.428 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api) in 122.8649ms
+2026-07-21 16:42:45.428 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api)'
+2026-07-21 16:42:45.428 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5012/api/auth/login - 200 null application/json; charset=utf-8 123.4739ms
+2026-07-21 16:42:45.437 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5012/api/reviews - application/json; charset=utf-8 276
+2026-07-21 16:42:45.437 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.Create (HotelReviewAI.Api)'
+2026-07-21 16:42:45.437 +03:00 [INF] Route matched with {action = "Create", controller = "Reviews"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(HotelReviewAI.Application.Commands.Reviews.CreateReviewCommand) on controller HotelReviewAI.Api.Controllers.ReviewsController (HotelReviewAI.Api).
+2026-07-21 16:42:45.447 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?' (DbType = DateTime), @p3='?' (DbType = Guid), @p4='?', @p5='?' (DbType = Boolean), @p6='?' (DbType = DateTime), @p7='?' (DbType = Guid), @p8='?' (DbType = Guid), @p9='?', @p10='?' (DbType = DateTime), @p11='?' (DbType = Guid), @p12='?', @p13='?' (DbType = Boolean), @p14='?', @p15='?' (DbType = Int32), @p16='?' (DbType = DateTime), @p17='?' (DbType = Int32), @p18='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AuditLogs" ("Id", "Action", "CreatedAt", "EntityId", "EntityName", "IsActive", "UpdatedAt", "UserId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+INSERT INTO "Reviews" ("Id", "Comment", "CreatedAt", "CreatedBy", "GuestName", "IsActive", "Language", "Rating", "ReviewDate", "Source", "UpdatedAt")
+VALUES (@p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18);
+2026-07-21 16:42:45.454 +03:00 [INF] Start processing HTTP request POST http://localhost:8000/analyze-review
+2026-07-21 16:42:45.454 +03:00 [INF] Sending HTTP request POST http://localhost:8000/analyze-review
+2026-07-21 16:42:48.101 +03:00 [INF] Received HTTP response headers after 2646.9641ms - 200
+2026-07-21 16:42:48.101 +03:00 [INF] End processing HTTP request after 2647.3681ms - 200
+2026-07-21 16:42:48.105 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive"
+2026-07-21 16:42:48.108 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CreatedAt", r."DepartmentId", r."IsActive", r."Key", r."Keywords", r."Name", r."UpdatedAt"
+FROM "ReviewCategories" AS r
+WHERE r."IsActive"
+2026-07-21 16:42:48.116 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?' (DbType = DateTime), @p3='?' (DbType = Guid), @p4='?', @p5='?' (DbType = Boolean), @p6='?' (DbType = DateTime), @p7='?' (DbType = Guid), @p8='?' (DbType = Guid), @p9='?' (DbType = Guid), @p10='?' (DbType = Int32), @p11='?', @p12='?' (DbType = Double), @p13='?' (DbType = DateTime), @p14='?' (DbType = Boolean), @p15='?' (DbType = Object), @p16='?' (DbType = Int32), @p17='?' (DbType = Guid), @p18='?' (DbType = Int32), @p19='?' (DbType = Double), @p20='?', @p21='?', @p22='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AuditLogs" ("Id", "Action", "CreatedAt", "EntityId", "EntityName", "IsActive", "UpdatedAt", "UserId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+INSERT INTO "ReviewAnalyses" ("Id", "CategoryId", "ClauseIndex", "ClauseText", "Confidence", "CreatedAt", "IsActive", "Keywords", "Priority", "ReviewId", "Sentiment", "SentimentScore", "Suggestion", "Summary", "UpdatedAt")
+VALUES (@p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, @p22);
+2026-07-21 16:42:48.125 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (DbType = DateTime), @p3='?' (DbType = Guid), @p4='?' (DbType = DateTime), @p5='?' (DbType = Boolean), @p6='?' (DbType = Guid), @p7='?' (DbType = Int32), @p8='?', @p9='?' (DbType = DateTime), @p10='?' (DbType = Guid), @p11='?', @p12='?' (DbType = DateTime), @p13='?' (DbType = Guid), @p14='?', @p15='?' (DbType = Boolean), @p16='?' (DbType = DateTime), @p17='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "ActionItems" ("Id", "AssignedTo", "CreatedAt", "DepartmentId", "DueDate", "IsActive", "ReviewId", "Status", "Title", "UpdatedAt")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9);
+INSERT INTO "AuditLogs" ("Id", "Action", "CreatedAt", "EntityId", "EntityName", "IsActive", "UpdatedAt", "UserId")
+VALUES (@p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17);
+2026-07-21 16:42:48.130 +03:00 [INF] Negatif aspect için otomatik aksiyon oluşturuldu. ReviewId: "fe64d350-6f5b-4def-86b8-915ed63385ee", Dept: housekeeping
+2026-07-21 16:42:48.133 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive"
+2026-07-21 16:42:48.136 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CreatedAt", r."DepartmentId", r."IsActive", r."Key", r."Keywords", r."Name", r."UpdatedAt"
+FROM "ReviewCategories" AS r
+WHERE r."IsActive"
+2026-07-21 16:42:48.139 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?' (DbType = DateTime), @p3='?' (DbType = Guid), @p4='?', @p5='?' (DbType = Boolean), @p6='?' (DbType = DateTime), @p7='?' (DbType = Guid), @p8='?' (DbType = Guid), @p9='?' (DbType = Guid), @p10='?' (DbType = Int32), @p11='?', @p12='?' (DbType = Double), @p13='?' (DbType = DateTime), @p14='?' (DbType = Boolean), @p15='?' (DbType = Object), @p16='?' (DbType = Int32), @p17='?' (DbType = Guid), @p18='?' (DbType = Int32), @p19='?' (DbType = Double), @p20='?', @p21='?', @p22='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AuditLogs" ("Id", "Action", "CreatedAt", "EntityId", "EntityName", "IsActive", "UpdatedAt", "UserId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+INSERT INTO "ReviewAnalyses" ("Id", "CategoryId", "ClauseIndex", "ClauseText", "Confidence", "CreatedAt", "IsActive", "Keywords", "Priority", "ReviewId", "Sentiment", "SentimentScore", "Suggestion", "Summary", "UpdatedAt")
+VALUES (@p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, @p22);
+2026-07-21 16:42:48.146 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive"
+2026-07-21 16:42:48.149 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CreatedAt", r."DepartmentId", r."IsActive", r."Key", r."Keywords", r."Name", r."UpdatedAt"
+FROM "ReviewCategories" AS r
+WHERE r."IsActive"
+2026-07-21 16:42:48.152 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?' (DbType = DateTime), @p3='?' (DbType = Guid), @p4='?', @p5='?' (DbType = Boolean), @p6='?' (DbType = DateTime), @p7='?' (DbType = Guid), @p8='?' (DbType = Guid), @p9='?' (DbType = Guid), @p10='?' (DbType = Int32), @p11='?', @p12='?' (DbType = Double), @p13='?' (DbType = DateTime), @p14='?' (DbType = Boolean), @p15='?' (DbType = Object), @p16='?' (DbType = Int32), @p17='?' (DbType = Guid), @p18='?' (DbType = Int32), @p19='?' (DbType = Double), @p20='?', @p21='?', @p22='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AuditLogs" ("Id", "Action", "CreatedAt", "EntityId", "EntityName", "IsActive", "UpdatedAt", "UserId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+INSERT INTO "ReviewAnalyses" ("Id", "CategoryId", "ClauseIndex", "ClauseText", "Confidence", "CreatedAt", "IsActive", "Keywords", "Priority", "ReviewId", "Sentiment", "SentimentScore", "Suggestion", "Summary", "UpdatedAt")
+VALUES (@p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, @p22);
+2026-07-21 16:42:48.200 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-21 16:42:48.200 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.ReviewsController.Create (HotelReviewAI.Api) in 2762.9359ms
+2026-07-21 16:42:48.200 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.Create (HotelReviewAI.Api)'
+2026-07-21 16:42:48.201 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5012/api/reviews - 200 null application/json; charset=utf-8 2763.8185ms
+2026-07-21 16:42:50.211 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/reviews/fe64d350-6f5b-4def-86b8-915ed63385ee - null null
+2026-07-21 16:42:50.212 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.GetById (HotelReviewAI.Api)'
+2026-07-21 16:42:50.212 +03:00 [INF] Route matched with {action = "GetById", controller = "Reviews"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetById(System.Guid) on controller HotelReviewAI.Api.Controllers.ReviewsController (HotelReviewAI.Api).
+2026-07-21 16:42:50.221 +03:00 [INF] Executed DbCommand (7ms) [Parameters=[@id='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT r4."Id", r4."Comment", r4."CreatedAt", r4."CreatedBy", r4."GuestName", r4."IsActive", r4."Language", r4."Rating", r4."ReviewDate", r4."Source", r4."UpdatedAt", s."Id", s."CategoryId", s."ClauseIndex", s."ClauseText", s."Confidence", s."CreatedAt", s."IsActive", s."Keywords", s."Priority", s."ReviewId", s."Sentiment", s."SentimentScore", s."Suggestion", s."Summary", s."UpdatedAt", s."Id0", s."CreatedAt0", s."DepartmentId", s."IsActive0", s."Key", s."Keywords0", s."Name", s."UpdatedAt0", r5."Id", r5."CreatedAt", r5."FileType", r5."FileUrl", r5."IsActive", r5."OcrText", r5."ReviewId", r5."UpdatedAt", a0."Id", a0."AssignedTo", a0."CreatedAt", a0."DepartmentId", a0."DueDate", a0."IsActive", a0."ReviewId", a0."Status", a0."Title", a0."UpdatedAt"
+FROM (
+    SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+    FROM "Reviews" AS r
+    WHERE r."IsActive" AND r."Id" = @id
+    LIMIT 1
+) AS r4
+LEFT JOIN (
+    SELECT r0."Id", r0."CategoryId", r0."ClauseIndex", r0."ClauseText", r0."Confidence", r0."CreatedAt", r0."IsActive", r0."Keywords", r0."Priority", r0."ReviewId", r0."Sentiment", r0."SentimentScore", r0."Suggestion", r0."Summary", r0."UpdatedAt", r2."Id" AS "Id0", r2."CreatedAt" AS "CreatedAt0", r2."DepartmentId", r2."IsActive" AS "IsActive0", r2."Key", r2."Keywords" AS "Keywords0", r2."Name", r2."UpdatedAt" AS "UpdatedAt0"
+    FROM "ReviewAnalyses" AS r0
+    LEFT JOIN (
+        SELECT r1."Id", r1."CreatedAt", r1."DepartmentId", r1."IsActive", r1."Key", r1."Keywords", r1."Name", r1."UpdatedAt"
+        FROM "ReviewCategories" AS r1
+        WHERE r1."IsActive"
+    ) AS r2 ON r0."CategoryId" = r2."Id"
+    WHERE r0."IsActive"
+) AS s ON r4."Id" = s."ReviewId"
+LEFT JOIN (
+    SELECT r3."Id", r3."CreatedAt", r3."FileType", r3."FileUrl", r3."IsActive", r3."OcrText", r3."ReviewId", r3."UpdatedAt"
+    FROM "ReviewAttachments" AS r3
+    WHERE r3."IsActive"
+) AS r5 ON r4."Id" = r5."ReviewId"
+LEFT JOIN (
+    SELECT a."Id", a."AssignedTo", a."CreatedAt", a."DepartmentId", a."DueDate", a."IsActive", a."ReviewId", a."Status", a."Title", a."UpdatedAt"
+    FROM "ActionItems" AS a
+    WHERE a."IsActive"
+) AS a0 ON r4."Id" = a0."ReviewId"
+ORDER BY r4."Id", s."Id", s."Id0", r5."Id"
+2026-07-21 16:42:50.222 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-21 16:42:50.222 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.ReviewsController.GetById (HotelReviewAI.Api) in 9.632ms
+2026-07-21 16:42:50.222 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.GetById (HotelReviewAI.Api)'
+2026-07-21 16:42:50.222 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/reviews/fe64d350-6f5b-4def-86b8-915ed63385ee - 200 null application/json; charset=utf-8 11.4676ms

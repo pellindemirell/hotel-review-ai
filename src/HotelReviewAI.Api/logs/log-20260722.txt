@@ -1,0 +1,334 @@
+2026-07-22 09:35:36.259 +03:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT pg_advisory_xact_lock(888123);
+2026-07-22 09:35:36.432 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."IsActive")
+2026-07-22 09:35:36.495 +03:00 [INF] User profile is available. Using 'C:\Users\monster\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-22 09:35:36.555 +03:00 [ERR] Hosting failed to start
+System.IO.IOException: Failed to bind to address http://[::1]:5012: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Normal olarak her yuva adresi (iletişim kuralı/ağ adresi/bağlantı noktası) için yalnızca bir kullanıma izin veriliyor.
+ ---> System.Net.Sockets.SocketException (10048): Normal olarak her yuva adresi (iletişim kuralı/ağ adresi/bağlantı noktası) için yalnızca bir kullanıma izin veriliyor.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+2026-07-22 09:37:06.875 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT pg_advisory_xact_lock(888123);
+2026-07-22 09:37:07.028 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."IsActive")
+2026-07-22 09:37:07.085 +03:00 [INF] User profile is available. Using 'C:\Users\monster\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-22 09:37:07.117 +03:00 [ERR] Hosting failed to start
+System.IO.IOException: Failed to bind to address http://[::1]:5012: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Normal olarak her yuva adresi (iletişim kuralı/ağ adresi/bağlantı noktası) için yalnızca bir kullanıma izin veriliyor.
+ ---> System.Net.Sockets.SocketException (10048): Normal olarak her yuva adresi (iletişim kuralı/ağ adresi/bağlantı noktası) için yalnızca bir kullanıma izin veriliyor.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+2026-07-22 09:37:55.926 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT pg_advisory_xact_lock(888123);
+2026-07-22 09:37:56.075 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."IsActive")
+2026-07-22 09:37:56.150 +03:00 [INF] User profile is available. Using 'C:\Users\monster\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-22 09:37:56.186 +03:00 [ERR] Hosting failed to start
+System.IO.IOException: Failed to bind to address http://[::1]:5012: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Normal olarak her yuva adresi (iletişim kuralı/ağ adresi/bağlantı noktası) için yalnızca bir kullanıma izin veriliyor.
+ ---> System.Net.Sockets.SocketException (10048): Normal olarak her yuva adresi (iletişim kuralı/ağ adresi/bağlantı noktası) için yalnızca bir kullanıma izin veriliyor.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+2026-07-22 09:39:16.889 +03:00 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT pg_advisory_xact_lock(888123);
+2026-07-22 09:39:17.052 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."IsActive")
+2026-07-22 09:39:17.117 +03:00 [INF] User profile is available. Using 'C:\Users\monster\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-22 09:39:17.154 +03:00 [ERR] Hosting failed to start
+System.IO.IOException: Failed to bind to address http://[::1]:5012: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Normal olarak her yuva adresi (iletişim kuralı/ağ adresi/bağlantı noktası) için yalnızca bir kullanıma izin veriliyor.
+ ---> System.Net.Sockets.SocketException (10048): Normal olarak her yuva adresi (iletişim kuralı/ağ adresi/bağlantı noktası) için yalnızca bir kullanıma izin veriliyor.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+2026-07-22 09:40:23.298 +03:00 [INF] Executed DbCommand (18ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT pg_advisory_xact_lock(888123);
+2026-07-22 09:40:23.465 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."IsActive")
+2026-07-22 09:40:23.531 +03:00 [INF] User profile is available. Using 'C:\Users\monster\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-22 09:40:23.558 +03:00 [INF] Now listening on: http://localhost:5012
+2026-07-22 09:40:23.559 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-22 09:40:23.559 +03:00 [INF] Hosting environment: Development
+2026-07-22 09:40:23.559 +03:00 [INF] Content root path: C:\Users\monster\OneDrive\Masaüstü\stajproje\HotelReviewAI\src\HotelReviewAI.Api
+2026-07-22 09:40:48.126 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5012/api/auth/login - application/json 56
+2026-07-22 09:40:48.151 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-07-22 09:40:48.171 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api)'
+2026-07-22 09:40:48.187 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[HotelReviewAI.Shared.Responses.BaseResponse`1[HotelReviewAI.Application.DTOs.LoginResponse]]] Login(HotelReviewAI.Application.DTOs.LoginRequest) on controller HotelReviewAI.Api.Controllers.AuthController (HotelReviewAI.Api).
+2026-07-22 09:40:48.462 +03:00 [INF] Executed DbCommand (14ms) [Parameters=[@email='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."Email", u."FullName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND u."Email" = @email
+LIMIT 1
+2026-07-22 09:40:48.468 +03:00 [INF] Executing UnauthorizedObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[HotelReviewAI.Application.DTOs.LoginResponse, HotelReviewAI.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-22 09:40:48.480 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api) in 289.3683ms
+2026-07-22 09:40:48.483 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api)'
+2026-07-22 09:40:48.486 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5012/api/auth/login - 401 null application/json; charset=utf-8 360.8081ms
+2026-07-22 09:41:11.718 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5012/api/auth/login - application/json 63
+2026-07-22 09:41:11.720 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api)'
+2026-07-22 09:41:11.720 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[HotelReviewAI.Shared.Responses.BaseResponse`1[HotelReviewAI.Application.DTOs.LoginResponse]]] Login(HotelReviewAI.Application.DTOs.LoginRequest) on controller HotelReviewAI.Api.Controllers.AuthController (HotelReviewAI.Api).
+2026-07-22 09:41:11.786 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@email='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."Email", u."FullName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND u."Email" = @email
+LIMIT 1
+2026-07-22 09:41:12.073 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[HotelReviewAI.Application.DTOs.LoginResponse, HotelReviewAI.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-22 09:41:12.075 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api) in 354.3427ms
+2026-07-22 09:41:12.075 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api)'
+2026-07-22 09:41:12.075 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5012/api/auth/login - 200 null application/json; charset=utf-8 357.3486ms
+2026-07-22 09:42:32.046 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/categories - null null
+2026-07-22 09:42:32.120 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.CategoriesController.GetAll (HotelReviewAI.Api)'
+2026-07-22 09:42:32.142 +03:00 [INF] Route matched with {action = "GetAll", controller = "Categories"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll() on controller HotelReviewAI.Api.Controllers.CategoriesController (HotelReviewAI.Api).
+2026-07-22 09:42:32.160 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software MediatR. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-07-22 09:42:32.211 +03:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CreatedAt", r."DepartmentId", r."IsActive", r."Key", r."Keywords", r."Name", r."UpdatedAt"
+FROM "ReviewCategories" AS r
+WHERE r."IsActive"
+2026-07-22 09:42:32.272 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive"
+2026-07-22 09:42:32.366 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-22 09:42:32.396 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.CategoriesController.GetAll (HotelReviewAI.Api) in 253.696ms
+2026-07-22 09:42:32.396 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.CategoriesController.GetAll (HotelReviewAI.Api)'
+2026-07-22 09:42:32.396 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/categories - 200 null application/json; charset=utf-8 350.3716ms
+2026-07-22 09:45:42.857 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/swagger/index.html - null null
+2026-07-22 09:45:42.894 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/swagger/index.html - 200 null text/html;charset=utf-8 36.8467ms
+2026-07-22 09:45:42.970 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/swagger/v1/swagger.json - null null
+2026-07-22 09:45:43.142 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 171.9512ms
+2026-07-22 09:46:10.130 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5012/api/auth/login - application/json 59
+2026-07-22 09:46:10.150 +03:00 [INF] CORS policy execution successful.
+2026-07-22 09:46:10.152 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api)'
+2026-07-22 09:46:10.153 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[HotelReviewAI.Shared.Responses.BaseResponse`1[HotelReviewAI.Application.DTOs.LoginResponse]]] Login(HotelReviewAI.Application.DTOs.LoginRequest) on controller HotelReviewAI.Api.Controllers.AuthController (HotelReviewAI.Api).
+2026-07-22 09:46:10.224 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[@email='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."Email", u."FullName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND u."Email" = @email
+LIMIT 1
+2026-07-22 09:46:10.544 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[HotelReviewAI.Application.DTOs.LoginResponse, HotelReviewAI.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-22 09:46:10.546 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api) in 393.4541ms
+2026-07-22 09:46:10.546 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api)'
+2026-07-22 09:46:10.547 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5012/api/auth/login - 200 null application/json; charset=utf-8 416.7836ms
+2026-07-22 09:49:07.364 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5012/api/reviews - application/json 242
+2026-07-22 09:49:07.365 +03:00 [INF] CORS policy execution successful.
+2026-07-22 09:49:07.369 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.Create (HotelReviewAI.Api)'
+2026-07-22 09:49:07.384 +03:00 [INF] Route matched with {action = "Create", controller = "Reviews"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(HotelReviewAI.Application.Commands.Reviews.CreateReviewCommand) on controller HotelReviewAI.Api.Controllers.ReviewsController (HotelReviewAI.Api).
+2026-07-22 09:49:07.428 +03:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-07-22 09:49:07.443 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.ReviewsController.Create (HotelReviewAI.Api) in 58.5078ms
+2026-07-22 09:49:07.443 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.Create (HotelReviewAI.Api)'
+2026-07-22 09:49:07.444 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5012/api/reviews - 400 null application/problem+json; charset=utf-8 79.4182ms
+2026-07-22 10:13:39.313 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/swagger/index.html - null null
+2026-07-22 10:13:39.315 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/swagger/index.html - 200 null text/html;charset=utf-8 1.3769ms
+2026-07-22 10:13:39.435 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/swagger/v1/swagger.json - null null
+2026-07-22 10:13:39.449 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 13.7895ms
+2026-07-22 10:33:07.377 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-07-22 10:33:07.509 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-07-22 10:33:07.542 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2026-07-22 10:33:07.548 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-07-22 10:33:07.550 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2026-07-22 10:33:07.552 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-07-22 10:33:07.556 +03:00 [INF] Applying migration '20260722073255_RenameUsersToEmployees'.
+2026-07-22 10:33:07.574 +03:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "ActionItems" DROP CONSTRAINT "FK_ActionItems_Users_AssignedTo";
+2026-07-22 10:33:07.578 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" DROP CONSTRAINT "FK_Users_Departments_DepartmentId";
+2026-07-22 10:33:07.584 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" DROP CONSTRAINT "PK_Users";
+2026-07-22 10:33:07.593 +03:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" RENAME TO "Employees";
+2026-07-22 10:33:07.595 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER INDEX "IX_Users_DepartmentId" RENAME TO "IX_Employees_DepartmentId";
+2026-07-22 10:33:07.625 +03:00 [INF] Executed DbCommand (30ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Employees" ADD CONSTRAINT "PK_Employees" PRIMARY KEY ("Id");
+2026-07-22 10:33:07.632 +03:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "ActionItems" ADD CONSTRAINT "FK_ActionItems_Employees_AssignedTo" FOREIGN KEY ("AssignedTo") REFERENCES "Employees" ("Id") ON DELETE SET NULL;
+2026-07-22 10:33:07.635 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Employees" ADD CONSTRAINT "FK_Employees_Departments_DepartmentId" FOREIGN KEY ("DepartmentId") REFERENCES "Departments" ("Id") ON DELETE SET NULL;
+2026-07-22 10:33:07.638 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20260722073255_RenameUsersToEmployees', '10.0.9');
+2026-07-22 10:47:21.413 +03:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT pg_advisory_xact_lock(888123);
+2026-07-22 10:47:21.564 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."IsActive")
+2026-07-22 10:47:21.630 +03:00 [INF] User profile is available. Using 'C:\Users\monster\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-22 10:47:21.668 +03:00 [INF] Now listening on: http://localhost:5012
+2026-07-22 10:47:21.669 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-22 10:47:21.670 +03:00 [INF] Hosting environment: Development
+2026-07-22 10:47:21.670 +03:00 [INF] Content root path: C:\Users\monster\OneDrive\Masaüstü\stajproje\HotelReviewAI\src\HotelReviewAI.Api
+2026-07-22 10:47:24.786 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/swagger/index.html - null null
+2026-07-22 10:47:24.887 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/swagger/index.html - 200 null text/html;charset=utf-8 102.6578ms
+2026-07-22 10:47:24.937 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/swagger/v1/swagger.json - null null
+2026-07-22 10:47:25.045 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 107.7852ms
+2026-07-22 10:47:43.637 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5012/api/auth/login - application/json 58
+2026-07-22 10:47:43.647 +03:00 [WRN] Failed to determine the https port for redirect.
+2026-07-22 10:47:43.650 +03:00 [INF] CORS policy execution successful.
+2026-07-22 10:47:43.707 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api)'
+2026-07-22 10:47:43.751 +03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[HotelReviewAI.Shared.Responses.BaseResponse`1[HotelReviewAI.Application.DTOs.LoginResponse]]] Login(HotelReviewAI.Application.DTOs.LoginRequest) on controller HotelReviewAI.Api.Controllers.AuthController (HotelReviewAI.Api).
+2026-07-22 10:47:44.066 +03:00 [INF] Executed DbCommand (19ms) [Parameters=[@email='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT e."Id", e."CreatedAt", e."DepartmentId", e."Email", e."FullName", e."IsActive", e."PasswordHash", e."Role", e."UpdatedAt"
+FROM "Employees" AS e
+WHERE e."IsActive" AND e."Email" = @email
+LIMIT 1
+2026-07-22 10:47:44.618 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[HotelReviewAI.Application.DTOs.LoginResponse, HotelReviewAI.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-22 10:47:44.626 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api) in 866.0616ms
+2026-07-22 10:47:44.628 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.AuthController.Login (HotelReviewAI.Api)'
+2026-07-22 10:47:44.638 +03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5012/api/auth/login - 200 null application/json; charset=utf-8 1001.451ms
+2026-07-22 11:05:25.564 +03:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-07-22 11:05:25.662 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-07-22 11:05:25.688 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2026-07-22 11:05:25.693 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-07-22 11:05:25.694 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2026-07-22 11:05:25.696 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-07-22 11:05:25.699 +03:00 [INF] Applying migration '20260722080511_RevertEmployeesToUsers'.
+2026-07-22 11:05:25.710 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "ActionItems" DROP CONSTRAINT "FK_ActionItems_Employees_AssignedTo";
+2026-07-22 11:05:25.711 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Employees" DROP CONSTRAINT "FK_Employees_Departments_DepartmentId";
+2026-07-22 11:05:25.715 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Employees" DROP CONSTRAINT "PK_Employees";
+2026-07-22 11:05:25.720 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Employees" RENAME TO "Users";
+2026-07-22 11:05:25.721 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER INDEX "IX_Employees_DepartmentId" RENAME TO "IX_Users_DepartmentId";
+2026-07-22 11:05:25.777 +03:00 [INF] Executed DbCommand (55ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" ADD CONSTRAINT "PK_Users" PRIMARY KEY ("Id");
+2026-07-22 11:05:25.782 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "ActionItems" ADD CONSTRAINT "FK_ActionItems_Users_AssignedTo" FOREIGN KEY ("AssignedTo") REFERENCES "Users" ("Id") ON DELETE SET NULL;
+2026-07-22 11:05:25.785 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" ADD CONSTRAINT "FK_Users_Departments_DepartmentId" FOREIGN KEY ("DepartmentId") REFERENCES "Departments" ("Id") ON DELETE SET NULL;
+2026-07-22 11:05:25.787 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20260722080511_RevertEmployeesToUsers', '10.0.9');
+2026-07-22 11:05:51.270 +03:00 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT pg_advisory_xact_lock(888123);
+2026-07-22 11:05:51.430 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."IsActive")
+2026-07-22 11:05:51.496 +03:00 [INF] User profile is available. Using 'C:\Users\monster\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-22 11:05:51.524 +03:00 [INF] Now listening on: http://localhost:5012
+2026-07-22 11:05:51.525 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-22 11:05:51.525 +03:00 [INF] Hosting environment: Development
+2026-07-22 11:05:51.525 +03:00 [INF] Content root path: C:\Users\monster\OneDrive\Masaüstü\stajproje\HotelReviewAI\src\HotelReviewAI.Api
