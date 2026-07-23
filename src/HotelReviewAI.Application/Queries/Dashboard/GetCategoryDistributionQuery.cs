@@ -3,7 +3,7 @@ using MediatR;
 
 namespace HotelReviewAI.Application.Queries.Dashboard;
 
-public record GetCategoryDistributionQuery(DateTime? DateFrom = null, DateTime? DateTo = null)
+public record GetCategoryDistributionQuery(DateTime? DateFrom = null, DateTime? DateTo = null, Guid? HotelId = null)
     : IRequest<List<CategoryDistributionDto>>;
 
 public class CategoryDistributionDto
@@ -17,25 +17,34 @@ public class GetCategoryDistributionHandler : IRequestHandler<GetCategoryDistrib
 {
     private readonly IReviewCategoryRepository _categoryRepository;
     private readonly IReviewAnalysisRepository _analysisRepository;
+    private readonly IReviewRepository _reviewRepository;
 
     public GetCategoryDistributionHandler(
         IReviewCategoryRepository categoryRepository,
-        IReviewAnalysisRepository analysisRepository)
+        IReviewAnalysisRepository analysisRepository,
+        IReviewRepository reviewRepository)
     {
         _categoryRepository = categoryRepository;
         _analysisRepository = analysisRepository;
+        _reviewRepository = reviewRepository;
     }
 
     public async Task<List<CategoryDistributionDto>> Handle(GetCategoryDistributionQuery request, CancellationToken cancellationToken)
     {
         var categories = (await _categoryRepository.GetAllAsync()).ToList();
+        var reviews = (await _reviewRepository.GetAllAsync()).ToList();
         var analyses = (await _analysisRepository.GetAllAsync()).ToList();
 
-        // Tarih filtresi
+        // Hotel & Tarih filtresi Yorumlar üzerinden uygulanır
+        if (request.HotelId.HasValue)
+            reviews = reviews.Where(r => r.HotelId == request.HotelId.Value).ToList();
         if (request.DateFrom.HasValue)
-            analyses = analyses.Where(a => a.CreatedAt >= request.DateFrom.Value).ToList();
+            reviews = reviews.Where(r => r.ReviewDate >= request.DateFrom.Value).ToList();
         if (request.DateTo.HasValue)
-            analyses = analyses.Where(a => a.CreatedAt <= request.DateTo.Value).ToList();
+            reviews = reviews.Where(r => r.ReviewDate <= request.DateTo.Value).ToList();
+
+        var reviewIds = reviews.Select(r => r.Id).ToHashSet();
+        analyses = analyses.Where(a => reviewIds.Contains(a.ReviewId)).ToList();
 
         var distribution = categories.Select(c =>
         {

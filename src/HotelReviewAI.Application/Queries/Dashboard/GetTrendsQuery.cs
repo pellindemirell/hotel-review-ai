@@ -3,7 +3,7 @@ using MediatR;
 
 namespace HotelReviewAI.Application.Queries.Dashboard;
 
-public record GetTrendsQuery(DateTime? DateFrom, DateTime? DateTo) : IRequest<List<DailyRatingTrendDto>>;
+public record GetTrendsQuery(DateTime? DateFrom = null, DateTime? DateTo = null, Guid? HotelId = null) : IRequest<List<DailyRatingTrendDto>>;
 
 public class DailyRatingTrendDto
 {
@@ -24,6 +24,9 @@ public class GetTrendsHandler : IRequestHandler<GetTrendsQuery, List<DailyRating
     public async Task<List<DailyRatingTrendDto>> Handle(GetTrendsQuery request, CancellationToken cancellationToken)
     {
         var all = (await _reviewRepository.GetAllAsync()).ToList();
+
+        if (request.HotelId.HasValue)
+            all = all.Where(r => r.HotelId == request.HotelId.Value).ToList();
 
         // Tarih filtresi uygula
         var from = request.DateFrom ?? DateTime.UtcNow.AddDays(-30);
