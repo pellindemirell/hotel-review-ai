@@ -4,7 +4,7 @@ using MediatR;
 
 namespace HotelReviewAI.Application.Queries.Dashboard;
 
-public record GetDashboardSummaryQuery(DateTime? DateFrom = null, DateTime? DateTo = null)
+public record GetDashboardSummaryQuery(DateTime? DateFrom = null, DateTime? DateTo = null, Guid? HotelId = null)
     : IRequest<DashboardSummaryDto>;
 
 public class DashboardSummaryDto
@@ -36,6 +36,13 @@ public class GetDashboardSummaryHandler : IRequestHandler<GetDashboardSummaryQue
         var reviews = (await _reviewRepository.GetAllAsync()).ToList();
         var actionItems = (await _actionItemRepository.GetAllAsync()).ToList();
         var analyses = (await _reviewAnalysisRepository.GetAllAsync()).ToList();
+
+        // Otel filtresi
+        if (request.HotelId.HasValue)
+        {
+            reviews = reviews.Where(r => r.HotelId == request.HotelId.Value).ToList();
+            actionItems = actionItems.Where(a => a.HotelId == request.HotelId.Value).ToList();
+        }
 
         // Tarih filtresi
         if (request.DateFrom.HasValue)

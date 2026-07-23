@@ -44,34 +44,67 @@ public static class DbSeeder
         }
     }
 
+    private static List<string> GetHotelNamesFromSeedJson()
+    {
+        try
+        {
+            var assembly = typeof(DbSeeder).Assembly;
+            var resourceName = "HotelReviewAI.Persistence.Seed.reviews.json";
+            using var stream = assembly.GetManifestResourceStream(resourceName);
+            if (stream == null) return [];
+            using var reader = new System.IO.StreamReader(stream);
+            var json = reader.ReadToEnd();
+            var seedReviews = JsonSerializer.Deserialize<List<ReviewSeedDto>>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            }) ?? [];
+            return seedReviews
+                .Select(r => r.HotelName)
+                .Where(n => !string.IsNullOrWhiteSpace(n))
+                .Select(n => n!.Trim())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+        }
+        catch
+        {
+            return [];
+        }
+    }
+
     private static async Task<List<Hotel>> SeedHotelsAsync(AppDbContext context)
     {
-        // Eski özel/sabit ID'li oteller varsa temizle
-        var existingHotels = await context.Hotels.ToListAsync();
-        if (existingHotels.Count > 0)
+        var defaultNames = new List<string>
         {
-            var oldHotelIds = existingHotels.Select(h => (Guid?)h.Id).ToList();
-            var linkedReviews = await context.Reviews.Where(r => oldHotelIds.Contains(r.HotelId)).ToListAsync();
-            foreach (var r in linkedReviews) { r.HotelId = null; }
-            var linkedUsers = await context.Users.Where(u => oldHotelIds.Contains(u.HotelId)).ToListAsync();
-            foreach (var u in linkedUsers) { u.HotelId = null; }
-            var linkedDepts = await context.Departments.Where(d => oldHotelIds.Contains(d.HotelId)).ToListAsync();
-            foreach (var d in linkedDepts) { d.HotelId = null; }
+            "Crystal Waterworld Resort & Spa",
+            "Adora Hotel & Resort",
+            "Megasaray Club Belek"
+        };
+        var jsonHotelNames = GetHotelNamesFromSeedJson();
+        var allHotelNames = defaultNames.Concat(jsonHotelNames).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 
-            context.Hotels.RemoveRange(existingHotels);
-            await context.SaveChangesAsync();
+        var existingHotels = await context.Hotels.ToListAsync();
+        var existingNames = existingHotels.Select(h => h.Name.Trim()).ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        int codeCounter = existingHotels.Count + 1;
+        bool addedAny = false;
+        foreach (var name in allHotelNames)
+        {
+            if (!existingNames.Contains(name))
+            {
+                context.Hotels.Add(new Hotel
+                {
+                    Id = Guid.NewGuid(),
+                    Name = name,
+                    Code = codeCounter.ToString("D3"),
+                    Address = "Belek, Antalya"
+                });
+                codeCounter++;
+                addedAny = true;
+            }
         }
 
-        if (!await context.Hotels.AnyAsync())
+        if (addedAny)
         {
-            var hotels = new List<Hotel>
-            {
-                new Hotel { Id = Guid.NewGuid(), Name = "Crystal Waterworld Resort & Spa", Code = "001", Address = "Belek, Antalya" },
-                new Hotel { Id = Guid.NewGuid(), Name = "Adora Hotel & Resort", Code = "002", Address = "Belek, Antalya" },
-                new Hotel { Id = Guid.NewGuid(), Name = "Megasaray Club Belek", Code = "003", Address = "Belek, Antalya" }
-            };
-
-            context.Hotels.AddRange(hotels);
             await context.SaveChangesAsync();
         }
 
@@ -197,11 +230,20 @@ public static class DbSeeder
             PropertyNameCaseInsensitive = true
         }) ?? [];
 
+        var hotelDict = hotels.ToDictionary(h => h.Name.Trim(), StringComparer.OrdinalIgnoreCase);
+
         int index = 0;
         foreach (var dto in seedReviews)
         {
-            // Assign review round-robin to one of the 3 hotels
-            var assignedHotel = hotels.Count > 0 ? hotels[index % hotels.Count] : null;
+            Hotel? assignedHotel = null;
+            if (!string.IsNullOrWhiteSpace(dto.HotelName) && hotelDict.TryGetValue(dto.HotelName.Trim(), out var foundHotel))
+            {
+                assignedHotel = foundHotel;
+            }
+            else if (hotels.Count > 0)
+            {
+                assignedHotel = hotels[index % hotels.Count];
+            }
             index++;
 
             var review = Review.Create(

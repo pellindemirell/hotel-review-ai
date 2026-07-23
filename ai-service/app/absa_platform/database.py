@@ -150,6 +150,13 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS hotels (
+    id TEXT PRIMARY KEY,
+    name TEXT UNIQUE NOT NULL,
+    code TEXT DEFAULT '',
+    created_at TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS reviews (
     id TEXT PRIMARY KEY,
     review_text TEXT NOT NULL,
@@ -260,11 +267,36 @@ def get_gold_db():
         conn.close()
 
 
+def sync_hotels_from_reviews():
+    """reviews tablosundaki benzersiz hotel_name kolonundaki otel isimlerini hotels tablosuna kaydeder."""
+    with get_source_db() as db:
+        try:
+            db.execute("""
+                INSERT INTO hotels (id, name, created_at)
+                SELECT gen_random_uuid()::text, hotel_name, NOW()::text
+                FROM reviews
+                WHERE hotel_name IS NOT NULL AND hotel_name != ''
+                GROUP BY hotel_name
+                ON CONFLICT (name) DO NOTHING
+            """)
+        except Exception as err:
+            try:
+                db.execute("""
+                    INSERT OR IGNORE INTO hotels (id, name, created_at)
+                    SELECT lower(hex(randomblob(16))), hotel_name, datetime('now')
+                    FROM reviews
+                    WHERE hotel_name IS NOT NULL AND hotel_name != ''
+                """)
+            except Exception as inner_err:
+                print(f"Hotels sync warning: {inner_err}")
+
+
 def init_dbs():
     with get_source_db() as db:
         db.executescript(SOURCE_SCHEMA)
     with get_gold_db() as db:
         db.executescript(GOLD_SCHEMA)
+    sync_hotels_from_reviews()
     print(f"Connected to PostgreSQL: {PG_CONN_URL}")
 
 

@@ -23,6 +23,7 @@ public class GetReviewsHandler : IRequestHandler<GetReviewsQuery, PagedResponse<
             DateTo = request.DateTo,
             Sentiment = request.Sentiment,
             CategoryId = request.CategoryId,
+            HotelId = request.HotelId,
             DepartmentId = request.DepartmentId,
             Source = request.Source,
             Page = request.PageNumber,

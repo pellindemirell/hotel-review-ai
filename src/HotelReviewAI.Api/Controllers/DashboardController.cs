@@ -30,9 +30,12 @@ public class DashboardController : ControllerBase
     [Tags("Common (Shared)")]
     public async Task<IActionResult> GetSummary(
         [FromQuery] DateTime? dateFrom,
-        [FromQuery] DateTime? dateTo)
+        [FromQuery] DateTime? dateTo,
+        [FromQuery] Guid? hotelId = null,
+        [FromHeader(Name = "X-Hotel-Id")] Guid? hotelIdHeader = null)
     {
-        var result = await _mediator.Send(new GetDashboardSummaryQuery(dateFrom, dateTo));
+        var effectiveHotelId = hotelIdHeader ?? hotelId;
+        var result = await _mediator.Send(new GetDashboardSummaryQuery(dateFrom, dateTo, effectiveHotelId));
         return Ok(BaseResponse<object>.Ok(result));
     }
 
@@ -43,9 +46,12 @@ public class DashboardController : ControllerBase
     [Tags("Web Panel (Angular) - Dashboard")]
     public async Task<IActionResult> GetTrends(
         [FromQuery] DateTime? dateFrom,
-        [FromQuery] DateTime? dateTo)
+        [FromQuery] DateTime? dateTo,
+        [FromQuery] Guid? hotelId = null,
+        [FromHeader(Name = "X-Hotel-Id")] Guid? hotelIdHeader = null)
     {
-        var result = await _mediator.Send(new GetTrendsQuery(dateFrom, dateTo));
+        var effectiveHotelId = hotelIdHeader ?? hotelId;
+        var result = await _mediator.Send(new GetTrendsQuery(dateFrom, dateTo, effectiveHotelId));
         return Ok(BaseResponse<object>.Ok(result));
     }
 
@@ -56,9 +62,12 @@ public class DashboardController : ControllerBase
     [Tags("Web Panel (Angular) - Dashboard")]
     public async Task<IActionResult> GetCategoryDistribution(
         [FromQuery] DateTime? dateFrom,
-        [FromQuery] DateTime? dateTo)
+        [FromQuery] DateTime? dateTo,
+        [FromQuery] Guid? hotelId = null,
+        [FromHeader(Name = "X-Hotel-Id")] Guid? hotelIdHeader = null)
     {
-        var result = await _mediator.Send(new GetCategoryDistributionQuery(dateFrom, dateTo));
+        var effectiveHotelId = hotelIdHeader ?? hotelId;
+        var result = await _mediator.Send(new GetCategoryDistributionQuery(dateFrom, dateTo, effectiveHotelId));
         return Ok(BaseResponse<object>.Ok(result));
     }
 
@@ -70,9 +79,12 @@ public class DashboardController : ControllerBase
     public async Task<IActionResult> GetTopKeywords(
         [FromQuery] int topN = 10,
         [FromQuery] DateTime? dateFrom = null,
-        [FromQuery] DateTime? dateTo = null)
+        [FromQuery] DateTime? dateTo = null,
+        [FromQuery] Guid? hotelId = null,
+        [FromHeader(Name = "X-Hotel-Id")] Guid? hotelIdHeader = null)
     {
-        var result = await _mediator.Send(new GetTopKeywordsQuery(topN, dateFrom, dateTo));
+        var effectiveHotelId = hotelIdHeader ?? hotelId;
+        var result = await _mediator.Send(new GetTopKeywordsQuery(topN, dateFrom, dateTo, effectiveHotelId));
         return Ok(BaseResponse<object>.Ok(result));
     }
 }

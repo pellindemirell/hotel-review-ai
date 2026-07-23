@@ -8,4 +8,5 @@ public class ReviewSeedDto
     public DateTime ReviewDate { get; set; }
     public string Source { get; set; } = "Manual";
     public string Language { get; set; } = "tr";
+    public string? HotelName { get; set; }
 }

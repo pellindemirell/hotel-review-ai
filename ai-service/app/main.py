@@ -61,6 +61,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# UTF-8 Garanti Middleware
+@app.middleware("http")
+async def ensure_utf8_middleware(request, call_next):
+    response = await call_next(request)
+    if response.headers.get("content-type", "").startswith("application/json"):
+        response.headers["content-type"] = "application/json; charset=utf-8"
+    return response
+
 # Kategori Servisini Başlat
 category_service = CategoryService()
 review_store = get_review_store()
