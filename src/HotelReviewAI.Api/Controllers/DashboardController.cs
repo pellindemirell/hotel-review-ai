@@ -4,8 +4,13 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using Microsoft.AspNetCore.Http;
+
 namespace HotelReviewAI.Api.Controllers;
 
+/// <summary>
+/// Target Clients: Mobile (Flutter) & Web Panel (Angular)
+/// </summary>
 [ApiController]
 [Authorize]
 [Route("api/dashboard")]
@@ -19,9 +24,10 @@ public class DashboardController : ControllerBase
     }
 
     /// <summary>
-    /// Genel özet istatistikler: toplam yorum, ortalama puan, açık aksiyonlar, negatif oran.
+    /// Genel özet istatistikler - Target Clients: Mobile (Flutter) & Web Panel (Angular)
     /// </summary>
     [HttpGet("summary")]
+    [Tags("Common (Shared)")]
     public async Task<IActionResult> GetSummary(
         [FromQuery] DateTime? dateFrom,
         [FromQuery] DateTime? dateTo)
@@ -31,9 +37,10 @@ public class DashboardController : ControllerBase
     }
 
     /// <summary>
-    /// Gün bazlı rating trendi — son 30 gün varsayılan.
+    /// Gün bazlı rating trendi - Target Client: Web Panel (Angular)
     /// </summary>
     [HttpGet("trends")]
+    [Tags("Web Panel (Angular) - Dashboard")]
     public async Task<IActionResult> GetTrends(
         [FromQuery] DateTime? dateFrom,
         [FromQuery] DateTime? dateTo)
@@ -43,9 +50,10 @@ public class DashboardController : ControllerBase
     }
 
     /// <summary>
-    /// Kategori bazlı yorum sayısı ve negatif oranı.
+    /// Kategori bazlı yorum sayısı ve negatif oranı - Target Client: Web Panel (Angular)
     /// </summary>
     [HttpGet("category-distribution")]
+    [Tags("Web Panel (Angular) - Dashboard")]
     public async Task<IActionResult> GetCategoryDistribution(
         [FromQuery] DateTime? dateFrom,
         [FromQuery] DateTime? dateTo)
@@ -55,9 +63,10 @@ public class DashboardController : ControllerBase
     }
 
     /// <summary>
-    /// Negatif yorumlarda en çok geçen anahtar kelimeler.
+    /// Negatif yorumlarda en çok geçen anahtar kelimeler - Target Client: Web Panel (Angular)
     /// </summary>
     [HttpGet("top-keywords")]
+    [Tags("Web Panel (Angular) - Dashboard")]
     public async Task<IActionResult> GetTopKeywords(
         [FromQuery] int topN = 10,
         [FromQuery] DateTime? dateFrom = null,

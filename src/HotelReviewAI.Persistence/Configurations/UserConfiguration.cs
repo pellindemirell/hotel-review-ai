@@ -8,6 +8,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> entity)
     {
+        entity.ToTable("Users");
         entity.HasKey(u => u.Id);
         entity.Property(u => u.Email).IsRequired().HasMaxLength(200);
         entity.HasIndex(u => u.Email).IsUnique().HasDatabaseName("IX_Users_Email");

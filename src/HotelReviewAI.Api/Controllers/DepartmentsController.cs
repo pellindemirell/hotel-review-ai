@@ -6,9 +6,15 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using Microsoft.AspNetCore.Http;
+
 namespace HotelReviewAI.Api.Controllers;
 
+/// <summary>
+/// Target Client: Web Panel (Angular) - Departman Yönetimi
+/// </summary>
 [ApiController]
+[Tags("Web Panel (Angular) - Departments")]
 [Authorize]
 [Route("api/departments")]
 public class DepartmentsController : ControllerBase

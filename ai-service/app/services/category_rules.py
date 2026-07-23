@@ -602,7 +602,7 @@ def _sorted_category_scores(scores: dict[str, float]) -> list[tuple[str, float]]
     return sorted(scores.items(), key=lambda x: (-x[1], x[0]))
 
 
-def _score_to_confidence(best: float, second: float, margin: float, phrase_hit: bool = False) -> float:
+def _score_to_confidence(best: float, margin: float, phrase_hit: bool = False) -> float:
     """Deterministik güven skoru — asla 0.50 altına düşmez (anlamlı metin)."""
     if phrase_hit and best >= 4.0:
         return 0.95
@@ -673,15 +673,15 @@ def classify_by_rules(text: str) -> RuleClassificationResult:
     phrase_hit = _has_phrase_match(cleaned)
 
     if best_score >= RULE_SCORE_THRESHOLD and margin >= RULE_MARGIN:
-        conf = _score_to_confidence(best_score, second_score, margin, phrase_hit)
+        conf = _score_to_confidence(best_score, margin, phrase_hit)
         return RuleClassificationResult(best_cat, conf, "rules", best_score, scores)
 
     if best_score >= 2.0 and margin >= 1.0:
-        conf = _score_to_confidence(best_score, second_score, margin, phrase_hit)
+        conf = _score_to_confidence(best_score, margin, phrase_hit)
         return RuleClassificationResult(best_cat, conf, "rules", best_score, scores)
 
     if best_score > 0:
-        conf = _score_to_confidence(best_score, second_score, max(margin, 0.5), phrase_hit)
+        conf = _score_to_confidence(best_score, max(margin, 0.5), phrase_hit)
         conf = max(conf, CONFIDENCE_FALLBACK_MIN)
         return RuleClassificationResult(best_cat, conf, "fallback", best_score, scores)
 

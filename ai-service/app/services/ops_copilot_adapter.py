@@ -13,7 +13,29 @@ _COPILOT_SRC = os.path.join(_ROOT, "hotel-ops-copilot")
 if _COPILOT_SRC not in sys.path:
     sys.path.insert(0, _COPILOT_SRC)
 
-from src.gateway.gateway import Gateway  # noqa: E402
+try:
+    from src.gateway.gateway import Gateway  # noqa: E402
+except ImportError:
+    # hotel-ops-copilot klasörü bulunamadığında servislerin çökmesini önlemek için yedek (mock) sınıf
+    class DummyMemory:
+        def get_history(self, session_id):
+            return []
+        def add_turn(self, session_id, role, content, metadata):
+            pass
+
+    class Gateway:
+        def __init__(self):
+            self.memory = DummyMemory()
+        def process(self, query, role=None, hotel_id=None, session_id=None):
+            return {
+                "answer": "Personel Copilot sistemi şu anda çevrimdışı (gateway modülü bulunamadı).",
+                "plan": {},
+                "tools_used": [],
+                "resolved_query": {},
+                "request_id": None,
+                "tool_results": [],
+            }
+
 
 
 def _norm(text: str) -> str:

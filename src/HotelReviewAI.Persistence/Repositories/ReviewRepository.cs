@@ -52,6 +52,11 @@ public class ReviewRepository : GenericRepository<Review>, IReviewRepository
             query = query.Where(r => r.Analyses.Any(a => a.Category != null && a.Category.DepartmentId == filter.DepartmentId));
         }
 
+        if (filter.HotelId is not null)
+        {
+            query = query.Where(r => r.HotelId == filter.HotelId);
+        }
+
         var totalCount = await query.CountAsync();
 
         var items = await query

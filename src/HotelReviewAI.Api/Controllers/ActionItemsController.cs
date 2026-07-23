@@ -7,8 +7,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
+using Microsoft.AspNetCore.Http;
+
 namespace HotelReviewAI.Api.Controllers;
 
+/// <summary>
+/// Target Clients: Mobile (Flutter) & Web Panel (Angular)
+/// </summary>
 [ApiController]
 [Authorize]
 [Route("api/action-items")]
@@ -21,7 +26,11 @@ public class ActionItemsController : ControllerBase
         _mediator = mediator;
     }
 
+    /// <summary>
+    /// Aksiyon öğelerini listele - Target Clients: Mobile (Flutter) & Web Panel (Angular)
+    /// </summary>
     [HttpGet]
+    [Tags("Common (Shared)")]
     public async Task<IActionResult> GetAll([FromQuery] Guid? departmentId, [FromQuery] Guid? assignedTo)
     {
         // DepartmentUser ve MobileUser yalnızca kendi departmanlarını görebilir
@@ -43,15 +52,23 @@ public class ActionItemsController : ControllerBase
         return Ok(BaseResponse<object>.Ok(result));
     }
 
+    /// <summary>
+    /// Aksiyon öğesi oluştur - Target Client: Web Panel (Angular)
+    /// </summary>
     [HttpPost]
     [Authorize(Roles = $"{Roles.Admin},{Roles.Manager}")]
+    [Tags("Web Panel (Angular) - ActionItems")]
     public async Task<IActionResult> Create([FromBody] CreateActionItemCommand command)
     {
         var id = await _mediator.Send(command);
         return Ok(BaseResponse<Guid>.Ok(id, "Görev başarıyla oluşturuldu."));
     }
 
+    /// <summary>
+    /// Aksiyon durumu güncelle - Target Clients: Mobile (Flutter) & Web Panel (Angular)
+    /// </summary>
     [HttpPatch("{id:guid}/status")]
+    [Tags("Common (Shared)")]
     public async Task<IActionResult> UpdateStatus(Guid id, [FromBody] UpdateActionItemStatusCommand command)
     {
         if (id != command.Id)

@@ -16,6 +16,9 @@ public static class DependencyInjection
         // JWT token üretimi
         services.AddScoped<IJwtProvider, JwtProvider>();
 
+        // Cloudinary görsel depolama servisi
+        services.AddScoped<ICloudinaryService, CloudinaryService>();
+
         // Mevcut kullanıcı claim'lerini okuyan servis (Interceptor ve Handler'lar için)
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();

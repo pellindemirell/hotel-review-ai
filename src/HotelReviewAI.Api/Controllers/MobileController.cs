@@ -12,7 +12,11 @@ using System.Threading.Tasks;
 
 namespace HotelReviewAI.Api.Controllers;
 
+/// <summary>
+/// Target Client: Mobile (Flutter)
+/// </summary>
 [ApiController]
+[Tags("Mobile (Flutter)")]
 [Authorize]
 [Route("api/mobile")]
 public class MobileController : ControllerBase
