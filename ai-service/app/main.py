@@ -877,10 +877,10 @@ async def analyze_batch_endpoint(request: BatchAnalyzeRequest):
 # Pelinsu Backend Integration (flat ReviewResponse format)
 # ---------------------------------------------------------------------------
 # Girdi: { comment, rating?, language? }
-# Çıktı: { sentiment, sentimentScore, category, keywords[], summary, suggestion, confidence }
-@app.post("/analyze-review", summary="Hızlı analiz (flat format) — Pelinsu")
+# Çıktı: { sentiment, sentimentScore, category, keywords[], summary, suggestion, confidence, predictedRating, absaAspects }
+@app.post("/analyze-review", response_model=ReviewResponse, summary="Tekli Yorum Analizi (.NET Core Backend Entegrasyonu)")
 async def analyze_review_fast(request: ReviewRequest):
-    """Hızlı ABSA pipeline + BERTurk. sentiment, category, keywords, summary, suggestion, confidence döner."""
+    """Hızlı ABSA pipeline + BERTurk. sentiment, category, keywords, summary, suggestion, confidence, predictedRating, absaAspects döner."""
     from app.services.absa_service import AbsaService
     from collections import Counter
     turkish_comment, _ = TranslationService.translate_to_turkish(
@@ -890,12 +890,20 @@ async def analyze_review_fast(request: ReviewRequest):
     dict_res = AbsaService.to_multidomain_dict(multi_res)
     aspects = dict_res.get("aspects", [])
 
+    predicted_rating = None
+    if request.rating is None:
+        predicted_rating = SentimentService.predict_rating(
+            turkish_comment, dict_res.get("overallSentiment", "Neutral"), dict_res.get("overallScore", 0.0)
+        )
+
     if not aspects:
         return ReviewResponse(
-            sentiment="Neutral", sentimentScore=0.0, category="Genel",
+            sentiment="Neutral", sentimentScore=0.0, category="Otel Atmosferi & Misafir Profili",
             keywords=[], summary="", suggestion="", confidence=0.5,
+            predictedRating=predicted_rating, userRating=request.rating,
         )
-    dept_counter = Counter(a["departmentLabel"] for a in aspects)
+
+    dept_counter = Counter(a.get("departmentLabel") or a.get("department", "Otel Atmosferi & Misafir Profili") for a in aspects)
     primary_dept = dept_counter.most_common(1)[0][0]
     avg_score = dict_res.get("overallScore", 0.0)
     sent = dict_res.get("overallSentiment", "Neutral")
@@ -918,24 +926,56 @@ async def analyze_review_fast(request: ReviewRequest):
     if len(dept_counter) > 1:
         secondary = dept_counter.most_common(2)[1][0]
 
+    # Format aspects so department name matches standard Turkish department labels
+    formatted_aspects = []
+    for a in aspects:
+        dept_label = a.get("departmentLabel") or a.get("department") or primary_dept
+        aspect_item = dict(a)
+        aspect_item["department"] = dept_label
+        formatted_aspects.append(aspect_item)
+
     return ReviewResponse(
         sentiment=sent, sentimentScore=round(avg_score, 2),
         category=primary_dept, keywords=keywords,
         summary=summary, suggestion=suggestion, confidence=round(conf, 2),
-        isMixedReview=len(dept_counter) > 1, secondaryCategory=secondary,
+        predictedRating=predicted_rating,
         userRating=request.rating,
-        absaAspects=aspects,
+        isMixedReview=len(dept_counter) > 1, secondaryCategory=secondary,
+        absaAspects=formatted_aspects,
         absaDepartmentSummary=dict_res.get("departmentSummary", {}),
     )
 
 
-@app.post("/analyze-batch", summary="Toplu analiz (flat format) — Pelinsu")
+@app.post("/analyze-batch", summary="Toplu analiz (flat format)")
 async def analyze_batch_fast(request: BatchReviewRequest):
     results = []
     for item in request.comments:
         res = await analyze_review_fast(item)
         results.append(res)
     return BatchReviewResponse(analysis_results=results)
+
+
+@app.post("/ocr-image", summary="Görsel Metin Okuma (OCR)")
+async def ocr_image(image: UploadFile = File(...)):
+    """Görsel üzerindeki metni OCR ile okur ve kalite skoru döner."""
+    image_bytes = await image.read()
+    res = OcrService.process_image(image_bytes)
+    return {
+        "ocr_text": res.get("ocr_text", ""),
+        "quality_score": res.get("quality_score", 0.0)
+    }
+
+
+@app.post("/hotel/agent", response_model=HotelAgentResponse, summary="Otel AI Asistanı / Chatbot Entegrasyonu")
+async def hotel_agent(request: HotelAgentRequest):
+    """Misafir ve yönetici taleplerini yanıtlayan Akıllı Asistan."""
+    res = await HotelAgentService.process_query(
+        query=request.query,
+        api_key=request.api_key,
+        session_id=request.session_id,
+        role=request.role
+    )
+    return res
 
 
 @app.post("/analyze-multidomain", response_model=MultiDomainAbsaResponse, summary="Çok Alanlı Ontology ABSA")
