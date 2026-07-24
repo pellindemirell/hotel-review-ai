@@ -9,4 +9,5 @@ public record CreateReviewCommand(
     int Rating,
     string Language,
     ReviewSource Source,
-    DateTime? ReviewDate) : IRequest<Guid>;
+    DateTime? ReviewDate,
+    Guid? HotelId = null) : IRequest<Guid>;

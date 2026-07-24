@@ -29,7 +29,8 @@ public class CreateReviewHandler : IRequestHandler<CreateReviewCommand, Guid>
             language: request.Language,
             source: request.Source,
             reviewDate: request.ReviewDate ?? DateTime.UtcNow,
-            createdBy: null);
+            createdBy: null,
+            hotelId: request.HotelId);
 
         await _reviewRepository.AddAsync(review);
 

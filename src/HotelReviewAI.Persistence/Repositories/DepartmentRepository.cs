@@ -9,4 +9,16 @@ public class DepartmentRepository : GenericRepository<Department>, IDepartmentRe
     public DepartmentRepository(AppDbContext context) : base(context)
     {
     }
+
+    public async Task<List<Department>> GetDepartmentsAsync(Guid? hotelId = null)
+    {
+        var query = DbSet.AsQueryable();
+        
+        if (hotelId.HasValue)
+        {
+            query = query.Where(d => d.HotelId == hotelId.Value);
+        }
+
+        return await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync(query);
+    }
 }

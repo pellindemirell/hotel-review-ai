@@ -30,9 +30,12 @@ public class ReviewsController : ControllerBase
     /// </summary>
     [HttpPost]
     [Tags("Web Panel (Angular) - Reviews")]
-    public async Task<IActionResult> Create([FromBody] CreateReviewCommand command)
+    public async Task<IActionResult> Create(
+        [FromBody] CreateReviewCommand command,
+        [FromHeader(Name = "X-Hotel-Id")] Guid? hotelIdHeader = null)
     {
-        var id = await _mediator.Send(command);
+        var effectiveCommand = command with { HotelId = hotelIdHeader ?? command.HotelId };
+        var id = await _mediator.Send(effectiveCommand);
         return Ok(BaseResponse<Guid>.Ok(id, "Yorum oluşturuldu"));
     }
 

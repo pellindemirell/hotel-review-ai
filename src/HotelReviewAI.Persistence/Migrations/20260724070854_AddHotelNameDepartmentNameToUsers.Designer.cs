@@ -3,6 +3,7 @@ using System;
 using HotelReviewAI.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HotelReviewAI.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260724070854_AddHotelNameDepartmentNameToUsers")]
+    partial class AddHotelNameDepartmentNameToUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,9 +159,11 @@ namespace HotelReviewAI.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HotelId", "Key")
+                    b.HasIndex("HotelId");
+
+                    b.HasIndex("Key")
                         .IsUnique()
-                        .HasDatabaseName("IX_Departments_HotelId_Key");
+                        .HasDatabaseName("IX_Departments_Key");
 
                     b.ToTable("Departments");
                 });
@@ -393,9 +398,11 @@ namespace HotelReviewAI.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId", "Key")
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("Key")
                         .IsUnique()
-                        .HasDatabaseName("IX_ReviewCategories_DepartmentId_Key");
+                        .HasDatabaseName("IX_ReviewCategories_Key");
 
                     b.ToTable("ReviewCategories");
                 });

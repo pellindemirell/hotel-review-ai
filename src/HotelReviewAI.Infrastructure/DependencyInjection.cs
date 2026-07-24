@@ -29,9 +29,9 @@ public static class DependencyInjection
         services.AddHttpClient<IAiAnalysisService, AiAnalysisService>(client =>
         {
             client.BaseAddress = new Uri(aiServiceUrl);
-            client.Timeout = TimeSpan.FromSeconds(30);
-        })
-        .AddPolicyHandler(GetRetryPolicy());
+            client.Timeout = TimeSpan.FromSeconds(2); // Düşük zaman aşımı (hızlı fail)
+        });
+        // .AddPolicyHandler(GetRetryPolicy()); // AI servisi kapalıyken bekletmemesi için şimdilik iptal
 
         return services;
     }

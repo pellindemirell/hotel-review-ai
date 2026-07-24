@@ -1,0 +1,995 @@
+2026-07-24 11:14:32.768 +03:00 [INF] Executed DbCommand (32ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT pg_advisory_xact_lock(888123);
+2026-07-24 11:14:32.962 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT h."Id", h."Address", h."Code", h."CreatedAt", h."IsActive", h."Name", h."UpdatedAt"
+FROM "Hotels" AS h
+WHERE h."IsActive"
+2026-07-24 11:14:33.016 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT h."Id", h."Address", h."Code", h."CreatedAt", h."IsActive", h."Name", h."UpdatedAt"
+FROM "Hotels" AS h
+WHERE h."IsActive"
+2026-07-24 11:14:33.055 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive" AND r."HotelId" IS NULL
+2026-07-24 11:14:33.061 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."DepartmentName", u."Email", u."FullName", u."HotelId", u."HotelName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND u."HotelId" IS NULL
+2026-07-24 11:14:33.067 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive" AND d."HotelId" IS NULL
+2026-07-24 11:14:33.096 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."IsActive")
+2026-07-24 11:14:33.102 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive"
+2026-07-24 11:14:33.128 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "ReviewCategories" AS r
+    WHERE r."IsActive")
+2026-07-24 11:14:33.136 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CreatedAt", r."DepartmentId", r."IsActive", r."Key", r."Keywords", r."Name", r."UpdatedAt"
+FROM "ReviewCategories" AS r
+WHERE r."IsActive"
+2026-07-24 11:14:33.157 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Users" AS u
+    WHERE u."IsActive")
+2026-07-24 11:14:33.164 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."DepartmentName", u."Email", u."FullName", u."HotelId", u."HotelName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND (u."HotelName" IS NULL OR u."DepartmentName" IS NULL)
+2026-07-24 11:14:33.204 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:14:33.253 +03:00 [INF] User profile is available. Using 'C:\Users\monster\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-24 11:14:33.321 +03:00 [ERR] Hosting failed to start
+System.IO.IOException: Failed to bind to address http://127.0.0.1:5012: address already in use.
+ ---> Microsoft.AspNetCore.Connections.AddressInUseException: Normal olarak her yuva adresi (iletişim kuralı/ağ adresi/bağlantı noktası) için yalnızca bir kullanıma izin veriliyor.
+ ---> System.Net.Sockets.SocketException (10048): Normal olarak her yuva adresi (iletişim kuralı/ağ adresi/bağlantı noktası) için yalnızca bir kullanıma izin veriliyor.
+   at System.Net.Sockets.Socket.UpdateStatusAfterSocketErrorAndThrowException(SocketError error, Boolean disconnectOnFailure, String callerName)
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportOptions.CreateDefaultBoundListenSocket(EndPoint endpoint)
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketConnectionListener.Bind()
+   at Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.SocketTransportFactory.BindAsync(EndPoint endpoint, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.TransportManager.BindAsync(EndPoint endPoint, ConnectionDelegate connectionDelegate, EndpointConfig endpointConfig, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.<>c__DisplayClass28_0`1.<<StartAsync>g__OnBind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.BindEndpointAsync(ListenOptions endpoint, AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.LocalhostListenOptions.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.AddressBinder.AddressesStrategy.BindAsync(AddressBindContext context, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.BindAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerImpl.StartAsync[TContext](IHttpApplication`1 application, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+2026-07-24 11:28:22.471 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT pg_advisory_xact_lock(888123);
+2026-07-24 11:28:22.648 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT h."Id", h."Address", h."Code", h."CreatedAt", h."IsActive", h."Name", h."UpdatedAt"
+FROM "Hotels" AS h
+WHERE h."IsActive"
+2026-07-24 11:28:22.700 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT h."Id", h."Address", h."Code", h."CreatedAt", h."IsActive", h."Name", h."UpdatedAt"
+FROM "Hotels" AS h
+WHERE h."IsActive"
+2026-07-24 11:28:22.721 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive" AND r."HotelId" IS NULL
+2026-07-24 11:28:22.728 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."DepartmentName", u."Email", u."FullName", u."HotelId", u."HotelName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND u."HotelId" IS NULL
+2026-07-24 11:28:22.736 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive" AND d."HotelId" IS NULL
+2026-07-24 11:28:22.771 +03:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Departments" AS d
+    WHERE d."IsActive")
+2026-07-24 11:28:22.785 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive"
+2026-07-24 11:28:22.817 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "ReviewCategories" AS r
+    WHERE r."IsActive")
+2026-07-24 11:28:22.824 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CreatedAt", r."DepartmentId", r."IsActive", r."Key", r."Keywords", r."Name", r."UpdatedAt"
+FROM "ReviewCategories" AS r
+WHERE r."IsActive"
+2026-07-24 11:28:22.849 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Users" AS u
+    WHERE u."IsActive")
+2026-07-24 11:28:22.856 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."DepartmentName", u."Email", u."FullName", u."HotelId", u."HotelName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND (u."HotelName" IS NULL OR u."DepartmentName" IS NULL)
+2026-07-24 11:28:22.896 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:28:22.942 +03:00 [INF] User profile is available. Using 'C:\Users\monster\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-24 11:28:22.981 +03:00 [INF] Now listening on: http://localhost:5012
+2026-07-24 11:28:22.981 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-24 11:28:22.981 +03:00 [INF] Hosting environment: Development
+2026-07-24 11:28:22.981 +03:00 [INF] Content root path: C:\Users\monster\OneDrive\Masaüstü\stajproje\HotelReviewAI\src\HotelReviewAI.Api
+2026-07-24 11:29:28.054 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/departments - null null
+2026-07-24 11:29:28.089 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:29:28.093 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/departments - 204 null null 40.963ms
+2026-07-24 11:29:28.096 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/departments - null null
+2026-07-24 11:29:28.099 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:29:28.142 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:28.152 +03:00 [INF] Route matched with {action = "GetAll", controller = "Departments"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DepartmentsController (HotelReviewAI.Api).
+2026-07-24 11:29:28.155 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software MediatR. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-07-24 11:29:28.193 +03:00 [INF] Executed DbCommand (12ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive" AND d."HotelId" = @hotelId_Value
+2026-07-24 11:29:28.197 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:29:28.206 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api) in 51.8725ms
+2026-07-24 11:29:28.206 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:28.209 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/departments - 200 null application/json; charset=utf-8 113.6384ms
+2026-07-24 11:29:28.210 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/reviews?pageNumber=1&pageSize=100 - null null
+2026-07-24 11:29:28.210 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:29:28.211 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/reviews?pageNumber=1&pageSize=100 - 204 null null 0.9022ms
+2026-07-24 11:29:28.212 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/reviews?pageNumber=1&pageSize=100 - null null
+2026-07-24 11:29:28.212 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:29:28.215 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:28.221 +03:00 [INF] Route matched with {action = "GetAll", controller = "Reviews"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[HotelReviewAI.Domain.Enums.Sentiment], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid], System.Nullable`1[HotelReviewAI.Domain.Enums.ReviewSource], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid], Int32, Int32) on controller HotelReviewAI.Api.Controllers.ReviewsController (HotelReviewAI.Api).
+2026-07-24 11:29:28.280 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[@filter_HotelId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Reviews" AS r
+WHERE r."IsActive" AND r."HotelId" = @filter_HotelId
+2026-07-24 11:29:28.327 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[@filter_HotelId='?' (DbType = Guid), @p2='?' (DbType = Int32), @p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT r1."Id", r1."Comment", r1."CreatedAt", r1."CreatedBy", r1."GuestName", r1."HotelId", r1."IsActive", r1."Language", r1."Rating", r1."ReviewDate", r1."Source", r1."UpdatedAt", r2."Id", r2."CategoryId", r2."ClauseIndex", r2."ClauseText", r2."Confidence", r2."CreatedAt", r2."IsActive", r2."Keywords", r2."Priority", r2."ReviewId", r2."Sentiment", r2."SentimentScore", r2."Suggestion", r2."Summary", r2."UpdatedAt"
+FROM (
+    SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+    FROM "Reviews" AS r
+    WHERE r."IsActive" AND r."HotelId" = @filter_HotelId
+    ORDER BY r."ReviewDate" DESC
+    LIMIT @p2 OFFSET @p
+) AS r1
+LEFT JOIN (
+    SELECT r0."Id", r0."CategoryId", r0."ClauseIndex", r0."ClauseText", r0."Confidence", r0."CreatedAt", r0."IsActive", r0."Keywords", r0."Priority", r0."ReviewId", r0."Sentiment", r0."SentimentScore", r0."Suggestion", r0."Summary", r0."UpdatedAt"
+    FROM "ReviewAnalyses" AS r0
+    WHERE r0."IsActive"
+) AS r2 ON r1."Id" = r2."ReviewId"
+ORDER BY r1."ReviewDate" DESC, r1."Id"
+2026-07-24 11:29:28.386 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Pagination.PagedResponse`1[[System.Collections.Generic.List`1[[HotelReviewAI.Application.DTOs.ReviewListItemDto, HotelReviewAI.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:29:28.392 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.ReviewsController.GetAll (HotelReviewAI.Api) in 170.9434ms
+2026-07-24 11:29:28.392 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:28.392 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/reviews?pageNumber=1&pageSize=100 - 200 null application/json; charset=utf-8 180.2379ms
+2026-07-24 11:29:28.891 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/departments - null null
+2026-07-24 11:29:28.891 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:29:28.898 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:28.898 +03:00 [INF] Route matched with {action = "GetAll", controller = "Departments"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DepartmentsController (HotelReviewAI.Api).
+2026-07-24 11:29:28.910 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive" AND d."HotelId" = @hotelId_Value
+2026-07-24 11:29:28.910 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:29:28.911 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api) in 12.2921ms
+2026-07-24 11:29:28.911 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:28.911 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/departments - 200 null application/json; charset=utf-8 19.7683ms
+2026-07-24 11:29:28.913 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/reviews?pageNumber=1&pageSize=100 - null null
+2026-07-24 11:29:28.913 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:29:28.914 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:28.914 +03:00 [INF] Route matched with {action = "GetAll", controller = "Reviews"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[HotelReviewAI.Domain.Enums.Sentiment], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid], System.Nullable`1[HotelReviewAI.Domain.Enums.ReviewSource], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid], Int32, Int32) on controller HotelReviewAI.Api.Controllers.ReviewsController (HotelReviewAI.Api).
+2026-07-24 11:29:28.919 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@filter_HotelId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Reviews" AS r
+WHERE r."IsActive" AND r."HotelId" = @filter_HotelId
+2026-07-24 11:29:28.923 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@filter_HotelId='?' (DbType = Guid), @p2='?' (DbType = Int32), @p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT r1."Id", r1."Comment", r1."CreatedAt", r1."CreatedBy", r1."GuestName", r1."HotelId", r1."IsActive", r1."Language", r1."Rating", r1."ReviewDate", r1."Source", r1."UpdatedAt", r2."Id", r2."CategoryId", r2."ClauseIndex", r2."ClauseText", r2."Confidence", r2."CreatedAt", r2."IsActive", r2."Keywords", r2."Priority", r2."ReviewId", r2."Sentiment", r2."SentimentScore", r2."Suggestion", r2."Summary", r2."UpdatedAt"
+FROM (
+    SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+    FROM "Reviews" AS r
+    WHERE r."IsActive" AND r."HotelId" = @filter_HotelId
+    ORDER BY r."ReviewDate" DESC
+    LIMIT @p2 OFFSET @p
+) AS r1
+LEFT JOIN (
+    SELECT r0."Id", r0."CategoryId", r0."ClauseIndex", r0."ClauseText", r0."Confidence", r0."CreatedAt", r0."IsActive", r0."Keywords", r0."Priority", r0."ReviewId", r0."Sentiment", r0."SentimentScore", r0."Suggestion", r0."Summary", r0."UpdatedAt"
+    FROM "ReviewAnalyses" AS r0
+    WHERE r0."IsActive"
+) AS r2 ON r1."Id" = r2."ReviewId"
+ORDER BY r1."ReviewDate" DESC, r1."Id"
+2026-07-24 11:29:28.927 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Pagination.PagedResponse`1[[System.Collections.Generic.List`1[[HotelReviewAI.Application.DTOs.ReviewListItemDto, HotelReviewAI.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:29:28.927 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.ReviewsController.GetAll (HotelReviewAI.Api) in 13.051ms
+2026-07-24 11:29:28.927 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:28.927 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/reviews?pageNumber=1&pageSize=100 - 200 null application/json; charset=utf-8 14.4678ms
+2026-07-24 11:29:30.443 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/departments - null null
+2026-07-24 11:29:30.444 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:29:30.445 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:30.445 +03:00 [INF] Route matched with {action = "GetAll", controller = "Departments"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DepartmentsController (HotelReviewAI.Api).
+2026-07-24 11:29:30.460 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive" AND d."HotelId" = @hotelId_Value
+2026-07-24 11:29:30.460 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:29:30.461 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api) in 15.7468ms
+2026-07-24 11:29:30.461 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:30.461 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/departments - 200 null application/json; charset=utf-8 17.8009ms
+2026-07-24 11:29:30.464 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/reviews?pageNumber=1&pageSize=100 - null null
+2026-07-24 11:29:30.465 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:29:30.465 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:30.465 +03:00 [INF] Route matched with {action = "GetAll", controller = "Reviews"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[HotelReviewAI.Domain.Enums.Sentiment], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid], System.Nullable`1[HotelReviewAI.Domain.Enums.ReviewSource], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid], Int32, Int32) on controller HotelReviewAI.Api.Controllers.ReviewsController (HotelReviewAI.Api).
+2026-07-24 11:29:30.473 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@filter_HotelId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Reviews" AS r
+WHERE r."IsActive" AND r."HotelId" = @filter_HotelId
+2026-07-24 11:29:30.480 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[@filter_HotelId='?' (DbType = Guid), @p2='?' (DbType = Int32), @p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT r1."Id", r1."Comment", r1."CreatedAt", r1."CreatedBy", r1."GuestName", r1."HotelId", r1."IsActive", r1."Language", r1."Rating", r1."ReviewDate", r1."Source", r1."UpdatedAt", r2."Id", r2."CategoryId", r2."ClauseIndex", r2."ClauseText", r2."Confidence", r2."CreatedAt", r2."IsActive", r2."Keywords", r2."Priority", r2."ReviewId", r2."Sentiment", r2."SentimentScore", r2."Suggestion", r2."Summary", r2."UpdatedAt"
+FROM (
+    SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+    FROM "Reviews" AS r
+    WHERE r."IsActive" AND r."HotelId" = @filter_HotelId
+    ORDER BY r."ReviewDate" DESC
+    LIMIT @p2 OFFSET @p
+) AS r1
+LEFT JOIN (
+    SELECT r0."Id", r0."CategoryId", r0."ClauseIndex", r0."ClauseText", r0."Confidence", r0."CreatedAt", r0."IsActive", r0."Keywords", r0."Priority", r0."ReviewId", r0."Sentiment", r0."SentimentScore", r0."Suggestion", r0."Summary", r0."UpdatedAt"
+    FROM "ReviewAnalyses" AS r0
+    WHERE r0."IsActive"
+) AS r2 ON r1."Id" = r2."ReviewId"
+ORDER BY r1."ReviewDate" DESC, r1."Id"
+2026-07-24 11:29:30.490 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Pagination.PagedResponse`1[[System.Collections.Generic.List`1[[HotelReviewAI.Application.DTOs.ReviewListItemDto, HotelReviewAI.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:29:30.491 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.ReviewsController.GetAll (HotelReviewAI.Api) in 25.3848ms
+2026-07-24 11:29:30.491 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:30.492 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/reviews?pageNumber=1&pageSize=100 - 200 null application/json; charset=utf-8 27.2061ms
+2026-07-24 11:29:31.559 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/users - null null
+2026-07-24 11:29:31.559 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:29:31.560 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/users - 204 null null 1.2432ms
+2026-07-24 11:29:31.561 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/departments - null null
+2026-07-24 11:29:31.561 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:29:31.562 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:31.562 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/users - null null
+2026-07-24 11:29:31.562 +03:00 [INF] Route matched with {action = "GetAll", controller = "Departments"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DepartmentsController (HotelReviewAI.Api).
+2026-07-24 11:29:31.562 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:29:31.564 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:31.568 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive" AND d."HotelId" = @hotelId_Value
+2026-07-24 11:29:31.569 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:29:31.569 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api) in 6.691ms
+2026-07-24 11:29:31.569 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:31.569 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/departments - 200 null application/json; charset=utf-8 8.7ms
+2026-07-24 11:29:31.574 +03:00 [INF] Route matched with {action = "GetAll", controller = "Users"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.UsersController (HotelReviewAI.Api).
+2026-07-24 11:29:31.595 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."DepartmentName", u."Email", u."FullName", u."HotelId", u."HotelName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND u."HotelId" = @hotelId_Value
+2026-07-24 11:29:31.600 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive"
+2026-07-24 11:29:31.607 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:29:31.612 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api) in 38.2961ms
+2026-07-24 11:29:31.613 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:31.613 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/users - 200 null application/json; charset=utf-8 50.6633ms
+2026-07-24 11:29:33.047 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/departments - null null
+2026-07-24 11:29:33.047 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/hotels - null null
+2026-07-24 11:29:33.047 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:29:33.047 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:29:33.047 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/hotels - 204 null null 0.3763ms
+2026-07-24 11:29:33.047 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:33.047 +03:00 [INF] Route matched with {action = "GetAll", controller = "Departments"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DepartmentsController (HotelReviewAI.Api).
+2026-07-24 11:29:33.048 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/hotels - null null
+2026-07-24 11:29:33.048 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:29:33.048 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.HotelsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:33.051 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/users - null null
+2026-07-24 11:29:33.051 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:29:33.052 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:33.052 +03:00 [INF] Route matched with {action = "GetAll", controller = "Users"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.UsersController (HotelReviewAI.Api).
+2026-07-24 11:29:33.052 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive" AND d."HotelId" = @hotelId_Value
+2026-07-24 11:29:33.052 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:29:33.052 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api) in 4.922ms
+2026-07-24 11:29:33.052 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:33.053 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/departments - 200 null application/json; charset=utf-8 5.8577ms
+2026-07-24 11:29:33.054 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/departments - null null
+2026-07-24 11:29:33.054 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:29:33.055 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:33.056 +03:00 [INF] Route matched with {action = "GetAll", controller = "Departments"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DepartmentsController (HotelReviewAI.Api).
+2026-07-24 11:29:33.057 +03:00 [INF] Route matched with {action = "GetAll", controller = "Hotels"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll() on controller HotelReviewAI.Api.Controllers.HotelsController (HotelReviewAI.Api).
+2026-07-24 11:29:33.058 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."DepartmentName", u."Email", u."FullName", u."HotelId", u."HotelName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND u."HotelId" = @hotelId_Value
+2026-07-24 11:29:33.061 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive"
+2026-07-24 11:29:33.062 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:29:33.063 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api) in 10.644ms
+2026-07-24 11:29:33.063 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:33.063 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/users - 200 null application/json; charset=utf-8 11.8675ms
+2026-07-24 11:29:33.072 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT h."Id", h."Name", h."Code", h."Address"
+FROM "Hotels" AS h
+WHERE h."IsActive"
+2026-07-24 11:29:33.073 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Collections.Generic.List`1[[HotelReviewAI.Application.DTOs.HotelDto, HotelReviewAI.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:29:33.077 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.HotelsController.GetAll (HotelReviewAI.Api) in 19.6624ms
+2026-07-24 11:29:33.077 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.HotelsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:33.077 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/hotels - 200 null application/json; charset=utf-8 29.3986ms
+2026-07-24 11:29:33.088 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive" AND d."HotelId" = @hotelId_Value
+2026-07-24 11:29:33.089 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:29:33.089 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api) in 33.2683ms
+2026-07-24 11:29:33.089 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:29:33.089 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/departments - 200 null application/json; charset=utf-8 35.0594ms
+2026-07-24 11:31:55.987 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/users - null null
+2026-07-24 11:31:55.987 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:31:55.988 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/departments - null null
+2026-07-24 11:31:55.988 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:31:55.988 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/departments - 204 null null 0.3487ms
+2026-07-24 11:31:55.988 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/users - 204 null null 0.8917ms
+2026-07-24 11:31:55.991 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/users - null null
+2026-07-24 11:31:55.991 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/departments - null null
+2026-07-24 11:31:55.991 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:31:55.991 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:31:55.992 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:31:55.992 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:31:55.992 +03:00 [INF] Route matched with {action = "GetAll", controller = "Departments"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DepartmentsController (HotelReviewAI.Api).
+2026-07-24 11:31:55.992 +03:00 [INF] Route matched with {action = "GetAll", controller = "Users"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.UsersController (HotelReviewAI.Api).
+2026-07-24 11:31:55.996 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive" AND d."HotelId" = @hotelId_Value
+2026-07-24 11:31:55.997 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:31:55.997 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api) in 4.9741ms
+2026-07-24 11:31:55.997 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:31:55.997 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/departments - 200 null application/json; charset=utf-8 6.4849ms
+2026-07-24 11:31:55.998 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."DepartmentName", u."Email", u."FullName", u."HotelId", u."HotelName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND u."HotelId" = @hotelId_Value
+2026-07-24 11:31:56.001 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive"
+2026-07-24 11:31:56.002 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:31:56.002 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api) in 10.2349ms
+2026-07-24 11:31:56.002 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:31:56.003 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/users - 200 null application/json; charset=utf-8 11.9189ms
+2026-07-24 11:31:57.273 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/users - null null
+2026-07-24 11:31:57.273 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/departments - null null
+2026-07-24 11:31:57.274 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:31:57.274 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:31:57.274 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:31:57.274 +03:00 [INF] Route matched with {action = "GetAll", controller = "Users"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.UsersController (HotelReviewAI.Api).
+2026-07-24 11:31:57.274 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:31:57.275 +03:00 [INF] Route matched with {action = "GetAll", controller = "Departments"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DepartmentsController (HotelReviewAI.Api).
+2026-07-24 11:31:57.279 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive" AND d."HotelId" = @hotelId_Value
+2026-07-24 11:31:57.279 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:31:57.280 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api) in 4.8082ms
+2026-07-24 11:31:57.280 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:31:57.280 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."DepartmentName", u."Email", u."FullName", u."HotelId", u."HotelName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND u."HotelId" = @hotelId_Value
+2026-07-24 11:31:57.280 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/departments - 200 null application/json; charset=utf-8 6.5064ms
+2026-07-24 11:31:57.282 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive"
+2026-07-24 11:31:57.283 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:31:57.283 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api) in 9.0152ms
+2026-07-24 11:31:57.283 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:31:57.284 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/users - 200 null application/json; charset=utf-8 10.2457ms
+2026-07-24 11:31:58.383 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/departments - null null
+2026-07-24 11:31:58.383 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/users - null null
+2026-07-24 11:31:58.383 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:31:58.383 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:31:58.384 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:31:58.384 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:31:58.384 +03:00 [INF] Route matched with {action = "GetAll", controller = "Users"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.UsersController (HotelReviewAI.Api).
+2026-07-24 11:31:58.384 +03:00 [INF] Route matched with {action = "GetAll", controller = "Departments"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DepartmentsController (HotelReviewAI.Api).
+2026-07-24 11:31:58.388 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive" AND d."HotelId" = @hotelId_Value
+2026-07-24 11:31:58.388 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:31:58.388 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api) in 4.635ms
+2026-07-24 11:31:58.389 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."DepartmentName", u."Email", u."FullName", u."HotelId", u."HotelName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND u."HotelId" = @hotelId_Value
+2026-07-24 11:31:58.389 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:31:58.389 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/departments - 200 null application/json; charset=utf-8 5.7817ms
+2026-07-24 11:31:58.390 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive"
+2026-07-24 11:31:58.391 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:31:58.391 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api) in 7.2928ms
+2026-07-24 11:31:58.391 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:31:58.391 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/users - 200 null application/json; charset=utf-8 8.1732ms
+2026-07-24 11:31:59.570 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/departments - null null
+2026-07-24 11:31:59.570 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/users - null null
+2026-07-24 11:31:59.570 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:31:59.570 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:31:59.570 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:31:59.570 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:31:59.570 +03:00 [INF] Route matched with {action = "GetAll", controller = "Departments"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DepartmentsController (HotelReviewAI.Api).
+2026-07-24 11:31:59.570 +03:00 [INF] Route matched with {action = "GetAll", controller = "Users"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.UsersController (HotelReviewAI.Api).
+2026-07-24 11:31:59.575 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive" AND d."HotelId" = @hotelId_Value
+2026-07-24 11:31:59.575 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:31:59.575 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."DepartmentName", u."Email", u."FullName", u."HotelId", u."HotelName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND u."HotelId" = @hotelId_Value
+2026-07-24 11:31:59.575 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api) in 4.9117ms
+2026-07-24 11:31:59.576 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:31:59.576 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/departments - 200 null application/json; charset=utf-8 5.9013ms
+2026-07-24 11:31:59.578 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive"
+2026-07-24 11:31:59.579 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:31:59.579 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api) in 8.5116ms
+2026-07-24 11:31:59.579 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:31:59.579 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/users - 200 null application/json; charset=utf-8 9.4669ms
+2026-07-24 11:32:04.679 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/users - null null
+2026-07-24 11:32:04.679 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/departments - null null
+2026-07-24 11:32:04.679 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:32:04.679 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:32:04.679 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/departments - 204 null null 0.2742ms
+2026-07-24 11:32:04.679 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/users - 204 null null 0.4748ms
+2026-07-24 11:32:04.683 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/users - null null
+2026-07-24 11:32:04.683 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/departments - null null
+2026-07-24 11:32:04.683 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:32:04.683 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:32:04.684 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:32:04.684 +03:00 [INF] Route matched with {action = "GetAll", controller = "Users"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.UsersController (HotelReviewAI.Api).
+2026-07-24 11:32:04.684 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:32:04.684 +03:00 [INF] Route matched with {action = "GetAll", controller = "Departments"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DepartmentsController (HotelReviewAI.Api).
+2026-07-24 11:32:04.687 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive" AND d."HotelId" = @hotelId_Value
+2026-07-24 11:32:04.687 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@hotelId_Value='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."CreatedAt", u."DepartmentId", u."DepartmentName", u."Email", u."FullName", u."HotelId", u."HotelName", u."IsActive", u."PasswordHash", u."Role", u."UpdatedAt"
+FROM "Users" AS u
+WHERE u."IsActive" AND u."HotelId" = @hotelId_Value
+2026-07-24 11:32:04.688 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:32:04.690 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT d."Id", d."CreatedAt", d."Description", d."HotelId", d."IsActive", d."Key", d."Name", d."UpdatedAt"
+FROM "Departments" AS d
+WHERE d."IsActive"
+2026-07-24 11:32:04.691 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:32:04.691 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api) in 7.1093ms
+2026-07-24 11:32:04.691 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DepartmentsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:32:04.691 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api) in 7.5552ms
+2026-07-24 11:32:04.691 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.UsersController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:32:04.691 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/departments - 200 null application/json; charset=utf-8 8.3406ms
+2026-07-24 11:32:04.691 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/users - 200 null application/json; charset=utf-8 8.3675ms
+2026-07-24 11:38:34.747 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:34.744Z&dateTo=2026-07-24T08:38:34.744Z - null null
+2026-07-24 11:38:34.747 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:34.748 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:34.744Z&dateTo=2026-07-24T08:38:34.744Z - 204 null null 0.7053ms
+2026-07-24 11:38:34.750 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:34.744Z&dateTo=2026-07-24T08:38:34.744Z - null null
+2026-07-24 11:38:34.750 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:34.744Z&dateTo=2026-07-24T08:38:34.744Z&topN=8 - null null
+2026-07-24 11:38:34.750 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:34.744Z&dateTo=2026-07-24T08:38:34.744Z - null null
+2026-07-24 11:38:34.750 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:34.744Z&dateTo=2026-07-24T08:38:34.744Z - null null
+2026-07-24 11:38:34.752 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:34.752 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:34.752 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:34.752 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:34.752 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:34.744Z&dateTo=2026-07-24T08:38:34.744Z - 204 null null 2.1412ms
+2026-07-24 11:38:34.753 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:34.744Z&dateTo=2026-07-24T08:38:34.744Z - 204 null null 2.5184ms
+2026-07-24 11:38:34.753 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:34.744Z&dateTo=2026-07-24T08:38:34.744Z&topN=8 - 204 null null 2.6427ms
+2026-07-24 11:38:34.753 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetSummary (HotelReviewAI.Api)'
+2026-07-24 11:38:34.755 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:34.744Z&dateTo=2026-07-24T08:38:34.744Z - null null
+2026-07-24 11:38:34.755 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:34.744Z&dateTo=2026-07-24T08:38:34.744Z&topN=8 - null null
+2026-07-24 11:38:34.755 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:34.744Z&dateTo=2026-07-24T08:38:34.744Z - null null
+2026-07-24 11:38:34.756 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:34.756 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:34.756 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:34.756 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTrends (HotelReviewAI.Api)'
+2026-07-24 11:38:34.757 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetCategoryDistribution (HotelReviewAI.Api)'
+2026-07-24 11:38:34.757 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTopKeywords (HotelReviewAI.Api)'
+2026-07-24 11:38:34.767 +03:00 [INF] Route matched with {action = "GetTrends", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTrends(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:34.767 +03:00 [INF] Route matched with {action = "GetSummary", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetSummary(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:34.772 +03:00 [INF] Route matched with {action = "GetCategoryDistribution", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCategoryDistribution(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:34.772 +03:00 [INF] Route matched with {action = "GetTopKeywords", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTopKeywords(Int32, System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:34.801 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CreatedAt", r."DepartmentId", r."IsActive", r."Key", r."Keywords", r."Name", r."UpdatedAt"
+FROM "ReviewCategories" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:34.804 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:34.805 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:34.806 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:34.807 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:34.821 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CategoryId", r."ClauseIndex", r."ClauseText", r."Confidence", r."CreatedAt", r."IsActive", r."Keywords", r."Priority", r."ReviewId", r."Sentiment", r."SentimentScore", r."Suggestion", r."Summary", r."UpdatedAt"
+FROM "ReviewAnalyses" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:34.821 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CategoryId", r."ClauseIndex", r."ClauseText", r."Confidence", r."CreatedAt", r."IsActive", r."Keywords", r."Priority", r."ReviewId", r."Sentiment", r."SentimentScore", r."Suggestion", r."Summary", r."UpdatedAt"
+FROM "ReviewAnalyses" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:34.821 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:34.826 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AssignedTo", a."CreatedAt", a."DepartmentId", a."DueDate", a."HotelId", a."IsActive", a."ReviewId", a."Status", a."Title", a."UpdatedAt"
+FROM "ActionItems" AS a
+WHERE a."IsActive"
+2026-07-24 11:38:34.828 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetTrends (HotelReviewAI.Api) in 60.2824ms
+2026-07-24 11:38:34.828 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTrends (HotelReviewAI.Api)'
+2026-07-24 11:38:34.828 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:34.744Z&dateTo=2026-07-24T08:38:34.744Z - 200 null application/json; charset=utf-8 72.8154ms
+2026-07-24 11:38:34.838 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:34.838 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:34.841 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetTopKeywords (HotelReviewAI.Api) in 68.0918ms
+2026-07-24 11:38:34.841 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTopKeywords (HotelReviewAI.Api)'
+2026-07-24 11:38:34.841 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetCategoryDistribution (HotelReviewAI.Api) in 68.4307ms
+2026-07-24 11:38:34.841 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:34.744Z&dateTo=2026-07-24T08:38:34.744Z&topN=8 - 200 null application/json; charset=utf-8 85.3977ms
+2026-07-24 11:38:34.841 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetCategoryDistribution (HotelReviewAI.Api)'
+2026-07-24 11:38:34.841 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:34.744Z&dateTo=2026-07-24T08:38:34.744Z - 200 null application/json; charset=utf-8 85.7307ms
+2026-07-24 11:38:34.856 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CategoryId", r."ClauseIndex", r."ClauseText", r."Confidence", r."CreatedAt", r."IsActive", r."Keywords", r."Priority", r."ReviewId", r."Sentiment", r."SentimentScore", r."Suggestion", r."Summary", r."UpdatedAt"
+FROM "ReviewAnalyses" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:34.861 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:34.863 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetSummary (HotelReviewAI.Api) in 95.1533ms
+2026-07-24 11:38:34.863 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetSummary (HotelReviewAI.Api)'
+2026-07-24 11:38:34.863 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:34.744Z&dateTo=2026-07-24T08:38:34.744Z - 200 null application/json; charset=utf-8 112.605ms
+2026-07-24 11:38:35.805 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:35.804Z&dateTo=2026-07-24T08:38:35.804Z - null null
+2026-07-24 11:38:35.805 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:35.804Z&dateTo=2026-07-24T08:38:35.804Z - null null
+2026-07-24 11:38:35.805 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:35.804Z&dateTo=2026-07-24T08:38:35.804Z - null null
+2026-07-24 11:38:35.805 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:35.806 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:35.804Z&dateTo=2026-07-24T08:38:35.804Z&topN=8 - null null
+2026-07-24 11:38:35.806 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:35.806 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:35.806 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:35.806 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:35.804Z&dateTo=2026-07-24T08:38:35.804Z&topN=8 - 204 null null 0.198ms
+2026-07-24 11:38:35.806 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:35.804Z&dateTo=2026-07-24T08:38:35.804Z - 204 null null 0.3799ms
+2026-07-24 11:38:35.806 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:35.804Z&dateTo=2026-07-24T08:38:35.804Z - 204 null null 0.3918ms
+2026-07-24 11:38:35.806 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:35.804Z&dateTo=2026-07-24T08:38:35.804Z - 204 null null 0.7264ms
+2026-07-24 11:38:35.810 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:35.804Z&dateTo=2026-07-24T08:38:35.804Z - null null
+2026-07-24 11:38:35.810 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:35.804Z&dateTo=2026-07-24T08:38:35.804Z - null null
+2026-07-24 11:38:35.810 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:35.804Z&dateTo=2026-07-24T08:38:35.804Z - null null
+2026-07-24 11:38:35.810 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:35.804Z&dateTo=2026-07-24T08:38:35.804Z&topN=8 - null null
+2026-07-24 11:38:35.810 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:35.810 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:35.810 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:35.810 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:35.810 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetCategoryDistribution (HotelReviewAI.Api)'
+2026-07-24 11:38:35.810 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTrends (HotelReviewAI.Api)'
+2026-07-24 11:38:35.810 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetSummary (HotelReviewAI.Api)'
+2026-07-24 11:38:35.810 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTopKeywords (HotelReviewAI.Api)'
+2026-07-24 11:38:35.810 +03:00 [INF] Route matched with {action = "GetCategoryDistribution", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCategoryDistribution(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:35.810 +03:00 [INF] Route matched with {action = "GetTrends", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTrends(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:35.810 +03:00 [INF] Route matched with {action = "GetTopKeywords", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTopKeywords(Int32, System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:35.810 +03:00 [INF] Route matched with {action = "GetSummary", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetSummary(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:35.814 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:35.816 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:35.816 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:35.817 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CreatedAt", r."DepartmentId", r."IsActive", r."Key", r."Keywords", r."Name", r."UpdatedAt"
+FROM "ReviewCategories" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:35.818 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CategoryId", r."ClauseIndex", r."ClauseText", r."Confidence", r."CreatedAt", r."IsActive", r."Keywords", r."Priority", r."ReviewId", r."Sentiment", r."SentimentScore", r."Suggestion", r."Summary", r."UpdatedAt"
+FROM "ReviewAnalyses" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:35.818 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:35.818 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetTrends (HotelReviewAI.Api) in 7.8102ms
+2026-07-24 11:38:35.818 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTrends (HotelReviewAI.Api)'
+2026-07-24 11:38:35.818 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:35.804Z&dateTo=2026-07-24T08:38:35.804Z - 200 null application/json; charset=utf-8 8.4994ms
+2026-07-24 11:38:35.820 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AssignedTo", a."CreatedAt", a."DepartmentId", a."DueDate", a."HotelId", a."IsActive", a."ReviewId", a."Status", a."Title", a."UpdatedAt"
+FROM "ActionItems" AS a
+WHERE a."IsActive"
+2026-07-24 11:38:35.821 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:35.821 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:35.822 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetTopKeywords (HotelReviewAI.Api) in 11.2124ms
+2026-07-24 11:38:35.822 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTopKeywords (HotelReviewAI.Api)'
+2026-07-24 11:38:35.822 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:35.804Z&dateTo=2026-07-24T08:38:35.804Z&topN=8 - 200 null application/json; charset=utf-8 11.977ms
+2026-07-24 11:38:35.823 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CategoryId", r."ClauseIndex", r."ClauseText", r."Confidence", r."CreatedAt", r."IsActive", r."Keywords", r."Priority", r."ReviewId", r."Sentiment", r."SentimentScore", r."Suggestion", r."Summary", r."UpdatedAt"
+FROM "ReviewAnalyses" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:35.826 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CategoryId", r."ClauseIndex", r."ClauseText", r."Confidence", r."CreatedAt", r."IsActive", r."Keywords", r."Priority", r."ReviewId", r."Sentiment", r."SentimentScore", r."Suggestion", r."Summary", r."UpdatedAt"
+FROM "ReviewAnalyses" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:35.827 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:35.827 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetCategoryDistribution (HotelReviewAI.Api) in 16.647ms
+2026-07-24 11:38:35.827 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetCategoryDistribution (HotelReviewAI.Api)'
+2026-07-24 11:38:35.827 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:35.804Z&dateTo=2026-07-24T08:38:35.804Z - 200 null application/json; charset=utf-8 17.2364ms
+2026-07-24 11:38:35.830 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:35.831 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetSummary (HotelReviewAI.Api) in 20.3487ms
+2026-07-24 11:38:35.831 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetSummary (HotelReviewAI.Api)'
+2026-07-24 11:38:35.831 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:35.804Z&dateTo=2026-07-24T08:38:35.804Z - 200 null application/json; charset=utf-8 21.2723ms
+2026-07-24 11:38:36.821 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:36.820Z&dateTo=2026-07-24T08:38:36.820Z - null null
+2026-07-24 11:38:36.821 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:36.821 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:36.820Z&dateTo=2026-07-24T08:38:36.820Z - 204 null null 0.3478ms
+2026-07-24 11:38:36.821 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:36.820Z&dateTo=2026-07-24T08:38:36.820Z - null null
+2026-07-24 11:38:36.821 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:36.821 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:36.820Z&dateTo=2026-07-24T08:38:36.820Z - null null
+2026-07-24 11:38:36.821 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:36.820Z&dateTo=2026-07-24T08:38:36.820Z&topN=8 - null null
+2026-07-24 11:38:36.821 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:36.820Z&dateTo=2026-07-24T08:38:36.820Z - 204 null null 0.1576ms
+2026-07-24 11:38:36.822 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:36.822 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:36.822 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:36.820Z&dateTo=2026-07-24T08:38:36.820Z&topN=8 - 204 null null 0.1818ms
+2026-07-24 11:38:36.822 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:36.820Z&dateTo=2026-07-24T08:38:36.820Z - 204 null null 0.2414ms
+2026-07-24 11:38:36.840 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:36.820Z&dateTo=2026-07-24T08:38:36.820Z - null null
+2026-07-24 11:38:36.840 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:36.820Z&dateTo=2026-07-24T08:38:36.820Z - null null
+2026-07-24 11:38:36.840 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:36.820Z&dateTo=2026-07-24T08:38:36.820Z - null null
+2026-07-24 11:38:36.840 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:36.840 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:36.840 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:36.840 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:36.820Z&dateTo=2026-07-24T08:38:36.820Z&topN=8 - null null
+2026-07-24 11:38:36.840 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:36.840 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTrends (HotelReviewAI.Api)'
+2026-07-24 11:38:36.840 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetSummary (HotelReviewAI.Api)'
+2026-07-24 11:38:36.840 +03:00 [INF] Route matched with {action = "GetTrends", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTrends(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:36.841 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetCategoryDistribution (HotelReviewAI.Api)'
+2026-07-24 11:38:36.841 +03:00 [INF] Route matched with {action = "GetSummary", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetSummary(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:36.841 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTopKeywords (HotelReviewAI.Api)'
+2026-07-24 11:38:36.841 +03:00 [INF] Route matched with {action = "GetCategoryDistribution", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCategoryDistribution(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:36.841 +03:00 [INF] Route matched with {action = "GetTopKeywords", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTopKeywords(Int32, System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:36.846 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CreatedAt", r."DepartmentId", r."IsActive", r."Key", r."Keywords", r."Name", r."UpdatedAt"
+FROM "ReviewCategories" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:36.847 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:36.848 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:36.849 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:36.849 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:36.849 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetTrends (HotelReviewAI.Api) in 8.2198ms
+2026-07-24 11:38:36.849 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTrends (HotelReviewAI.Api)'
+2026-07-24 11:38:36.849 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:36.820Z&dateTo=2026-07-24T08:38:36.820Z - 200 null application/json; charset=utf-8 9.304ms
+2026-07-24 11:38:36.849 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:36.850 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CategoryId", r."ClauseIndex", r."ClauseText", r."Confidence", r."CreatedAt", r."IsActive", r."Keywords", r."Priority", r."ReviewId", r."Sentiment", r."SentimentScore", r."Suggestion", r."Summary", r."UpdatedAt"
+FROM "ReviewAnalyses" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:36.853 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AssignedTo", a."CreatedAt", a."DepartmentId", a."DueDate", a."HotelId", a."IsActive", a."ReviewId", a."Status", a."Title", a."UpdatedAt"
+FROM "ActionItems" AS a
+WHERE a."IsActive"
+2026-07-24 11:38:36.854 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CategoryId", r."ClauseIndex", r."ClauseText", r."Confidence", r."CreatedAt", r."IsActive", r."Keywords", r."Priority", r."ReviewId", r."Sentiment", r."SentimentScore", r."Suggestion", r."Summary", r."UpdatedAt"
+FROM "ReviewAnalyses" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:36.855 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:36.855 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetTopKeywords (HotelReviewAI.Api) in 13.9351ms
+2026-07-24 11:38:36.855 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTopKeywords (HotelReviewAI.Api)'
+2026-07-24 11:38:36.855 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:36.820Z&dateTo=2026-07-24T08:38:36.820Z&topN=8 - 200 null application/json; charset=utf-8 15.1927ms
+2026-07-24 11:38:36.857 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CategoryId", r."ClauseIndex", r."ClauseText", r."Confidence", r."CreatedAt", r."IsActive", r."Keywords", r."Priority", r."ReviewId", r."Sentiment", r."SentimentScore", r."Suggestion", r."Summary", r."UpdatedAt"
+FROM "ReviewAnalyses" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:36.857 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:36.858 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetCategoryDistribution (HotelReviewAI.Api) in 16.8676ms
+2026-07-24 11:38:36.858 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetCategoryDistribution (HotelReviewAI.Api)'
+2026-07-24 11:38:36.858 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:36.820Z&dateTo=2026-07-24T08:38:36.820Z - 200 null application/json; charset=utf-8 17.8421ms
+2026-07-24 11:38:36.861 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:36.862 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetSummary (HotelReviewAI.Api) in 21.006ms
+2026-07-24 11:38:36.862 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetSummary (HotelReviewAI.Api)'
+2026-07-24 11:38:36.862 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:36.820Z&dateTo=2026-07-24T08:38:36.820Z - 200 null application/json; charset=utf-8 22.4505ms
+2026-07-24 11:38:38.213 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:38.211Z&dateTo=2026-07-24T08:38:38.211Z - null null
+2026-07-24 11:38:38.213 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:38.213 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:38.211Z&dateTo=2026-07-24T08:38:38.211Z - 204 null null 0.2563ms
+2026-07-24 11:38:38.213 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:38.211Z&dateTo=2026-07-24T08:38:38.211Z - null null
+2026-07-24 11:38:38.213 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:38.213 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:38.211Z&dateTo=2026-07-24T08:38:38.211Z - 204 null null 0.0693ms
+2026-07-24 11:38:38.214 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:38.211Z&dateTo=2026-07-24T08:38:38.211Z - null null
+2026-07-24 11:38:38.214 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:38.214 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:38.211Z&dateTo=2026-07-24T08:38:38.211Z - 204 null null 0.1535ms
+2026-07-24 11:38:38.214 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:38.211Z&dateTo=2026-07-24T08:38:38.211Z&topN=8 - null null
+2026-07-24 11:38:38.214 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:38.214 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:38.211Z&dateTo=2026-07-24T08:38:38.211Z&topN=8 - 204 null null 0.2072ms
+2026-07-24 11:38:38.216 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:38.211Z&dateTo=2026-07-24T08:38:38.211Z - null null
+2026-07-24 11:38:38.216 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:38.216 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:38.211Z&dateTo=2026-07-24T08:38:38.211Z - null null
+2026-07-24 11:38:38.216 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:38.211Z&dateTo=2026-07-24T08:38:38.211Z - null null
+2026-07-24 11:38:38.217 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:38.217 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:38.217 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTrends (HotelReviewAI.Api)'
+2026-07-24 11:38:38.217 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetCategoryDistribution (HotelReviewAI.Api)'
+2026-07-24 11:38:38.217 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetSummary (HotelReviewAI.Api)'
+2026-07-24 11:38:38.218 +03:00 [INF] Route matched with {action = "GetTrends", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTrends(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:38.218 +03:00 [INF] Route matched with {action = "GetCategoryDistribution", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCategoryDistribution(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:38.218 +03:00 [INF] Route matched with {action = "GetSummary", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetSummary(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:38.218 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:38.211Z&dateTo=2026-07-24T08:38:38.211Z&topN=8 - null null
+2026-07-24 11:38:38.218 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:38.218 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTopKeywords (HotelReviewAI.Api)'
+2026-07-24 11:38:38.218 +03:00 [INF] Route matched with {action = "GetTopKeywords", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTopKeywords(Int32, System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:38.225 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CreatedAt", r."DepartmentId", r."IsActive", r."Key", r."Keywords", r."Name", r."UpdatedAt"
+FROM "ReviewCategories" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:38.225 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:38.226 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:38.226 +03:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:38.227 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:38.227 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetTrends (HotelReviewAI.Api) in 9.3289ms
+2026-07-24 11:38:38.227 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTrends (HotelReviewAI.Api)'
+2026-07-24 11:38:38.227 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:38.211Z&dateTo=2026-07-24T08:38:38.211Z - 200 null application/json; charset=utf-8 10.7168ms
+2026-07-24 11:38:38.229 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:38.230 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CategoryId", r."ClauseIndex", r."ClauseText", r."Confidence", r."CreatedAt", r."IsActive", r."Keywords", r."Priority", r."ReviewId", r."Sentiment", r."SentimentScore", r."Suggestion", r."Summary", r."UpdatedAt"
+FROM "ReviewAnalyses" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:38.230 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AssignedTo", a."CreatedAt", a."DepartmentId", a."DueDate", a."HotelId", a."IsActive", a."ReviewId", a."Status", a."Title", a."UpdatedAt"
+FROM "ActionItems" AS a
+WHERE a."IsActive"
+2026-07-24 11:38:38.233 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:38.233 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CategoryId", r."ClauseIndex", r."ClauseText", r."Confidence", r."CreatedAt", r."IsActive", r."Keywords", r."Priority", r."ReviewId", r."Sentiment", r."SentimentScore", r."Suggestion", r."Summary", r."UpdatedAt"
+FROM "ReviewAnalyses" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:38.233 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetTopKeywords (HotelReviewAI.Api) in 14.9383ms
+2026-07-24 11:38:38.233 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTopKeywords (HotelReviewAI.Api)'
+2026-07-24 11:38:38.233 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:38.211Z&dateTo=2026-07-24T08:38:38.211Z&topN=8 - 200 null application/json; charset=utf-8 15.422ms
+2026-07-24 11:38:38.235 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CategoryId", r."ClauseIndex", r."ClauseText", r."Confidence", r."CreatedAt", r."IsActive", r."Keywords", r."Priority", r."ReviewId", r."Sentiment", r."SentimentScore", r."Suggestion", r."Summary", r."UpdatedAt"
+FROM "ReviewAnalyses" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:38.238 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:38.238 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetCategoryDistribution (HotelReviewAI.Api) in 20.0528ms
+2026-07-24 11:38:38.238 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetCategoryDistribution (HotelReviewAI.Api)'
+2026-07-24 11:38:38.238 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:38.211Z&dateTo=2026-07-24T08:38:38.211Z - 200 null application/json; charset=utf-8 21.4276ms
+2026-07-24 11:38:38.239 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:38.239 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetSummary (HotelReviewAI.Api) in 21.0769ms
+2026-07-24 11:38:38.239 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetSummary (HotelReviewAI.Api)'
+2026-07-24 11:38:38.239 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:38.211Z&dateTo=2026-07-24T08:38:38.211Z - 200 null application/json; charset=utf-8 23.3205ms
+2026-07-24 11:38:39.597 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:39.595Z&dateTo=2026-07-24T08:38:39.595Z - null null
+2026-07-24 11:38:39.597 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:39.597 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:39.595Z&dateTo=2026-07-24T08:38:39.595Z - 204 null null 0.2126ms
+2026-07-24 11:38:39.597 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:39.595Z&dateTo=2026-07-24T08:38:39.595Z - null null
+2026-07-24 11:38:39.597 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:39.597 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:39.595Z&dateTo=2026-07-24T08:38:39.595Z - 204 null null 0.1362ms
+2026-07-24 11:38:39.597 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:39.595Z&dateTo=2026-07-24T08:38:39.595Z - null null
+2026-07-24 11:38:39.597 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:39.597 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:39.595Z&dateTo=2026-07-24T08:38:39.595Z - 204 null null 0.2136ms
+2026-07-24 11:38:39.599 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:39.595Z&dateTo=2026-07-24T08:38:39.595Z - null null
+2026-07-24 11:38:39.599 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:39.599 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:39.595Z&dateTo=2026-07-24T08:38:39.595Z - null null
+2026-07-24 11:38:39.599 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:39.595Z&dateTo=2026-07-24T08:38:39.595Z - null null
+2026-07-24 11:38:39.599 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:39.599 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:39.600 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetSummary (HotelReviewAI.Api)'
+2026-07-24 11:38:39.599 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:39.595Z&dateTo=2026-07-24T08:38:39.595Z&topN=8 - null null
+2026-07-24 11:38:39.600 +03:00 [INF] Route matched with {action = "GetSummary", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetSummary(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:39.600 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetCategoryDistribution (HotelReviewAI.Api)'
+2026-07-24 11:38:39.600 +03:00 [INF] Route matched with {action = "GetCategoryDistribution", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCategoryDistribution(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:39.600 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTrends (HotelReviewAI.Api)'
+2026-07-24 11:38:39.600 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:39.600 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:39.595Z&dateTo=2026-07-24T08:38:39.595Z&topN=8 - 204 null null 0.5061ms
+2026-07-24 11:38:39.600 +03:00 [INF] Route matched with {action = "GetTrends", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTrends(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:39.602 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:39.595Z&dateTo=2026-07-24T08:38:39.595Z&topN=8 - null null
+2026-07-24 11:38:39.602 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:38:39.602 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTopKeywords (HotelReviewAI.Api)'
+2026-07-24 11:38:39.603 +03:00 [INF] Route matched with {action = "GetTopKeywords", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetTopKeywords(Int32, System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.DashboardController (HotelReviewAI.Api).
+2026-07-24 11:38:39.603 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:39.604 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:39.604 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CreatedAt", r."DepartmentId", r."IsActive", r."Key", r."Keywords", r."Name", r."UpdatedAt"
+FROM "ReviewCategories" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:39.604 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:39.605 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetTrends (HotelReviewAI.Api) in 4.4577ms
+2026-07-24 11:38:39.605 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTrends (HotelReviewAI.Api)'
+2026-07-24 11:38:39.605 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/trends?dateFrom=2026-06-24T08:38:39.595Z&dateTo=2026-07-24T08:38:39.595Z - 200 null application/json; charset=utf-8 5.6078ms
+2026-07-24 11:38:39.605 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AssignedTo", a."CreatedAt", a."DepartmentId", a."DueDate", a."HotelId", a."IsActive", a."ReviewId", a."Status", a."Title", a."UpdatedAt"
+FROM "ActionItems" AS a
+WHERE a."IsActive"
+2026-07-24 11:38:39.605 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:39.624 +03:00 [INF] Executed DbCommand (18ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CategoryId", r."ClauseIndex", r."ClauseText", r."Confidence", r."CreatedAt", r."IsActive", r."Keywords", r."Priority", r."ReviewId", r."Sentiment", r."SentimentScore", r."Suggestion", r."Summary", r."UpdatedAt"
+FROM "ReviewAnalyses" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:39.624 +03:00 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+FROM "Reviews" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:39.626 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:39.626 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetSummary (HotelReviewAI.Api) in 26.373ms
+2026-07-24 11:38:39.626 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetSummary (HotelReviewAI.Api)'
+2026-07-24 11:38:39.626 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/summary?dateFrom=2026-06-24T08:38:39.595Z&dateTo=2026-07-24T08:38:39.595Z - 200 null application/json; charset=utf-8 27.1735ms
+2026-07-24 11:38:39.626 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CategoryId", r."ClauseIndex", r."ClauseText", r."Confidence", r."CreatedAt", r."IsActive", r."Keywords", r."Priority", r."ReviewId", r."Sentiment", r."SentimentScore", r."Suggestion", r."Summary", r."UpdatedAt"
+FROM "ReviewAnalyses" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:39.629 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT r."Id", r."CategoryId", r."ClauseIndex", r."ClauseText", r."Confidence", r."CreatedAt", r."IsActive", r."Keywords", r."Priority", r."ReviewId", r."Sentiment", r."SentimentScore", r."Suggestion", r."Summary", r."UpdatedAt"
+FROM "ReviewAnalyses" AS r
+WHERE r."IsActive"
+2026-07-24 11:38:39.633 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:39.634 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetTopKeywords (HotelReviewAI.Api) in 30.9442ms
+2026-07-24 11:38:39.634 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetTopKeywords (HotelReviewAI.Api)'
+2026-07-24 11:38:39.634 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/top-keywords?dateFrom=2026-06-24T08:38:39.595Z&dateTo=2026-07-24T08:38:39.595Z&topN=8 - 200 null application/json; charset=utf-8 32.1379ms
+2026-07-24 11:38:39.634 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Responses.BaseResponse`1[[System.Object, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:38:39.635 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.DashboardController.GetCategoryDistribution (HotelReviewAI.Api) in 34.8403ms
+2026-07-24 11:38:39.635 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.DashboardController.GetCategoryDistribution (HotelReviewAI.Api)'
+2026-07-24 11:38:39.637 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/dashboard/category-distribution?dateFrom=2026-06-24T08:38:39.595Z&dateTo=2026-07-24T08:38:39.595Z - 200 null application/json; charset=utf-8 37.4253ms
+2026-07-24 11:39:22.390 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/reviews?pageNumber=1&pageSize=10 - null null
+2026-07-24 11:39:22.391 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:39:22.391 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/reviews?pageNumber=1&pageSize=10 - 204 null null 0.2579ms
+2026-07-24 11:39:22.391 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5012/api/reviews?pageNumber=1&pageSize=10 - null null
+2026-07-24 11:39:22.391 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:39:22.392 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:39:22.392 +03:00 [INF] Route matched with {action = "GetAll", controller = "Reviews"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime], System.Nullable`1[HotelReviewAI.Domain.Enums.Sentiment], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid], System.Nullable`1[HotelReviewAI.Domain.Enums.ReviewSource], System.Nullable`1[System.Guid], System.Nullable`1[System.Guid], Int32, Int32) on controller HotelReviewAI.Api.Controllers.ReviewsController (HotelReviewAI.Api).
+2026-07-24 11:39:22.397 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@filter_HotelId='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Reviews" AS r
+WHERE r."IsActive" AND r."HotelId" = @filter_HotelId
+2026-07-24 11:39:22.403 +03:00 [INF] Executed DbCommand (6ms) [Parameters=[@filter_HotelId='?' (DbType = Guid), @p2='?' (DbType = Int32), @p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT r1."Id", r1."Comment", r1."CreatedAt", r1."CreatedBy", r1."GuestName", r1."HotelId", r1."IsActive", r1."Language", r1."Rating", r1."ReviewDate", r1."Source", r1."UpdatedAt", r2."Id", r2."CategoryId", r2."ClauseIndex", r2."ClauseText", r2."Confidence", r2."CreatedAt", r2."IsActive", r2."Keywords", r2."Priority", r2."ReviewId", r2."Sentiment", r2."SentimentScore", r2."Suggestion", r2."Summary", r2."UpdatedAt"
+FROM (
+    SELECT r."Id", r."Comment", r."CreatedAt", r."CreatedBy", r."GuestName", r."HotelId", r."IsActive", r."Language", r."Rating", r."ReviewDate", r."Source", r."UpdatedAt"
+    FROM "Reviews" AS r
+    WHERE r."IsActive" AND r."HotelId" = @filter_HotelId
+    ORDER BY r."ReviewDate" DESC
+    LIMIT @p2 OFFSET @p
+) AS r1
+LEFT JOIN (
+    SELECT r0."Id", r0."CategoryId", r0."ClauseIndex", r0."ClauseText", r0."Confidence", r0."CreatedAt", r0."IsActive", r0."Keywords", r0."Priority", r0."ReviewId", r0."Sentiment", r0."SentimentScore", r0."Suggestion", r0."Summary", r0."UpdatedAt"
+    FROM "ReviewAnalyses" AS r0
+    WHERE r0."IsActive"
+) AS r2 ON r1."Id" = r2."ReviewId"
+ORDER BY r1."ReviewDate" DESC, r1."Id"
+2026-07-24 11:39:22.403 +03:00 [INF] Executing OkObjectResult, writing value of type 'HotelReviewAI.Shared.Pagination.PagedResponse`1[[System.Collections.Generic.List`1[[HotelReviewAI.Application.DTOs.ReviewListItemDto, HotelReviewAI.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-24 11:39:22.403 +03:00 [INF] Executed action HotelReviewAI.Api.Controllers.ReviewsController.GetAll (HotelReviewAI.Api) in 11.6823ms
+2026-07-24 11:39:22.403 +03:00 [INF] Executed endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.GetAll (HotelReviewAI.Api)'
+2026-07-24 11:39:22.403 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5012/api/reviews?pageNumber=1&pageSize=10 - 200 null application/json; charset=utf-8 12.0715ms
+2026-07-24 11:40:13.452 +03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5012/api/reviews - null null
+2026-07-24 11:40:13.452 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:40:13.452 +03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5012/api/reviews - 204 null null 0.1906ms
+2026-07-24 11:40:13.455 +03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5012/api/reviews - application/json 185
+2026-07-24 11:40:13.455 +03:00 [INF] CORS policy execution successful.
+2026-07-24 11:40:13.455 +03:00 [INF] Executing endpoint 'HotelReviewAI.Api.Controllers.ReviewsController.Create (HotelReviewAI.Api)'
+2026-07-24 11:40:13.464 +03:00 [INF] Route matched with {action = "Create", controller = "Reviews"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(HotelReviewAI.Application.Commands.Reviews.CreateReviewCommand, System.Nullable`1[System.Guid]) on controller HotelReviewAI.Api.Controllers.ReviewsController (HotelReviewAI.Api).
+2026-07-24 11:40:13.596 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?', @p2='?' (DbType = DateTime), @p3='?' (DbType = Guid), @p4='?', @p5='?' (DbType = Boolean), @p6='?' (DbType = DateTime), @p7='?' (DbType = Guid), @p8='?' (DbType = Guid), @p9='?', @p10='?' (DbType = DateTime), @p11='?' (DbType = Guid), @p12='?', @p13='?' (DbType = Guid), @p14='?' (DbType = Boolean), @p15='?', @p16='?' (DbType = Int32), @p17='?' (DbType = DateTime), @p18='?' (DbType = Int32), @p19='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AuditLogs" ("Id", "Action", "CreatedAt", "EntityId", "EntityName", "IsActive", "UpdatedAt", "UserId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+INSERT INTO "Reviews" ("Id", "Comment", "CreatedAt", "CreatedBy", "GuestName", "HotelId", "IsActive", "Language", "Rating", "ReviewDate", "Source", "UpdatedAt")
+VALUES (@p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19);
+2026-07-24 11:40:13.609 +03:00 [INF] Start processing HTTP request POST http://localhost:8000/analyze-review
+2026-07-24 11:40:13.616 +03:00 [INF] Sending HTTP request POST http://localhost:8000/analyze-review
+2026-07-24 11:40:17.747 +03:00 [INF] HTTP request failed after 4128.2069ms
+System.Net.Http.HttpRequestException: Hedef makine etkin olarak reddettiğinden bağlantı kurulamadı. (localhost:8000)
+ ---> System.Net.Sockets.SocketException (10061): Hedef makine etkin olarak reddettiğinden bağlantı kurulamadı.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.DiagnosticsHandler.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.SocketsHttpHandler.<SendAsync>g__CreateHandlerAndSendAsync|115_0(HttpRequestMessage request, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+2026-07-24 11:40:19.768 +03:00 [INF] Sending HTTP request POST http://localhost:8000/analyze-review
+2026-07-24 11:40:23.857 +03:00 [INF] HTTP request failed after 4088.0641ms
+System.Net.Http.HttpRequestException: Hedef makine etkin olarak reddettiğinden bağlantı kurulamadı. (localhost:8000)
+ ---> System.Net.Sockets.SocketException (10061): Hedef makine etkin olarak reddettiğinden bağlantı kurulamadı.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.DiagnosticsHandler.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+2026-07-24 11:40:27.857 +03:00 [INF] Sending HTTP request POST http://localhost:8000/analyze-review
+2026-07-24 11:40:31.915 +03:00 [INF] HTTP request failed after 4057.9156ms
+System.Net.Http.HttpRequestException: Hedef makine etkin olarak reddettiğinden bağlantı kurulamadı. (localhost:8000)
+ ---> System.Net.Sockets.SocketException (10061): Hedef makine etkin olarak reddettiğinden bağlantı kurulamadı.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.DiagnosticsHandler.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+2026-07-24 11:40:39.924 +03:00 [INF] Sending HTTP request POST http://localhost:8000/analyze-review

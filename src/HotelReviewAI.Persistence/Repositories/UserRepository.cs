@@ -13,4 +13,16 @@ public class UserRepository : GenericRepository<User>, IUserRepository
 
     public async Task<User?> GetByEmailAsync(string email) =>
         await DbSet.FirstOrDefaultAsync(u => u.Email == email);
+
+    public async Task<List<User>> GetUsersAsync(Guid? hotelId = null)
+    {
+        var query = DbSet.AsQueryable();
+        
+        if (hotelId.HasValue)
+        {
+            query = query.Where(u => u.HotelId == hotelId.Value);
+        }
+
+        return await query.ToListAsync();
+    }
 }

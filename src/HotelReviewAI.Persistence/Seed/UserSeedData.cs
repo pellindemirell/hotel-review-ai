@@ -12,4 +12,55 @@ public static class UserSeedData
         ("Demo Departman Kullanıcısı", "department@demo.com", "Department123!", Roles.DepartmentUser, "housekeeping"),
         ("Demo Mobil Kullanıcı", "mobile@demo.com", "Mobile123!", Roles.MobileUser, "housekeeping"),
     ];
+
+    /// <summary>
+    /// Türkçe rastgele isim havuzu - bulk personel seed için kullanılır.
+    /// </summary>
+    public static readonly string[] FirstNames =
+    [
+        "Ahmet", "Mehmet", "Mustafa", "Ali", "Hüseyin", "Hasan", "İbrahim", "İsmail",
+        "Ömer", "Yusuf", "Murat", "Emre", "Burak", "Serkan", "Tolga", "Onur",
+        "Kemal", "Caner", "Enes", "Furkan", "Berk", "Oğuz", "Deniz", "Barış",
+        "Ercan", "Volkan", "Gökhan", "Taner", "Uğur", "Selim",
+        "Ayşe", "Fatma", "Zeynep", "Emine", "Hatice", "Elif", "Merve", "Büşra",
+        "Seda", "Gül", "Pınar", "Gamze", "Tuğba", "Şeyma", "Rana", "Ceren",
+        "Derya", "Melisa", "Neslihan", "Yasemin"
+    ];
+
+    public static readonly string[] LastNames =
+    [
+        "Yılmaz", "Kaya", "Demir", "Çelik", "Şahin", "Yıldız", "Yıldırım", "Öztürk",
+        "Aydın", "Özdemir", "Arslan", "Doğan", "Kılıç", "Aslan", "Çetin", "Koc",
+        "Kurt", "Özkan", "Şimşek", "Polat", "Erdoğan", "Güneş", "Tekin", "Çakır",
+        "Koç", "Bulut", "Acar", "Aktaş", "Güler", "Türk",
+        "Duman", "Bozkurt", "Demirci", "Keskin", "Uysal", "Avcı", "Korkmaz", "Balcı",
+        "Erdem", "Topal", "Toprak", "Kaplan", "Karahan", "Tuncer", "Yavuz", "Çevik",
+        "Güngör", "Şener", "Karadağ", "Albayrak"
+    ];
+
+    /// <summary>
+    /// Departman başına düşen personel sayısını hesaplar.
+    /// 50 personeli 8 departmana böler; her departmana minimum 2, kalanlar round-robin dağıtılır.
+    /// </summary>
+    public static Dictionary<string, int> GetPersonnelCountPerDepartment(int totalPersonnel, string[] departmentKeys)
+    {
+        int deptCount = departmentKeys.Length;
+        int minPerDept = 2;
+        int guaranteed = minPerDept * deptCount;
+        int remaining = totalPersonnel - guaranteed;
+
+        var counts = new Dictionary<string, int>();
+        for (int i = 0; i < deptCount; i++)
+        {
+            counts[departmentKeys[i]] = minPerDept;
+        }
+
+        // Kalanları round-robin ile dağıt
+        for (int i = 0; i < remaining; i++)
+        {
+            counts[departmentKeys[i % deptCount]]++;
+        }
+
+        return counts;
+    }
 }

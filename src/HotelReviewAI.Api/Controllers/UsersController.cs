@@ -27,9 +27,12 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(
+        [FromQuery] Guid? hotelId = null,
+        [FromHeader(Name = "X-Hotel-Id")] Guid? hotelIdHeader = null)
     {
-        var result = await _mediator.Send(new GetUsersQuery());
+        var effectiveHotelId = hotelIdHeader ?? hotelId;
+        var result = await _mediator.Send(new GetUsersQuery(effectiveHotelId));
         return Ok(BaseResponse<object>.Ok(result));
     }
 

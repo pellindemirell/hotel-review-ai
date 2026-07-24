@@ -146,73 +146,156 @@ public static class DbSeeder
 
     private static async Task<Dictionary<string, Department>> SeedDepartmentsAsync(AppDbContext context, List<Hotel> hotels)
     {
-        if (!await context.Departments.AnyAsync())
+        var allDepts = await context.Departments.ToListAsync();
+        foreach (var hotel in hotels)
         {
-            var defaultHotelId = hotels.FirstOrDefault()?.Id;
-            foreach (var (key, name) in DepartmentSeedData.Departments)
+            if (!allDepts.Any(d => d.HotelId == hotel.Id))
             {
-                context.Departments.Add(new Department { Key = key, Name = name, HotelId = defaultHotelId });
+                foreach (var (key, name) in DepartmentSeedData.Departments)
+                {
+                    context.Departments.Add(new Department { Key = key, Name = name, HotelId = hotel.Id });
+                }
             }
-
-            await context.SaveChangesAsync();
         }
-
-        return await context.Departments.ToDictionaryAsync(d => d.Key);
+        await context.SaveChangesAsync();
+        var defaultHotelId = hotels.FirstOrDefault()?.Id;
+        return await context.Departments.Where(d => d.HotelId == defaultHotelId).ToDictionaryAsync(d => d.Key);
     }
 
     private static async Task<Dictionary<string, ReviewCategory>> SeedCategoriesAsync(
         AppDbContext context, Dictionary<string, Department> departments)
     {
-        if (!await context.ReviewCategories.AnyAsync())
+        var allCategories = await context.ReviewCategories.ToListAsync();
+        // Get all hotels from departments dictionary
+        var hotelIds = departments.Values
+            .Select(d => d.HotelId)
+            .Distinct()
+            .Where(id => id.HasValue)
+            .Select(id => id!.Value)
+            .ToList();
+
+        foreach (var hotelId in hotelIds)
         {
-            foreach (var (key, name, keywords, departmentKey) in ReviewCategorySeedData.Categories)
+            var hotelDepts = departments.Values.Where(d => d.HotelId == hotelId).ToDictionary(d => d.Key);
+            // Check if categories exist for this hotel's departments
+            var firstDeptId = hotelDepts.Values.FirstOrDefault()?.Id;
+            if (firstDeptId.HasValue && !allCategories.Any(c => c.DepartmentId == firstDeptId.Value))
             {
-                context.ReviewCategories.Add(new ReviewCategory
+                foreach (var (key, name, keywords, departmentKey) in ReviewCategorySeedData.Categories)
                 {
-                    Key = key,
-                    Name = name,
-                    Keywords = keywords.ToList(),
-                    DepartmentId = departments[departmentKey].Id
-                });
+                    context.ReviewCategories.Add(new ReviewCategory
+                    {
+                        Key = key,
+                        Name = name,
+                        Keywords = keywords.ToList(),
+                        DepartmentId = hotelDepts[departmentKey].Id
+                    });
+                }
             }
-
-            await context.SaveChangesAsync();
         }
-
-        return await context.ReviewCategories.ToDictionaryAsync(c => c.Key);
+        await context.SaveChangesAsync();
+        var firstHotelIds = departments.Values.Select(d => d.Id).ToList();
+        return await context.ReviewCategories.Where(c => firstHotelIds.Contains(c.DepartmentId)).ToDictionaryAsync(c => c.Key);
     }
 
     private static async Task SeedUsersAsync(AppDbContext context, Dictionary<string, Department> departments, List<Hotel> hotels)
     {
+        // Mevcut kayıt varsa: yeni eklenen HotelName / DepartmentName kolonlarını doldur, sonra çık.
         if (await context.Users.AnyAsync())
         {
+            var hotelDict = hotels.ToDictionary(h => h.Id);
+            var deptDict  = departments.Values.ToDictionary(d => d.Id);
+
+            var usersToFill = await context.Users
+                .Where(u => u.HotelName == null || u.DepartmentName == null)
+                .ToListAsync();
+
+            foreach (var u in usersToFill)
+            {
+                if (u.HotelName == null && u.HotelId.HasValue && hotelDict.TryGetValue(u.HotelId.Value, out var h))
+                    u.HotelName = h.Name;
+
+                if (u.DepartmentName == null && u.DepartmentId.HasValue && deptDict.TryGetValue(u.DepartmentId.Value, out var d))
+                    u.DepartmentName = d.Name;
+            }
+
+            if (usersToFill.Count > 0)
+                await context.SaveChangesAsync();
+
             return;
         }
 
-        var defaultHotelId = hotels.FirstOrDefault()?.Id;
+        // Demo kullanıcıları yalnızca ilk otele ekle
+        var defaultHotel = hotels.FirstOrDefault();
         foreach (var (fullName, email, password, role, departmentKey) in UserSeedData.Users)
         {
+            var dept = departmentKey is null ? null : departments[departmentKey];
             context.Users.Add(new User
             {
-                FullName = fullName,
-                Email = email,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
-                Role = role,
-                DepartmentId = departmentKey is null ? null : departments[departmentKey].Id,
-                HotelId = defaultHotelId
+                FullName       = fullName,
+                Email          = email,
+                PasswordHash   = BCrypt.Net.BCrypt.HashPassword(password),
+                Role           = role,
+                DepartmentId   = dept?.Id,
+                DepartmentName = dept?.Name,
+                HotelId        = defaultHotel?.Id,
+                HotelName      = defaultHotel?.Name
             });
+        }
+
+        // Her otel için 50 personel oluştur; her departmanda en az 2 kişi
+        const int personnelPerHotel = 50;
+        var departmentKeys = DepartmentSeedData.Departments.Select(d => d.Key).ToArray();
+        var rng = new Random(42); // Tekrarlanabilir seed
+
+        // Otel başına e-posta çakışmasını önlemek için global sayaç
+        int globalCounter = 1;
+
+        foreach (var hotel in hotels)
+        {
+            var deptCounts = UserSeedData.GetPersonnelCountPerDepartment(personnelPerHotel, departmentKeys);
+
+            foreach (var deptKey in departmentKeys)
+            {
+                int count = deptCounts[deptKey];
+                var department = departments[deptKey];
+
+                for (int i = 0; i < count; i++)
+                {
+                    var firstName = UserSeedData.FirstNames[rng.Next(UserSeedData.FirstNames.Length)];
+                    var lastName  = UserSeedData.LastNames[rng.Next(UserSeedData.LastNames.Length)];
+                    var fullName  = $"{firstName} {lastName}";
+
+                    // Benzersiz e-posta: user<sayaç>@<otelSlug>.com
+                    var hotelSlug = new string(hotel.Name
+                        .ToLowerInvariant()
+                        .Where(c => char.IsLetterOrDigit(c))
+                        .Take(12)
+                        .ToArray());
+                    var email = $"user{globalCounter++}@{hotelSlug}.com";
+
+                    // Personel — giriş yapan sistem kullanıcısı değil, şifre ve rol atanmaz.
+                    context.Users.Add(new User
+                    {
+                        FullName       = fullName,
+                        Email          = email,
+                        PasswordHash   = string.Empty,
+                        Role           = string.Empty,
+                        DepartmentId   = department.Id,
+                        DepartmentName = department.Name,
+                        HotelId        = hotel.Id,
+                        HotelName      = hotel.Name
+                    });
+                }
+            }
         }
 
         await context.SaveChangesAsync();
     }
 
+
     private static async Task SeedReviewsAsync(AppDbContext context, Dictionary<string, ReviewCategory> categories, List<Hotel> hotels)
     {
-        if (await context.Reviews.CountAsync() > 10)
-        {
-            return;
-        }
-
         var assembly = typeof(DbSeeder).Assembly;
         var resourceName = "HotelReviewAI.Persistence.Seed.reviews.json";
 
@@ -229,6 +312,16 @@ public static class DbSeeder
         {
             PropertyNameCaseInsensitive = true
         }) ?? [];
+
+        var existingComments = await context.Reviews.Select(r => r.Comment).ToListAsync();
+        var existingSet = new HashSet<string>(existingComments, StringComparer.OrdinalIgnoreCase);
+
+        seedReviews = seedReviews.Where(r => !existingSet.Contains(r.Comment)).ToList();
+
+        if (seedReviews.Count == 0)
+        {
+            return;
+        }
 
         var hotelDict = hotels.ToDictionary(h => h.Name.Trim(), StringComparer.OrdinalIgnoreCase);
 
