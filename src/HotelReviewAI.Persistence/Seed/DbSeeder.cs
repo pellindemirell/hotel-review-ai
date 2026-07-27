@@ -313,8 +313,8 @@ public static class DbSeeder
         }
 
         // Mevcut E-postaları al (Toplu personel veya diğer seed personellerin tekrar eklenmesini önlemek için)
-        var existingEmails = await context.Users.Select(u => u.Email).ToListAsync();
-        var existingEmailSet = new HashSet<string>(existingEmails, StringComparer.OrdinalIgnoreCase);
+        var allExistingEmails = await context.Users.Select(u => u.Email).ToListAsync();
+        var allExistingEmailSet = new HashSet<string>(allExistingEmails, StringComparer.OrdinalIgnoreCase);
 
         bool addedNewBulk = false;
 
@@ -349,7 +349,7 @@ public static class DbSeeder
                         .ToArray());
                     var email = $"user{globalCounter++}@{hotelSlug}.com";
 
-                    if (!existingEmailSet.Contains(email))
+                    if (!allExistingEmailSet.Contains(email))
                     {
                         var personnelUser = new User
                         {
