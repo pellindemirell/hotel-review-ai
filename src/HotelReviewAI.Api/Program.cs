@@ -34,6 +34,10 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddPersistence(builder.Configuration);
 
 
+// Configure SignalR and Notification Services
+builder.Services.AddSignalR();
+builder.Services.AddScoped<HotelReviewAI.Application.Interfaces.IAnalysisNotificationService, HotelReviewAI.Api.Services.SignalRAnalysisNotificationService>();
+
 // Configure CORS (Web & Mobile)
 builder.Services.AddCors(options =>
 {
@@ -102,5 +106,6 @@ app.UseStaticFiles(new StaticFileOptions
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHub<HotelReviewAI.Api.Hubs.AnalysisHub>("/hubs/analysis");
 
 app.Run();

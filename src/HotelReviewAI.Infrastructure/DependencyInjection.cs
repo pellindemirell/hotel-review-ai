@@ -31,6 +31,10 @@ public static class DependencyInjection
             client.Timeout = TimeSpan.FromSeconds(timeoutSeconds);
         });
 
+        // Asenkron Arka Plan Analiz Kuyruğu ve Worker
+        services.AddSingleton<IAnalysisQueue, AnalysisQueue>();
+        services.AddHostedService<AnalysisBackgroundWorker>();
+
         return services;
     }
 }

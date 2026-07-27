@@ -9,19 +9,19 @@ namespace HotelReviewAI.Application.Commands.Reviews;
 public class CreateReviewHandler : IRequestHandler<CreateReviewCommand, Guid>
 {
     private readonly IReviewRepository _reviewRepository;
-    private readonly IReviewAnalysisProcessingService _analysisProcessingService;
+    private readonly IAnalysisQueue _analysisQueue;
 
     public CreateReviewHandler(
         IReviewRepository reviewRepository,
-        IReviewAnalysisProcessingService analysisProcessingService)
+        IAnalysisQueue analysisQueue)
     {
         _reviewRepository = reviewRepository;
-        _analysisProcessingService = analysisProcessingService;
+        _analysisQueue = analysisQueue;
     }
 
     public async Task<Guid> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
     {
-        // 1. Yorumu veritabanına kaydet
+        // 1. Yorumu veritabanına anında kaydet
         var review = Review.Create(
             guestName: request.GuestName,
             comment: request.Comment,
@@ -33,9 +33,10 @@ public class CreateReviewHandler : IRequestHandler<CreateReviewCommand, Guid>
             hotelId: request.HotelId);
 
         await _reviewRepository.AddAsync(review);
+        await _reviewRepository.SaveChangesAsync();
 
-        // 2. AI analizi ve otomatik aksiyon işlemlerini ortak servise devret
-        await _analysisProcessingService.ProcessAnalysisAsync(review, isReanalysis: false, cancellationToken);
+        // 2. AI analizini arka plan kuyruğuna at (non-blocking)
+        await _analysisQueue.QueueAnalysisAsync(review.Id, cancellationToken);
 
         return review.Id;
     }

@@ -162,7 +162,7 @@ public static class DbSeeder
         return await context.Departments.Where(d => d.HotelId == defaultHotelId).ToDictionaryAsync(d => d.Key);
     }
 
-    private static async Task<Dictionary<string, ReviewCategory>> SeedCategoriesAsync(
+    private static async Task<Dictionary<Guid, Dictionary<string, ReviewCategory>>> SeedCategoriesAsync(
         AppDbContext context, Dictionary<string, Department> defaultDepartments)
     {
         var allCategories = await context.ReviewCategories.ToListAsync();
@@ -189,8 +189,21 @@ public static class DbSeeder
             }
         }
         await context.SaveChangesAsync();
-        var firstHotelIds = defaultDepartments.Values.Select(d => d.Id).ToList();
-        return await context.ReviewCategories.Where(c => firstHotelIds.Contains(c.DepartmentId)).ToDictionaryAsync(c => c.Key);
+        // Return all categories grouped by HotelId
+        var allDeptsWithCategories = await context.Departments
+            .Include(d => d.Categories)
+            .Where(d => d.HotelId.HasValue)
+            .ToListAsync();
+            
+        var categoryLookup = allDeptsWithCategories
+            .Where(d => d.Categories != null && d.Categories.Any())
+            .GroupBy(d => d.HotelId!.Value)
+            .ToDictionary(
+                g => g.Key,
+                g => g.SelectMany(d => d.Categories).ToDictionary(c => c.Key)
+            );
+            
+        return categoryLookup;
     }
 
     private static async Task SeedUsersAsync(AppDbContext context, Dictionary<string, Department> departments, List<Hotel> hotels)
@@ -304,7 +317,7 @@ public static class DbSeeder
     }
 
 
-    private static async Task SeedReviewsAsync(AppDbContext context, Dictionary<string, ReviewCategory> categories, List<Hotel> hotels)
+    private static async Task SeedReviewsAsync(AppDbContext context, Dictionary<Guid, Dictionary<string, ReviewCategory>> categories, List<Hotel> hotels)
     {
         var assembly = typeof(DbSeeder).Assembly;
         var resourceName = "HotelReviewAI.Persistence.Seed.reviews.json";
@@ -359,7 +372,10 @@ public static class DbSeeder
                 createdBy: null,
                 hotelId: assignedHotel?.Id);
 
-            review.AddAnalysis(SimulateAnalysis(dto, categories));
+            var hotelCategories = assignedHotel != null && categories.ContainsKey(assignedHotel.Id) 
+                ? categories[assignedHotel.Id] 
+                : categories.Values.FirstOrDefault() ?? new Dictionary<string, ReviewCategory>();
+            review.AddAnalysis(SimulateAnalysis(dto, hotelCategories));
 
             context.Reviews.Add(review);
         }
@@ -369,7 +385,7 @@ public static class DbSeeder
 
     // AI servisi henüz entegre edilmediği için, demo/dashboard verisinin anlamlı görünmesi adına
     // rating'e göre basit bir sentiment simülasyonu ve anahtar kelime eşleşmesiyle kategori tahmini yapılır.
-    // Gerçek AI entegrasyonu (Aşama 8) tamamlandığında bu metot kaldırılıp gerçek analiz sonucu kullanılacaktır.
+    // Gerçek AI entegrasyonu tamamlandığında bu metot kaldırılıp gerçek analiz sonucu kullanılacaktır.
     private static ReviewAnalysis SimulateAnalysis(ReviewSeedDto dto, Dictionary<string, ReviewCategory> categories)
     {
         var (sentiment, score) = dto.Rating switch
