@@ -15,3 +15,27 @@ PyYAML>=6.0
 psycopg2-binary>=2.9
 sqlalchemy>=2.0.0
 
+# --- ML / NLP (ml_classifier.py, transformer_absa.py) ---
+torch>=2.0.0
+transformers>=4.40.0
+
+# --- Web scraping (google_maps_playwright_adapter.py) ---
+# Not: Docker image'ında `playwright install chromium` ayrıca çalıştırılmalıdır.
+playwright>=1.44.0
+
+# --- Data processing (train_sentiment_category.py) ---
+pandas>=2.0.0
+numpy>=1.26.0
+
+# --- AI / LLM (rag_service.py, ops_copilot_adapter.py) ---
+google-generativeai>=0.8.0
+
+# --- Async database (database.py, absa_platform/database.py) ---
+asyncpg>=0.29.0
+aiosqlite>=0.20.0
+greenlet>=3.0.0
+
+# --- Web framework ---
+aiofiles>=23.0.0
+python-dotenv>=1.0.0
+

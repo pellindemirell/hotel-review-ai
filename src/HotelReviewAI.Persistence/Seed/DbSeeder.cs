@@ -163,20 +163,15 @@ public static class DbSeeder
     }
 
     private static async Task<Dictionary<string, ReviewCategory>> SeedCategoriesAsync(
-        AppDbContext context, Dictionary<string, Department> departments)
+        AppDbContext context, Dictionary<string, Department> defaultDepartments)
     {
         var allCategories = await context.ReviewCategories.ToListAsync();
-        // Get all hotels from departments dictionary
-        var hotelIds = departments.Values
-            .Select(d => d.HotelId)
-            .Distinct()
-            .Where(id => id.HasValue)
-            .Select(id => id!.Value)
-            .ToList();
+        var allDepartments = await context.Departments.ToListAsync();
+        var hotelIds = allDepartments.Where(d => d.HotelId.HasValue).Select(d => d.HotelId!.Value).Distinct().ToList();
 
         foreach (var hotelId in hotelIds)
         {
-            var hotelDepts = departments.Values.Where(d => d.HotelId == hotelId).ToDictionary(d => d.Key);
+            var hotelDepts = allDepartments.Where(d => d.HotelId == hotelId).ToDictionary(d => d.Key);
             // Check if categories exist for this hotel's departments
             var firstDeptId = hotelDepts.Values.FirstOrDefault()?.Id;
             if (firstDeptId.HasValue && !allCategories.Any(c => c.DepartmentId == firstDeptId.Value))
@@ -194,7 +189,7 @@ public static class DbSeeder
             }
         }
         await context.SaveChangesAsync();
-        var firstHotelIds = departments.Values.Select(d => d.Id).ToList();
+        var firstHotelIds = defaultDepartments.Values.Select(d => d.Id).ToList();
         return await context.ReviewCategories.Where(c => firstHotelIds.Contains(c.DepartmentId)).ToDictionaryAsync(c => c.Key);
     }
 
@@ -222,25 +217,42 @@ public static class DbSeeder
             if (usersToFill.Count > 0)
                 await context.SaveChangesAsync();
 
+            // PasswordHash kolonu silinip geri eklendiyse (boş string) yeniden hash'le
+            var usersWithoutPassword = await context.Users
+                .Where(u => u.PasswordHash == string.Empty || u.PasswordHash == null)
+                .ToListAsync();
+
+            if (usersWithoutPassword.Count > 0)
+            {
+                // Bilinen admin kullanıcılarını orijinal şifresiyle, diğerlerini varsayılan şifreyle resetle
+                var knownPasswords = UserSeedData.Users
+                    .ToDictionary(u => u.Email, u => u.Password, StringComparer.OrdinalIgnoreCase);
+
+                foreach (var u in usersWithoutPassword)
+                {
+                    var pwd = knownPasswords.TryGetValue(u.Email, out var known) ? known : "personel123";
+                    u.SetPassword(pwd);
+                }
+                await context.SaveChangesAsync();
+            }
+
             return;
         }
 
-        // Demo kullanıcıları yalnızca ilk otele ekle
         var defaultHotel = hotels.FirstOrDefault();
         foreach (var (fullName, email, password, role, departmentKey) in UserSeedData.Users)
         {
             var dept = departmentKey is null ? null : departments[departmentKey];
-            context.Users.Add(new User
+            var user = new User
             {
-                FullName       = fullName,
-                Email          = email,
-                PasswordHash   = BCrypt.Net.BCrypt.HashPassword(password),
-                Role           = role,
-                DepartmentId   = dept?.Id,
-                DepartmentName = dept?.Name,
-                HotelId        = defaultHotel?.Id,
-                HotelName      = defaultHotel?.Name
-            });
+                FullName     = fullName,
+                Email        = email,
+                Role         = role,
+                DepartmentId = dept?.Id,
+                HotelId      = defaultHotel?.Id
+            };
+            user.SetPassword(password);
+            context.Users.Add(user);
         }
 
         // Her otel için 50 personel oluştur; her departmanda en az 2 kişi
@@ -274,18 +286,16 @@ public static class DbSeeder
                         .ToArray());
                     var email = $"user{globalCounter++}@{hotelSlug}.com";
 
-                    // Personel — giriş yapan sistem kullanıcısı değil, şifre ve rol atanmaz.
-                    context.Users.Add(new User
+                    var personnelUser = new User
                     {
-                        FullName       = fullName,
-                        Email          = email,
-                        PasswordHash   = string.Empty,
-                        Role           = string.Empty,
-                        DepartmentId   = department.Id,
-                        DepartmentName = department.Name,
-                        HotelId        = hotel.Id,
-                        HotelName      = hotel.Name
-                    });
+                        FullName     = fullName,
+                        Email        = email,
+                        Role         = Roles.DepartmentUser,
+                        DepartmentId = department.Id,
+                        HotelId      = hotel.Id
+                    };
+                    personnelUser.SetPassword("personel123");
+                    context.Users.Add(personnelUser);
                 }
             }
         }
@@ -349,7 +359,7 @@ public static class DbSeeder
                 createdBy: null,
                 hotelId: assignedHotel?.Id);
 
-            review.Analyses.Add(SimulateAnalysis(dto, categories));
+            review.AddAnalysis(SimulateAnalysis(dto, categories));
 
             context.Reviews.Add(review);
         }
@@ -371,10 +381,10 @@ public static class DbSeeder
 
         var priority = sentiment switch
         {
-            Sentiment.Negative when score <= -0.8 => Priority.Kritik,
-            Sentiment.Negative when score <= -0.5 => Priority.Yuksek,
-            Sentiment.Negative => Priority.Orta,
-            _ => Priority.Bilgi
+            Sentiment.Negative when score <= -0.8 => Priority.Critical,
+            Sentiment.Negative when score <= -0.5 => Priority.High,
+            Sentiment.Negative => Priority.Medium,
+            _ => Priority.Info
         };
 
         var category = FindMatchingCategory(dto.Comment, categories);

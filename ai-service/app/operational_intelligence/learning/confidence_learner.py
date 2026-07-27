@@ -14,10 +14,13 @@ Every prediction stores:
 from __future__ import annotations
 
 import json
+import logging
 import os
 import pickle
 from dataclasses import dataclass, field
 from typing import Any, Optional
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -60,7 +63,7 @@ class ConfidenceLearner:
                 self._records = data.get("records", [])
                 self._calibrators = data.get("calibrators", {})
             except Exception:
-                pass
+                logger.warning("Failed to load confidence learner persistence", exc_info=True)
 
     def save(self) -> None:
         os.makedirs(os.path.dirname(self._persist_path), exist_ok=True)
@@ -77,7 +80,7 @@ class ConfidenceLearner:
                 cal = self._calibrators[method]
                 return float(cal.predict([[raw_score]])[0])
             except Exception:
-                pass
+                logger.warning("Confidence calibrator prediction failed", exc_info=True)
 
         # Cold start: simple scaling
         if method == "exact_match":

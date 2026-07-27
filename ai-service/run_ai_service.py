@@ -1,7 +1,10 @@
+import logging
 import os
 import sys
 import subprocess
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 # Windows CMD Unicode Ayarı
 if sys.platform == "win32":
@@ -9,7 +12,7 @@ if sys.platform == "win32":
         sys.stdout.reconfigure(encoding="utf-8")
         sys.stderr.reconfigure(encoding="utf-8")
     except Exception:
-        pass
+        logger.warning("Failed to reconfigure stdout/stderr encoding", exc_info=True)
 
 # AI Servisi Dizin Bilgisi
 BASE_DIR = Path(__file__).resolve().parent

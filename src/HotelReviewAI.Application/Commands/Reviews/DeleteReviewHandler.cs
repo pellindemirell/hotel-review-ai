@@ -20,8 +20,8 @@ public class DeleteReviewHandler : IRequestHandler<DeleteReviewCommand, bool>
             return false;
         }
 
-        // Soft delete: kayıt fiziksel olarak silinmez, IsActive=false yapılır.
-        await _reviewRepository.DeleteAsync(review);
+        await _reviewRepository.SoftDeleteAsync(review);
+        await _reviewRepository.SaveChangesAsync();
         return true;
     }
 }

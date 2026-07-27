@@ -4,9 +4,12 @@ Yorumları cümleciklere ayırır; her biri için domain, departman, duygu, aspe
 """
 from __future__ import annotations
 
+import logging
 import re
 from dataclasses import dataclass, field
 from typing import Optional
+
+logger = logging.getLogger(__name__)
 
 from app.services.category_rules import _prepare_text, _score_categories, _sorted_category_scores
 from app.services.keyword_service import KeywordService
@@ -122,7 +125,7 @@ def _should_skip_clause(clause: str) -> bool:
         if ClausePipeline.should_drop(clause):
             return True
     except Exception:
-        pass
+        logger.warning("ClausePipeline.should_drop failed", exc_info=True)
     words = c.split()
     if len(words) == 1:
         if words[0] in _SKIP_SINGLE_WORDS:
@@ -1195,7 +1198,7 @@ class AbsaService:
                                 sentiment = best_t.sentiment
                             conf = max(conf, best_t.confidence)
                 except Exception:
-                    pass
+                    logger.warning("Transformer ABSA engine predict_spans failed", exc_info=True)
 
             # Keep dept_id aligned with refined label; canonicalize the label
             if pipe_priority or aspect_key not in ("general", ""):

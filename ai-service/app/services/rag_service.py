@@ -599,7 +599,7 @@ CEVAP:"""
             if built and built.strip():
                 return built
         except Exception:
-            pass
+            logger.warning("Clause pipeline summary failed, using fallback", exc_info=True)
 
         # Fallback: complaint-keyword sentence pick
         raw = re.sub(r"\s+", " ", text.strip())

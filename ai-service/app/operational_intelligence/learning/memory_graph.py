@@ -19,9 +19,12 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import os
 import pickle
 from collections import defaultdict
+
+logger = logging.getLogger(__name__)
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Optional
@@ -92,7 +95,7 @@ class OperationalMemoryGraph:
                 self._cases = data.get("cases", {})
                 self._review_to_case = defaultdict(set, data.get("review_to_case", {}))
             except Exception:
-                pass
+                logger.warning("Failed to load memory graph persistence", exc_info=True)
 
     def save(self) -> None:
         os.makedirs(os.path.dirname(self._persist_path), exist_ok=True)
@@ -204,6 +207,7 @@ class OperationalMemoryGraph:
                 return "declining"
             return "stable"
         except Exception:
+            logger.warning("Failed to compute trend, defaulting to stable", exc_info=True)
             return "stable"
 
     def summary(self) -> dict[str, Any]:

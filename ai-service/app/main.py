@@ -38,7 +38,6 @@ from app.services.learning_service import get_learning_service
 from app.services.feedback_service import get_feedback_service
 from app.services.collector_service import import_paste_text, get_csv_template, analyze_collected_csv, import_bulk_paste
 from app.services.turkish_nlp_utils import normalize_turkish
-from app.services.absa_service import split_clauses_absa
 from app.review_intelligence import ReviewIntelligenceService
 from app.operational_intelligence.engine import HodipEngine
 
@@ -490,12 +489,13 @@ def _side_persist(comment: str, rating: Optional[int], resp_dict: dict, absa_asp
         stored = review_store.add_from_analysis(comment, rating, resp_dict, source="live")
         stored_id = stored.id
     except Exception:
+        logger.warning("Failed to persist review to review_store", exc_info=True)
         stored_id = None
     try:
         room_issue_service.register_from_comment(comment, review_id=stored_id, created_at=None)
         entity_tracker_service.register_from_comment(comment, review_id=stored_id, created_at=None)
     except Exception:
-        pass
+        logger.warning("Failed to register room issue / entity from comment", exc_info=True)
     try:
         learning_service.record_from_analysis(
             review_id=stored_id or f"anon-{hash(comment) & 0xFFFFFF:06x}",
@@ -506,7 +506,7 @@ def _side_persist(comment: str, rating: Optional[int], resp_dict: dict, absa_asp
             source="live",
         )
     except Exception:
-        pass
+        logger.warning("Failed to record learning from analysis", exc_info=True)
 
 
 def _analyze_review_sync(request: ReviewRequest, generation: int = 0) -> ReviewResponse:
@@ -796,7 +796,7 @@ async def analyze_absa(request: ReviewRequest):
         try:
             review_store.add_absa_aspects(f"absa-{hash(turkish_comment) & 0xFFFFFF:06x}", data.get("aspects", []))
         except Exception:
-            pass
+            logger.warning("Failed to add ABSA aspects to store", exc_info=True)
         return AbsaResponse(**data)
     except Exception as e:
         logger.error(f"/analyze-absa hatası: {e}")
@@ -850,6 +850,7 @@ async def analyze_single(request: AnalyzeRequest):
                     source_lang=request.language,
                 )
             except Exception:
+                logger.warning("Translation failed, using original comment", exc_info=True)
                 turkish_comment = request.comment
         else:
             turkish_comment = request.comment
@@ -1003,7 +1004,7 @@ async def analyze_multidomain(request: MultiDomainReviewRequest):
         try:
             entity_tracker_service.register_from_comment(turkish_comment)
         except Exception:
-            pass
+            logger.warning("Failed to register entity from multidomain comment", exc_info=True)
         return MultiDomainAbsaResponse(**data)
     except Exception as e:
         logger.error(f"/analyze-multidomain hatası: {e}")

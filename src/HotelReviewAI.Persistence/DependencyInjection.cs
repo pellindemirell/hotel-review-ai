@@ -23,6 +23,7 @@ public static class DependencyInjection
         });
 
         // Repository kayıtları
+        services.AddScoped<IHotelRepository, HotelRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
         services.AddScoped<IReviewAnalysisRepository, ReviewAnalysisRepository>();
@@ -31,6 +32,10 @@ public static class DependencyInjection
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<IActionItemRepository, ActionItemRepository>();
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+
+        // Şifre hash'leme — BCrypt implementasyonu Persistence katmanında tutulur
+        services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
+
 
         return services;
     }

@@ -34,9 +34,7 @@ public class AuthController : ControllerBase
             return Unauthorized(BaseResponse<LoginResponse>.Fail("Geçersiz e-posta veya şifre."));
         }
 
-        // 2. BCrypt ile şifre doğrulaması
-        var passwordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
-        if (!passwordValid)
+        if (!user.VerifyPassword(request.Password))
         {
             return Unauthorized(BaseResponse<LoginResponse>.Fail("Geçersiz e-posta veya şifre."));
         }

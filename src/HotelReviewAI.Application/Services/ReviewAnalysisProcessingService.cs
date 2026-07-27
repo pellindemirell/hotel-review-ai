@@ -69,10 +69,10 @@ public class ReviewAnalysisProcessingService : IReviewAnalysisProcessingService
 
                 var aspectPriority = aspect.Priority switch
                 {
-                    "Kritik" => Priority.Kritik,
-                    "Yuksek" => Priority.Yuksek,
-                    "Orta" => Priority.Orta,
-                    _ => Priority.Bilgi
+                    "Critical" or "Kritik" => Priority.Critical,
+                    "High" or "Yuksek" => Priority.High,
+                    "Medium" or "Orta" => Priority.Medium,
+                    _ => Priority.Info
                 };
 
                 var analysis = new ReviewAnalysis
@@ -86,8 +86,8 @@ public class ReviewAnalysisProcessingService : IReviewAnalysisProcessingService
                     CategoryId = catId,
                     Suggestion = aspect.Suggestion,
                     Confidence = aiResult.Confidence,
-                    Keywords = aiResult.Keywords,
-                    Summary = aiResult.Summary
+                    Keywords = idx == 1 ? aiResult.Keywords : [],
+                    Summary = idx == 1 ? aiResult.Summary : null
                 };
 
                 await _reviewAnalysisRepository.AddAsync(analysis);
@@ -132,7 +132,7 @@ public class ReviewAnalysisProcessingService : IReviewAnalysisProcessingService
                 _ => Sentiment.Neutral
             };
 
-            var priorityEnum = sentimentEnum == Sentiment.Negative ? Priority.Yuksek : Priority.Bilgi;
+            var priorityEnum = sentimentEnum == Sentiment.Negative ? Priority.High : Priority.Info;
 
             var analysis = new ReviewAnalysis
             {
@@ -156,6 +156,7 @@ public class ReviewAnalysisProcessingService : IReviewAnalysisProcessingService
                 var actionItem = new ActionItem
                 {
                     ReviewId = review.Id,
+                    HotelId = review.HotelId,
                     DepartmentId = category.DepartmentId,
                     Title = $"{prefix} {category.Name}: {(review.Comment.Length > 80 ? review.Comment[..80] + "..." : review.Comment)}",
                     Status = ActionItemStatus.Open,
@@ -165,28 +166,28 @@ public class ReviewAnalysisProcessingService : IReviewAnalysisProcessingService
                 await _actionItemRepository.AddAsync(actionItem);
             }
         }
+
+        await _reviewAnalysisRepository.SaveChangesAsync();
     }
 
     private async Task<(Guid? DepartmentId, Guid? CategoryId)> ResolveDepartmentAndCategoryAsync(
         string departmentKey, string clause, Guid? hotelId = null)
     {
         var departments = await _departmentRepository.GetAllAsync();
-        var department = departments.FirstOrDefault(d => d.Key.Equals(departmentKey, StringComparison.OrdinalIgnoreCase) && (!hotelId.HasValue || d.HotelId == hotelId.Value));
-        if (department is null)
-            department = departments.FirstOrDefault(d => d.Key.Equals(departmentKey, StringComparison.OrdinalIgnoreCase)); // Fallback
+        var department = departments.FirstOrDefault(d =>
+            d.Key.Equals(departmentKey, StringComparison.OrdinalIgnoreCase) &&
+            (!hotelId.HasValue || d.HotelId == hotelId.Value))
+            ?? departments.FirstOrDefault(d => d.Key.Equals(departmentKey, StringComparison.OrdinalIgnoreCase));
         if (department is null)
             return (null, null);
 
         var categories = await _categoryRepository.GetAllAsync();
-        var deptCategories = categories.Where(c => c.DepartmentId == department.Id).ToList();
-
         var lowerClause = clause.ToLowerInvariant();
-        var matchedCategory = deptCategories.FirstOrDefault(c => 
-            c.Keywords.Any(k => lowerClause.Contains(k.ToLowerInvariant())));
+        var matchedCategory = categories
+            .Where(c => c.DepartmentId == department.Id)
+            .FirstOrDefault(c => c.Keywords.Any(k => lowerClause.Contains(k.ToLowerInvariant())));
 
-        var categoryId = matchedCategory?.Id ?? deptCategories.FirstOrDefault()?.Id;
-
-        return (department.Id, categoryId);
+        return (department.Id, matchedCategory?.Id ?? categories.FirstOrDefault(c => c.DepartmentId == department.Id)?.Id);
     }
 
     private async Task<HotelReviewAI.Application.DTOs.AiAnalysisResult> SimulateAnalysisAsync(Review review)

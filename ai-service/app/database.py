@@ -6,21 +6,26 @@ from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
 
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "postgresql+asyncpg://stajor1:stajor1*-@192.168.40.140:5432/stajor",
-)
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-# Test override: set to sqlite+aiosqlite:///:memory: for unit tests
-_TEST_DATABASE_URL: str | None = None
+_engine = None
+_async_session_maker = None
+_override_url = None
 
 
 def _get_engine_url() -> str:
-    return _TEST_DATABASE_URL or DATABASE_URL
+    return _override_url or DATABASE_URL
 
 
-engine = create_async_engine(_get_engine_url(), echo=False, pool_size=5, max_overflow=10)
-AsyncSessionLocal = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+def _ensure_engine() -> None:
+    global _engine, _async_session_maker
+    if _engine is not None:
+        return
+    url = _get_engine_url()
+    if not url:
+        raise RuntimeError("DATABASE_URL environment variable is not set")
+    _engine = create_async_engine(url, echo=False, pool_size=5, max_overflow=10)
+    _async_session_maker = async_sessionmaker(_engine, class_=AsyncSession, expire_on_commit=False)
 
 
 class Base(DeclarativeBase):
@@ -28,17 +33,27 @@ class Base(DeclarativeBase):
 
 
 async def init_db() -> None:
-    async with engine.begin() as conn:
+    _ensure_engine()
+    async with _engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
 
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
-    async with AsyncSessionLocal() as session:
+    _ensure_engine()
+    async with _async_session_maker() as session:
         yield session
 
 
-def set_test_database_url(url: str) -> None:
-    global _TEST_DATABASE_URL, engine, AsyncSessionLocal
-    _TEST_DATABASE_URL = url
-    engine = create_async_engine(url, echo=False)
-    AsyncSessionLocal = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+async def shutdown_db() -> None:
+    global _engine, _async_session_maker
+    if _engine is not None:
+        await _engine.dispose()
+        _engine = None
+        _async_session_maker = None
+
+
+def configure_database(url: str) -> None:
+    global _override_url, _engine, _async_session_maker
+    _override_url = url
+    _engine = None
+    _async_session_maker = None

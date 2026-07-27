@@ -4,10 +4,13 @@ Sentiment, kategori, anahtar kelime ve çelişki tespiti için paylaşılan söz
 """
 from __future__ import annotations
 
+import logging
 import re
 import unicodedata
 from dataclasses import dataclass
 from typing import Optional
+
+logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
 # Kategori sabitleri (ML model + kural motoru ile uyumlu)
@@ -761,6 +764,7 @@ def analyze_mixed_review(text: str) -> MixedReviewResult:
 
             sub_clauses = split_clauses_absa(text)
         except Exception:
+            logger.warning("Failed to split clauses for mixed review analysis", exc_info=True)
             sub_clauses = []
         if len(sub_clauses) >= 5:
             clause_data = []
@@ -1251,7 +1255,7 @@ def _apply_rule_sentiment(cleaned: str) -> Optional[tuple[str, float]]:
             if _any_cue(cleaned, folded, cfg.get(key) or []):
                 return "Negative", float(cfg.get(score_key, default))
     except Exception:
-        pass
+        logger.warning("Failed in _apply_rule_sentiment checks", exc_info=True)
     if _has_conditional_positive(cleaned):
         return "Positive", 0.40
     if any(p in cleaned for p in (
@@ -1732,7 +1736,7 @@ def _apply_lexicon_extensions() -> None:
         }
         DEPT_HINTS.update(w for w in HOTEL_TERMS if len(w) >= 4)
     except Exception:
-        pass
+        logger.warning("Failed to apply lexicon extensions", exc_info=True)
 
 
 def _apply_encyclopedia_extensions() -> None:
@@ -1758,7 +1762,7 @@ def _apply_encyclopedia_extensions() -> None:
         }
         DEPT_HINTS.update(w for w in HOTEL_TERMS if len(w) >= 4)
     except Exception:
-        pass
+        logger.warning("Failed to apply encyclopedia extensions", exc_info=True)
 
 
 _apply_lexicon_extensions()

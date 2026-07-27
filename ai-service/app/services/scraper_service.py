@@ -124,6 +124,7 @@ class ScraperService:
             lang = detect(comment)
             return lang if lang in SUPPORTED_LANGUAGES else lang[:2]
         except Exception:
+            logger.warning("Language detection failed, using heuristic", exc_info=True)
             return cls._heuristic_language(comment)
 
     @classmethod

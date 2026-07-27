@@ -33,11 +33,11 @@ public class ReanalyzeReviewHandler : IRequestHandler<ReanalyzeReviewCommand, bo
             throw new DomainException("Yorum bulunamadı.");
         }
 
-        // 1. Eski analizleri temizle
         var existingAnalyses = await _reviewAnalysisRepository.GetByReviewIdAsync(request.ReviewId);
-        foreach (var oldAnalysis in existingAnalyses)
+        if (existingAnalyses.Any())
         {
-            await _reviewAnalysisRepository.DeleteAsync(oldAnalysis);
+            await _reviewAnalysisRepository.SoftDeleteRangeAsync(existingAnalyses);
+            await _reviewAnalysisRepository.SaveChangesAsync();
         }
 
         // 2. AI analizi ve otomatik aksiyon işlemlerini ortak servise devret (isReanalysis: true)

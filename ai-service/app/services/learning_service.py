@@ -8,11 +8,14 @@ from __future__ import annotations
 
 import csv
 import json
+import logging
 import os
 import threading
 import uuid
 from datetime import datetime, timezone
 from typing import Any, Optional
+
+logger = logging.getLogger(__name__)
 
 from app.services.turkish_nlp_utils import ALL_CATEGORIES
 
@@ -141,7 +144,7 @@ class LearningService:
                 )
                 count += 1
         except Exception:
-            pass
+            logger.warning("Failed to bootstrap demo reviews", exc_info=True)
 
         sim_dir = os.path.join(_PROJECT_ROOT, "simulation")
         csv_sources = [
@@ -311,7 +314,7 @@ class LearningService:
                 review_id=review_id,
             )
         except Exception:
-            pass
+            logger.warning("Failed to record_from_analysis", exc_info=True)
         should = self.should_retrain()
         return {
             "stored": True,
@@ -327,7 +330,7 @@ class LearningService:
             from app.services.review_store import get_review_store
             get_review_store().add_absa_aspects("learning", aspects)
         except Exception:
-            pass
+            logger.warning("Failed to update department ABSA aspects", exc_info=True)
 
     def record_correction(
         self,
@@ -411,7 +414,7 @@ class LearningService:
             stats["feedback_store"] = store_stats
             stats["category_distribution"] = trainer_stats.get("category_distribution") or store_stats.get("category_distribution", [])
         except Exception:
-            pass
+            logger.warning("Failed to get training stats", exc_info=True)
         return stats
 
     def get_recent_buffer(self, limit: int = 20) -> list[dict[str, Any]]:

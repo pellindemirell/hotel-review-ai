@@ -18,24 +18,38 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<T?> GetByIdAsync(Guid id) => await DbSet.FindAsync(id);
 
-    public async Task<IEnumerable<T>> GetAllAsync() => await DbSet.ToListAsync();
+    public async Task<IEnumerable<T>> GetAllAsync() => await DbSet.Where(e => e.IsActive).ToListAsync();
 
     public async Task AddAsync(T entity)
     {
         await DbSet.AddAsync(entity);
-        await Context.SaveChangesAsync();
+    }
+
+    public async Task AddRangeAsync(IEnumerable<T> entities)
+    {
+        await DbSet.AddRangeAsync(entities);
     }
 
     public async Task UpdateAsync(T entity)
     {
         DbSet.Update(entity);
-        await Context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(T entity)
+    public async Task SoftDeleteAsync(T entity)
     {
-        entity.IsActive = false;
-        DbSet.Update(entity);
+        entity.Deactivate();
+    }
+
+    public async Task SoftDeleteRangeAsync(IEnumerable<T> entities)
+    {
+        foreach (var entity in entities)
+        {
+            entity.Deactivate();
+        }
+    }
+
+    public async Task SaveChangesAsync()
+    {
         await Context.SaveChangesAsync();
     }
 }

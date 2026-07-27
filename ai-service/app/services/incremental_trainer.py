@@ -9,11 +9,14 @@ Training outputs:
 from __future__ import annotations
 
 import json
+import logging
 import os
 import string
 import threading
 from datetime import datetime, timezone
 from typing import Any, Optional
+
+logger = logging.getLogger(__name__)
 
 import joblib
 import numpy as np
@@ -261,11 +264,13 @@ class IncrementalTrainer:
             try:
                 vectorizer = joblib.load(VECTORIZER_PATH)
             except Exception:
+                logger.warning("Failed to load vectorizer, retraining from scratch", exc_info=True)
                 vectorizer = None
         if os.path.isfile(MODEL_PATH):
             try:
                 model = joblib.load(MODEL_PATH)
             except Exception:
+                logger.warning("Failed to load model, retraining from scratch", exc_info=True)
                 model = None
 
         if vectorizer is None:
@@ -297,6 +302,7 @@ class IncrementalTrainer:
         try:
             f1 = float(f1_score(yl, preds, average="weighted", zero_division=0))
         except Exception:
+            logger.warning("F1 score computation failed, defaulting to 0", exc_info=True)
             f1 = 0.0
 
         joblib.dump(model, MODEL_PATH)
@@ -362,7 +368,7 @@ class IncrementalTrainer:
             from app.services.lexicon_loader import load_lexicon
             load_lexicon.cache_clear()
         except Exception:
-            pass
+            logger.warning("Failed to clear lexicon cache", exc_info=True)
 
         return {"status": "success", "words_added": added, "path": LEARNED_LEXICON_PATH}
 
@@ -392,6 +398,7 @@ class IncrementalTrainer:
             try:
                 index = joblib.load(RAG_INDEX_PATH)
             except Exception:
+                logger.warning("Failed to load RAG index, rebuilding from scratch", exc_info=True)
                 index = None
         else:
             index = None
@@ -436,7 +443,7 @@ class IncrementalTrainer:
             from app.services.rag_service import RagService
             RagService.reload_index()
         except Exception:
-            pass
+            logger.warning("Failed to reload RAG index after update", exc_info=True)
 
         return {"status": "success", "appended": appended, "total_indexed": index["meta"]["indexed_records"]}
 

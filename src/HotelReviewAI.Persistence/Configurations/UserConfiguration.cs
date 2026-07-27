@@ -15,6 +15,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         entity.Property(u => u.FullName).IsRequired().HasMaxLength(200);
         entity.Property(u => u.Role).IsRequired().HasMaxLength(50);
 
+        // PasswordHash: private field'a map, silinmesin diye explicit tanımla
+        entity.Property(u => u.PasswordHash).HasColumnName("PasswordHash").IsRequired();
+
         // Denormalized kolonlar: join'siz sorgu kolaylığı için
         entity.Property(u => u.HotelName).HasMaxLength(200);
         entity.Property(u => u.DepartmentName).HasMaxLength(200);

@@ -11,6 +11,8 @@ namespace HotelReviewAI.Infrastructure.Services;
 public class JwtProvider : IJwtProvider
 {
     private readonly IConfiguration _configuration;
+    private static SymmetricSecurityKey? _cachedKey;
+    private static readonly object _keyLock = new();
 
     public JwtProvider(IConfiguration configuration)
     {
@@ -24,9 +26,9 @@ public class JwtProvider : IJwtProvider
         var audience = _configuration["JwtSettings:Audience"];
         var expMinutes = Convert.ToInt32(_configuration["JwtSettings:ExpirationInMinutes"] ?? "60");
 
-        if (string.IsNullOrEmpty(secretKey))
+        if (string.IsNullOrEmpty(secretKey) || Encoding.UTF8.GetByteCount(secretKey) < 32)
         {
-            throw new InvalidOperationException("JWT Secret is not configured.");
+            throw new InvalidOperationException("JWT Secret must be at least 32 characters long.");
         }
 
         var claims = new List<Claim>
@@ -44,8 +46,14 @@ public class JwtProvider : IJwtProvider
             claims.Add(new Claim("departmentId", departmentId.Value.ToString()));
         }
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        if (_cachedKey == null)
+        {
+            lock (_keyLock)
+            {
+                _cachedKey ??= new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            }
+        }
+        var creds = new SigningCredentials(_cachedKey, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
             issuer: issuer,
