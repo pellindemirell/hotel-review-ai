@@ -23,7 +23,15 @@ public class ActionItemRepository : GenericRepository<ActionItem>, IActionItemRe
 
         if (departmentId.HasValue)
         {
-            query = query.Where(a => a.DepartmentId == departmentId.Value);
+            var targetDept = await Context.Departments.FindAsync(departmentId.Value);
+            if (targetDept != null)
+            {
+                query = query.Where(a => a.Department != null && a.Department.Key == targetDept.Key);
+            }
+            else
+            {
+                query = query.Where(a => a.DepartmentId == departmentId.Value);
+            }
         }
 
         if (assignedTo.HasValue)
