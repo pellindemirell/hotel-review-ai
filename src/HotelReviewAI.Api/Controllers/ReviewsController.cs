@@ -37,7 +37,7 @@ public class ReviewsController : ControllerBase
     {
         var effectiveCommand = command with { HotelId = hotelIdHeader ?? command.HotelId };
         var id = await _mediator.Send(effectiveCommand);
-        return Ok(BaseResponse<Guid>.Ok(id, "Yorum oluşturuldu"));
+        return Accepted(BaseResponse<Guid>.Ok(id, "Yorum kaydedildi ve AI analizi için kuyruğa alındı."));
     }
 
     /// <summary>
