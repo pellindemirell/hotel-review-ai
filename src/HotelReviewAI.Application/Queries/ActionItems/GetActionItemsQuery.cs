@@ -38,25 +38,11 @@ public class GetActionItemsHandler : IRequestHandler<GetActionItemsQuery, List<A
 
     public async Task<List<ActionItemDetailsDto>> Handle(GetActionItemsQuery request, CancellationToken cancellationToken)
     {
-        IEnumerable<Domain.Entities.ActionItem> items;
-
-        if (request.DepartmentId.HasValue)
-        {
-            items = await _actionItemRepository.GetByDepartmentIdAsync(request.DepartmentId.Value);
-        }
-        else if (request.AssignedTo.HasValue)
-        {
-            items = await _actionItemRepository.GetByUserIdAsync(request.AssignedTo.Value);
-        }
-        else
-        {
-            items = await _actionItemRepository.GetAllAsync();
-        }
-
-        if (request.HotelId.HasValue)
-        {
-            items = items.Where(x => x.HotelId == request.HotelId.Value);
-        }
+        var items = await _actionItemRepository.GetFilteredAsync(
+            request.DepartmentId,
+            request.AssignedTo,
+            request.HotelId
+        );
 
         var departments = (await _departmentRepository.GetAllAsync()).ToDictionary(d => d.Id);
 
