@@ -30,8 +30,19 @@ public class ActionItemsController : ControllerBase
     /// Aksiyon öğelerini listele - Target Clients: Mobile (Flutter) & Web Panel (Angular)
     /// </summary>
     [HttpGet]
+<<<<<<< HEAD
     [Tags("Common (Shared)")]
+=======
+<<<<<<< Updated upstream
+>>>>>>> e197838 (fix(action-item): fix department and hotel filtering backend)
     public async Task<IActionResult> GetAll([FromQuery] Guid? departmentId, [FromQuery] Guid? assignedTo)
+=======
+    [Tags("Common (Shared)")]
+    public async Task<IActionResult> GetAll(
+        [FromQuery] Guid? departmentId, 
+        [FromQuery] Guid? assignedTo,
+        [FromHeader(Name = "X-Hotel-Id")] Guid? hotelIdHeader = null)
+>>>>>>> Stashed changes
     {
         // DepartmentUser ve MobileUser yalnızca kendi departmanlarını görebilir
         var role = User.FindFirstValue(ClaimTypes.Role);
@@ -48,7 +59,7 @@ public class ActionItemsController : ControllerBase
             assignedTo = null;
         }
 
-        var result = await _mediator.Send(new GetActionItemsQuery(departmentId, assignedTo));
+        var result = await _mediator.Send(new GetActionItemsQuery(departmentId, assignedTo, hotelIdHeader));
         return Ok(BaseResponse<object>.Ok(result));
     }
 

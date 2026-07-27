@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HotelReviewAI.Application.Queries.ActionItems;
 
-public record GetActionItemsQuery(Guid? DepartmentId, Guid? AssignedTo) : IRequest<List<ActionItemDetailsDto>>;
+public record GetActionItemsQuery(Guid? DepartmentId, Guid? AssignedTo, Guid? HotelId = null) : IRequest<List<ActionItemDetailsDto>>;
 
 public class ActionItemDetailsDto
 {
@@ -51,6 +51,11 @@ public class GetActionItemsHandler : IRequestHandler<GetActionItemsQuery, List<A
         else
         {
             items = await _actionItemRepository.GetAllAsync();
+        }
+
+        if (request.HotelId.HasValue)
+        {
+            items = items.Where(x => x.HotelId == request.HotelId.Value);
         }
 
         var departments = (await _departmentRepository.GetAllAsync()).ToDictionary(d => d.Id);
