@@ -37,4 +37,13 @@ public class CurrentUserService : ICurrentUserService
             return Guid.TryParse(dept, out var id) ? id : null;
         }
     }
+
+    public Guid? HotelId
+    {
+        get
+        {
+            var hotel = _httpContextAccessor.HttpContext?.User.FindFirstValue("hotelId");
+            return Guid.TryParse(hotel, out var id) ? id : null;
+        }
+    }
 }

@@ -22,11 +22,13 @@ public class UsersController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IUserRepository _userRepository;
 
-    public UsersController(IMediator mediator, ICurrentUserService currentUserService)
+    public UsersController(IMediator mediator, ICurrentUserService currentUserService, IUserRepository userRepository)
     {
         _mediator = mediator;
         _currentUserService = currentUserService;
+        _userRepository = userRepository;
     }
 
     [HttpGet]
@@ -40,6 +42,13 @@ public class UsersController : ControllerBase
         if (_currentUserService.Role == Roles.Manager)
         {
             effectiveDepartmentId = _currentUserService.DepartmentId;
+            effectiveHotelId = effectiveHotelId ?? _currentUserService.HotelId;
+
+            if (effectiveHotelId == null && _currentUserService.UserId.HasValue)
+            {
+                var currentUserEntity = await _userRepository.GetByIdAsync(_currentUserService.UserId.Value);
+                effectiveHotelId = currentUserEntity?.HotelId;
+            }
         }
 
         var result = await _mediator.Send(new GetUsersQuery(effectiveHotelId, effectiveDepartmentId));
