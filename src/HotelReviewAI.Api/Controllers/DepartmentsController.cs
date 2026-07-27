@@ -27,9 +27,12 @@ public class DepartmentsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(
+        [FromQuery] Guid? hotelId = null,
+        [FromHeader(Name = "X-Hotel-Id")] Guid? hotelIdHeader = null)
     {
-        var result = await _mediator.Send(new GetDepartmentsQuery());
+        var effectiveHotelId = hotelIdHeader ?? hotelId;
+        var result = await _mediator.Send(new GetDepartmentsQuery(effectiveHotelId));
         return Ok(BaseResponse<object>.Ok(result));
     }
 

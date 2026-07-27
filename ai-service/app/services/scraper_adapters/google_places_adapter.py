@@ -1,11 +1,14 @@
 """Google Places API adaptörü — birincil yasal kaynak."""
 from __future__ import annotations
 
+import logging
 import os
 import re
 from datetime import datetime
 from typing import Any, Optional
 from urllib.parse import unquote
+
+logger = logging.getLogger(__name__)
 
 from app.services.review_ingestion_schema import IngestedReview, normalize_rating, today_iso
 from app.services.scraper_adapters.base import AdapterResult, BaseScraperAdapter
@@ -118,7 +121,7 @@ def _detect_language_simple(text: str) -> str:
         from langdetect import detect
         return detect(text)
     except Exception:
-        # Basit heuristic
+        logger.warning("Language detection via langdetect failed, using heuristic", exc_info=True)
         if re.search(r"[ğüşıöçĞÜŞİÖÇ]", text):
             return "tr"
         if re.search(r"[а-яА-Я]", text):

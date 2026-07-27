@@ -15,7 +15,7 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, List<D
 
     public async Task<List<DepartmentDto>> Handle(GetDepartmentsQuery request, CancellationToken cancellationToken)
     {
-        var departments = await _departmentRepository.GetAllAsync();
+        var departments = await _departmentRepository.GetDepartmentsAsync(request.HotelId);
         return departments.Select(d => new DepartmentDto
         {
             Id = d.Id,

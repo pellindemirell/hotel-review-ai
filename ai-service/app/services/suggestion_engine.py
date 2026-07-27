@@ -4,8 +4,11 @@ Metin, kategori, duygu ve alt kalıplara göre spesifik Türkçe öneri üretir.
 """
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass, field
 from typing import Optional
+
+logger = logging.getLogger(__name__)
 
 from app.services.turkish_nlp_utils import (
     CAT_CLEANING,
@@ -339,7 +342,7 @@ def _apply_lexicon_suggestion_rules() -> None:
                     CATEGORY_RULES[cat].append(rule)
                     existing_sugs.add(rule.suggestion)
     except Exception:
-        pass
+        logger.warning("Failed to apply lexicon suggestion rules", exc_info=True)
 
 
 _apply_lexicon_suggestion_rules()

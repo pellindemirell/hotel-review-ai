@@ -413,7 +413,7 @@ def _ml_consensus_agrees(clause: str, dept: str) -> bool:
             idx = int(probs.argmax())
             tfidf_dept = _clause_labels[idx]
         except Exception:
-            pass
+            logger.warning("TF-IDF clause model prediction failed", exc_info=True)
     # Run embedding model
     emb_dept = None
     if _emb_model and _emb_sbert and _emb_clf is not None:
@@ -423,7 +423,7 @@ def _ml_consensus_agrees(clause: str, dept: str) -> bool:
             idx = int(probs.argmax())
             emb_dept = _emb_labels[idx]
         except Exception:
-            pass
+            logger.warning("Embedding model prediction failed", exc_info=True)
     # Both must agree with the proposed dept
     if tfidf_dept is not None and emb_dept is not None:
         return tfidf_dept == dept and emb_dept == dept
@@ -672,7 +672,7 @@ def _clause_ml_predict(text: str) -> tuple[str | None, float]:
             if probs[idx] > best_prob:
                 best_dept, best_prob = _emb_labels[idx], float(probs[idx])
         except Exception:
-            pass
+            logger.warning("Embedding ML department detection failed", exc_info=True)
 
     # Try TF-IDF model (good for Turkish)
     _load_clause_ml()
@@ -686,6 +686,6 @@ def _clause_ml_predict(text: str) -> tuple[str | None, float]:
             if probs[idx] > best_prob:
                 best_dept, best_prob = _clause_labels[idx], float(probs[idx])
         except Exception:
-            pass
+            logger.warning("TF-IDF ML department detection failed", exc_info=True)
 
     return best_dept, best_prob

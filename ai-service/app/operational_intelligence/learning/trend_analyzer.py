@@ -14,11 +14,14 @@ Data source: OperationalMemoryGraph + timestamps
 from __future__ import annotations
 
 import json
+import logging
 import os
 import pickle
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from typing import Any, Optional
+
+logger = logging.getLogger(__name__)
 
 
 class TrendAnalyzer:
@@ -47,7 +50,7 @@ class TrendAnalyzer:
                 self._weekly_counts = defaultdict(dict, data.get("weekly", {}))
                 self._monthly_counts = defaultdict(dict, data.get("monthly", {}))
             except Exception:
-                pass
+                logger.warning("Failed to load trend analyzer persistence", exc_info=True)
 
     def save(self) -> None:
         os.makedirs(os.path.dirname(self._persist_path), exist_ok=True)

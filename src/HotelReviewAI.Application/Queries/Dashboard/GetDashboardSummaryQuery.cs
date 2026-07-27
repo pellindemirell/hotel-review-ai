@@ -52,7 +52,8 @@ public class GetDashboardSummaryHandler : IRequestHandler<GetDashboardSummaryQue
 
         var totalReviews = reviews.Count;
         var avgRating = totalReviews > 0 ? reviews.Average(r => r.Rating) : 0.0;
-        var openActions = actionItems.Count(a => a.Status == ActionItemStatus.Open);
+        var openActions = actionItems.Count(a =>
+          a.Status == ActionItemStatus.Open || a.Status == ActionItemStatus.InProgress);
 
         // Filtreli yorum ID'leri üzerinden analiz filtrele
         var reviewIds = reviews.Select(r => r.Id).ToHashSet();

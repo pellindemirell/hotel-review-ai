@@ -156,11 +156,9 @@ namespace HotelReviewAI.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HotelId");
-
-                    b.HasIndex("Key")
+                    b.HasIndex("HotelId", "Key")
                         .IsUnique()
-                        .HasDatabaseName("IX_Departments_Key");
+                        .HasDatabaseName("IX_Departments_HotelId_Key");
 
                     b.ToTable("Departments");
                 });
@@ -395,11 +393,9 @@ namespace HotelReviewAI.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
-
-                    b.HasIndex("Key")
+                    b.HasIndex("DepartmentId", "Key")
                         .IsUnique()
-                        .HasDatabaseName("IX_ReviewCategories_Key");
+                        .HasDatabaseName("IX_ReviewCategories_DepartmentId_Key");
 
                     b.ToTable("ReviewCategories");
                 });
@@ -416,6 +412,10 @@ namespace HotelReviewAI.Persistence.Migrations
                     b.Property<Guid?>("DepartmentId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("DepartmentName")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -429,12 +429,17 @@ namespace HotelReviewAI.Persistence.Migrations
                     b.Property<Guid?>("HotelId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("HotelName")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("PasswordHash");
 
                     b.Property<string>("Role")
                         .IsRequired()
@@ -556,7 +561,8 @@ namespace HotelReviewAI.Persistence.Migrations
 
                     b.HasOne("HotelReviewAI.Domain.Entities.Hotel", "Hotel")
                         .WithMany("Users")
-                        .HasForeignKey("HotelId");
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Department");
 

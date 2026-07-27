@@ -10,7 +10,7 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
     {
         entity.HasKey(d => d.Id);
         entity.Property(d => d.Key).IsRequired().HasMaxLength(100);
-        entity.HasIndex(d => d.Key).IsUnique().HasDatabaseName("IX_Departments_Key");
+        entity.HasIndex(d => new { d.HotelId, d.Key }).IsUnique().HasDatabaseName("IX_Departments_HotelId_Key");
         entity.Property(d => d.Name).IsRequired().HasMaxLength(100);
     }
 }

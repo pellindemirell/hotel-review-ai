@@ -15,9 +15,20 @@ public class Review : BaseEntity
     public Guid? HotelId { get; set; }
     public Hotel? Hotel { get; set; }
 
-    public ICollection<ReviewAnalysis> Analyses { get; set; } = [];
-    public ICollection<ReviewAttachment> Attachments { get; set; } = [];
-    public ICollection<ActionItem> ActionItems { get; set; } = [];
+    private readonly List<ReviewAnalysis> _analyses = [];
+    private readonly List<ReviewAttachment> _attachments = [];
+    private readonly List<ActionItem> _actionItems = [];
+
+    public IReadOnlyCollection<ReviewAnalysis> Analyses => _analyses.AsReadOnly();
+    public IReadOnlyCollection<ReviewAttachment> Attachments => _attachments.AsReadOnly();
+    public IReadOnlyCollection<ActionItem> ActionItems => _actionItems.AsReadOnly();
+
+    public void AddAnalysis(ReviewAnalysis analysis) => _analyses.Add(analysis);
+    public void AddAttachment(ReviewAttachment attachment) => _attachments.Add(attachment);
+    public void AddActionItem(ActionItem item) => _actionItems.Add(item);
+
+    public void RemoveAnalysis(ReviewAnalysis analysis) => _analyses.Remove(analysis);
+    public void ClearAnalyses() => _analyses.Clear();
 
     private Review()
     {

@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
+import logging
 import os
 import re
 import sys
 from typing import Any, Optional
+
+logger = logging.getLogger(__name__)
 
 # Wire hotel-ops-copilot into PYTHONPATH
 _ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
@@ -235,7 +238,7 @@ class OpsCopilotAdapter:
                     mem.add_turn(session_id, role, content, msg.get("metadata") or {})
                     existing_contents.add(content)
         except Exception:
-            pass
+            logger.warning("Failed to sync copilot memory history", exc_info=True)
 
     @staticmethod
     def _map_role(role: Optional[str]) -> str:

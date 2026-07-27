@@ -11,6 +11,11 @@ web/hotel-review-web/node_modules/
 web/hotel-review-web/dist/
 web/hotel-review-web/.angular/
 web/hotel-review-web/src/environments/environment.local.ts
+frontend/HotelReviewFrontend/Web/node_modules/
+frontend/HotelReviewFrontend/Web/dist/
+frontend/HotelReviewFrontend/Web/.angular/
+frontend/HotelReviewFrontend/Web/src/environments/environment.local.ts
+frontend/HotelReviewFrontend/Web/src/environments/environment.prod.ts
 
 # ===== Flutter =====
 mobile/hotel_review_mobile/.dart_tool/
@@ -38,5 +43,9 @@ docker-compose.override.yml
 .vscode/settings.json
 *.DS_Store
 
-.env
-appsettings.Developmnet.json
+.env.example
+
+# ===== Logs =====
+**/logs/
+**/*.log
+src/HotelReviewAI.Api/logs/

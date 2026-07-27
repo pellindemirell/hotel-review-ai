@@ -118,7 +118,7 @@ public class AiAnalysisService : IAiAnalysisService
         catch (Exception ex)
         {
             _logger.LogError(ex, "AI OCR servisi çağrısı sırasında hata oluştu.");
-            return $"[AI OCR Hatası: {ex.Message}]";
+            return null;
         }
     }
 }

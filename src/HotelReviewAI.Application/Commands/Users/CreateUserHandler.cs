@@ -8,10 +8,12 @@ namespace HotelReviewAI.Application.Commands.Users;
 public class CreateUserHandler : IRequestHandler<CreateUserCommand, Guid>
 {
     private readonly IUserRepository _userRepository;
+    private readonly IPasswordHasher _passwordHasher;
 
-    public CreateUserHandler(IUserRepository userRepository)
+    public CreateUserHandler(IUserRepository userRepository, IPasswordHasher passwordHasher)
     {
         _userRepository = userRepository;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -26,10 +28,10 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, Guid>
         {
             FullName = request.FullName,
             Email = request.Email,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
             Role = request.Role,
             DepartmentId = request.DepartmentId
         };
+        user.SetPasswordHash(_passwordHasher.HashPassword(request.Password));
 
         await _userRepository.AddAsync(user);
         return user.Id;

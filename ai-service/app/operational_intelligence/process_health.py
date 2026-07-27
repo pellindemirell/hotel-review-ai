@@ -47,7 +47,7 @@ _SUB_PROCESSES: dict[str, list[str]] = {
         "Bell Service",
         "Reservation Management",
     ],
-    "İnsan Kaynakları": [
+    "Personel Davranışı": [
         "Staff Onboarding & Training",
         "Performance Management",
         "Language Proficiency",

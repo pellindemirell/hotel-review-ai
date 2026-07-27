@@ -4,9 +4,12 @@ Aynı girdi → her zaman aynı çıktı. Rastgelelik yok.
 """
 from __future__ import annotations
 
+import logging
 import re
 from dataclasses import dataclass
 from typing import Optional
+
+logger = logging.getLogger(__name__)
 
 from app.services.turkish_nlp_utils import (
     ALL_CATEGORIES,
@@ -166,7 +169,7 @@ try:
     from app.services.lexicon_loader import merge_category_phrases
     CATEGORY_PHRASES = merge_category_phrases(CATEGORY_PHRASES)
 except Exception:
-    pass
+    logger.warning("Failed to merge category phrases from lexicon", exc_info=True)
 
 # Tek kelime ağırlıkları
 CATEGORY_KEYWORD_WEIGHTS: dict[str, dict[str, float]] = {

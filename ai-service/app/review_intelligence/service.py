@@ -38,7 +38,7 @@ class ReviewIntelligenceService:
         reviews: list[str],
         metadata_list: list[dict[str, Any]] | None = None,
     ) -> list[ReviewIntelligenceResult]:
-        meta_list = metadata_list or [{}] * len(reviews)
+        meta_list = metadata_list or [{} for _ in range(len(reviews))]
         results: list[ReviewIntelligenceResult] = []
         for i, text in enumerate(reviews):
             meta = meta_list[i] if i < len(meta_list) else {}

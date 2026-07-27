@@ -13,6 +13,10 @@ from typing import Optional
 import re
 from pathlib import Path
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -51,6 +55,7 @@ def translate_long_text(text: str, max_chunk: int = 4000) -> str:
         try:
             parts.append(GoogleTranslator(source="auto", target="tr").translate(chunk[:4500]) or chunk[:4500])
         except Exception:
+            logger.warning("Translation failed for chunk, using original", exc_info=True)
             parts.append(chunk)
     return " ".join(parts)
 
@@ -267,7 +272,7 @@ def get_next_review(request: Request):
                     db.execute("UPDATE reviews SET review_text_translated=? WHERE id=?", (translated, review["id"]))
                     review["review_text_translated"] = translated
             except Exception:
-                pass
+                logger.warning("Failed to translate review text", exc_info=True)
 
         # Ceviri varsa her zaman Turkce metin uzerinden yeniden analiz et
         reanalyzed = False

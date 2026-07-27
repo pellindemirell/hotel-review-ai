@@ -8,10 +8,13 @@ from __future__ import annotations
 
 import csv
 import json
+import logging
 import os
 import re
 from datetime import datetime, timezone
 from typing import Any, Optional
+
+logger = logging.getLogger(__name__)
 
 _PROJECT_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..", "..", "..")
@@ -414,13 +417,13 @@ class BulkTrainer:
                     if c:
                         existing.add(c)
             except Exception:
-                pass
+                logger.warning("Failed to load existing training data for dedup", exc_info=True)
 
         added = 0
         skipped = 0
         pos_words: list[str] = []
         neg_words: list[str] = []
-
+        
         for s in samples:
             comment = (s.get("comment") or "").strip()
             if len(comment) < 5:
@@ -471,7 +474,7 @@ class BulkTrainer:
                         source=f"bulk:{s.get('source', 'train')}",
                     )
                 except Exception:
-                    pass
+                    logger.warning("Failed to write to learning service buffer", exc_info=True)
 
             sent = labels["sentiment"].lower()
             for kw in labels["keywords"]:

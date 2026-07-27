@@ -6,6 +6,7 @@ Otomasyon klasöründeki Playwright scraper'ı subprocess olarak çalıştırır
 from __future__ import annotations
 
 import csv
+import logging
 import os
 import re
 import sqlite3
@@ -13,6 +14,8 @@ import subprocess
 import tempfile
 from typing import Any, Optional
 from urllib.parse import unquote_plus
+
+logger = logging.getLogger(__name__)
 
 from app.services.review_ingestion_schema import IngestedReview
 from .base import BaseScraperAdapter, AdapterResult
@@ -121,6 +124,7 @@ class GoogleMapsPlaywrightAdapter(BaseScraperAdapter):
                 ))
             return reviews
         except Exception:
+            logger.warning("Failed to parse CSV from playwright scraper", exc_info=True)
             return []
 
     def _run_playwright(
@@ -162,7 +166,7 @@ class GoogleMapsPlaywrightAdapter(BaseScraperAdapter):
             try:
                 os.unlink(tmp_path)
             except Exception:
-                pass
+                logger.warning("Failed to clean up temp CSV file", exc_info=True)
 
             for r in reviews:
                 r.ingestion_method = self.source_id

@@ -27,6 +27,7 @@ public class ReviewAnalysisDto
     public string Sentiment { get; set; } = string.Empty;
     public double SentimentScore { get; set; }
     public string Priority { get; set; } = string.Empty;
+    public string Summary { get; set; } = string.Empty;
     public Guid? CategoryId { get; set; }
     public string? CategoryName { get; set; }
     public string? Suggestion { get; set; }

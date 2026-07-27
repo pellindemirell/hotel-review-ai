@@ -47,6 +47,7 @@ public class GetTopKeywordsHandler : IRequestHandler<GetTopKeywordsQuery, List<K
 
         // Tüm keyword listelerini düz listeye çevir ve frekans hesapla
         var keywords = negativeAnalyses
+            .Where(a => a.Keywords != null)
             .SelectMany(a => a.Keywords)
             .Where(k => !string.IsNullOrWhiteSpace(k))
             .GroupBy(k => k.ToLower().Trim())

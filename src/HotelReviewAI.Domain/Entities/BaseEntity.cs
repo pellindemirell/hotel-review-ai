@@ -15,4 +15,15 @@ public abstract class BaseEntity
         CreatedAt = DateTime.UtcNow;
         IsActive = true;
     }
+
+    public void Deactivate()
+    {
+        IsActive = false;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void MarkUpdated()
+    {
+        UpdatedAt = DateTime.UtcNow;
+    }
 }

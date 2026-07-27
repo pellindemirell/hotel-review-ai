@@ -18,9 +18,12 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import re
 from dataclasses import dataclass, field
 from typing import Any, Optional
+
+logger = logging.getLogger(__name__)
 
 import numpy as np
 
@@ -113,6 +116,7 @@ class OperationalEmbedder:
                 )
             return self._sentence_model.encode([text], normalize_embeddings=True)[0]
         except Exception:
+            logger.warning("Sentence transformer encode failed, using cold embed", exc_info=True)
             return self._cold_embed(text)
 
     def find_nearest_failure(

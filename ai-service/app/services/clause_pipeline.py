@@ -14,11 +14,14 @@ Prefer extending config/absa/clause_pipeline.yaml over Crystal-specific if/else.
 """
 from __future__ import annotations
 
+import logging
 import os
 import re
 from dataclasses import dataclass, field
 from functools import lru_cache
 from typing import Any, Optional
+
+logger = logging.getLogger(__name__)
 
 import yaml
 
@@ -1195,12 +1198,12 @@ def classify_clauses(
             try:
                 base_sent, base_score = sentiment_fn(clause)
             except Exception:
-                pass
+                logger.warning("Sentiment function failed in pipeline", exc_info=True)
         if mapping_fn:
             try:
                 base_map = mapping_fn(full_text or clause, clause)
             except Exception:
-                pass
+                logger.warning("Mapping function failed in pipeline", exc_info=True)
         decision = classify_clause(
             clause,
             base_sentiment=base_sent,

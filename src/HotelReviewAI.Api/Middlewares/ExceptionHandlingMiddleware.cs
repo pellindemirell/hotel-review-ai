@@ -58,7 +58,7 @@ public class ExceptionHandlingMiddleware
         }
         else
         {
-            errors.Add(exception.Message);
+            errors.Add("Beklenmeyen bir hata oluştu.");
         }
 
         context.Response.StatusCode = (int)statusCode;

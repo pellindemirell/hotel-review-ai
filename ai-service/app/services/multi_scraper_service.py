@@ -192,6 +192,7 @@ class MultiScraperService:
                 from langdetect import detect
                 review.language = detect(review.comment)
             except Exception:
+                logger.warning("Language detection failed, using heuristic", exc_info=True)
                 review.language = cls._heuristic_language(review.comment)
 
         turkish, detected = TranslationService.translate_to_turkish(
