@@ -38,7 +38,7 @@ public class ActionItemsController : ControllerBase
     {
         // DepartmentUser ve MobileUser yalnızca kendi departmanlarını görebilir
         var role = User.FindFirstValue(ClaimTypes.Role);
-        if (role is Roles.DepartmentUser or Roles.MobileUser)
+        if (role is Roles.Manager or Roles.DepartmentUser or Roles.MobileUser)
         {
             var claimDeptId = User.FindFirstValue("departmentId");
             if (!Guid.TryParse(claimDeptId, out var deptId))
@@ -81,7 +81,7 @@ public class ActionItemsController : ControllerBase
 
         // DepartmentUser/MobileUser yalnızca kendi departmanlarına ait aksiyonları güncelleyebilir
         var role = User.FindFirstValue(ClaimTypes.Role);
-        if (role is Roles.DepartmentUser or Roles.MobileUser)
+        if (role is Roles.Manager or Roles.DepartmentUser or Roles.MobileUser)
         {
             var claimDeptIdStr = User.FindFirstValue("departmentId");
             if (!Guid.TryParse(claimDeptIdStr, out _))

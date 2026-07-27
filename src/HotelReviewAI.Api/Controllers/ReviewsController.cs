@@ -56,6 +56,16 @@ public class ReviewsController : ControllerBase
         [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 20)
     {
+        var role = User.FindFirstValue(System.Security.Claims.ClaimTypes.Role);
+        if (role is Roles.Manager or Roles.DepartmentUser or Roles.MobileUser)
+        {
+            var claimDeptId = User.FindFirstValue("departmentId");
+            if (Guid.TryParse(claimDeptId, out var deptId))
+            {
+                departmentId = deptId;
+            }
+        }
+
         var effectiveHotelId = hotelIdHeader ?? hotelId;
         var query = new GetReviewsQuery(dateFrom, dateTo, sentiment, categoryId, departmentId, source, pageNumber, pageSize, effectiveHotelId);
         var result = await _mediator.Send(query);

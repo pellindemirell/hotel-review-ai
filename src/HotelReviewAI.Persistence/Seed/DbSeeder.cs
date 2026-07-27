@@ -213,6 +213,7 @@ public static class DbSeeder
         {
             var hotelDict = hotels.ToDictionary(h => h.Id);
             var deptDict  = departments.Values.ToDictionary(d => d.Id);
+            var crystalHotel = hotels.FirstOrDefault(h => h.Name == "Crystal Waterworld Resort & Spa") ?? hotels.FirstOrDefault();
 
             var usersToFill = await context.Users
                 .Where(u => u.HotelName == null || u.DepartmentName == null)
@@ -227,7 +228,19 @@ public static class DbSeeder
                     u.DepartmentName = d.Name;
             }
 
-            if (usersToFill.Count > 0)
+            // [Hata Düzeltme]: Zaten var olan Yöneticilerin yanlış otele (örn. Adora) atanmış olma ihtimaline karşı:
+            var managerEmails = UserSeedData.Users.Select(u => u.Email).ToList();
+            var existingManagers = await context.Users.Where(u => managerEmails.Contains(u.Email)).ToListAsync();
+            foreach (var manager in existingManagers)
+            {
+                if (manager.HotelId != crystalHotel?.Id)
+                {
+                    manager.HotelId = crystalHotel?.Id;
+                    manager.HotelName = crystalHotel?.Name;
+                }
+            }
+
+            if (usersToFill.Count > 0 || existingManagers.Count > 0)
                 await context.SaveChangesAsync();
 
             // PasswordHash kolonu silinip geri eklendiyse (boş string) yeniden hash'le
@@ -250,7 +263,7 @@ public static class DbSeeder
             }
 
             // Eksik bilinen (seed) kullanıcıları kontrol et ve ekle
-            var existingDefaultHotel = hotels.FirstOrDefault();
+            var existingDefaultHotel = hotels.FirstOrDefault(h => h.Name == "Crystal Waterworld Resort & Spa") ?? hotels.FirstOrDefault();
             var existingEmails = await context.Users.Select(u => u.Email).ToListAsync();
             var existingEmailSet = new HashSet<string>(existingEmails, StringComparer.OrdinalIgnoreCase);
 
@@ -278,25 +291,32 @@ public static class DbSeeder
             {
                 await context.SaveChangesAsync();
             }
-
-            return;
         }
-
-        var defaultHotel = hotels.FirstOrDefault();
-        foreach (var (fullName, email, password, role, departmentKey) in UserSeedData.Users)
+        else
         {
-            var dept = departmentKey is null ? null : departments[departmentKey];
-            var user = new User
+            var defaultHotel = hotels.FirstOrDefault(h => h.Name == "Crystal Waterworld Resort & Spa") ?? hotels.FirstOrDefault();
+            foreach (var (fullName, email, password, role, departmentKey) in UserSeedData.Users)
             {
-                FullName     = fullName,
-                Email        = email,
-                Role         = role,
-                DepartmentId = dept?.Id,
-                HotelId      = defaultHotel?.Id
-            };
-            user.SetPassword(password);
-            context.Users.Add(user);
+                var dept = departmentKey is null ? null : departments[departmentKey];
+                var user = new User
+                {
+                    FullName     = fullName,
+                    Email        = email,
+                    Role         = role,
+                    DepartmentId = dept?.Id,
+                    HotelId      = defaultHotel?.Id
+                };
+                user.SetPassword(password);
+                context.Users.Add(user);
+            }
+            await context.SaveChangesAsync();
         }
+
+        // Mevcut E-postaları al (Toplu personel veya diğer seed personellerin tekrar eklenmesini önlemek için)
+        var existingEmails = await context.Users.Select(u => u.Email).ToListAsync();
+        var existingEmailSet = new HashSet<string>(existingEmails, StringComparer.OrdinalIgnoreCase);
+
+        bool addedNewBulk = false;
 
         // Her otel için 50 personel oluştur; her departmanda en az 2 kişi
         const int personnelPerHotel = 50;
@@ -329,21 +349,28 @@ public static class DbSeeder
                         .ToArray());
                     var email = $"user{globalCounter++}@{hotelSlug}.com";
 
-                    var personnelUser = new User
+                    if (!existingEmailSet.Contains(email))
                     {
-                        FullName     = fullName,
-                        Email        = email,
-                        Role         = Roles.DepartmentUser,
-                        DepartmentId = department.Id,
-                        HotelId      = hotel.Id
-                    };
-                    personnelUser.SetPassword("personel123");
-                    context.Users.Add(personnelUser);
+                        var personnelUser = new User
+                        {
+                            FullName     = fullName,
+                            Email        = email,
+                            Role         = Roles.DepartmentUser,
+                            DepartmentId = department.Id,
+                            HotelId      = hotel.Id
+                        };
+                        personnelUser.SetPassword("personel123");
+                        context.Users.Add(personnelUser);
+                        addedNewBulk = true;
+                    }
                 }
             }
         }
 
-        await context.SaveChangesAsync();
+        if (addedNewBulk)
+        {
+            await context.SaveChangesAsync();
+        }
     }
 
 
