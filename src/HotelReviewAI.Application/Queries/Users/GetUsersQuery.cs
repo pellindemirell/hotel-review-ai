@@ -3,4 +3,4 @@ using MediatR;
 
 namespace HotelReviewAI.Application.Queries.Users;
 
-public record GetUsersQuery(Guid? HotelId = null) : IRequest<List<UserDto>>;
+public record GetUsersQuery(Guid? HotelId = null, Guid? DepartmentId = null) : IRequest<List<UserDto>>;

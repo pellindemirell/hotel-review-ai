@@ -18,7 +18,7 @@ public class GetUsersHandler : IRequestHandler<GetUsersQuery, List<UserDto>>
 
     public async Task<List<UserDto>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
     {
-        var users = await _userRepository.GetUsersAsync(request.HotelId);
+        var users = await _userRepository.GetUsersAsync(request.HotelId, request.DepartmentId);
         var departments = (await _departmentRepository.GetAllAsync()).ToDictionary(d => d.Id);
 
         // Mapster ile map et, sonra DepartmentName'i departman sözlüğünden doldur
