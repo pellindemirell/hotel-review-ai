@@ -249,6 +249,36 @@ public static class DbSeeder
                 await context.SaveChangesAsync();
             }
 
+            // Eksik bilinen (seed) kullanıcıları kontrol et ve ekle
+            var existingDefaultHotel = hotels.FirstOrDefault();
+            var existingEmails = await context.Users.Select(u => u.Email).ToListAsync();
+            var existingEmailSet = new HashSet<string>(existingEmails, StringComparer.OrdinalIgnoreCase);
+
+            bool addedNew = false;
+            foreach (var (fullName, email, password, role, departmentKey) in UserSeedData.Users)
+            {
+                if (!existingEmailSet.Contains(email))
+                {
+                    var dept = departmentKey is null ? null : departments[departmentKey];
+                    var user = new User
+                    {
+                        FullName     = fullName,
+                        Email        = email,
+                        Role         = role,
+                        DepartmentId = dept?.Id,
+                        HotelId      = existingDefaultHotel?.Id
+                    };
+                    user.SetPassword(password);
+                    context.Users.Add(user);
+                    addedNew = true;
+                }
+            }
+
+            if (addedNew)
+            {
+                await context.SaveChangesAsync();
+            }
+
             return;
         }
 

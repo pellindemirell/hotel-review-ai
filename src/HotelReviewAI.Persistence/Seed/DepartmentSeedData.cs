@@ -11,6 +11,6 @@ public static class DepartmentSeedData
         ("leisure", "Rekreasyon & Eğlence"),
         ("grounds", "Çevre, Güvenlik & Ulaşım"),
         ("atmosphere", "Otel Atmosferi & Misafir Profili"),
-        ("staff", "Personel Davranışı")
+        ("staff", "İnsan Kaynakları")
     ];
 }

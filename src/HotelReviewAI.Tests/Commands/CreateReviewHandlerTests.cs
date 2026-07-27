@@ -13,22 +13,22 @@ namespace HotelReviewAI.Tests.Commands;
 public class CreateReviewHandlerTests
 {
     private readonly IReviewRepository _reviewRepository;
-    private readonly IReviewAnalysisProcessingService _analysisProcessingService;
+    private readonly IAnalysisQueue _analysisQueue;
     private readonly CreateReviewHandler _handler;
 
     public CreateReviewHandlerTests()
     {
         _reviewRepository = Substitute.For<IReviewRepository>();
-        _analysisProcessingService = Substitute.For<IReviewAnalysisProcessingService>();
+        _analysisQueue = Substitute.For<IAnalysisQueue>();
 
         _handler = new CreateReviewHandler(
             _reviewRepository,
-            _analysisProcessingService
+            _analysisQueue
         );
     }
 
     [Fact]
-    public async Task Handle_ShouldSaveReviewAndCallProcessingService()
+    public async Task Handle_ShouldSaveReviewAndCallAnalysisQueue()
     {
         // Arrange
         var command = new CreateReviewCommand(
@@ -50,9 +50,8 @@ public class CreateReviewHandlerTests
         await _reviewRepository.Received(1).AddAsync(Arg.Any<Review>());
 
         // Analiz servisinin çağrıldığını doğrula
-        await _analysisProcessingService.Received(1).ProcessAnalysisAsync(
-            Arg.Any<Review>(),
-            Arg.Is(false),
+        await _analysisQueue.Received(1).QueueAnalysisAsync(
+            result,
             Arg.Any<CancellationToken>()
         );
     }
