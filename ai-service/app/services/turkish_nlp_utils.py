@@ -33,7 +33,7 @@ CAT_FINANCE = "Muhasebe & Finans"
 
 ALL_CATEGORIES = [
     CAT_CLEANING, CAT_FOOD, CAT_RECEPTION, CAT_TECH,
-    CAT_SPA, CAT_FINANCE, CAT_STAFF, CAT_OTHER,
+    CAT_SPA, CAT_FINANCE, CAT_STAFF, CAT_GROUNDS, CAT_OTHER,
 ]
 
 # ---------------------------------------------------------------------------
@@ -353,11 +353,15 @@ SINGLE_NEGATIVE_STRONG: set[str] = {
 CATEGORY_KEYWORDS: dict[str, list[str]] = {
     CAT_CLEANING: [
         "oda", "yatak", "banyo", "tuvalet", "temizlik", "temiz", "kirli", "pis", "havlu",
-        "buklet", "sampuan", "sabun", "bonoz", "terlik", "genis", "kucuk", "dar", "konfor",
+        "buklet", "sampuan", "sabun", "bonoz", "terlik", "genis", "konfor",
         "rahat", "ergonomi", "ses yalitimi", "yalitim", "yatak rahat", "yatak konfor",
         "carsaf", "nevresim", "yorgan", "yastik", "duz", "oda buyuk", "oda genis", "oda kucuk",
         "odalardan ses", "ses geliyor", "kapi alti", "balkon", "manzara", "minibar",
         "calisma masasi", "aydinlatma", "lamba",
+    ],
+    CAT_GROUNDS: [
+        "taksi", "transfer", "ulaşım", "ulasim", "araç", "arac", "araba", "hastane",
+        "ambulans", "shuttle", "otopark", "güvenlik", "guvenlik", "getiremediler", "götüremediler",
     ],
     CAT_FOOD: [
         "yemek", "kahvalti", "restoran", "bar", "minibar", "bufe", "lezzet", "lezzetli",

@@ -23,10 +23,14 @@ public record ImportReviewItemDto(
 public class ImportReviewsHandler : IRequestHandler<ImportReviewsCommand, bool>
 {
     private readonly IReviewRepository _reviewRepository;
+    private readonly IAnalysisQueue _analysisQueue;
 
-    public ImportReviewsHandler(IReviewRepository reviewRepository)
+    public ImportReviewsHandler(
+        IReviewRepository reviewRepository,
+        IAnalysisQueue analysisQueue)
     {
         _reviewRepository = reviewRepository;
+        _analysisQueue = analysisQueue;
     }
 
     public async Task<bool> Handle(ImportReviewsCommand request, CancellationToken cancellationToken)
@@ -49,6 +53,8 @@ public class ImportReviewsHandler : IRequestHandler<ImportReviewsCommand, bool>
             );
 
             await _reviewRepository.AddAsync(review);
+            await _reviewRepository.SaveChangesAsync();
+            await _analysisQueue.QueueAnalysisAsync(review.Id, cancellationToken);
         }
 
         return true;

@@ -20,7 +20,7 @@ public class ReviewRepository : GenericRepository<Review>, IReviewRepository
 
     public async Task<(IEnumerable<Review> Items, int TotalCount)> GetFilteredReviewsAsync(ReviewFilter filter)
     {
-        var query = DbSet.Include(r => r.Analyses).AsQueryable();
+        var query = DbSet.Include(r => r.Analyses).ThenInclude(a => a.Category).AsQueryable();
 
         if (filter.DateFrom is not null)
         {

@@ -12,5 +12,5 @@ public class ReviewAnalysisRepository : GenericRepository<ReviewAnalysis>, IRevi
     }
 
     public async Task<IEnumerable<ReviewAnalysis>> GetByReviewIdAsync(Guid reviewId) =>
-        await DbSet.Where(a => a.ReviewId == reviewId).ToListAsync();
+        await DbSet.Include(a => a.Category).Where(a => a.ReviewId == reviewId).ToListAsync();
 }

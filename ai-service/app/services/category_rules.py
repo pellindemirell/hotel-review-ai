@@ -16,6 +16,7 @@ from app.services.turkish_nlp_utils import (
     CAT_CLEANING,
     CAT_FINANCE,
     CAT_FOOD,
+    CAT_GROUNDS,
     CAT_OTHER,
     CAT_RECEPTION,
     CAT_SPA,
@@ -163,6 +164,12 @@ CATEGORY_PHRASES: dict[str, list[tuple[str, float]]] = {
         ("ödeme sorunu", 5.0), ("fiyat performans", 4.0),
         ("yanlış fatura", 6.0), ("ekstra ucret", 6.0),
     ],
+    CAT_GROUNDS: [
+        ("taksi bulamadı", 7.0), ("taksi bulamadık", 7.0), ("taksi göndermek", 6.5),
+        ("taksiciler kabul etmedi", 7.0), ("hastaneden otele", 7.0), ("araba ile", 5.5),
+        ("araç ile", 6.0), ("hastane", 6.0), ("ambulans", 6.5), ("ulaşım", 6.0),
+        ("transfer", 6.0), ("shuttle", 6.0), ("otopark", 5.5), ("güvenlik", 5.5),
+    ],
 }
 
 try:
@@ -216,6 +223,11 @@ CATEGORY_KEYWORD_WEIGHTS: dict[str, dict[str, float]] = {
         # "para"/"ekstra" kasıtlı yok — paramız çöp / ekstra karışık yanlış pozitif
         "fiyat": 2.5, "fatura": 3.0, "ücret": 2.5, "ucret": 2.5, "pahalı": 2.5, "fahiş": 2.5,
         "depozito": 2.5, "iade": 2.0, "ödeme": 2.5, "odeme": 2.5, "overcharge": 3.0,
+    },
+    CAT_GROUNDS: {
+        "taksi": 4.0, "araç": 3.5, "araba": 3.5, "transfer": 3.5, "ulaşım": 3.5,
+        "hastane": 3.5, "ambulans": 3.5, "otopark": 3.0, "güvenlik": 3.0, "shuttle": 3.5,
+        "getiremediler": 4.0, "götüremediler": 4.0,
     },
 }
 
@@ -344,6 +356,10 @@ def _score_categories(cleaned: str, tokens: list[str]) -> dict[str, float]:
 
 def _apply_disambiguation(cleaned: str, tokens: list[str], scores: dict[str, float]) -> None:
     """Departman çakışmalarını deterministik çöz."""
+    # Taksi/araç/hastane/ulaşım -> Çevre, Güvenlik & Ulaşım
+    if any(w in cleaned for w in ("taksi", "ambulans", "hastane", "transfer", "shuttle", "getiremediler", "götüremediler")):
+        scores[CAT_GROUNDS] += 5.0
+
     # kibar/kibardı → Personel; bar alt-dizesi tuzaklarını engelle
     if any(w in tokens or w in cleaned for w in ("kibar", "kibardı", "kibardi", "kibarca")):
         scores[CAT_STAFF] += 6.0

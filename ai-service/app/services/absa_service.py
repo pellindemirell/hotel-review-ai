@@ -54,6 +54,7 @@ ASPECT_RULES: list[tuple[str, str, str]] = [
     (r"\b(havuz|plaj|deniz|aquapark|aquaprk|kaydirak|cakil)\b", "Havuz & Aktivite", CAT_SPA),
     (r"\b(wifi|wi-?fi|internet)\b", "WiFi / İnternet", CAT_TECH),
     (r"\b(klima|tv|asansor|elektrik|priz|sicak su|duş|demirler)\b", "Teknik Altyapı", CAT_TECH),
+    (r"\b(taksi|transfer|ulasim|ulaşım|arac|araç|araba|hastane|ambulans|shuttle|otopark|guvenlik|güvenlik|getiremediler|götüremediler)\b", "Ulaşım & Transfer", CAT_GROUNDS),
     (r"\b(garson|personel|calisan|kaba|ilgisiz|saygisiz|hostes|turkce|türkçe)\b", "Personel Davranışı", CAT_STAFF),
     (r"\b(resepsiyon|check.?in|check.?out|giris|cikis|lobi|kayit)\b", "Resepsiyon & Giriş", CAT_RECEPTION),
     (r"\b(kuyruk|kuyruklar|sira|sıra|bekleme)\b", "Servis / Kuyruk", CAT_FOOD),
@@ -707,6 +708,7 @@ def _detect_aspect(clause: str, department: str) -> str:
         CAT_STAFF: "Personel",
         CAT_RECEPTION: "Resepsiyon",
         CAT_FINANCE: "Finans",
+        CAT_GROUNDS: "Ulaşım & Transfer",
         CAT_OTHER: "Genel",
     }
     return dept_defaults.get(department, "Genel")

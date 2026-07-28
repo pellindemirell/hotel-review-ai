@@ -36,19 +36,14 @@ public class ActionItemsController : ControllerBase
         [FromQuery] Guid? assignedTo,
         [FromHeader(Name = "X-Hotel-Id")] Guid? hotelIdHeader = null)
     {
-        // DepartmentUser ve MobileUser yalnızca kendi departmanlarını görebilir
         var role = User.FindFirstValue(ClaimTypes.Role);
-        if (role is Roles.Manager or Roles.DepartmentUser or Roles.MobileUser)
+        if (departmentId == null && role is Roles.Manager or Roles.DepartmentUser or Roles.MobileUser)
         {
-            var claimDeptId = User.FindFirstValue("departmentId");
-            if (!Guid.TryParse(claimDeptId, out var deptId))
+            var claimDeptIdStr = User.FindFirstValue("departmentId");
+            if (Guid.TryParse(claimDeptIdStr, out var deptId))
             {
-                return Forbid();
+                departmentId = deptId;
             }
-
-            // Sorguyu kendi departmanıyla sınırla
-            departmentId = deptId;
-            assignedTo = null;
         }
 
         var result = await _mediator.Send(new GetActionItemsQuery(departmentId, assignedTo, hotelIdHeader));

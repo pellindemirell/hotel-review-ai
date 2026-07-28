@@ -12,11 +12,11 @@ using Microsoft.AspNetCore.Http;
 namespace HotelReviewAI.Api.Controllers;
 
 /// <summary>
-/// Target Client: Web Panel (Angular) - Personel Listeleme / Ekleme
+/// Target Clients: Mobile (Flutter) & Web Panel (Angular) - Personel Listeleme / Ekleme
 /// </summary>
 [ApiController]
-[Tags("Web Panel (Angular) - Users")]
-[Authorize(Roles = $"{Roles.Admin},{Roles.Manager}")]
+[Tags("Common (Shared) - Users")]
+[Authorize]
 [Route("api/users")]
 public class UsersController : ControllerBase
 {
@@ -33,13 +33,14 @@ public class UsersController : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> GetAll(
+        [FromQuery] Guid? departmentId = null,
         [FromQuery] Guid? hotelId = null,
         [FromHeader(Name = "X-Hotel-Id")] Guid? hotelIdHeader = null)
     {
         var effectiveHotelId = hotelIdHeader ?? hotelId;
         
-        Guid? effectiveDepartmentId = null;
-        if (_currentUserService.Role == Roles.Manager)
+        Guid? effectiveDepartmentId = departmentId;
+        if (_currentUserService.Role == Roles.Manager && effectiveDepartmentId == null)
         {
             effectiveDepartmentId = _currentUserService.DepartmentId;
             effectiveHotelId = effectiveHotelId ?? _currentUserService.HotelId;
@@ -56,6 +57,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = $"{Roles.Admin},{Roles.Manager}")]
     public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
     {
         if (_currentUserService.Role == Roles.Manager)

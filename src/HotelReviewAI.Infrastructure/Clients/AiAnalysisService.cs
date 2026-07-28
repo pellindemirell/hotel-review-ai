@@ -74,6 +74,7 @@ public class AiAnalysisService : IAiAnalysisService
                     {
                         Clause = x.TryGetProperty("clause", out var cl) ? cl.GetString() ?? "" : "",
                         Department = x.TryGetProperty("department", out var dept) ? dept.GetString() ?? "" : "",
+                        AspectLabel = x.TryGetProperty("aspectLabel", out var al) ? al.GetString() ?? "" : (x.TryGetProperty("aspect", out var a) ? a.GetString() ?? "" : ""),
                         Sentiment = x.TryGetProperty("sentiment", out var sent) ? sent.GetString() ?? "" : "",
                         SentimentScore = x.TryGetProperty("sentimentScore", out var score) ? score.GetDouble() : 0.0,
                         Priority = x.TryGetProperty("priority", out var prio) ? prio.GetString() ?? "" : "",
