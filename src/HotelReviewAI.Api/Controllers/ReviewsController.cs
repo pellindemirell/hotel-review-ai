@@ -111,15 +111,20 @@ public class ReviewsController : ControllerBase
     [HttpPost("import")]
     [Consumes("multipart/form-data")]
     [Tags("Web Panel (Angular) - Reviews")]
-    public async Task<IActionResult> Import(IFormFile file)
+    public async Task<IActionResult> Import(
+        IFormFile file,
+        [FromHeader(Name = "X-Hotel-Id")] Guid? hotelIdHeader = null,
+        [FromQuery] Guid? hotelId = null)
     {
         if (file == null || file.Length == 0)
         {
             return BadRequest(BaseResponse<object>.Fail("Lütfen geçerli bir CSV dosyası seçin."));
         }
 
+        var effectiveHotelId = hotelIdHeader ?? hotelId;
+
         using var stream = file.OpenReadStream();
-        var result = await _mediator.Send(new ImportReviewsCsvCommand(stream));
+        var result = await _mediator.Send(new ImportReviewsCsvCommand(stream, effectiveHotelId));
 
         return Ok(BaseResponse<ImportResultDto>.Ok(result, $"{result.SuccessCount} yorum başarıyla içe aktarıldı."));
     }
