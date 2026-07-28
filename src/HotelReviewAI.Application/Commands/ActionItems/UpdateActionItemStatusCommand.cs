@@ -29,6 +29,7 @@ public class UpdateActionItemStatusHandler : IRequestHandler<UpdateActionItemSta
 
         actionItem.Status = request.Status;
         await _actionItemRepository.UpdateAsync(actionItem);
+        await _actionItemRepository.SaveChangesAsync();
 
         return true;
     }

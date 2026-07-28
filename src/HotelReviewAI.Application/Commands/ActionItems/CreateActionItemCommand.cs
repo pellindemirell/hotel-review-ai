@@ -55,6 +55,7 @@ public class CreateActionItemHandler : IRequestHandler<CreateActionItemCommand, 
         };
 
         await _actionItemRepository.AddAsync(actionItem);
+        await _actionItemRepository.SaveChangesAsync();
         return actionItem.Id;
     }
 }

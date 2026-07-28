@@ -61,6 +61,9 @@ public class CreateMobileReviewHandler : IRequestHandler<CreateMobileReviewComma
             await _reviewAttachmentRepository.AddAsync(attachment);
         }
 
+        // Veritabanı değişikliklerini kaydet (ReanalyzeReviewCommand veriyi veritabanından okuyabilsin)
+        await _reviewRepository.SaveChangesAsync();
+
         // Mobil yorum kaydedildikten sonra AI analizi ve otomatik aksiyon sürecini tetikler.
         await _mediator.Send(new ReanalyzeReviewCommand(review.Id), cancellationToken);
 

@@ -22,7 +22,7 @@ public static class DependencyInjection
         services.AddScoped<ICurrentUserService, CurrentUserService>();
 
         // Python AI servis entegrasyonu (Her zaman aktif)
-        var aiServiceUrl = configuration["AiService:Url"] ?? configuration["AiServiceUrl"] ?? "http://localhost:8000";
+        var aiServiceUrl = configuration["AiService:Url"] ?? "http://localhost:8000";
 
         var timeoutSeconds = configuration.GetValue<int>("AiService:TimeoutSeconds", 30);
         services.AddHttpClient<IAiAnalysisService, AiAnalysisService>(client =>

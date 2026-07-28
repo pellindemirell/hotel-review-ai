@@ -1,7 +1,9 @@
 using System.Text.Json;
+using HotelReviewAI.Application.Interfaces;
 using HotelReviewAI.Domain.Entities;
 using HotelReviewAI.Domain.Enums;
 using HotelReviewAI.Persistence.Contexts;
+using HotelReviewAI.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelReviewAI.Persistence.Seed;
@@ -208,6 +210,8 @@ public static class DbSeeder
 
     private static async Task SeedUsersAsync(AppDbContext context, Dictionary<string, Department> departments, List<Hotel> hotels)
     {
+        IPasswordHasher passwordHasher = new BcryptPasswordHasher();
+
         // Mevcut kayıt varsa: yeni eklenen HotelName / DepartmentName kolonlarını doldur, sonra çık.
         if (await context.Users.AnyAsync())
         {
@@ -257,7 +261,7 @@ public static class DbSeeder
                 foreach (var u in usersWithoutPassword)
                 {
                     var pwd = knownPasswords.TryGetValue(u.Email, out var known) ? known : "personel123";
-                    u.SetPassword(pwd);
+                    u.SetPasswordHash(passwordHasher.HashPassword(pwd));
                 }
                 await context.SaveChangesAsync();
             }
@@ -281,7 +285,7 @@ public static class DbSeeder
                         DepartmentId = dept?.Id,
                         HotelId      = existingDefaultHotel?.Id
                     };
-                    user.SetPassword(password);
+                    user.SetPasswordHash(passwordHasher.HashPassword(password));
                     context.Users.Add(user);
                     addedNew = true;
                 }
@@ -306,7 +310,7 @@ public static class DbSeeder
                     DepartmentId = dept?.Id,
                     HotelId      = defaultHotel?.Id
                 };
-                user.SetPassword(password);
+                user.SetPasswordHash(passwordHasher.HashPassword(password));
                 context.Users.Add(user);
             }
             await context.SaveChangesAsync();
@@ -359,7 +363,7 @@ public static class DbSeeder
                             DepartmentId = department.Id,
                             HotelId      = hotel.Id
                         };
-                        personnelUser.SetPassword("personel123");
+                        personnelUser.SetPasswordHash(passwordHasher.HashPassword("personel123"));
                         context.Users.Add(personnelUser);
                         addedNewBulk = true;
                     }
