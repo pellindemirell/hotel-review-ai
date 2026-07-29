@@ -19,7 +19,7 @@ public class JwtProvider : IJwtProvider
         _configuration = configuration;
     }
 
-    public string GenerateToken(Guid userId, string email, string role, string fullName, Guid? departmentId = null)
+    public string GenerateToken(Guid userId, string email, string role, string fullName, Guid? departmentId = null, Guid? hotelId = null)
     {
         var secretKey = _configuration["JwtSettings:Secret"];
         var issuer = _configuration["JwtSettings:Issuer"];
@@ -44,6 +44,11 @@ public class JwtProvider : IJwtProvider
         if (departmentId.HasValue)
         {
             claims.Add(new Claim("departmentId", departmentId.Value.ToString()));
+        }
+
+        if (hotelId.HasValue)
+        {
+            claims.Add(new Claim("hotelId", hotelId.Value.ToString()));
         }
 
         if (_cachedKey == null)

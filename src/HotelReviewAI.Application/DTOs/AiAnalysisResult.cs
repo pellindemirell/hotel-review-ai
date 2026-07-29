@@ -19,8 +19,10 @@ public class AiAbsaAspect
 {
     public string Clause { get; set; } = string.Empty;
     public string Department { get; set; } = string.Empty;
+    public string AspectLabel { get; set; } = string.Empty;
     public string Sentiment { get; set; } = string.Empty;
     public double SentimentScore { get; set; }
     public string Priority { get; set; } = string.Empty;
     public string Suggestion { get; set; } = string.Empty;
 }
+

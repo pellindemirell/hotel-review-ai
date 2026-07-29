@@ -9,6 +9,9 @@ public class ReviewListItemDto
     public DateTime ReviewDate { get; set; }
     public string Source { get; set; } = string.Empty;
     public string? PhotoUrl { get; set; }
+    public List<string> Categories { get; set; } = [];
+    public string? Category { get; set; }
+    public string? CategoryName { get; set; }
 }
 
 public class ReviewDetailDto : ReviewListItemDto

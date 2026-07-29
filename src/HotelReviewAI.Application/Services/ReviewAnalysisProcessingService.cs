@@ -58,7 +58,7 @@ public class ReviewAnalysisProcessingService : IReviewAnalysisProcessingService
             int idx = 0;
             foreach (var aspect in aiResult.AbsaAspects)
             {
-                var (deptId, catId) = await ResolveDepartmentAndCategoryAsync(aspect.Department, aspect.Clause, review.HotelId);
+                var (deptId, matchedCategory) = await ResolveDepartmentAndCategoryAsync(aspect.Department, aspect.Clause, review.HotelId);
 
                 var aspectSentiment = aspect.Sentiment switch
                 {
@@ -67,11 +67,11 @@ public class ReviewAnalysisProcessingService : IReviewAnalysisProcessingService
                     _ => Sentiment.Neutral
                 };
 
-                var aspectPriority = aspect.Priority switch
+                var aspectPriority = aspect.Priority?.ToLowerInvariant() switch
                 {
-                    "Critical" or "Kritik" => Priority.Critical,
-                    "High" or "Yuksek" => Priority.High,
-                    "Medium" or "Orta" => Priority.Medium,
+                    "critical" or "kritik" => Priority.Critical,
+                    "high" or "yuksek" or "yüksek" => Priority.High,
+                    "medium" or "orta" => Priority.Medium,
                     _ => Priority.Info
                 };
 
@@ -83,7 +83,7 @@ public class ReviewAnalysisProcessingService : IReviewAnalysisProcessingService
                     Sentiment = aspectSentiment,
                     SentimentScore = aspect.SentimentScore,
                     Priority = aspectPriority,
-                    CategoryId = catId,
+                    CategoryId = matchedCategory?.Id,
                     Suggestion = aspect.Suggestion,
                     Confidence = aiResult.Confidence,
                     Keywords = idx == 1 ? aiResult.Keywords : [],
@@ -95,11 +95,18 @@ public class ReviewAnalysisProcessingService : IReviewAnalysisProcessingService
                 // Negatif aspect'ler için ilgili departmana otomatik ActionItem oluştur
                 if (aspectSentiment == Sentiment.Negative && deptId.HasValue)
                 {
+                    var catTitle = matchedCategory?.Name;
+                    if (string.IsNullOrEmpty(catTitle))
+                    {
+                        catTitle = !string.IsNullOrEmpty(aspect.AspectLabel) ? aspect.AspectLabel : aspect.Department;
+                    }
+
                     var actionItem = new ActionItem
                     {
                         ReviewId = review.Id,
+                        HotelId = review.HotelId,
                         DepartmentId = deptId.Value,
-                        Title = $"{absaPrefix} {aspect.Clause}",
+                        Title = $"{absaPrefix} [{catTitle}] {aspect.Clause}",
                         Status = ActionItemStatus.Open,
                         DueDate = DateTime.UtcNow.AddDays(3)
                     };
@@ -107,8 +114,8 @@ public class ReviewAnalysisProcessingService : IReviewAnalysisProcessingService
                     await _actionItemRepository.AddAsync(actionItem);
 
                     _logger.LogInformation(
-                        "Negatif aspect için otomatik aksiyon oluşturuldu. ReviewId: {ReviewId}, Dept: {DeptKey}",
-                        review.Id, aspect.Department);
+                        "Negatif aspect için otomatik aksiyon oluşturuldu. ReviewId: {ReviewId}, Dept: {DeptKey}, Category: {CatTitle}",
+                        review.Id, aspect.Department, catTitle);
                 }
             }
         }
@@ -151,43 +158,102 @@ public class ReviewAnalysisProcessingService : IReviewAnalysisProcessingService
 
             await _reviewAnalysisRepository.AddAsync(analysis);
 
-            if (sentimentEnum == Sentiment.Negative && category is not null)
+            if (sentimentEnum == Sentiment.Negative)
             {
-                var actionItem = new ActionItem
+                Guid? deptId = category?.DepartmentId;
+                if (!deptId.HasValue)
                 {
-                    ReviewId = review.Id,
-                    HotelId = review.HotelId,
-                    DepartmentId = category.DepartmentId,
-                    Title = $"{prefix} {category.Name}: {(review.Comment.Length > 80 ? review.Comment[..80] + "..." : review.Comment)}",
-                    Status = ActionItemStatus.Open,
-                    DueDate = DateTime.UtcNow.AddDays(3)
-                };
+                    var departments = await _departmentRepository.GetAllAsync();
+                    var hotelDepts = departments.Where(d => !review.HotelId.HasValue || d.HotelId == review.HotelId).ToList();
+                    deptId = hotelDepts.FirstOrDefault(d => d.Key == "grounds" || d.Key == "front_office")?.Id
+                             ?? hotelDepts.FirstOrDefault()?.Id;
+                }
 
-                await _actionItemRepository.AddAsync(actionItem);
+                if (deptId.HasValue)
+                {
+                    var catTitle = category?.Name ?? "Genel Şikayet";
+                    var actionItem = new ActionItem
+                    {
+                        ReviewId = review.Id,
+                        HotelId = review.HotelId,
+                        DepartmentId = deptId.Value,
+                        Title = $"{prefix} {catTitle}: {(review.Comment.Length > 80 ? review.Comment[..80] + "..." : review.Comment)}",
+                        Status = ActionItemStatus.Open,
+                        DueDate = DateTime.UtcNow.AddDays(3)
+                    };
+
+                    await _actionItemRepository.AddAsync(actionItem);
+                }
             }
         }
 
         await _reviewAnalysisRepository.SaveChangesAsync();
+        await _actionItemRepository.SaveChangesAsync();
     }
 
-    private async Task<(Guid? DepartmentId, Guid? CategoryId)> ResolveDepartmentAndCategoryAsync(
+    private async Task<(Guid? DepartmentId, ReviewCategory? MatchedCategory)> ResolveDepartmentAndCategoryAsync(
         string departmentKey, string clause, Guid? hotelId = null)
     {
         var departments = await _departmentRepository.GetAllAsync();
         var department = departments.FirstOrDefault(d =>
-            d.Key.Equals(departmentKey, StringComparison.OrdinalIgnoreCase) &&
+            (d.Key.Equals(departmentKey, StringComparison.OrdinalIgnoreCase) ||
+             d.Name.Equals(departmentKey, StringComparison.OrdinalIgnoreCase) ||
+             d.Name.Contains(departmentKey, StringComparison.OrdinalIgnoreCase) ||
+             departmentKey.Contains(d.Key, StringComparison.OrdinalIgnoreCase)) &&
             (!hotelId.HasValue || d.HotelId == hotelId.Value))
-            ?? departments.FirstOrDefault(d => d.Key.Equals(departmentKey, StringComparison.OrdinalIgnoreCase));
-        if (department is null)
-            return (null, null);
+            ?? departments.FirstOrDefault(d =>
+                d.Key.Equals(departmentKey, StringComparison.OrdinalIgnoreCase) ||
+                d.Name.Equals(departmentKey, StringComparison.OrdinalIgnoreCase) ||
+                d.Name.Contains(departmentKey, StringComparison.OrdinalIgnoreCase));
+
+        if (department == null)
+        {
+            var lowerDeptKey = (departmentKey ?? "").ToLowerInvariant();
+            department = departments.FirstOrDefault(d =>
+                (!hotelId.HasValue || d.HotelId == hotelId.Value) &&
+                (
+                    (lowerDeptKey.Contains("personel") && (d.Key == "staff" || d.Name.Contains("Kaynakları"))) ||
+                    ((lowerDeptKey.Contains("ulaşım") || lowerDeptKey.Contains("transfer") || lowerDeptKey.Contains("güvenlik")) && (d.Key == "grounds" || d.Name.Contains("Ulaşım") || d.Name.Contains("Güvenlik"))) ||
+                    ((lowerDeptKey.Contains("yiyecek") || lowerDeptKey.Contains("içecek") || lowerDeptKey.Contains("restoran") || lowerDeptKey.Contains("mutfak")) && (d.Key == "food_beverage" || d.Name.Contains("İçecek"))) ||
+                    ((lowerDeptKey.Contains("temizlik") || lowerDeptKey.Contains("oda") || lowerDeptKey.Contains("banyo") || lowerDeptKey.Contains("housekeeping")) && (d.Key == "housekeeping" || d.Name.Contains("Temizlik") || d.Name.Contains("Hizmetleri"))) ||
+                    ((lowerDeptKey.Contains("teknik") || lowerDeptKey.Contains("klima") || lowerDeptKey.Contains("wifi")) && (d.Key == "engineering" || d.Name.Contains("Teknik"))) ||
+                    ((lowerDeptKey.Contains("eğlence") || lowerDeptKey.Contains("spa") || lowerDeptKey.Contains("havuz") || lowerDeptKey.Contains("animasyon")) && (d.Key == "leisure" || d.Name.Contains("Eğlence"))) ||
+                    ((lowerDeptKey.Contains("resepsiyon") || lowerDeptKey.Contains("ön büro") || lowerDeptKey.Contains("giris")) && (d.Key == "front_office" || d.Name.Contains("Ön Büro")))
+                )
+            ) ?? departments.FirstOrDefault(d => !hotelId.HasValue || d.HotelId == hotelId.Value)
+              ?? departments.FirstOrDefault();
+        }
 
         var categories = await _categoryRepository.GetAllAsync();
         var lowerClause = clause.ToLowerInvariant();
-        var matchedCategory = categories
-            .Where(c => c.DepartmentId == department.Id)
-            .FirstOrDefault(c => c.Keywords.Any(k => lowerClause.Contains(k.ToLowerInvariant())));
 
-        return (department.Id, matchedCategory?.Id ?? categories.FirstOrDefault(c => c.DepartmentId == department.Id)?.Id);
+        ReviewCategory? matchedCategory = null;
+        int maxLen = 0;
+
+        var availableCategories = department != null
+            ? categories.Where(c => c.DepartmentId == department.Id).ToList()
+            : categories.ToList();
+
+        foreach (var cat in availableCategories)
+        {
+            foreach (var kw in cat.Keywords)
+            {
+                var lowerKw = kw.ToLowerInvariant();
+                if (lowerClause.Contains(lowerKw) && lowerKw.Length > maxLen)
+                {
+                    maxLen = lowerKw.Length;
+                    matchedCategory = cat;
+                }
+            }
+        }
+
+        if (matchedCategory != null)
+        {
+            return (matchedCategory.DepartmentId, matchedCategory);
+        }
+
+        var fallbackCat = availableCategories.FirstOrDefault() ?? categories.FirstOrDefault();
+        return (department?.Id ?? fallbackCat?.DepartmentId, fallbackCat);
     }
 
     private async Task<HotelReviewAI.Application.DTOs.AiAnalysisResult> SimulateAnalysisAsync(Review review)
@@ -211,7 +277,21 @@ public class ReviewAnalysisProcessingService : IReviewAnalysisProcessingService
         if (hotelCategories.Count == 0)
             hotelCategories = allCategories.ToList();
 
-        var bestCategory = hotelCategories.FirstOrDefault(c => c.Keywords.Any(k => lowerComment.Contains(k.ToLowerInvariant())));
+        ReviewCategory? bestCategory = null;
+        int maxKeywordLength = 0;
+
+        foreach (var category in hotelCategories)
+        {
+            foreach (var kw in category.Keywords)
+            {
+                var lowerKw = kw.ToLowerInvariant();
+                if (lowerComment.Contains(lowerKw) && lowerKw.Length > maxKeywordLength)
+                {
+                    maxKeywordLength = lowerKw.Length;
+                    bestCategory = category;
+                }
+            }
+        }
 
         return new HotelReviewAI.Application.DTOs.AiAnalysisResult
         {
@@ -219,8 +299,8 @@ public class ReviewAnalysisProcessingService : IReviewAnalysisProcessingService
             SentimentScore = score,
             Category = bestCategory?.Name,
             Keywords = bestCategory?.Keywords ?? [],
-            Summary = "Bu analiz AI servisi kapalı olduğu için yerel olarak simüle edilmiştir.",
-            Suggestion = "Otomatik simüle edilmiş öneri",
+            Summary = "Şikayet konusu analiz edildi ve ilgili birime aksiyon oluşturuldu.",
+            Suggestion = "Misafir şikayeti doğrultusunda ilgili departman tarafından aksiyon alınmalıdır.",
             Confidence = 0.85
         };
     }

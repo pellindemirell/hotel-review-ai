@@ -21,7 +21,16 @@ public class MappingConfig : IRegister
         // Review → ReviewListItemDto
         config.NewConfig<Review, ReviewListItemDto>()
             .Map(dest => dest.Source, src => src.Source.ToString())
-            .Map(dest => dest.PhotoUrl, src => src.Attachments != null && src.Attachments.Any() ? src.Attachments.First().FileUrl : null);
+            .Map(dest => dest.PhotoUrl, src => src.Attachments != null && src.Attachments.Any() ? src.Attachments.First().FileUrl : null)
+            .Map(dest => dest.Categories, src => src.Analyses != null 
+                ? src.Analyses.Where(a => a.Category != null).Select(a => a.Category!.Name).Distinct().ToList() 
+                : new List<string>())
+            .Map(dest => dest.Category, src => src.Analyses != null && src.Analyses.Any(a => a.Category != null)
+                ? string.Join(", ", src.Analyses.Where(a => a.Category != null).Select(a => a.Category!.Name).Distinct())
+                : null)
+            .Map(dest => dest.CategoryName, src => src.Analyses != null && src.Analyses.Any(a => a.Category != null)
+                ? string.Join(", ", src.Analyses.Where(a => a.Category != null).Select(a => a.Category!.Name).Distinct())
+                : null);
 
         // Review → ReviewDetailDto (nested collections)
         config.NewConfig<Review, ReviewDetailDto>()

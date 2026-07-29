@@ -1,7 +1,9 @@
 using System.Text.Json;
+using HotelReviewAI.Application.Interfaces;
 using HotelReviewAI.Domain.Entities;
 using HotelReviewAI.Domain.Enums;
 using HotelReviewAI.Persistence.Contexts;
+using HotelReviewAI.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelReviewAI.Persistence.Seed;
@@ -162,7 +164,7 @@ public static class DbSeeder
         return await context.Departments.Where(d => d.HotelId == defaultHotelId).ToDictionaryAsync(d => d.Key);
     }
 
-    private static async Task<Dictionary<string, ReviewCategory>> SeedCategoriesAsync(
+    private static async Task<Dictionary<Guid, Dictionary<string, ReviewCategory>>> SeedCategoriesAsync(
         AppDbContext context, Dictionary<string, Department> defaultDepartments)
     {
         var allCategories = await context.ReviewCategories.ToListAsync();
@@ -189,17 +191,33 @@ public static class DbSeeder
             }
         }
         await context.SaveChangesAsync();
-        var firstHotelIds = defaultDepartments.Values.Select(d => d.Id).ToList();
-        return await context.ReviewCategories.Where(c => firstHotelIds.Contains(c.DepartmentId)).ToDictionaryAsync(c => c.Key);
+        // Return all categories grouped by HotelId
+        var allDeptsWithCategories = await context.Departments
+            .Include(d => d.Categories)
+            .Where(d => d.HotelId.HasValue)
+            .ToListAsync();
+            
+        var categoryLookup = allDeptsWithCategories
+            .Where(d => d.Categories != null && d.Categories.Any())
+            .GroupBy(d => d.HotelId!.Value)
+            .ToDictionary(
+                g => g.Key,
+                g => g.SelectMany(d => d.Categories).ToDictionary(c => c.Key)
+            );
+            
+        return categoryLookup;
     }
 
     private static async Task SeedUsersAsync(AppDbContext context, Dictionary<string, Department> departments, List<Hotel> hotels)
     {
+        IPasswordHasher passwordHasher = new BcryptPasswordHasher();
+
         // Mevcut kayıt varsa: yeni eklenen HotelName / DepartmentName kolonlarını doldur, sonra çık.
         if (await context.Users.AnyAsync())
         {
             var hotelDict = hotels.ToDictionary(h => h.Id);
             var deptDict  = departments.Values.ToDictionary(d => d.Id);
+            var crystalHotel = hotels.FirstOrDefault(h => h.Name == "Crystal Waterworld Resort & Spa") ?? hotels.FirstOrDefault();
 
             var usersToFill = await context.Users
                 .Where(u => u.HotelName == null || u.DepartmentName == null)
@@ -214,7 +232,19 @@ public static class DbSeeder
                     u.DepartmentName = d.Name;
             }
 
-            if (usersToFill.Count > 0)
+            // [Hata Düzeltme]: Zaten var olan Yöneticilerin yanlış otele (örn. Adora) atanmış olma ihtimaline karşı:
+            var managerEmails = UserSeedData.Users.Select(u => u.Email).ToList();
+            var existingManagers = await context.Users.Where(u => managerEmails.Contains(u.Email)).ToListAsync();
+            foreach (var manager in existingManagers)
+            {
+                if (manager.HotelId != crystalHotel?.Id)
+                {
+                    manager.HotelId = crystalHotel?.Id;
+                    manager.HotelName = crystalHotel?.Name;
+                }
+            }
+
+            if (usersToFill.Count > 0 || existingManagers.Count > 0)
                 await context.SaveChangesAsync();
 
             // PasswordHash kolonu silinip geri eklendiyse (boş string) yeniden hash'le
@@ -231,29 +261,66 @@ public static class DbSeeder
                 foreach (var u in usersWithoutPassword)
                 {
                     var pwd = knownPasswords.TryGetValue(u.Email, out var known) ? known : "personel123";
-                    u.SetPassword(pwd);
+                    u.SetPasswordHash(passwordHasher.HashPassword(pwd));
                 }
                 await context.SaveChangesAsync();
             }
 
-            return;
+            // Eksik bilinen (seed) kullanıcıları kontrol et ve ekle
+            var existingDefaultHotel = hotels.FirstOrDefault(h => h.Name == "Crystal Waterworld Resort & Spa") ?? hotels.FirstOrDefault();
+            var existingEmails = await context.Users.Select(u => u.Email).ToListAsync();
+            var existingEmailSet = new HashSet<string>(existingEmails, StringComparer.OrdinalIgnoreCase);
+
+            bool addedNew = false;
+            foreach (var (fullName, email, password, role, departmentKey) in UserSeedData.Users)
+            {
+                if (!existingEmailSet.Contains(email))
+                {
+                    var dept = departmentKey is null ? null : departments[departmentKey];
+                    var user = new User
+                    {
+                        FullName     = fullName,
+                        Email        = email,
+                        Role         = role,
+                        DepartmentId = dept?.Id,
+                        HotelId      = existingDefaultHotel?.Id
+                    };
+                    user.SetPasswordHash(passwordHasher.HashPassword(password));
+                    context.Users.Add(user);
+                    addedNew = true;
+                }
+            }
+
+            if (addedNew)
+            {
+                await context.SaveChangesAsync();
+            }
+        }
+        else
+        {
+            var defaultHotel = hotels.FirstOrDefault(h => h.Name == "Crystal Waterworld Resort & Spa") ?? hotels.FirstOrDefault();
+            foreach (var (fullName, email, password, role, departmentKey) in UserSeedData.Users)
+            {
+                var dept = departmentKey is null ? null : departments[departmentKey];
+                var user = new User
+                {
+                    FullName     = fullName,
+                    Email        = email,
+                    Role         = role,
+                    DepartmentId = dept?.Id,
+                    HotelId      = defaultHotel?.Id
+                };
+                user.SetPasswordHash(passwordHasher.HashPassword(password));
+                context.Users.Add(user);
+            }
+            await context.SaveChangesAsync();
         }
 
-        var defaultHotel = hotels.FirstOrDefault();
-        foreach (var (fullName, email, password, role, departmentKey) in UserSeedData.Users)
-        {
-            var dept = departmentKey is null ? null : departments[departmentKey];
-            var user = new User
-            {
-                FullName     = fullName,
-                Email        = email,
-                Role         = role,
-                DepartmentId = dept?.Id,
-                HotelId      = defaultHotel?.Id
-            };
-            user.SetPassword(password);
-            context.Users.Add(user);
-        }
+        // Mevcut E-postaları al (Toplu personel veya diğer seed personellerin tekrar eklenmesini önlemek için)
+        var allExistingEmails = await context.Users.Select(u => u.Email).ToListAsync();
+        var allExistingEmailSet = new HashSet<string>(allExistingEmails, StringComparer.OrdinalIgnoreCase);
+
+        bool addedNewBulk = false;
 
         // Her otel için 50 personel oluştur; her departmanda en az 2 kişi
         const int personnelPerHotel = 50;
@@ -286,25 +353,32 @@ public static class DbSeeder
                         .ToArray());
                     var email = $"user{globalCounter++}@{hotelSlug}.com";
 
-                    var personnelUser = new User
+                    if (!allExistingEmailSet.Contains(email))
                     {
-                        FullName     = fullName,
-                        Email        = email,
-                        Role         = Roles.DepartmentUser,
-                        DepartmentId = department.Id,
-                        HotelId      = hotel.Id
-                    };
-                    personnelUser.SetPassword("personel123");
-                    context.Users.Add(personnelUser);
+                        var personnelUser = new User
+                        {
+                            FullName     = fullName,
+                            Email        = email,
+                            Role         = Roles.DepartmentUser,
+                            DepartmentId = department.Id,
+                            HotelId      = hotel.Id
+                        };
+                        personnelUser.SetPasswordHash(passwordHasher.HashPassword("personel123"));
+                        context.Users.Add(personnelUser);
+                        addedNewBulk = true;
+                    }
                 }
             }
         }
 
-        await context.SaveChangesAsync();
+        if (addedNewBulk)
+        {
+            await context.SaveChangesAsync();
+        }
     }
 
 
-    private static async Task SeedReviewsAsync(AppDbContext context, Dictionary<string, ReviewCategory> categories, List<Hotel> hotels)
+    private static async Task SeedReviewsAsync(AppDbContext context, Dictionary<Guid, Dictionary<string, ReviewCategory>> categories, List<Hotel> hotels)
     {
         var assembly = typeof(DbSeeder).Assembly;
         var resourceName = "HotelReviewAI.Persistence.Seed.reviews.json";
@@ -359,7 +433,10 @@ public static class DbSeeder
                 createdBy: null,
                 hotelId: assignedHotel?.Id);
 
-            review.AddAnalysis(SimulateAnalysis(dto, categories));
+            var hotelCategories = assignedHotel != null && categories.ContainsKey(assignedHotel.Id) 
+                ? categories[assignedHotel.Id] 
+                : categories.Values.FirstOrDefault() ?? new Dictionary<string, ReviewCategory>();
+            review.AddAnalysis(SimulateAnalysis(dto, hotelCategories));
 
             context.Reviews.Add(review);
         }
@@ -369,7 +446,7 @@ public static class DbSeeder
 
     // AI servisi henüz entegre edilmediği için, demo/dashboard verisinin anlamlı görünmesi adına
     // rating'e göre basit bir sentiment simülasyonu ve anahtar kelime eşleşmesiyle kategori tahmini yapılır.
-    // Gerçek AI entegrasyonu (Aşama 8) tamamlandığında bu metot kaldırılıp gerçek analiz sonucu kullanılacaktır.
+    // Gerçek AI entegrasyonu tamamlandığında bu metot kaldırılıp gerçek analiz sonucu kullanılacaktır.
     private static ReviewAnalysis SimulateAnalysis(ReviewSeedDto dto, Dictionary<string, ReviewCategory> categories)
     {
         var (sentiment, score) = dto.Rating switch

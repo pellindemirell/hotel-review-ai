@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
 namespace HotelReviewAI.Api.Controllers;
@@ -36,7 +37,7 @@ public class ReviewsController : ControllerBase
     {
         var effectiveCommand = command with { HotelId = hotelIdHeader ?? command.HotelId };
         var id = await _mediator.Send(effectiveCommand);
-        return Ok(BaseResponse<Guid>.Ok(id, "Yorum oluşturuldu"));
+        return Accepted(BaseResponse<Guid>.Ok(id, "Yorum kaydedildi ve AI analizi için kuyruğa alındı."));
     }
 
     /// <summary>
@@ -56,6 +57,16 @@ public class ReviewsController : ControllerBase
         [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 20)
     {
+        var role = User.FindFirstValue(System.Security.Claims.ClaimTypes.Role);
+        if (role is Roles.Manager or Roles.DepartmentUser or Roles.MobileUser)
+        {
+            var claimDeptId = User.FindFirstValue("departmentId");
+            if (Guid.TryParse(claimDeptId, out var deptId))
+            {
+                departmentId = deptId;
+            }
+        }
+
         var effectiveHotelId = hotelIdHeader ?? hotelId;
         var query = new GetReviewsQuery(dateFrom, dateTo, sentiment, categoryId, departmentId, source, pageNumber, pageSize, effectiveHotelId);
         var result = await _mediator.Send(query);
@@ -100,15 +111,20 @@ public class ReviewsController : ControllerBase
     [HttpPost("import")]
     [Consumes("multipart/form-data")]
     [Tags("Web Panel (Angular) - Reviews")]
-    public async Task<IActionResult> Import(IFormFile file)
+    public async Task<IActionResult> Import(
+        IFormFile file,
+        [FromHeader(Name = "X-Hotel-Id")] Guid? hotelIdHeader = null,
+        [FromQuery] Guid? hotelId = null)
     {
         if (file == null || file.Length == 0)
         {
             return BadRequest(BaseResponse<object>.Fail("Lütfen geçerli bir CSV dosyası seçin."));
         }
 
+        var effectiveHotelId = hotelIdHeader ?? hotelId;
+
         using var stream = file.OpenReadStream();
-        var result = await _mediator.Send(new ImportReviewsCsvCommand(stream));
+        var result = await _mediator.Send(new ImportReviewsCsvCommand(stream, effectiveHotelId));
 
         return Ok(BaseResponse<ImportResultDto>.Ok(result, $"{result.SuccessCount} yorum başarıyla içe aktarıldı."));
     }

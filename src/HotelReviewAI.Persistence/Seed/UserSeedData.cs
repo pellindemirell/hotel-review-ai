@@ -8,7 +8,14 @@ public static class UserSeedData
     public static readonly (string FullName, string Email, string Password, string Role, string? DepartmentKey)[] Users =
     [
         ("Demo Admin", "admin@demo.com", "Admin123!", Roles.Admin, null),
-        ("Demo Manager", "manager@demo.com", "Manager123!", Roles.Manager, "front_office"),
+        ("Guest Profile Manager", "guestprofilemanager@demo.com", "1234", Roles.Manager, "atmosphere"),
+        ("IT Manager", "itmanager@demo.com", "1234", Roles.Manager, "engineering"),
+        ("F&B Manager", "f&bmanager@demo.com", "1234", Roles.Manager, "food_beverage"),
+        ("Guest Relations Manager", "guestrelationsmanager@demo.com", "1234", Roles.Manager, "front_office"),
+        ("Security Manager", "securitymanager@demo.com", "1234", Roles.Manager, "grounds"),
+        ("Housekeeping Manager", "housekeepingmanager@demo.com", "1234", Roles.Manager, "housekeeping"),
+        ("Recreation Manager", "recreationmanager@demo.com", "1234", Roles.Manager, "leisure"),
+        ("Human Resources Manager", "humanresourcemanager@demo.com", "1234", Roles.Manager, "staff"),
         ("Demo Departman Kullanıcısı", "department@demo.com", "Department123!", Roles.DepartmentUser, "housekeeping"),
         ("Demo Mobil Kullanıcı", "mobile@demo.com", "Mobile123!", Roles.MobileUser, "housekeeping"),
     ];

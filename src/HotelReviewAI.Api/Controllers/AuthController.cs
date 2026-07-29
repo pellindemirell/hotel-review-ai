@@ -17,11 +17,16 @@ public class AuthController : ControllerBase
 {
     private readonly IJwtProvider _jwtProvider;
     private readonly IUserRepository _userRepository;
+    private readonly IPasswordHasher _passwordHasher;
 
-    public AuthController(IJwtProvider jwtProvider, IUserRepository userRepository)
+    public AuthController(
+        IJwtProvider jwtProvider,
+        IUserRepository userRepository,
+        IPasswordHasher passwordHasher)
     {
         _jwtProvider = jwtProvider;
         _userRepository = userRepository;
+        _passwordHasher = passwordHasher;
     }
 
     [HttpPost("login")]
@@ -34,18 +39,19 @@ public class AuthController : ControllerBase
             return Unauthorized(BaseResponse<LoginResponse>.Fail("Geçersiz e-posta veya şifre."));
         }
 
-        if (!user.VerifyPassword(request.Password))
+        if (!_passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
         {
             return Unauthorized(BaseResponse<LoginResponse>.Fail("Geçersiz e-posta veya şifre."));
         }
 
-        // 3. JWT oluştur — departmentId claim'i dahil edilir
+        // 3. JWT oluştur — departmentId & hotelId claim'leri dahil edilir
         var token = _jwtProvider.GenerateToken(
             userId: user.Id,
             email: user.Email,
             role: user.Role,
             fullName: user.FullName,
-            departmentId: user.DepartmentId
+            departmentId: user.DepartmentId,
+            hotelId: user.HotelId
         );
 
         return Ok(BaseResponse<LoginResponse>.Ok(new LoginResponse { Token = token }, "Giriş başarılı."));

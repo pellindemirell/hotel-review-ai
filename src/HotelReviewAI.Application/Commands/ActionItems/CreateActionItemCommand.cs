@@ -50,10 +50,12 @@ public class CreateActionItemHandler : IRequestHandler<CreateActionItemCommand, 
             AssignedTo = request.AssignedTo,
             Title = request.Title,
             Status = ActionItemStatus.Open,
-            DueDate = request.DueDate
+            DueDate = request.DueDate,
+            HotelId = review.HotelId
         };
 
         await _actionItemRepository.AddAsync(actionItem);
+        await _actionItemRepository.SaveChangesAsync();
         return actionItem.Id;
     }
 }

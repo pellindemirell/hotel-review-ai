@@ -556,7 +556,7 @@ SINGLE_NEGATIVE_STRONG: set[str] = {
 CATEGORY_KEYWORDS: dict[str, list[str]] = {
     CAT_CLEANING: [
         "oda", "yatak", "banyo", "tuvalet", "temizlik", "temiz", "kirli", "pis", "havlu",
-        "buklet", "sampuan", "sabun", "bonoz", "terlik", "genis", "kucuk", "dar", "konfor",
+        "buklet", "sampuan", "sabun", "bonoz", "terlik", "genis", "konfor",
         "rahat", "ergonomi", "ses yalitimi", "yalitim", "yatak rahat", "yatak konfor",
         "carsaf", "nevresim", "yorgan", "yastik", "duz", "oda buyuk", "oda genis", "oda kucuk",
         "odalardan ses", "ses geliyor", "kapi alti", "balkon", "manzara", "minibar",
@@ -564,6 +564,10 @@ CATEGORY_KEYWORDS: dict[str, list[str]] = {
         # expanded slang
         "les", "les gibi", "leş gibi", "bal dok yala", "bal dök yala", "pislik", "cicek gibi",
         "çiçek gibi", "jilet", "leke", "lekeli", "kir", "toz", "cop", "çöp", "kokuyor",
+    ],
+    CAT_GROUNDS: [
+        "taksi", "transfer", "ulaşım", "ulasim", "araç", "arac", "araba", "hastane",
+        "ambulans", "shuttle", "otopark", "güvenlik", "guvenlik", "getiremediler", "götüremediler",
     ],
     CAT_FOOD: [
         "yemek", "kahvalti", "restoran", "bar", "minibar", "bufe", "lezzet", "lezzetli",

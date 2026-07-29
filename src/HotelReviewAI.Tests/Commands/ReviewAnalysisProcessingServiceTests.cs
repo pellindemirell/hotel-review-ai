@@ -108,7 +108,7 @@ public class ReviewAnalysisProcessingServiceTests
     }
 
     [Fact]
-    public async Task ProcessAnalysisAsync_WithAiServiceOffline_ShouldLogWarningAndReturnGracefully()
+    public async Task ProcessAnalysisAsync_WithAiServiceOffline_ShouldLogWarningAndUseFallback()
     {
         // Arrange
         var review = Review.Create(
@@ -125,12 +125,15 @@ public class ReviewAnalysisProcessingServiceTests
             Arg.Any<string>(), Arg.Any<int>(), Arg.Any<string>(), Arg.Any<CancellationToken>()
         ).Returns((AiAnalysisResult?)null);
 
+        _departmentRepository.GetAllAsync().Returns(new List<Department>());
+        _categoryRepository.GetAllAsync().Returns(new List<ReviewCategory>());
+
         // Act
         await _service.ProcessAnalysisAsync(review, isReanalysis: false, CancellationToken.None);
 
         // Assert
-        // Kayıt işlemleri yapılmamalı
-        await _reviewAnalysisRepository.DidNotReceive().AddAsync(Arg.Any<ReviewAnalysis>());
-        await _actionItemRepository.DidNotReceive().AddAsync(Arg.Any<ActionItem>());
+        // Yerel simülasyon (fallback) çalışmalı ve analiz kaydedilmeli
+        await _reviewAnalysisRepository.Received(1).AddAsync(Arg.Any<ReviewAnalysis>());
     }
 }
+

@@ -19,19 +19,9 @@ public class User : BaseEntity
     public string? HotelName { get; set; }
     public string? DepartmentName { get; set; }
 
-    public void SetPassword(string password)
-    {
-        _passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
-    }
-
     /// <summary>Uygulama katmanından önceden hash'lenmiş şifreyi atar.</summary>
     public void SetPasswordHash(string hashedPassword)
     {
         _passwordHash = hashedPassword;
-    }
-
-    public bool VerifyPassword(string password)
-    {
-        return BCrypt.Net.BCrypt.Verify(password, _passwordHash);
     }
 }
