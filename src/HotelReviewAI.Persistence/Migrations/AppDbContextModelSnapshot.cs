@@ -40,6 +40,9 @@ namespace HotelReviewAI.Persistence.Migrations
                     b.Property<DateTime?>("DueDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid?>("HotelId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
@@ -59,11 +62,18 @@ namespace HotelReviewAI.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssignedTo");
+                    b.HasIndex("AssignedTo")
+                        .HasDatabaseName("IX_ActionItems_AssignedTo");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("DepartmentId")
+                        .HasDatabaseName("IX_ActionItems_DepartmentId");
+
+                    b.HasIndex("HotelId");
 
                     b.HasIndex("ReviewId");
+
+                    b.HasIndex("Status")
+                        .HasDatabaseName("IX_ActionItems_Status");
 
                     b.ToTable("ActionItems");
                 });
@@ -101,6 +111,15 @@ namespace HotelReviewAI.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt")
+                        .HasDatabaseName("IX_AuditLogs_CreatedAt");
+
+                    b.HasIndex("EntityName")
+                        .HasDatabaseName("IX_AuditLogs_EntityName");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("IX_AuditLogs_UserId");
+
                     b.ToTable("AuditLogs");
                 });
 
@@ -116,8 +135,16 @@ namespace HotelReviewAI.Persistence.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("HotelId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -129,7 +156,42 @@ namespace HotelReviewAI.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("HotelId", "Key")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Departments_HotelId_Key");
+
                     b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("HotelReviewAI.Domain.Entities.Hotel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Hotels");
                 });
 
             modelBuilder.Entity("HotelReviewAI.Domain.Entities.Review", b =>
@@ -153,6 +215,9 @@ namespace HotelReviewAI.Persistence.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
+                    b.Property<Guid?>("HotelId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
@@ -175,6 +240,20 @@ namespace HotelReviewAI.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("HotelId");
+
+                    b.HasIndex("IsActive")
+                        .HasDatabaseName("IX_Reviews_IsActive");
+
+                    b.HasIndex("Rating")
+                        .HasDatabaseName("IX_Reviews_Rating");
+
+                    b.HasIndex("ReviewDate")
+                        .HasDatabaseName("IX_Reviews_ReviewDate");
+
+                    b.HasIndex("Source")
+                        .HasDatabaseName("IX_Reviews_Source");
+
                     b.ToTable("Reviews");
                 });
 
@@ -186,6 +265,13 @@ namespace HotelReviewAI.Persistence.Migrations
 
                     b.Property<Guid?>("CategoryId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("ClauseIndex")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ClauseText")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<double>("Confidence")
                         .HasColumnType("double precision");
@@ -200,6 +286,9 @@ namespace HotelReviewAI.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("jsonb");
 
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("ReviewId")
                         .HasColumnType("uuid");
 
@@ -210,7 +299,8 @@ namespace HotelReviewAI.Persistence.Migrations
                         .HasColumnType("double precision");
 
                     b.Property<string>("Suggestion")
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<string>("Summary")
                         .HasColumnType("text");
@@ -220,10 +310,14 @@ namespace HotelReviewAI.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("IX_ReviewAnalyses_CategoryId");
 
                     b.HasIndex("ReviewId")
-                        .IsUnique();
+                        .HasDatabaseName("IX_ReviewAnalyses_ReviewId");
+
+                    b.HasIndex("Sentiment")
+                        .HasDatabaseName("IX_ReviewAnalyses_Sentiment");
 
                     b.ToTable("ReviewAnalyses");
                 });
@@ -280,6 +374,11 @@ namespace HotelReviewAI.Persistence.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.PrimitiveCollection<string>("Keywords")
                         .IsRequired()
                         .HasColumnType("jsonb");
@@ -294,7 +393,9 @@ namespace HotelReviewAI.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("DepartmentId", "Key")
+                        .IsUnique()
+                        .HasDatabaseName("IX_ReviewCategories_DepartmentId_Key");
 
                     b.ToTable("ReviewCategories");
                 });
@@ -311,6 +412,10 @@ namespace HotelReviewAI.Persistence.Migrations
                     b.Property<Guid?>("DepartmentId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("DepartmentName")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -321,12 +426,20 @@ namespace HotelReviewAI.Persistence.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
+                    b.Property<Guid?>("HotelId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("HotelName")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("PasswordHash");
 
                     b.Property<string>("Role")
                         .IsRequired()
@@ -341,9 +454,12 @@ namespace HotelReviewAI.Persistence.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("Email")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_Users_Email");
 
-                    b.ToTable("Users");
+                    b.HasIndex("HotelId");
+
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("HotelReviewAI.Domain.Entities.ActionItem", b =>
@@ -359,6 +475,10 @@ namespace HotelReviewAI.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("HotelReviewAI.Domain.Entities.Hotel", "Hotel")
+                        .WithMany("ActionItems")
+                        .HasForeignKey("HotelId");
+
                     b.HasOne("HotelReviewAI.Domain.Entities.Review", "Review")
                         .WithMany("ActionItems")
                         .HasForeignKey("ReviewId")
@@ -369,18 +489,39 @@ namespace HotelReviewAI.Persistence.Migrations
 
                     b.Navigation("Department");
 
+                    b.Navigation("Hotel");
+
                     b.Navigation("Review");
+                });
+
+            modelBuilder.Entity("HotelReviewAI.Domain.Entities.Department", b =>
+                {
+                    b.HasOne("HotelReviewAI.Domain.Entities.Hotel", "Hotel")
+                        .WithMany("Departments")
+                        .HasForeignKey("HotelId");
+
+                    b.Navigation("Hotel");
+                });
+
+            modelBuilder.Entity("HotelReviewAI.Domain.Entities.Review", b =>
+                {
+                    b.HasOne("HotelReviewAI.Domain.Entities.Hotel", "Hotel")
+                        .WithMany("Reviews")
+                        .HasForeignKey("HotelId");
+
+                    b.Navigation("Hotel");
                 });
 
             modelBuilder.Entity("HotelReviewAI.Domain.Entities.ReviewAnalysis", b =>
                 {
                     b.HasOne("HotelReviewAI.Domain.Entities.ReviewCategory", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("HotelReviewAI.Domain.Entities.Review", "Review")
-                        .WithOne("Analysis")
-                        .HasForeignKey("HotelReviewAI.Domain.Entities.ReviewAnalysis", "ReviewId")
+                        .WithMany("Analyses")
+                        .HasForeignKey("ReviewId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -418,7 +559,14 @@ namespace HotelReviewAI.Persistence.Migrations
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("HotelReviewAI.Domain.Entities.Hotel", "Hotel")
+                        .WithMany("Users")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("Department");
+
+                    b.Navigation("Hotel");
                 });
 
             modelBuilder.Entity("HotelReviewAI.Domain.Entities.Department", b =>
@@ -430,11 +578,22 @@ namespace HotelReviewAI.Persistence.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("HotelReviewAI.Domain.Entities.Hotel", b =>
+                {
+                    b.Navigation("ActionItems");
+
+                    b.Navigation("Departments");
+
+                    b.Navigation("Reviews");
+
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("HotelReviewAI.Domain.Entities.Review", b =>
                 {
                     b.Navigation("ActionItems");
 
-                    b.Navigation("Analysis");
+                    b.Navigation("Analyses");
 
                     b.Navigation("Attachments");
                 });

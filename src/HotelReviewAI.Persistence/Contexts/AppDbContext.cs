@@ -1,11 +1,18 @@
 using HotelReviewAI.Domain.Entities;
+using HotelReviewAI.Persistence.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelReviewAI.Persistence.Contexts;
 
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    private readonly AuditInterceptor _auditInterceptor;
+
+    public AppDbContext(DbContextOptions<AppDbContext> options, AuditInterceptor auditInterceptor)
+        : base(options)
+    {
+        _auditInterceptor = auditInterceptor;
+    }
 
     public DbSet<Review> Reviews => Set<Review>();
     public DbSet<ReviewAnalysis> ReviewAnalyses => Set<ReviewAnalysis>();
@@ -15,113 +22,37 @@ public class AppDbContext : DbContext
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
     public DbSet<User> Users => Set<User>();
     public DbSet<Department> Departments => Set<Department>();
+    public DbSet<Hotel> Hotels => Set<Hotel>();
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        // AuditInterceptor EF pipeline'ına eklenir
+        optionsBuilder.AddInterceptors(_auditInterceptor);
+    }
 
- //verıtabanı kuralları onetoone ilişkisi analiz yaptır yorum silinirse analizi sil
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // Review
-        modelBuilder.Entity<Review>(entity =>
+        // Configurations/ klasöründeki tüm IEntityTypeConfiguration<T> sınıfları otomatik yüklenir
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+
+        // Soft delete: Global query filter for IsActive == true
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
-            entity.HasKey(r => r.Id);
-            entity.Property(r => r.GuestName).IsRequired().HasMaxLength(200);
-            entity.Property(r => r.Comment).IsRequired();
-            entity.Property(r => r.Language).HasMaxLength(10);
-            entity.Property(r => r.Rating).IsRequired();
+            if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
+            {
+                modelBuilder.Entity(entityType.ClrType).HasQueryFilter(ConvertFilterExpression(entityType.ClrType));
+            }
+        }
+    }
 
-            entity.HasOne(r => r.Analysis)
-                  .WithOne(a => a.Review)
-                  .HasForeignKey<ReviewAnalysis>(a => a.ReviewId)
-                  .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasMany(r => r.Attachments)
-                  .WithOne(a => a.Review)
-                  .HasForeignKey(a => a.ReviewId)
-                  .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasMany(r => r.ActionItems)
-                  .WithOne(a => a.Review)
-                  .HasForeignKey(a => a.ReviewId)
-                  .OnDelete(DeleteBehavior.Cascade);
-        });
-
-        // ReviewAnalysis - Keywords stored as JSON
-        modelBuilder.Entity<ReviewAnalysis>(entity =>
-        {
-            entity.HasKey(a => a.Id);
-            entity.Property(a => a.Keywords)
-                  .HasColumnType("jsonb");
-        });
-
-        // ReviewCategory - Keywords stored as JSON
-        modelBuilder.Entity<ReviewCategory>(entity =>
-        {
-            entity.HasKey(c => c.Id);
-            entity.Property(c => c.Name).IsRequired().HasMaxLength(100);
-            entity.Property(c => c.Keywords)
-                  .HasColumnType("jsonb");
-
-            entity.HasOne(c => c.Department)
-                  .WithMany(d => d.Categories)
-                  .HasForeignKey(c => c.DepartmentId)
-                  .OnDelete(DeleteBehavior.Restrict);
-        });
-
-        // ReviewAttachment
-        modelBuilder.Entity<ReviewAttachment>(entity =>
-        {
-            entity.HasKey(a => a.Id);
-            entity.Property(a => a.FileUrl).IsRequired();
-            entity.Property(a => a.FileType).IsRequired().HasMaxLength(50);
-        });
-
-        // ActionItem
-        modelBuilder.Entity<ActionItem>(entity =>
-        {
-            entity.HasKey(a => a.Id);
-            entity.Property(a => a.Title).IsRequired().HasMaxLength(300);
-
-            entity.HasOne(a => a.Department)
-                  .WithMany(d => d.ActionItems)
-                  .HasForeignKey(a => a.DepartmentId)
-                  .OnDelete(DeleteBehavior.Restrict);
-
-            entity.HasOne(a => a.AssignedUser)
-                  .WithMany()
-                  .HasForeignKey(a => a.AssignedTo)
-                  .OnDelete(DeleteBehavior.SetNull);
-        });
-
-        // Department
-        modelBuilder.Entity<Department>(entity =>
-        {
-            entity.HasKey(d => d.Id);
-            entity.Property(d => d.Name).IsRequired().HasMaxLength(100);
-        });
-
-        // User
-        modelBuilder.Entity<User>(entity =>
-        {
-            entity.HasKey(u => u.Id);
-            entity.Property(u => u.Email).IsRequired().HasMaxLength(200);
-            entity.HasIndex(u => u.Email).IsUnique();
-            entity.Property(u => u.FullName).IsRequired().HasMaxLength(200);
-            entity.Property(u => u.Role).IsRequired().HasMaxLength(50);
-
-            entity.HasOne(u => u.Department)
-                  .WithMany(d => d.Users)
-                  .HasForeignKey(u => u.DepartmentId)
-                  .OnDelete(DeleteBehavior.SetNull);
-        });
-
-        // AuditLog
-        modelBuilder.Entity<AuditLog>(entity =>
-        {
-            entity.HasKey(a => a.Id);
-            entity.Property(a => a.Action).IsRequired().HasMaxLength(100);
-            entity.Property(a => a.EntityName).IsRequired().HasMaxLength(100);
-        });
+    private static System.Linq.Expressions.LambdaExpression ConvertFilterExpression(Type type)
+    {
+        var parameter = System.Linq.Expressions.Expression.Parameter(type, "e");
+        var property = System.Linq.Expressions.Expression.Property(parameter, nameof(BaseEntity.IsActive));
+        var trueConstant = System.Linq.Expressions.Expression.Constant(true);
+        var body = System.Linq.Expressions.Expression.Equal(property, trueConstant);
+        return System.Linq.Expressions.Expression.Lambda(body, parameter);
     }
 }

@@ -1,25 +1,47 @@
 version: '3.8'
 
 services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-stajor}
+      POSTGRES_USER: ${DB_USER:-stajor}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-stajor}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-stajor}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   ai-service:
     build: ./ai-service
     environment:
-      - DB_HOST=192.168.40.140
-      - DB_PORT=5432
-      - DB_NAME=stajor
-      - DB_USER=stajor1
-      - DB_PASSWORD=stajor1*-
+      - DATABASE_URL=postgresql+asyncpg://${DB_USER:-stajor}:${DB_PASSWORD:-stajor}@postgres:5432/${DB_NAME:-stajor}
     ports:
       - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   web-api:
     build:
       context: .
       dockerfile: src/HotelReviewAI.Api/Dockerfile
     environment:
-      - ConnectionStrings__DefaultConnection=Host=192.168.40.140;Port=5432;Database=stajor;Username=stajor1;Password=stajor1*-
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${DB_NAME:-stajor};Username=${DB_USER:-stajor};Password=${DB_PASSWORD:-stajor}
       - ASPNETCORE_ENVIRONMENT=Development
+      - JwtSettings__Secret=${JWT_SECRET:-SuperSecretKeyThatNeedsToBeLongEnough!123}
+      - JwtSettings__Issuer=HotelReviewAI
+      - JwtSettings__Audience=HotelReviewAIClient
+      - AiServiceUrl=http://ai-service:8000
     ports:
       - "5012:5012"
     depends_on:
       - ai-service
+
+volumes:
+  postgres_data:

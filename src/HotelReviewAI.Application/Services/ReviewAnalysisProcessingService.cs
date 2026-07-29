@@ -1,0 +1,227 @@
+using HotelReviewAI.Application.Interfaces;
+using HotelReviewAI.Domain.Entities;
+using HotelReviewAI.Domain.Enums;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace HotelReviewAI.Application.Services;
+
+/// <summary>
+/// Yorumların AI analizi ve otomatik aksiyon süreçlerini yöneten servis implementasyonu.
+/// </summary>
+public class ReviewAnalysisProcessingService : IReviewAnalysisProcessingService
+{
+    private readonly IReviewAnalysisRepository _reviewAnalysisRepository;
+    private readonly IActionItemRepository _actionItemRepository;
+    private readonly IReviewCategoryRepository _categoryRepository;
+    private readonly IAiAnalysisService _aiAnalysisService;
+    private readonly IDepartmentRepository _departmentRepository;
+    private readonly ILogger<ReviewAnalysisProcessingService> _logger;
+
+    public ReviewAnalysisProcessingService(
+        IReviewAnalysisRepository reviewAnalysisRepository,
+        IActionItemRepository actionItemRepository,
+        IReviewCategoryRepository categoryRepository,
+        IAiAnalysisService aiAnalysisService,
+        IDepartmentRepository departmentRepository,
+        ILogger<ReviewAnalysisProcessingService> logger)
+    {
+        _reviewAnalysisRepository = reviewAnalysisRepository;
+        _actionItemRepository = actionItemRepository;
+        _categoryRepository = categoryRepository;
+        _aiAnalysisService = aiAnalysisService;
+        _departmentRepository = departmentRepository;
+        _logger = logger;
+    }
+
+    public async Task ProcessAnalysisAsync(Review review, bool isReanalysis, CancellationToken cancellationToken)
+    {
+        // AI servisine analiz isteği gönder (graceful degradation: null dönerse atla)
+        var aiResult = await _aiAnalysisService.AnalyzeReviewAsync(
+            review.Comment, review.Rating, review.Language, cancellationToken);
+
+        if (aiResult is null)
+        {
+            _logger.LogWarning("AI analizi alınamadı, yorum ID: {ReviewId}. Yerel simülasyon (fallback) kullanılıyor.", review.Id);
+            aiResult = await SimulateAnalysisAsync(review);
+        }
+
+        var prefix = isReanalysis ? "[Yeniden Analiz]" : "[Otomatik]";
+        var absaPrefix = isReanalysis ? "[ABSA Yeniden Analiz]" : "[ABSA Otomatik]";
+
+        // Eşleşen ABSA aspect'leri varsa her biri için ayrı analiz ve aksiyon kaydı oluştur
+        if (aiResult.AbsaAspects != null && aiResult.AbsaAspects.Any())
+        {
+            int idx = 0;
+            foreach (var aspect in aiResult.AbsaAspects)
+            {
+                var (deptId, catId) = await ResolveDepartmentAndCategoryAsync(aspect.Department, aspect.Clause, review.HotelId);
+
+                var aspectSentiment = aspect.Sentiment switch
+                {
+                    "Positive" => Sentiment.Positive,
+                    "Negative" => Sentiment.Negative,
+                    _ => Sentiment.Neutral
+                };
+
+                var aspectPriority = aspect.Priority switch
+                {
+                    "Critical" or "Kritik" => Priority.Critical,
+                    "High" or "Yuksek" => Priority.High,
+                    "Medium" or "Orta" => Priority.Medium,
+                    _ => Priority.Info
+                };
+
+                var analysis = new ReviewAnalysis
+                {
+                    ReviewId = review.Id,
+                    ClauseIndex = idx++,
+                    ClauseText = aspect.Clause,
+                    Sentiment = aspectSentiment,
+                    SentimentScore = aspect.SentimentScore,
+                    Priority = aspectPriority,
+                    CategoryId = catId,
+                    Suggestion = aspect.Suggestion,
+                    Confidence = aiResult.Confidence,
+                    Keywords = idx == 1 ? aiResult.Keywords : [],
+                    Summary = idx == 1 ? aiResult.Summary : null
+                };
+
+                await _reviewAnalysisRepository.AddAsync(analysis);
+
+                // Negatif aspect'ler için ilgili departmana otomatik ActionItem oluştur
+                if (aspectSentiment == Sentiment.Negative && deptId.HasValue)
+                {
+                    var actionItem = new ActionItem
+                    {
+                        ReviewId = review.Id,
+                        DepartmentId = deptId.Value,
+                        Title = $"{absaPrefix} {aspect.Clause}",
+                        Status = ActionItemStatus.Open,
+                        DueDate = DateTime.UtcNow.AddDays(3)
+                    };
+
+                    await _actionItemRepository.AddAsync(actionItem);
+
+                    _logger.LogInformation(
+                        "Negatif aspect için otomatik aksiyon oluşturuldu. ReviewId: {ReviewId}, Dept: {DeptKey}",
+                        review.Id, aspect.Department);
+                }
+            }
+        }
+        else
+        {
+            // Düz analiz yapısı (Legacy fallback)
+            ReviewCategory? category = null;
+            if (!string.IsNullOrEmpty(aiResult.Category))
+            {
+                var allCategories = await _categoryRepository.GetAllAsync();
+                var departments = await _departmentRepository.GetAllAsync();
+                var hotelDepartmentIds = departments.Where(d => d.HotelId == review.HotelId).Select(d => d.Id).ToList();
+                category = allCategories.FirstOrDefault(c => c.Name == aiResult.Category && hotelDepartmentIds.Contains(c.DepartmentId)) 
+                           ?? allCategories.FirstOrDefault(c => c.Name == aiResult.Category);
+            }
+
+            var sentimentEnum = aiResult.Sentiment switch
+            {
+                "Positive" => Sentiment.Positive,
+                "Negative" => Sentiment.Negative,
+                _ => Sentiment.Neutral
+            };
+
+            var priorityEnum = sentimentEnum == Sentiment.Negative ? Priority.High : Priority.Info;
+
+            var analysis = new ReviewAnalysis
+            {
+                ReviewId = review.Id,
+                ClauseIndex = 0,
+                ClauseText = review.Comment,
+                Sentiment = sentimentEnum,
+                SentimentScore = aiResult.SentimentScore,
+                Priority = priorityEnum,
+                CategoryId = category?.Id,
+                Suggestion = aiResult.Suggestion,
+                Confidence = aiResult.Confidence,
+                Keywords = aiResult.Keywords,
+                Summary = aiResult.Summary
+            };
+
+            await _reviewAnalysisRepository.AddAsync(analysis);
+
+            if (sentimentEnum == Sentiment.Negative && category is not null)
+            {
+                var actionItem = new ActionItem
+                {
+                    ReviewId = review.Id,
+                    HotelId = review.HotelId,
+                    DepartmentId = category.DepartmentId,
+                    Title = $"{prefix} {category.Name}: {(review.Comment.Length > 80 ? review.Comment[..80] + "..." : review.Comment)}",
+                    Status = ActionItemStatus.Open,
+                    DueDate = DateTime.UtcNow.AddDays(3)
+                };
+
+                await _actionItemRepository.AddAsync(actionItem);
+            }
+        }
+
+        await _reviewAnalysisRepository.SaveChangesAsync();
+    }
+
+    private async Task<(Guid? DepartmentId, Guid? CategoryId)> ResolveDepartmentAndCategoryAsync(
+        string departmentKey, string clause, Guid? hotelId = null)
+    {
+        var departments = await _departmentRepository.GetAllAsync();
+        var department = departments.FirstOrDefault(d =>
+            d.Key.Equals(departmentKey, StringComparison.OrdinalIgnoreCase) &&
+            (!hotelId.HasValue || d.HotelId == hotelId.Value))
+            ?? departments.FirstOrDefault(d => d.Key.Equals(departmentKey, StringComparison.OrdinalIgnoreCase));
+        if (department is null)
+            return (null, null);
+
+        var categories = await _categoryRepository.GetAllAsync();
+        var lowerClause = clause.ToLowerInvariant();
+        var matchedCategory = categories
+            .Where(c => c.DepartmentId == department.Id)
+            .FirstOrDefault(c => c.Keywords.Any(k => lowerClause.Contains(k.ToLowerInvariant())));
+
+        return (department.Id, matchedCategory?.Id ?? categories.FirstOrDefault(c => c.DepartmentId == department.Id)?.Id);
+    }
+
+    private async Task<HotelReviewAI.Application.DTOs.AiAnalysisResult> SimulateAnalysisAsync(Review review)
+    {
+        var sentiment = review.Rating switch
+        {
+            <= 2 => "Negative",
+            3 => "Neutral",
+            _ => "Positive"
+        };
+        var score = review.Rating switch
+        {
+            1 => -0.9, 2 => -0.6, 3 => 0.0, 4 => 0.6, 5 => 0.9, _ => 0.0
+        };
+
+        var lowerComment = review.Comment.ToLowerInvariant();
+        var allCategories = await _categoryRepository.GetAllAsync();
+        var departments = await _departmentRepository.GetAllAsync();
+        var hotelDepartmentIds = departments.Where(d => d.HotelId == review.HotelId).Select(d => d.Id).ToList();
+        var hotelCategories = allCategories.Where(c => hotelDepartmentIds.Contains(c.DepartmentId)).ToList();
+        if (hotelCategories.Count == 0)
+            hotelCategories = allCategories.ToList();
+
+        var bestCategory = hotelCategories.FirstOrDefault(c => c.Keywords.Any(k => lowerComment.Contains(k.ToLowerInvariant())));
+
+        return new HotelReviewAI.Application.DTOs.AiAnalysisResult
+        {
+            Sentiment = sentiment,
+            SentimentScore = score,
+            Category = bestCategory?.Name,
+            Keywords = bestCategory?.Keywords ?? [],
+            Summary = "Bu analiz AI servisi kapalı olduğu için yerel olarak simüle edilmiştir.",
+            Suggestion = "Otomatik simüle edilmiş öneri",
+            Confidence = 0.85
+        };
+    }
+}

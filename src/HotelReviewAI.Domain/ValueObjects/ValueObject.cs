@@ -22,9 +22,11 @@ public abstract class ValueObject : IEquatable<ValueObject>
 
     public override int GetHashCode()
     {
-        return GetEqualityComponents()
-            .Select(x => x != null ? x.GetHashCode() : 0)
-            .Aggregate((x, y) => x ^ y);
+        unchecked
+        {
+            return GetEqualityComponents()
+                .Aggregate(17, (hash, val) => hash * 23 + (val?.GetHashCode() ?? 0));
+        }
     }
 
     public bool Equals(ValueObject? other)

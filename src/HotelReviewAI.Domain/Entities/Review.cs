@@ -12,10 +12,23 @@ public class Review : BaseEntity
     public int Rating { get; private set; }
     public DateTime ReviewDate { get; private set; }
     public Guid? CreatedBy { get; private set; }
+    public Guid? HotelId { get; set; }
+    public Hotel? Hotel { get; set; }
 
-    public ReviewAnalysis? Analysis { get; set; }
-    public ICollection<ReviewAttachment> Attachments { get; set; } = [];
-    public ICollection<ActionItem> ActionItems { get; set; } = [];
+    private readonly List<ReviewAnalysis> _analyses = [];
+    private readonly List<ReviewAttachment> _attachments = [];
+    private readonly List<ActionItem> _actionItems = [];
+
+    public IReadOnlyCollection<ReviewAnalysis> Analyses => _analyses.AsReadOnly();
+    public IReadOnlyCollection<ReviewAttachment> Attachments => _attachments.AsReadOnly();
+    public IReadOnlyCollection<ActionItem> ActionItems => _actionItems.AsReadOnly();
+
+    public void AddAnalysis(ReviewAnalysis analysis) => _analyses.Add(analysis);
+    public void AddAttachment(ReviewAttachment attachment) => _attachments.Add(attachment);
+    public void AddActionItem(ActionItem item) => _actionItems.Add(item);
+
+    public void RemoveAnalysis(ReviewAnalysis analysis) => _analyses.Remove(analysis);
+    public void ClearAnalyses() => _analyses.Clear();
 
     private Review()
     {
@@ -28,7 +41,8 @@ public class Review : BaseEntity
         string language,
         ReviewSource source,
         DateTime reviewDate,
-        Guid? createdBy)
+        Guid? createdBy,
+        Guid? hotelId = null)
     {
         if (string.IsNullOrWhiteSpace(comment) || comment.Length < 10)
         {
@@ -48,7 +62,8 @@ public class Review : BaseEntity
             Language = language,
             Source = source,
             ReviewDate = reviewDate,
-            CreatedBy = createdBy
+            CreatedBy = createdBy,
+            HotelId = hotelId
         };
     }
 }
