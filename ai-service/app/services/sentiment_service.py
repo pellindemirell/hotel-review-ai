@@ -1,47 +1,35 @@
-def analyze_sentiment(comment: str, rating: int) -> tuple[int, float]:
-    """
-    Analyzes review comment sentiment and rating, returning a tuple of (sentiment_enum, score).
-    Sentiment enum values:
-    0 = Positive
-    1 = Negative
-    2 = Neutral
-    """
-    if not comment:
-        return 2, 0.0
+from typing import Optional
 
-    # Base score on rating (1 to 5)
-    # 5 -> 0.8, 4 -> 0.4, 3 -> 0.0, 2 -> -0.4, 1 -> -0.8
-    base_score = (rating - 3) * 0.4
-    
-    # Sentiment keyword weights
-    pos_keywords = [
-        "güzel", "iyi", "harika", "temiz", "lezzetli", "memnun", "hızlı", 
-        "tavsiye", "güler yüz", "mükemmel", "harikaydı", "sevdim", "beğendim",
-        "clean", "good", "great", "friendly", "delicious", "perfect", "nice", "excellent"
-    ]
-    neg_keywords = [
-        "kötü", "kirli", "yavaş", "rezalet", "berbat", "pahalı", "gürültü", 
-        "eski", "bozuk", "şikayet", "memnun kalmadım", "beğenmedim", "soğuk",
-        "dirty", "bad", "slow", "expensive", "noise", "broken", "worst", "terrible", "poor"
-    ]
-    
-    comment_lower = comment.lower()
-    pos_count = sum(1 for kw in pos_keywords if kw in comment_lower)
-    neg_count = sum(1 for kw in neg_keywords if kw in comment_lower)
-    
-    # Adjust score based on keyword counts
-    score_adjustment = (pos_count - neg_count) * 0.1
-    final_score = base_score + score_adjustment
-    
-    # Bound the score between -1.0 and 1.0
-    final_score = max(-1.0, min(1.0, final_score))
-    
-    # Categorize based on final score
-    if final_score > 0.15:
-        sentiment = 0  # Positive
-    elif final_score < -0.15:
-        sentiment = 1  # Negative
-    else:
-        sentiment = 2  # Neutral
-        
-    return sentiment, round(final_score, 2)
+from app.services.turkish_nlp_utils import (
+    analyze_sentiment_with_rating,
+    detect_manipulation,
+    detect_strong_sentiment,
+    predict_star_rating,
+)
+from app.services.sentiment_ml_service import SentimentMLService
+
+
+class SentimentService:
+    """ML-öncelikli duygu analizi servisi. Düşük güvende kural tabanlına düşer."""
+
+    POSITIVE_WORDS = None
+    NEGATIVE_WORDS = None
+
+    _ml_service = SentimentMLService()
+
+    @classmethod
+    def predict_rating(cls, text: str, sentiment: str, sentiment_score: float) -> int:
+        return predict_star_rating(text, sentiment, sentiment_score)
+
+    @classmethod
+    def is_manipulation(cls, text: str, rating: Optional[int] = None) -> bool:
+        return detect_manipulation(text, rating)
+
+    @classmethod
+    def analyze_sentiment(cls, text: str, rating: Optional[int] = None) -> tuple[str, float]:
+        sent, score = cls._ml_service.analyze(text, rating)
+        return sent, score
+
+    @classmethod
+    def detect_sentiment(cls, text: str) -> tuple[str, float]:
+        return detect_strong_sentiment(text)

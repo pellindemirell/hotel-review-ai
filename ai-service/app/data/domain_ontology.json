@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "description": "Otel Sektör Ontolojisi — 4 katman: Domain (Turizm) → Subdomain (Otel) → Department (8) → Aspect (41)",
+  "domains": [
+    {
+      "key": "turizm",
+      "label": "Turizm",
+      "keywords": ["otel", "tatil", "konaklama", "resort", "pansiyon", "misafir", "oda", "check-in", "check-out"],
+      "subdomains": [
+        {
+          "key": "otel",
+          "label": "Otel",
+          "departments": [
+            {"key": "housekeeping", "label": "Oda Hizmetleri & Housekeeping", "keywords": ["oda", "yatak", "banyo", "temizlik", "buklet", "sampuan", "sabun", "bornoz", "terlik", "havlu", "konfor", "ergonomi", "genis", "kucuk", "dar", "yalitim", "ses", "carsaf", "yorgan", "yastik"], "aspects": [
+              {"key": "room_cleanliness", "label": "Oda Temizliği", "keywords": ["oda temiz", "banyo temiz", "kirli oda", "toz", "pis", "hijyen"]},
+              {"key": "bed_comfort", "label": "Yatak Konforu", "keywords": ["yatak rahat", "yatak konfor", "sert yatak", "yumusak yatak", "yatak"]},
+              {"key": "bathroom", "label": "Banyo & Tuvalet", "keywords": ["banyo", "tuvalet", "duş", "dus", "klozet"]},
+              {"key": "linen_towel", "label": "Çarşaf & Havlu", "keywords": ["carsaf", "çarşaf", "havlu", "nevresim", "yorgan", "yastik", "yastık", "laundry", "kuru temizleme", "utu"]},
+              {"key": "room_size", "label": "Oda Boyutu", "keywords": ["oda kucuk", "oda buyuk", "oda genis", "oda dar", "minik oda"]},
+              {"key": "soundproofing", "label": "Ses Yalıtımı", "keywords": ["ses yalitimi", "ses geliyor", "odadan ses", "yalitim", "yan oda", "ses yalıtım"]},
+              {"key": "amenities", "label": "Buklet Malzemeleri", "keywords": ["sampuan", "sabun", "bornoz", "terlik", "buklet", "sampan"]}
+            ]},
+            {"key": "food_beverage", "label": "Yiyecek & İçecek (F&B)", "keywords": ["restoran", "yemek", "kahvalti", "bufe", "menu", "lezzet", "mutfak", "pankek", "kiyma", "limonata", "soda", "kokteyl", "bar", "minibar", "icecek", "cesit", "pastane", "waffle", "tatli", "tekila", "sarap", "raki", "bira", "kahve", "kuyruk", "sira"], "aspects": [
+              {"key": "food_quality", "label": "Yemek Kalitesi", "keywords": ["restoran", "yemek kalitesi", "lezzet", "taze", "sicak", "pankek", "kiyma", "lezzetsiz", "tatsiz", "bayat"]},
+              {"key": "breakfast", "label": "Kahvaltı", "keywords": ["kahvalti", "kahvaltı", "omlet", "acik bufe", "açık büfe", "kahvalti cesit"]},
+              {"key": "restaurant_service", "label": "Restoran Servisi", "keywords": ["garson", "servis", "masa temizletemed", "masa kirli", "catal", "çatal", "bicak", "bıçak", "tabak"]},
+              {"key": "menu_variety", "label": "Menü Çeşitliliği", "keywords": ["cesit", "çeşitlilik", "menu", "menü", "pastane", "waffle", "tatli", "dondurma", "meyve", "cilek", "çilek", "kavun"]},
+              {"key": "drink_quality", "label": "İçecek Kalitesi", "keywords": ["bar", "kokteyl", "alkol", "icecek", "içecek", "limonata", "soda", "tekila", "sarap", "şarap", "raki", "rakı", "bira", "turk kahvesi", "türk kahvesi", "espresso", "filtre kahve"]},
+              {"key": "minibar", "label": "Minibar", "keywords": ["minibar", "mini bar", "doldurulmus", "soguk icecek", "minibar dolu"]},
+              {"key": "queue_waiting", "label": "Sıra & Bekleme", "keywords": ["kuyruk", "sira", "sıra", "bekleme", "15 dakika", "20 dakika", "30-45 dk", "bekleniyor", "alinamiyor", "alınamıyor"]}
+            ]},
+            {"key": "front_office", "label": "Ön Büro & Misafir İlişkileri", "keywords": ["resepsiyon", "giris", "cikis", "check", "rezervasyon", "kayit", "karsilama", "odeme", "fatura", "muhasebe", "satis", "sikayet", "cozum", "bellboy", "bavul", "valiz", "oda teslimi", "erken giris", "gec cikis", "oda karti", "lobi", "fiyat", "ucret", "pahali"], "aspects": [
+              {"key": "check_in_out", "label": "Giriş/Çıkış", "keywords": ["check-in", "check-out", "giris", "cikis", "bellboy", "bavul", "oda teslimi", "erken giris", "gec cikis", "oda karti"]},
+              {"key": "reception_service", "label": "Resepsiyon Hizmeti", "keywords": ["resepsiyon", "lobi", "karsilama", "bilgilendirme", "yonlendirme", "guest relation", "misafir iliskileri"]},
+              {"key": "booking", "label": "Rezervasyon", "keywords": ["rezervasyon", "booking", "overbooking", "kayit"]},
+              {"key": "price_value", "label": "Fiyat & Değer", "keywords": ["fiyat", "ucret", "pahali", "fiyat performans", "paramiz cop", "paramız çöp", "pismanlik", "pişmanlık", "paraya degmez"]},
+              {"key": "billing", "label": "Fatura & Ödeme", "keywords": ["fatura", "odeme", "ödeme", "muhasebe", "depozito", "ekstra ucret", "ekstra ücret"]},
+              {"key": "complaint_resolution", "label": "Şikayet Çözümü", "keywords": ["sikayet", "cozum", "çözüm", "cozuldu", "şikayet çözümü", "telafi"]}
+            ]},
+            {"key": "engineering", "label": "Teknik Servis & IT", "keywords": ["klima", "wifi", "internet", "tv", "televizyon", "kumanda", "asansor", "ariza", "tamir", "bakim", "elektrik", "sicak su", "dus basligi", "priz"], "aspects": [
+              {"key": "air_conditioning", "label": "Klima", "keywords": ["klima", "sogutma", "isitma", "sicaklik", "klima sogutmuyor", "klima çalışmıyor"]},
+              {"key": "wifi_internet", "label": "WiFi / İnternet", "keywords": ["wifi", "wi-fi", "internet", "baglanti", "yavas", "kopma", "baglanilamiyor"]},
+              {"key": "tv_entertainment", "label": "TV & Eğlence", "keywords": ["tv", "televizyon", "kumanda", "kanal", "medya"]},
+              {"key": "elevator", "label": "Asansör", "keywords": ["asansor", "asansör", "lift", "tek asansor", "asansor sirasi"]},
+              {"key": "maintenance", "label": "Bakım & Onarım", "keywords": ["ariza", "tamir", "bakim", "onarim", "sicak su", "sıcak su", "dus basligi", "su akmiyor", "priz", "elektrik"]}
+            ]},
+            {"key": "leisure", "label": "Rekreasyon & Eğlence", "keywords": ["havuz", "spa", "sauna", "masaj", "wellness", "jakuzi", "hamam", "sezlong", "animasyon", "konser", "sov", "muzik", "eglence", "cocuk", "kulubu", "aktivite", "spor", "fitness", "plaj", "deniz", "aquapark"], "aspects": [
+              {"key": "pool", "label": "Havuz", "keywords": ["havuz", "yuzme havuzu", "aquapark", "aquaprk", "su kaydiragi", "kaydirak", "sezlong", "şezlong"]},
+              {"key": "spa_massage", "label": "Spa & Masaj", "keywords": ["spa", "masaj", "sauna", "hamam", "jakuzi", "wellness", "kese", "terapist"]},
+              {"key": "animation", "label": "Animasyon & Etkinlik", "keywords": ["animasyon", "etkinlik", "show", "sov", "konser", "gece gosterisi", "canli muzik", "amfi tiyatro"]},
+              {"key": "beach", "label": "Plaj & Deniz", "keywords": ["plaj", "deniz", "kumsal", "sahil", "cakil", "iskele", "minder"]},
+              {"key": "kids_club", "label": "Çocuk Kulübü", "keywords": ["cocuk kulubu", "çocuk kulübü", "mini club", "miniclub", "cocuk aktivite"]},
+              {"key": "fitness", "label": "Spor & Fitness", "keywords": ["spor", "fitness", "gym", "tenis", "masa tenisi"]}
+            ]},
+            {"key": "grounds", "label": "Çevre, Güvenlik & Ulaşım", "keywords": ["cevre", "bahce", "peyzaj", "otopark", "park", "vale", "transfer", "havaalani", "guvenlik", "kamera", "kasa", "konum", "merkez", "ulasim", "manzara"], "aspects": [
+              {"key": "environment", "label": "Çevre & Bahçe", "keywords": ["cevre", "bahce", "peyzaj", "yesil alan", "cim", "dış mekan", "otel mimarisi", "mimari", "mesafe"]},
+              {"key": "parking", "label": "Otopark", "keywords": ["otopark", "park", "vale", "park yeri", "otopark alani"]},
+              {"key": "security", "label": "Güvenlik", "keywords": ["guvenlik", "güvenlik", "kamera", "kasa", "kilit", "bekci"]},
+              {"key": "transportation", "label": "Ulaşım & Transfer", "keywords": ["transfer", "shuttle", "havaalani", "ulasim", "dolmus", "taksi"]},
+              {"key": "location", "label": "Konum", "keywords": ["konum", "lokasyon", "merkez", "yakinlik", "sehir merkezine"]},
+              {"key": "view", "label": "Manzara", "keywords": ["manzara", "deniz manzarali", "doga manzarasi", "balkon manzarasi"]}
+            ]},
+            {"key": "atmosphere", "label": "Otel Atmosferi & Misafir Profili", "keywords": ["gurultu", "sessiz", "kalabalik", "misafir", "profil", "prestij", "atmosfer", "kitle", "huzur", "yonetim", "genel"], "aspects": [
+              {"key": "noise_level", "label": "Sessizlik / Gürültü", "keywords": ["gurultu", "gözültü", "ses", "sessizlik", "sessiz", "gurultulu"]},
+              {"key": "crowd", "label": "Kalabalık", "keywords": ["kalabalik", "kalabalık", "yoğunluk", "kuyruklar", "tesis kalabalik"]},
+              {"key": "guest_profile", "label": "Misafir Profili", "keywords": ["misafir profili", "kitle", "cocuklu aileler", "yerli turist", "yabanci turist", "profil"]},
+              {"key": "general_atmosphere", "label": "Genel Atmosfer", "keywords": ["atmosfer", "ortam", "huzur", "sakinlik", "konsept", "otel ortami"]},
+              {"key": "general_management", "label": "Genel Yönetim", "keywords": ["yonetim", "yönetim", "otel yonetimi", "isletme", "organize", "organizasyon"]}
+            ]},
+            {"key": "staff", "label": "Personel Davranışı", "keywords": ["personel", "calisan", "garson", "kibar", "guler yuz", "yardimsever", "ilgili", "davranis", "bakim", "kaba", "ilgisiz", "saygisiz", "profesyonel", "türkçe", "dil"], "aspects": [
+              {"key": "staff_attitude", "label": "Personel Tutumu", "keywords": ["personel tutumu", "kaba", "ilgisiz", "saygisiz", "guler yuz", "güler yüz", "suratsiz", "nazik"]},
+              {"key": "staff_service", "label": "Personel Hizmeti", "keywords": ["personel hizmeti", "yardimsever", "yardimci", "destek", "hizli servis", "yavas servis"]},
+              {"key": "communication", "label": "Dil & İletişim", "keywords": ["dil", "iletisim", "türkçe bilmiyor", "turkce bilmiyor", "ingilizce", "anlasilamiyor"]},
+              {"key": "professionalism", "label": "Profesyonellik", "keywords": ["profesyonel", "profesyonellik", "liyakat", "egitim", "kılık kıyafet", "diksiyon"]}
+            ]}
+          ]
+        }
+      ]
+    }
+  ],
+  "entities": [
+    {"key": "havuz", "label": "Havuz", "type": "facility", "domain": "turizm", "subdomain": "otel", "department": "leisure", "aliases": ["havuz", "yuzme havuzu", "aquapark"]},
+    {"key": "restoran", "label": "Restoran", "type": "facility", "domain": "turizm", "subdomain": "otel", "department": "food_beverage", "aliases": ["restoran", "bufe", "yemekhane"]},
+    {"key": "spa", "label": "Spa", "type": "facility", "domain": "turizm", "subdomain": "otel", "department": "leisure", "aliases": ["spa", "wellness", "masaj merkezi"]},
+    {"key": "lobi", "label": "Lobi", "type": "facility", "domain": "turizm", "subdomain": "otel", "department": "front_office", "aliases": ["lobi", "resepsiyon"]},
+    {"key": "wifi", "label": "WiFi", "type": "service", "domain": "turizm", "subdomain": "otel", "department": "engineering", "aliases": ["wifi", "internet", "wi-fi"]},
+    {"key": "klima", "label": "Klima", "type": "service", "domain": "turizm", "subdomain": "otel", "department": "engineering", "aliases": ["klima", "iklimlendirme"]},
+    {"key": "asansor", "label": "Asansör", "type": "facility", "domain": "turizm", "subdomain": "otel", "department": "engineering", "aliases": ["asansor", "lift"]},
+    {"key": "otopark", "label": "Otopark", "type": "facility", "domain": "turizm", "subdomain": "otel", "department": "grounds", "aliases": ["otopark", "park"]},
+    {"key": "havuz_alani", "label": "Havuz Alanı", "type": "area", "domain": "turizm", "subdomain": "otel", "department": "leisure", "aliases": ["havuz alani", "havuz alanı"]}
+  ]
+}

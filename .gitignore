@@ -35,5 +35,48 @@ docker-compose.override.yml
 .vscode/settings.json
 *.DS_Store
 
-.env
 appsettings.Developmnet.json
+
+# ===== Python / AI Service =====
+**/__pycache__/
+*.pyc
+*.pyo
+*.log
+*.xlsx
+*.pkl
+*.joblib
+
+# ===== Database / Temp =====
+*.db
+*.bak
+*.corrupted
+*.sqlite3
+
+# ===== AI Service — generated / debug =====
+ai-service/scratch/
+ai-service/simulation/
+ai-service/.pytest_cache/
+ai-service/app/static/
+ai-service/app/absa_platform/static/
+
+# ===== AI Service — runtime data (do not commit) =====
+ai-service/data/
+
+# ===== Root-level debug outputs =====
+_out.txt
+repro*.txt
+_final.txt
+_quick.txt
+_pytest*.txt
+_probe*.txt
+_run_absa*
+_api_*
+server_*.log
+server*.txt
+failures*.txt
+test_discrepancies*.txt
+test_results.txt
+*.html
+*_absa_analiz_sonuclari*.xlsx
+*_analiz_sonuclari*.xlsx
+log.log

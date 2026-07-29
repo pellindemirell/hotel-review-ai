@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  hcos-review:
+    build: .
+    container_name: hcos-review
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app/absa_platform:/app/app/absa_platform
+      - ./datasets:/app/datasets
+    environment:
+      - PYTHONPATH=/app
+    restart: unless-stopped

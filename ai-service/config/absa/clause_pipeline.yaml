@@ -1,0 +1,3007 @@
+# Systemic ABSA clause pipeline — config-driven rules
+# Prefer extending this file over hard-coding Crystal-specific if/else.
+
+version: "1.0"
+
+# ---------------------------------------------------------------------------
+# Mediocre / lukewarm sentiment class (NOT positive)
+# ---------------------------------------------------------------------------
+mediocre_lexicon:
+  - ortalama
+  - ortalamaydı
+  - ortalamaydi
+  - ortalamaydı
+  - idare eder
+  - idare ederdi
+  - idarelik
+  - fena değil
+  - fena degil
+  - eh işte
+  - eh iste
+  - vasat
+  - vasattı
+  - vasatti
+  - beklediğim gibi değil
+  - bekledigim gibi degil
+  - pek iyi değil
+  - pek iyi degil
+  - öyle böyle
+  - oyle boyle
+  - ne iyi ne kötü
+  - ne iyi ne kotu
+  - orta karar
+  - orta seviye
+  - şöyle böyle
+  - soyle boyle
+
+mediocre_sentiment: Neutral
+mediocre_score: -0.12
+# If mediocre co-occurs with strong food/service noun, mild negative is allowed
+mediocre_mild_negative_score: -0.18
+
+# Bare nouns that look "positive" in lexicon but are topic words under mediocre
+positive_topic_false_friends:
+  - lezzet
+  - lezzetli
+  - yemek
+  - yemekler
+  - oda
+  - odalar
+  - hizmet
+  - servis
+
+# ---------------------------------------------------------------------------
+# Meta / narrative / purpose — drop from operational ABSA table
+# ---------------------------------------------------------------------------
+meta_patterns:
+  - otelden ayrıldım
+  - otelden ayrildim
+  - tek kelimeyle özetleyecek
+  - tek kelimeyle ozetleyecek
+  - özetleyecek olsaydım
+  - ozetleyecek olsaydim
+  - ciddiye almamıştım
+  - ciddiye almamistim
+  - düşünmemiştim
+  - dusunmemistim
+  - yaşayınca anlıyormuş
+  - yasayinca anliyormus
+  - paylaşmaktaki amacım
+  - paylasmaktaki amacim
+  - otel sahiplerinin görmelerini
+  - otel sahiplerinin gormelerini
+  - iyileştirmeler geri bildirim
+  - iyilestirmeler geri bildirim
+  - geri bildirimlerle mümkün
+  - geri bildirimlerle mumkun
+  - rezervasyon yapanların bilerek
+  - rezervasyon yapanlarin bilerek
+  - son gününde yazıyorum
+  - son gununde yaziyorum
+  - gece.*gün tatil
+  - insan kendi yaşayınca
+  - insan kendi yasayinca
+  # English meta patterns
+  - overall.*experience
+  - all.*all
+  - summary.*stay
+  - would recommend
+# Systemic ABSA clause pipeline — config-driven rules
+# Prefer extending this file over hard-coding Crystal-specific if/else.
+
+# Min words before meta_rescue can override a meta pattern match
+meta_rescue_min_words: 3
+meta_rescue_cues:
+  - sıra
+  - sira
+  - kuyruk
+  - bekle
+  - otelde yoğun bir sıra
+  - otelde yogun bir sira
+
+# ---------------------------------------------------------------------------
+# Context frames --- signal classes (any hit scores the frame)
+# ---------------------------------------------------------------------------
+frames:
+  room:
+    entity_cues:
+      - oda
+      - odalar
+      - odamız
+      - odamiz
+      - odam
+      - banyo
+      - room
+      - bedroom
+      - rooms
+      - bathroom
+      # Russian
+      - номер
+      - кроват
+    size_cues:
+      - küçük
+      - kucuk
+      - dar
+      - dardı
+      - dardi
+      - darlık
+      - darlik
+      - minik
+      - daracık
+      - daracik
+      - metrekare
+      - m2
+      - geniş
+      - genis
+      - büyük
+      - buyuk
+      - small
+      - big
+      - spacious
+      - narrow
+      - tiny
+    hygiene_cues:
+      - kirli
+      - pis
+      - toz
+      - havlu
+      - çarşaf
+      - carsaf
+      - hijyen
+      - temizlenmedi
+      - oda temiz
+      - dirty
+      - clean
+      - towel
+      - sheet
+      - dusty
+    noise_cues:
+      - ses yalıtım
+      - ses yalit
+      - yalıtımı
+      - yalitimi
+      - yan oda
+      - yan odadaki
+      - gürültü
+      - gurultu
+      - ses geç
+      - noise
+      - noisy
+      - quiet
+      - loud
+      - ses gec
+      - telefonu çalıyor
+      - telefonu caliyor
+  fb_venue:
+    entity_cues:
+      - restoran
+      - restorant
+      - restaurant
+      - büfe
+      - bufe
+      - alacarte
+      - alakart
+      - alakarta
+      - a la carte
+      - portakal suyu
+      - sikma portakal
+      - sıkma portakal
+      - masa
+      - masalar
+      - masalarda
+      - çatal
+      - catal
+      - bıçak
+      - bicak
+      - tabak
+      - garson
+      - yemek
+      - yemekler
+      - yemekleri
+      - yemekte
+      - aç kald
+      - ac kald
+      - aç kaldı
+      - ac kaldi
+      - aç kaldığı
+      - ac kaldigi
+      - yemek bitti
+      - yemeğin bitti
+      - yemegin bitti
+      - yemeğin bittiği
+      - yemegin bittigi
+      - mutfak kapandı
+      - mutfak kapandi
+      # Russian cues
+      - еда
+      - завтрак
+      - ужин
+      - ресторан
+      - кормили
+      - вкусн
+      - pankek
+      - kıyma
+      - kiyma
+      - lezzet
+      - lezzetli
+      - kahvaltı
+      - kahvalti
+      - kahvaltısı
+      - kahvaltisi
+      - açık büfe
+      - acik bufe
+      - akşam yemeği
+      - aksam yemegi
+      - öğle yemeği
+      - ogle yemegi
+      - çorba
+      - corba
+      - tatlı
+      - tatli
+      - tatlilar
+      - meyve
+      - menü
+      - menu
+      - menüler
+      - menuler
+      - servis
+      - kahve
+      - çay
+      - cay
+      - pastane
+      - pastanede
+      - kahve köşesi
+      - kahve kosesi
+      - lokum
+      - türk kahvesi
+      - turk kahvesi
+      - yiyecek içecek
+      - yiyecek icecek
+      - ikram
+      # English cues
+      - food
+      - breakfast
+      - dinner
+      - lunch
+      - buffet
+      - meal
+      - taste
+      - dish
+      - soup
+      - salad
+      - dessert
+      - chef
+      - menu
+      - waiter
+      - egg
+      - eggs
+      - toast
+      - brunch
+      - pub
+      - mutfak
+      - kitchen
+      - crispy
+    table_service_cues:
+      - temizletemed
+      - temizlenmedi
+      - masa kirli
+      - masa sil
+      - oturacak bir masa
+      - masa bul
+  bar:
+    entity_cues:
+      - bar
+      - barda
+      - barlarda
+      - limonata
+      - soda
+      - içecek
+      - icecek
+      - alkollü
+      - alkollu
+      - kokteyl
+      - bira
+      - şarap
+      - sarap
+      - rakı
+      - raki
+      - tekila
+      - alkol
+      - alkoller
+      # English cues
+      - cocktail
+      - beer
+      - wine
+      - drink
+      - liquor
+      - spirits
+      - pub
+    variety_cues:
+      - çeşitlilik
+      - cesitlilik
+      - çeşidi
+      - cesidi
+      - çeşit yok
+      - cesit yok
+      - sadece belli
+      - belli bar
+      - belli çeşit
+      - konsept
+      - tekila yok
+      - yalnızca
+    hours_cues:
+      - 7/24
+      - "18.00"
+      - "24.00"
+      - "18.00-24.00"
+      - arası çalış
+      - arasi calis
+      - diye tuttuk
+    cleaning_soda_cues:
+      - soda tabanc
+      - temizlik soda
+      - deterjan
+      - soda ile temiz
+  beach:
+    entity_cues:
+      - plaj
+      - plajı
+      - deniz
+      - denizi
+      - sahil
+      - sahile
+      - kumsal
+      - su sporları
+      - su sporlarinin
+      - su sporlari
+      - dalgali
+      - dalgalı
+      - bulanik
+      - bulanık
+      - beach
+      - sea
+  pest_hygiene:
+    entity_cues:
+      - hamam böceği
+      - hamam bocegi
+      - hamamboceği
+      - hamambocegi
+      - hamam böceğinin
+      - hamam boceginin
+      - böcek
+      - bocek
+      - böceği
+      - bocegi
+      - böceğinin
+      - boceginin
+      - haşere
+      - hasere
+      - fare
+      - sinek
+      - karınca
+      - karinca
+      - karasinek
+      - kara sinek
+      - sinek
+      - böcekli
+      - bocekli
+      - kuş yuvası
+      - kus yuvasi
+  food_illness:
+    entity_cues:
+      - sindirim
+      - sindirim sistemi
+      - sindirim sitem
+      - gıda zehir
+      - gida zehir
+      - zehirlen
+      - mide bulant
+      - ishal
+      - kusma
+      - rahatsız edici
+      - rahatsiz edici
+      - rahatsız eici
+      - rahatsiz eici
+      - yemeklerden kaynakli
+      - yemeklerden kaynaklı
+  staff_shortage:
+    entity_cues:
+      - personel sayısı
+      - personel sayisi
+      - personel sayısında
+      - personel sayisinda
+      - personel yetersiz
+      - personel az
+      - personel eksik
+      - kadro yetersiz
+      - eleman az
+      - yetersizlikler
+      - yetişemiyor
+      - yetisemiyor
+  overall_disappointment:
+    entity_cues:
+      - beklenti altında
+      - beklenti altinda
+      - beklenti altı
+      - beklenti alti
+      - beklediğimin altında
+      - bekledigimin altinda
+      - hayal kırıklığı
+      - hayal kirikligi
+      - ne yazık ki
+      - ne yazik ki
+      - tatil oldu
+  allergen_protocol:
+    entity_cues:
+      - alerjiniz var mı
+      - alerjiniz var mi
+      - alerji
+      - allerji
+      - alerjen
+      - allergen
+      - yemeğe karşı alerji
+      - yemege karsi alerji
+  pool:
+    entity_cues:
+      - havuz
+      - havuzdan
+      - havuzlar
+      - şezlong
+      - sezlong
+      - şezlonglar
+      - aquapark
+      - aquaparki
+      - aquaparkı
+      - aquaparkın
+      - aquaparka
+      - kaydırak
+      - kaydirak
+      - kaydırakları
+      - kaydiraklari
+      - su kaydırak
+      - su kaydirak
+      - su kaydırağı
+      - su kaydirağı
+      - su kaydırakları
+      - su kaydiraklari
+      # English cues
+      - pool
+      - lounger
+      - sunbed
+      - water park
+      - aqua
+      - aquapark
+      - water slide
+      # Russian
+      - бассейн
+    lounger_cues:
+      - şezlong
+      - sezlong
+      - lounger
+      - şezlong yok
+      - sezlong bulunmuyor
+      - şezlong bulunmuyor
+      - yer tutma
+      - yer bulamaz
+      - yer bulamiyor
+      - yer bulamıyor
+    temperature_cues:
+      - sicak
+      - sıcak
+      - serinlet
+      - sogutmuyor
+      - soğutmuyor
+      - ilik
+      - ılık
+      - soguk
+      - soğuk
+      - isitmali
+      - ısıtmalı
+      - isitma
+      - ısıtma
+      - isitmali olmasi
+      - ısıtmalı olması
+    kids_cues:
+      - çocuk
+      - cocuk
+      - çocuklar
+      - cocuklar
+      - çocuk sayısı
+      - cocuk sayisi
+      - çocuk sayısı aşırı
+      - cocuk sayisi asiri
+  queue:
+    entity_cues:
+      - kuyruk
+      - kuyruklar
+      - sıra
+      - sira
+      - sırayı
+      - sirayi
+      - sıraya
+      - siraya
+      - bekle
+      - bekled
+      - beklemiş
+      - beklemis
+      - bekliyorsunuz
+      - bekledik
+      - bekleniyor
+      - alınamıyor
+      - alinamiyor
+      - pes edip
+      - beklemeniz
+      - beklemek gerekiyor
+      - sürekli sıra
+      - surekli sira
+      - gece gündüz
+      - gece gunduz
+      - 15 20 dakika
+      - 30-45 dakika
+      - 30 45 dakika
+      - 15-20 dakika
+      - sıra beklemeden
+      - sira beklemeden
+      - herhangi bir içecek alınamıyor
+      - herhangi bir icecek alinamiyor
+      - yorgunluk
+    quantity_cues:
+      - kişilik
+      - kisilik
+      - dakika
+      - dk
+      - saat
+      # bare "uzun" alone is NOT a queue cue ("uzun dağ yolculuğu")
+      - uzun sıra
+      - uzun sira
+      - uzun kuyruk
+      - uzun bekleme
+      - uzun bekled
+      - çok uzun bekled
+      - cok uzun bekled
+      - çok uzun sıra
+      - cok uzun sira
+      - inanılmaz
+      - inanilmaz
+      - 20 25
+      - 15 20
+      - 30-45
+      - 30 45
+      - pankek
+      # English cues
+      - queue
+      - line
+      - wait
+      - waiting
+      - long wait
+      - long queue
+  capacity:
+    entity_cues:
+      - kalabalık
+      - kalabalik
+      - kapasite
+      - yorgunluk
+      - yorucu
+      - karışık
+      - karisik
+      - herşey dahil
+      - hersey dahil
+      - aşırı yoğun
+      - asiri yogun
+      - ekstra karışık
+      - ekstra karisik
+      - yoğun bir sıra
+      - yogun bir sira
+      - yeterli alan yok
+      - oturabileceği yeterli
+      - oturabilecegi yeterli
+      - oturabilecek yeterli
+      - kişinin oturabileceği
+      - kisinin oturabilecegi
+      - ortak alan
+      - yeterli yer yok
+      # English cues
+      - crowded
+      - overcrowded
+      - busy
+      - capacity
+      - full
+      - packed
+    sunbed_cues:
+      - yer tutma
+      - yer bulamaz
+      - yer bulamiyor
+      - yer bulamıyor
+      - şezlong
+      - sezlong
+      - erken gitmezseniz
+      - erken gitmezsen
+    common_area_cues:
+      - oturabileceği
+      - oturabilecegi
+      - yeterli alan
+      - yeterli yer
+      - ortak alan
+      - oturma alan
+      - kişinin otur
+      - kisinin otur
+  operations:
+    entity_cues:
+      - operasyon
+      - organizasyon
+      - işletme
+      - isletme
+      - işleyiş
+      - isleyis
+      - yönetim
+      - yonetim
+      - yönetiyor
+      - yonetiyor
+      - zayıf
+      - zayif
+      - kapasite
+      - kapasitesine
+      - overcapacity
+      - a la carte
+      - alacarte
+      - alakart
+  value:
+    entity_cues:
+      - pişman
+      - pisman
+      - paramız çöp
+      - paramiz cop
+      - para çöp
+      - para cop
+      - değmez
+      - degmez
+      - çarçur
+      - carcur
+      - parasını çarçur
+      - parasini carcur
+      # English cues
+      - overpriced
+      - expensive
+      - rip off
+      - not worth
+      - waste of money
+      - regretted
+  staff:
+    entity_cues:
+      - personel
+      - personeli
+      - personele
+      - garson
+      - çalışan
+      - calisan
+      - çalışanlar
+      - calisanlar
+      - çalışanları
+      - calisanlari
+      - kibar
+      - kibarlar
+      - kaba
+      - kabalık
+      - ilgisiz
+      - ilgili
+      - ilgililer
+      - ilgilendi
+      - türkçe bilmiyor
+      - turkce bilmiyor
+      - türkçe bile
+      - turkce bile
+      - bahşiş
+      - bahsis
+      - bellboy
+      - şef
+      - sef
+      - şefi
+      - sefi
+      - şefler
+      - sefler
+      - şefleri
+      - sefleri
+      - oda görevlisi
+      - oda gorevlisi
+      - servis ekibi
+      - misafir ilişkileri
+      - misafir iliskileri
+      - güvenlik personel
+      - guvenlik personel
+      - personel eksik
+      - barmen
+      - istemeyerek
+      - güler yüzlü
+      - guler yuzlu
+      - güleryüzlü
+      - guleryuzlu
+      - yardımcı ol
+      - yardimci ol
+      - yardımcı oldu
+      - yardimci oldu
+      - ilgi ve alaka
+      - ilgili alakalı
+      - ilgili alakali
+      - yorgun ve yeter
+      - teşekkür ederim
+      - teşekkürler
+      - tesekkur ederim
+      - tesekkurler
+      - teşekkür
+      - tesekkur
+      - ellerinize sağlık
+      - elinize sağlık
+      - ilgilendiler
+      # English cues
+      - staff
+      - waiter
+      - waitress
+      - helpful
+      - friendly
+      - rude
+      - manager
+      - receptionist
+      - bellboy
+      - housekeeping
+      - personnel
+      - yardımsever
+      - yardimsever
+      - ekip
+      - samimi
+      - samimiyet
+      - yaklaşım
+      - yaklasim
+      - bey
+      # Russian cues
+      - персонал
+      - обслуживание
+      - сотрудник
+      - hanım
+      - hanim
+  animation:
+    entity_cues:
+      - animasyon
+      - animasyon ekib
+      - konser
+      - etkinlik
+      - aktiviteler
+      - aktivite
+      - animator
+      - show
+      - masa tenisi
+      - bayram nedeniyle
+      - kids club
+      - çocuk kulüb
+      - cocuk kulub
+      - canlı müzik
+      - canli muzik
+      - spor aktivite
+      - gündüz spor
+      - gunduz spor
+      - akşamlara
+      - aksamlaro
+      - akşamlaro
+      - akşamlara olan etkinlik
+      - aksamlaro olan etkinlik
+      # English cues
+      - entertainment
+      - activity
+      - activities
+      - performance
+      - stage show
+      - mini club
+      - disco
+      - eğlence
+      - eglence
+      - parti
+       - eğlenceli
+       - eglenceli
+       - gösteri
+       - gosteri
+       - akşam eğlence
+       - aksam eglence
+       - su spor
+       - gece hayat
+       - анимация
+  tech:
+    entity_cues:
+      - wifi
+      - wi-fi
+      - internet
+      - bağlanılamıyor
+      - baglanilamiyor
+      - bağlanamıyor
+      - baglanamiyor
+      - klima
+      - termostat
+      - jeneratör
+      - jenerator
+      - elektrik
+      - sıcak su
+      - sicak su
+      - basınç
+      - basinc
+      - asansör
+      - asansor
+      - tv kanal
+      - kumanda
+      - iç ünite
+      - ic unite
+      - damlatıyor
+      - damlatiyor
+      - lavabo tıkanık
+      - lavabo tikanik
+      - pencere conta
+      # English cues
+      - air conditioner
+      - air conditioning
+      - heating
+      - shower
+      - water pressure
+      - hot water
+      - elevator
+      - remote
+      - channel
+      - ısıtma
+      - isitma
+      - kalorifer
+      - radiator
+      - leaking
+      - leak
+      - ac unit
+  front_office:
+    entity_cues:
+      - check-in
+      - check-out
+      - checkin
+      - checkout
+      - resepsiyon
+      - ön büro
+      - on buro
+      - fatura
+      - depozito
+      - oda kartı
+      - oda karti
+      - kartı vermediler
+      - kart calismadi
+      - kart çalışmadı
+      - oda teslimi
+      - oda hazirlanmadi
+      - oda hazırlanmadı
+      - saat 14.00
+      - 14.00
+      - saat 15.00
+      - 15.00
+      - resepsiyonda bekledik
+      - lobi bekletme
+      - kapıda bek
+      - kapida bek
+      - kapıda yığın
+      - kapida yigin
+      - saatlerce bekleyen
+      - rezervasyonsuz
+      - rezervasyonsuz kabul
+      - misafirlerle dolu
+      - transfer
+      - concierge
+      - lobi
+      - lobby
+      - overbooking
+      - ek ücret
+      - ek ucret
+      - depozito
+      - ek odeme
+      - ek ödeme
+      - pos cihazı
+      - pos cihazi
+      - kredi kartı
+      - kredi karti
+      - fatura verilmedi
+      - yön tabela
+      - yon tabela
+      - bilgilendirme
+      - yönlendirme
+      - yonlendirme
+      - online check
+      - misafir kabul
+      - kapasite
+      - karşılama
+      - karsilama
+      - giriş kolay
+      - giris kolay
+      - geç check
+      - gec check
+      - erken check
+      - yatak tipi
+      - rezervasyon
+      # English cues
+      - reception
+      - check in
+      - check out
+      - checkout
+      - invoice
+      - bill
+      - deposit
+      - payment
+      - booking
+      - front desk
+      - lobby
+      - onay
+      - onayla
+      - iptal
+      - giriş
+      - giris
+      - çıkış
+      - cikis
+      - alacarte
+      - guest relation
+      - guest relations
+  spa_wellness:
+    entity_cues:
+      - spa
+      - masaj
+      - sauna
+      - hamam
+      - jakuzi
+      - wellness
+      - kese
+      - köpük
+      - kopuk
+      - buhar odası
+      - buhar odasi
+      - fitness
+      - fitness salonu
+  environment:
+    entity_cues:
+      - konum
+      - lokasyon
+      - yer
+      - merkez
+      - şehir merkez
+      - sehir merkez
+      - merkeze uzak
+      - uzak
+      - uzaktı
+      - uzakti
+      - yokuş
+      - yokus
+      - yokuşlu
+      - yokuslu
+      - ulaşım
+      - ulasim
+      - transfer
+      - taksi
+      - dolmuş
+      - dolmus
+      - otobüs
+      - otobus
+      - shuttle
+      - havalimanı
+      - otopark
+      - otopark sorunu
+      - otopark yetersiz
+      - park sorunu
+      - park yeri
+      - araç
+      - arac
+      - araba koyacak
+      - park edecek
+      - garaj
+      - valet
+      - vale
+      - servis aracı
+      - servis araci
+      - güvenlik
+      - guvenlik
+      - güvenlikçi
+      - guvenlikci
+      - güvenli değil
+      - guvenli degil
+      - bekçi
+      - bekci
+      - kamera
+      - huzur
+      - manzara
+      - deniz manzara
+      - şehir manzara
+      - sehir manzara
+      - doğa
+      - doga
+      - bahçe
+      - bahce
+      - yeşil
+      - yesil
+      - çevre
+      - cevre
+      - plaj
+      - plaj mesafesi
+      - denize uzak
+      - kumsal
+      - deniz
+      - sahil
+      - yürüme mesafe
+      - yurume mesafe
+      - yürüme mesafesi
+      - yurume mesafesi
+      - metre yürümek
+      - metre yurumek
+      - koşmak isterseniz
+      - kosmak isterseniz
+      - yakın
+      - yakin
+      - metro
+      - durağı
+      - duragi
+      - istasyon
+      - otobus
+      - minibüs
+      - minibus
+      - taksi
+      - havaalanı
+      - havaalani
+      - havalimanı
+      - havalimani
+      # English cues
+      - location
+      - view
+      - park
+      - beach
+      - sea
+      - garden
+      - nature
+      - transport
+      - parking
+      - garage
+      - security
+      - safe
+      - distance
+      - walk
+      - station
+      - airport
+      - bus
+      - buses
+      # Russian cues
+      - расположение
+      - место
+      - транспорт
+      - metro
+      - tube
+      - underground
+      - train
+      - taxi
+      - toplu taşıma
+      - toplu tasima
+    location_positive_cues:
+      - manzara güzel
+      - manzara guzel
+      - konum güzel
+      - konum guzel
+      - merkezi
+      - ulaşım kolay
+      - ulasim kolay
+      - her yer
+    location_negative_cues:
+      - uzak
+      - sessiz
+      - sapa
+      - konum kötü
+      - konum kotu
+      - ulaşım yok
+      - ulasim yok
+  housekeeping:
+    entity_cues:
+      - temizlik
+      - temizlen
+      - temizlenmedi
+      - temizdi
+      - temiz
+      - havlu
+      - havlular
+      - çarşaf
+      - carsaf
+      - nevresim
+      - yastık
+      - yastik
+      - tuvalet kağıdı
+      - tuvalet kagidi
+      - çöp kutusu
+      - cop kutusu
+      - oda temiz
+      - oda kirli
+      - banyo temiz
+      - banyo
+      - hijyen
+      - pike
+      - koridor
+      - umumi
+      - leke
+      - lekeliydi
+      - küf
+      - kuf
+      - kireç
+      - kirec
+      - toz
+      - balkon
+      - süpür
+      - supur
+      - boşalt
+      - bosalt
+      - ikmal
+      - doldur
+      - kozmetik
+      - eski
+      - oda eski
+      - oda kötü
+      - oda kotu
+      - oda kalitesi
+      - sigara koku
+      - nonsmoking
+      - oda görevlisi
+      - oda gorevlisi
+      # English cues
+      - cleaning
+      - towel
+      - towels
+      - sheet
+      - sheets
+      - pillow
+      - hygiene
+      - dirty
+      - vacuum
+      - trash
+      # Russian cues
+      - уборк
+      - чисто
+      - bed
+      - blanket
+      - toilet paper
+      - dust
+      - mopped
+      - duş
+      - dus
+      - shower
+      - smell
+      - koku
+
+# Aspect defaults per frame resolution
+# category must match turkish_nlp_utils CAT_* labels for light ABSA path
+aspect_resolution:
+  room_size:
+    aspect_key: room_size
+    aspect_label: Oda Boyutu
+    department: housekeeping
+    department_label: Kat Hizmetleri & Temizlik
+    category: Oda Hizmetleri & Housekeeping
+  room_cleanliness:
+    aspect_key: room_cleanliness
+    aspect_label: Oda & Banyo Temizliği
+    department: housekeeping
+    department_label: Kat Hizmetleri & Temizlik
+    category: Oda Hizmetleri & Housekeeping
+  table_cleanliness:
+    aspect_key: table_cleanliness
+    aspect_label: Masa / Servis Temizliği
+    department: food_beverage
+    department_label: Yiyecek & İçecek (F&B)
+    category: Yiyecek & İçecek (F&B)
+  cutlery:
+    aspect_key: cutlery
+    aspect_label: Çatal Bıçak
+    department: food_beverage
+    department_label: Yiyecek & İçecek (F&B)
+    category: Yiyecek & İçecek (F&B)
+  food_taste:
+    aspect_key: food_taste
+    aspect_label: Yemek Lezzeti
+    department: food_beverage
+    department_label: Yiyecek & İçecek (F&B)
+    category: Yiyecek & İçecek (F&B)
+  pest_hygiene:
+    aspect_key: pest_hygiene
+    aspect_label: Haşere / Gıda Hijyeni
+    department: food_beverage
+    department_label: Yiyecek & İçecek (F&B)
+    category: Yiyecek & İçecek (F&B)
+  food_illness:
+    aspect_key: food_illness
+    aspect_label: Gıda Güvenliği / Sindirim
+    department: food_beverage
+    department_label: Yiyecek & İçecek (F&B)
+    category: Yiyecek & İçecek (F&B)
+  allergen_protocol:
+    aspect_key: allergen_protocol
+    aspect_label: Alerjen Protokolü
+    department: food_beverage
+    department_label: Yiyecek & İçecek (F&B)
+    category: Yiyecek & İçecek (F&B)
+  staff_shortage:
+    aspect_key: staff_shortage
+    aspect_label: Personel Yetersizliği
+    department: staff
+    department_label: Personel Davranışı
+    category: Personel Davranışı
+  overall_experience:
+    aspect_key: overall_experience
+    aspect_label: Genel Deneyim
+    department: atmosphere
+    department_label: Otel Atmosferi & Misafir Profili
+    category: Otel Atmosferi & Misafir Profili
+  fb_extra_charge:
+    aspect_key: fb_extra_charge
+    aspect_label: Ekstra Ücret / Ücretli Ameniti
+    department: food_beverage
+    department_label: Yiyecek & İçecek (F&B)
+    category: Yiyecek & İçecek (F&B)
+  meat_quality:
+    aspect_key: meat_quality
+    aspect_label: Et / Kıyma Kalitesi
+    department: food_beverage
+    department_label: Yiyecek & İçecek (F&B)
+    category: Yiyecek & İçecek (F&B)
+  drink_quality:
+    aspect_key: drink_quality
+    aspect_label: İçecek Kalitesi
+    department: food_beverage
+    department_label: Yiyecek & İçecek (F&B)
+    category: Yiyecek & İçecek (F&B)
+  drink_variety:
+    aspect_key: drink_variety
+    aspect_label: İçecek Çeşitliliği
+    department: food_beverage
+    department_label: Yiyecek & İçecek (F&B)
+    category: Yiyecek & İçecek (F&B)
+  service_queue:
+    aspect_key: service_queue
+    aspect_label: Servis / Kuyruk
+    department: food_beverage
+    department_label: Yiyecek & İçecek (F&B)
+    category: Yiyecek & İçecek (F&B)
+  pool_queue:
+    aspect_key: pool_queue
+    aspect_label: Havuz / Aktivite Kuyruğu
+    department: leisure
+    department_label: Rekreasyon & Eğlence
+    category: Rekreasyon & Eğlence
+  pool:
+    aspect_key: pool
+    aspect_label: Havuz
+    department: leisure
+    department_label: Rekreasyon & Eğlence
+    category: Rekreasyon & Eğlence
+  beach:
+    aspect_key: beach
+    aspect_label: Plaj & Deniz
+    department: leisure
+    department_label: Rekreasyon & Eğlence
+    category: Rekreasyon & Eğlence
+  pool_lounger:
+    aspect_key: pool_lounger
+    aspect_label: Havuz / Aktivite
+    department: leisure
+    department_label: Rekreasyon & Eğlence
+    category: Rekreasyon & Eğlence
+  kids_capacity:
+    aspect_key: capacity
+    aspect_label: Kapasite / Çocuk Yoğunluğu
+    department: leisure
+    department_label: Rekreasyon & Eğlence
+    category: Rekreasyon & Eğlence
+  fb_staffing:
+    aspect_key: fb_staffing
+    aspect_label: Bar / Restoran Personel Sayısı
+    department: food_beverage
+    department_label: Yiyecek & İçecek (F&B)
+    category: Yiyecek & İçecek (F&B)
+  property_walkability:
+    aspect_key: property_walkability
+    aspect_label: Tesis Boyutu / Yürüme
+    department: grounds
+    department_label: Çevre, Güvenlik & Ulaşım
+    category: Çevre, Güvenlik & Ulaşım
+  room_noise:
+    aspect_key: room_noise
+    aspect_label: Oda Ses / Konfor
+    department: housekeeping
+    department_label: Oda Hizmetleri & Housekeeping
+    category: Oda Hizmetleri & Housekeeping
+  wifi:
+    aspect_key: wifi
+    aspect_label: WiFi / İnternet
+    department: engineering
+    department_label: Teknik Servis & IT
+    category: Teknik Servis & IT
+  tech_general:
+    aspect_key: tech_general
+    aspect_label: Teknik Sorunlar
+    department: engineering
+    department_label: Teknik Servis & IT
+    category: Teknik Servis & IT
+  value_for_money:
+    aspect_key: value_for_money
+    aspect_label: Fiyat / Performans
+    department: front_office
+    department_label: Ön Büro & Misafir İlişkileri
+    category: Ön Büro & Misafir İlişkileri
+  guest_experience:
+    aspect_key: guest_experience
+    aspect_label: Genel Deneyim
+    department: atmosphere
+    department_label: Otel Atmosferi & Misafir Profili
+    category: Otel Atmosferi & Misafir Profili
+  operations_management:
+    aspect_key: operations_management
+    aspect_label: Operasyon / Yönetim
+    department: atmosphere
+    department_label: Otel Atmosferi & Misafir Profili
+    category: Otel Atmosferi & Misafir Profili
+  capacity:
+    aspect_key: capacity
+    aspect_label: Kapasite / Yoğunluk
+    department: atmosphere
+    department_label: Otel Atmosferi & Misafir Profili
+    category: Otel Atmosferi & Misafir Profili
+  staff_behavior:
+    aspect_key: staff_behavior
+    aspect_label: Personel Davranışı
+    department: staff
+    department_label: Personel Davranışı
+    category: Personel Davranışı
+  animation:
+    aspect_key: animation
+    aspect_label: Animasyon & Etkinlik
+    department: leisure
+    department_label: Rekreasyon & Eğlence
+    category: Rekreasyon & Eğlence
+  front_office:
+    aspect_key: front_office
+    aspect_label: Resepsiyon / Check-in
+    department: front_office
+    department_label: Ön Büro & Misafir İlişkileri
+    category: Ön Büro & Misafir İlişkileri
+  guest_info:
+    aspect_key: guest_info
+    aspect_label: Oda Bilgilendirme / İletişim
+    department: front_office
+    department_label: Ön Büro & Misafir İlişkileri
+    category: Ön Büro & Misafir İlişkileri
+  dining_ambiance:
+    aspect_key: dining_ambiance
+    aspect_label: Yemek Salonu / Ambiyans
+    department: food_beverage
+    department_label: Yiyecek & İçecek (F&B)
+    category: Yiyecek & İçecek (F&B)
+  food_availability:
+    aspect_key: food_availability
+    aspect_label: Yemek / Gıda Erişimi
+    department: food_beverage
+    department_label: Yiyecek & İçecek (F&B)
+    category: Yiyecek & İçecek (F&B)
+  restaurant_hours:
+    aspect_key: restaurant_hours
+    aspect_label: Restoran Saatleri / Mutfak
+    department: food_beverage
+    department_label: Yiyecek & İçecek (F&B)
+    category: Yiyecek & İçecek (F&B)
+  a_la_carte_quality:
+    aspect_key: a_la_carte_quality
+    aspect_label: A'la Carte Kalite / Memnuniyet
+    department: food_beverage
+    department_label: Yiyecek & İçecek (F&B)
+    category: Yiyecek & İçecek (F&B)
+  spa:
+    aspect_key: spa
+    aspect_label: Spa & Wellness
+    department: leisure
+    department_label: Rekreasyon & Eğlence
+    category: Rekreasyon & Eğlence
+  housekeeping_privacy:
+    aspect_key: housekeeping_privacy
+    aspect_label: Kat Hizmetleri / Mahremiyet
+    department: housekeeping
+    department_label: Oda Hizmetleri & Housekeeping
+    category: Oda Hizmetleri & Housekeeping
+  housekeeping_service:
+    aspect_key: housekeeping_service
+    aspect_label: Kat Hizmetleri
+    department: housekeeping
+    department_label: Oda Hizmetleri & Housekeeping
+    category: Oda Hizmetleri & Housekeeping
+  elevator_cleanliness:
+    aspect_key: elevator_cleanliness
+    aspect_label: Asansör / Ortak Alan Temizliği
+    department: housekeeping
+    department_label: Oda Hizmetleri & Housekeeping
+    category: Oda Hizmetleri & Housekeeping
+  minibar_supply:
+    aspect_key: minibar_supply
+    aspect_label: Minibar İkmal
+    department: housekeeping
+    department_label: Oda Hizmetleri & Housekeeping
+    category: Oda Hizmetleri & Housekeeping
+  minibar_tech:
+    aspect_key: minibar_tech
+    aspect_label: Minibar Teknik
+    department: engineering
+    department_label: Teknik Servis & IT
+    category: Teknik Servis & IT
+  location:
+    aspect_key: location
+    aspect_label: Konum / Çevre
+    department: grounds
+    department_label: Çevre, Güvenlik & Ulaşım
+    category: Çevre, Güvenlik & Ulaşım
+  parking:
+    aspect_key: parking
+    aspect_label: Otopark
+    department: grounds
+    department_label: Çevre, Güvenlik & Ulaşım
+    category: Çevre, Güvenlik & Ulaşım
+  transport:
+    aspect_key: transport
+    aspect_label: Ulaşım Servis
+    department: grounds
+    department_label: Çevre, Güvenlik & Ulaşım
+    category: Çevre, Güvenlik & Ulaşım
+  safety:
+    aspect_key: safety
+    aspect_label: Güvenlik
+    department: grounds
+    department_label: Çevre, Güvenlik & Ulaşım
+    category: Çevre, Güvenlik & Ulaşım
+
+# ---------------------------------------------------------------------------
+# Department anti-patterns (block unless required cues present)
+# ---------------------------------------------------------------------------
+anti_patterns:
+  finance:
+    blocked_departments: [finans, muhasebe, Finance, Muhasebe & Finans]
+    required_cues:
+      - fatura
+      - ücret
+      - ucret
+      - depozito
+      - overcharge
+      - ödeme
+      - odeme
+      - ekstra ücret
+      - gizli ücret
+      - pahalı fiyat
+    # Value regret must NOT open finance
+    hard_block_cues:
+      - paramız çöp
+      - paramiz cop
+      - pişman
+      - pisman
+      - değmez
+      - yorgunluk
+      - yorucu
+      - herşey dahil
+      - hersey dahil
+      - ekstra karışık
+      - ekstra karisik
+  spa:
+    blocked_departments: [spa, Spa, Spa & Wellness]
+    required_cues:
+      - spa
+      - masaj
+      - wellness
+      - sauna
+      - hamam
+      - jakuzi
+      # Bare havuz/şezlong are pool ops — NOT spa wellness (keep out of required_cues)
+      - havuz kirli
+      - klor
+      - aquapark bakim
+    # Animation/entertainment is NEVER spa unless wellness cues above are present
+    force_remap_aspects: [animation]
+    remap_department: leisure
+    remap_department_label: Rekreasyon & Eğlence
+  housekeeping_cleanliness:
+    # Do not keep HK-cleanliness label when these aspect keys win
+    incompatible_aspects:
+      - room_size
+      - room_noise
+      - table_cleanliness
+      - drink_quality
+      - drink_variety
+      - cutlery
+      - service_queue
+      - food_taste
+      - fb_extra_charge
+      - meat_quality
+      - value_for_money
+      - pool_lounger
+      - wifi
+      - animation
+      - housekeeping_privacy
+      - capacity
+      - guest_experience
+      - staff_behavior
+      - fb_staffing
+      - property_walkability
+      - kids_capacity
+      - pool_queue
+
+# ---------------------------------------------------------------------------
+# Queue / wait → negative sentiment cues
+# ---------------------------------------------------------------------------
+queue_negative_cues:
+  - kuyruk
+  - sıra bek
+  - sira bek
+  - sırayı
+  - sirayi
+  - sıraya
+  - siraya
+  - bekledik
+  - bekledim
+  - bekliyorsunuz
+  - bekleniyor
+  - beklemiş
+  - beklemis
+  - beklemek zorunda
+  - bekleyip
+  - bekleyen
+  - saatlerce bek
+  - saatlerce bekleyen
+  - kapıda bek
+  - kapida bek
+  - kapıda yığın
+  - kapida yigin
+  - rezervasyonsuz
+  - rezervasyonsuz kabul
+  - kişilik sıra
+  - kisilik sira
+  - kişilik sırayı
+  - kisilik sirayi
+  - dakika bek
+  - pes edip
+  - 15 20 dakika
+  - 30-45 dakika
+  - 30 45 dakika
+  - 15-20 dakika
+  - sıra beklemeden
+  - sira beklemeden
+  - herhangi bir içecek alınamıyor
+  - herhangi bir icecek alinamiyor
+  - uzun kuyruk
+  - uzun sıra
+  - uzun sira
+  - çok uzun sıra
+  - cok uzun sira
+  - çok uzun kuyruk
+  - cok uzun kuyruk
+  - zorunda kaldık
+  - zorunda kaldim
+  - 1 saat bekledik
+  - bir saat bekledik
+  - her bara gittiğimizde 1 saat
+  - her bara gittigimizde 1 saat
+  - havuzda kaydırak için uzun sıra
+  - havuzda kaydirak icin uzun sira
+  - şezlong bulunmuyor
+  - sezlong bulunmuyor
+  - saatlerce bekledik
+  - saatlerce bekledim
+  - yarım saat bekledik
+  - yarim saat bekledik
+  - 20 dakika bekledik
+  - 30 dakika bekledik
+  - 45 dakika bekledik
+  - kuyrukta bekledik
+  - sırada bekledik
+  - sirada bekledik
+  - sıra oluştu
+  - sira olustu
+  - uzun bekleme
+  - beklemek zorunda kaldık
+  - beklemek zorunda kaldik
+  - beklemek zorunda kaldım
+  - beklemek zorunda kaldim
+  - yer bulamadık
+  - yer bulamadik
+  - şezlong bulamadık
+  - sezlong bulamadik
+  - şezlong yoktu
+  - sezlong yoktu
+  - yer tutma
+  - erken gitmezseniz yer
+  - check-in kuyruğu
+  - check-in kuyrugu
+  - resepsiyonda kuyruk
+  - lobide bekledik
+  # bare "bekle" intentionally omitted — matches positive "beklemeden"
+queue_negative_score: -0.75
+
+# Size complaints on rooms
+room_size_negative_cues:
+  - oda küçük
+  - oda kucuk
+  - odalar küçük
+  - odalar kucuk
+  - odamız küçük
+  - odamiz kucuk
+  - odalar çok küçük
+  - odalar cok kucuk
+  - oda çok küçük
+  - oda cok kucuk
+  - oda cok kucuktu
+  - odalar dar
+  - oda dar
+  - daracik
+  - daracıktı
+  - basik
+  - basıktı
+  - küçücük
+  - kucucuk
+  - kut kutu
+  - hiç geniş değildi
+  - hic genis degildi
+  - çok küçük
+  - cok kucuk
+  - çok dar
+  - cok dar
+  - minik oda
+room_size_negative_score: -0.45
+
+# Sarcasm / disappointment / waste — Forced Negative (not Positive from "güzel")
+sarcasm_negative_cues:
+  - metre yürümek
+  - metre yürüd
+  - koşmak isterseniz güzel
+  - kosmak isterseniz guzel
+  - isterseniz güzel
+  - isterseniz guzel
+  - yürümek veya koşmak
+  - yurume veya kosmak
+  - güzel bir yanı yok
+  - guzel bir yani yok
+  - bir ucunda
+  - komik kaçıyor
+  - komik kaciyor
+  - aldanmayın
+  - aldanmayin
+  - yorumlara aldanmayın
+  - yorumlara aldanmayin
+  - 5 yıldızlı yorumlara
+  - 5 yildizli yorumlara
+  - sözde aile oteli
+  - sozde aile oteli
+  - sözde 5 yıldız
+  - sozde 5 yildiz
+  - yazılanlara inanmayın
+  - yazilanlara inanmayin
+  - yorumlara kanmayın
+  - yorumlara kanmayin
+
+disappointment_negative_cues:
+  - diye tuttuk
+  - diye aldık
+  - diye aldik
+  - diye geldik
+  - 7/24 bar var diye
+  - ultra herşey dahil
+  - ultra hersey dahil
+  - beklenti altında
+  - beklenti altinda
+  - beklenti altı
+  - beklenti alti
+  - beklediğimin altında
+  - bekledigimin altinda
+  - hayal kırıklığı
+  - hayal kirikligi
+  - ne yazık ki beklenti
+  - ne yazik ki beklenti
+  - hayal kırıklığına uğradım
+  - hayal kirikligina ugradim
+  - hayal kırıklığı yarattı
+  - hayal kirikligi yaratti
+  - her gün aynı
+  - her gun ayni
+  - her gün aynı yemekler
+  - her gun ayni yemekler
+  - gün aynı yemekler
+  - gun ayni yemekler
+  - zorunda kaldık
+  - zorunda kaldik
+  - zorunda kaldım
+  - zorunda kaldim
+  - beklentimizin altında
+  - beklentimizin altinda
+  - hayal kırıklığına uğradık
+  - hayal kirikligina ugradik
+  - hayal kırıklığı oldu
+  - hayal kirikligi oldu
+  - pişman olduk
+  - pisman olduk
+  - pişmanım
+  - pismanım
+  - pismanim
+  - berbat bir tatil
+  - kötü bir tatil
+  - kotu bir tatil
+  - asla gelmem
+  - bir daha gelmem
+  - paramıza yazık
+  - paramiza yazik
+  - zamanımıza yazık
+  - zamanimiza yazik
+  - dürüst olmak gerekirse kötü
+  - durust olmak gerekirse kotu
+  - ne yazık ki kötü
+  - ne yazik ki kotu
+  - genel olarak kötü
+  - genel olarak kotu
+  - genel olarak vasat
+
+value_waste_cues:
+  - çarçur
+  - carcur
+  - parasını çarçur
+  - parasini carcur
+  - para çöp
+  - para cop
+  - paramız çöp
+  - paramiz cop
+  - paramıza oldu
+  - paramiza oldu
+  - paramıza ve
+  - paramiza ve
+  - zamanımıza oldu
+  - zamanimiza oldu
+  - paramıza yazık
+  - paramiza yazik
+  - paranızı çöpe
+  - paranizi cope
+  - para israf
+  - boşa gitti
+  - bosa gitti
+  - hak etmiyor
+  - fiyatına değmez
+  - fiyatina degmez
+  - değmez
+  - degmez
+  - değmezdi
+  - degmezdi
+  - çıkmaya değmez
+  - cikmaya degmez
+  - dışarı çıkmaya değmez
+  - disari cikmaya degmez
+  - çok pahalı ve kötü
+  - cok pahali ve kotu
+  - pişman oldum
+  - pisman oldum
+  - pişman olduk
+  - pisman olduk
+  - pişmanım
+  - pismanım
+  - pismanim
+  - çok pişman
+  - cok pisman
+  - pişman
+  - pisman
+
+staff_language_negative_cues:
+  - türkçe bile bilmiyor
+  - turkce bile bilmiyor
+  - türkçe bilmiyor
+  - turkce bilmiyor
+  - dil bilmiyor
+  - ingilizce dahi anlamıyor
+  - ingilizce dahi anlamiyor
+  - ingilizce anlamıyor
+  - ingilizce anlamiyor
+  - ingilizce bilmiyor
+  - ingilizce bile
+
+room_noise_negative_cues:
+  - ses yalıtım
+  - ses yalit
+  - yalıtımı kötü
+  - yalitimi kotu
+  - yalıtımı çok kötü
+  - yan odadaki
+  - ses geçiyor
+
+drink_variety_negative_cues:
+  - sadece belli bar
+  - belli çeşit alkol
+  - belli cesit alkol
+  - tekila yok
+  - sadece bir barda
+  - konsept adı altına
+  - konsept adi altina
+  - 18 - 00
+  - 18-00
+  - 18:00
+
+sarcasm_negative_score: -0.75
+disappointment_negative_score: -0.75
+value_waste_score: -0.85
+staff_language_negative_score: -0.75
+room_noise_negative_score: -0.65
+drink_variety_negative_score: -0.75
+
+# ---------------------------------------------------------------------------
+# Severity policy
+# ---------------------------------------------------------------------------
+severity:
+  critical_cues:
+    - zehir
+    - hastane
+    - ambulans
+    - yangın
+    - yangin
+    - güvenlik tehdit
+    - taciz
+    - hırsızlık
+    - hirsizlik
+    - haşere
+    - hasere
+    - fare
+    - ciddi hijyen
+    - hamam böceği
+    - hamam bocegi
+    - hamambocegi
+    - böcek
+    - bocek
+    - sindirim
+    - gıda zehir
+    - gida zehir
+  high_cues:
+    - inanılmaz kuyruk
+    - inanilmaz kuyruk
+    - inanılmaz sıra
+    - inanilmaz sira
+    - uzun kuyruk
+    - paramız çöp
+    - paramiz cop
+    - çok düşük
+    - cok dusuk
+    - bulamıyorsunuz
+    - bulamiyorsunuz
+    - temizletemed
+    - pes edip
+    - 15 20 dakika
+    - 30-45 dakika
+    - 30 45 dakika
+    - 15-20 dakika
+    - sıra beklemeden
+    - sira beklemeden
+    - herhangi bir içecek alınamıyor
+    - herhangi bir icecek alinamiyor
+    - yorgunluk
+    - ekstra karışık
+    - ekstra karisik
+    - dakika bek
+  mild_cues:
+    - ortalama
+    - idare
+    - çeşitlendirilebilir
+    - cesitlendirilebilir
+    - getirilebilir
+    - daha iyi olabilir
+
+# ---------------------------------------------------------------------------
+# Summary builder
+# ---------------------------------------------------------------------------
+summary:
+  max_words: 32
+  # Ranking: severity × (1 + length_weight * min(words/10, length_cap)) + prefer bonus
+  length_weight: 0.35
+  length_cap: 4.0
+  # Do not mid-crop clauses that already fit max_words
+  no_crop_below_words: 32
+  specificity_cues:
+    - kişilik
+    - kisilik
+    - dakika
+    - dk
+    - pankek
+    - inanılmaz
+    - inanilmaz
+    - pes edip
+    - 15 20 dakika
+    - 30-45 dakika
+    - 30 45 dakika
+    - 15-20 dakika
+    - sıra beklemeden
+    - sira beklemeden
+    - herhangi bir içecek alınamıyor
+    - herhangi bir icecek alinamiyor
+    - şezlong
+    - sezlong
+    - çarçur
+    - carcur
+    - wifi
+    - tekila
+  prefer_cues:
+    - kuyruk
+    - sıra
+    - sira
+    - yorgun
+    - yorgunluk
+    - yorucu
+    - pişman
+    - pisman
+    - çöp
+    - cop
+    - çarçur
+    - carcur
+    - bekled
+    - bekle
+    - kalabalık
+    - kalabalik
+    - pes edip
+    - 15 20 dakika
+    - 30-45 dakika
+    - 30 45 dakika
+    - 15-20 dakika
+    - sıra beklemeden
+    - sira beklemeden
+    - herhangi bir içecek alınamıyor
+    - herhangi bir icecek alinamiyor
+    - şezlong
+    - sezlong
+    - yalıtım
+    - yalitim
+    - tekila
+    - wifi
+    - hamam böceği
+    - hamam bocegi
+    - böcek
+    - bocek
+    - sindirim
+    - personel sayısı
+    - personel sayisi
+    - yetersizlik
+    - otopark
+    - banyo
+  prefer_aspects:
+    - pest_hygiene
+    - food_illness
+    - staff_shortage
+    - service_queue
+    - capacity
+    - drink_variety
+    - room_noise
+    - value_for_money
+    - parking
+    - beach
+  # Multi-theme summary for long mixed operational reviews
+  multi_theme_min_ops: 4
+  multi_theme_max: 5
+  theme_aspect_order:
+    - pest_hygiene
+    - food_illness
+    - staff_shortage
+    - parking
+    - room_cleanliness
+    - beach
+    - service_queue
+    - capacity
+    - housekeeping_privacy
+    - drink_variety
+    - wifi
+    - room_noise
+    - pool_lounger
+    - value_for_money
+    - animation
+    - overall_experience
+  theme_phrases:
+    pest_hygiene: "yemek salonunda hamam böceği / haşere hijyen ihlali"
+    food_illness: "yemek kaynaklı sindirim rahatsızlığı / gıda güvenliği"
+    staff_shortage: "bayram döneminde personel yetersizliği"
+    parking: "otopark uzak / tozlu toprak zemin"
+    room_cleanliness: "banyo yenilenmesi ve oda kalitesi eksikliği"
+    beach: "deniz/su sporları sahile yakın — dalgalı bulanık deniz"
+    service_queue: "içecek ve bar noktalarında yoğun sıra / 15-45 dk bekleme"
+    drink_variety: "ultra her şey dahil bar vaadiyle uyuşmayan alkol sunumu ve bar saatleri"
+    wifi: "WiFi bağlantı sorunu"
+    room_noise: "zayıf oda ses yalıtımı / yan oda gürültüsü"
+    pool_lounger: "havuz şezlong eksikliği ve şezlong sırası"
+    capacity: "otel kapasitesi / oturma ve şezlong yer bulamama"
+    housekeeping_privacy: "oda mahremiyeti / izinsiz temizlik girişi"
+    value_for_money: "fiyat-performans pişmanlığı (paranın çarçur edilmesi)"
+    animation: "kaldırılmış aktivite / animasyon programı"
+    overall_experience: "beklenti altında kalan genel tatil deneyimi"
+  avoid_openers:
+    - bugün otelden
+    - bugun otelden
+    - tek kelimeyle
+    - özetleyecek olsaydım
+    - ozetleyecek olsaydim
+    - paylaşmaktaki
+    - paylasmaktaki
+    - yani bir
+    - o olan bar
+    - olumsuzluklar üzerinden
+    - olumsuzluklar uzerinden
+    - '" sorusu'
+    - sorusu ile baslayan
+    - sorusu ile başlayan
+    - 26.05-30.05
+    - 26.05
+    - bes gun kaldigim
+    - beş gün kaldığım
+    - genel bazdan
+    - mutlu bir şekilde ayrıldığım
+    - mutlu bir sekilde ayrildigim
+
+# ---------------------------------------------------------------------------
+# Ontology guard — block HVAC/Teknik bleed from substring traps (deniz, temiz, bekleme)
+# ---------------------------------------------------------------------------
+ontology_guard:
+  hvac_aspects:
+    - hvac_cooling
+    - hvac_not_cooling
+    - hvac_heating
+    - hvac_too_hot
+    - hvac_too_cold
+    - hvac_temperature
+    - tech_general
+  hvac_required_cues:
+    - klima
+    - havalandirma
+    - havalandırma
+    - sogut
+    - soğut
+    - serinlet
+    - termostat
+    - hvac
+    - isitma
+    - ısıtma
+    - kalorifer
+    - ic unite
+    - iç ünite
+    - fan coil
+    - sogutmuyor
+    - soğutmuyor
+  # Pool water temperature is leisure — NOT engineering HVAC
+  pool_temperature_cues:
+    - havuz
+    - aquapark
+    - plaj
+    - su kaydirak
+    - su kaydırak
+    - deniz
+  pool_temp_words:
+    - sicak
+    - sıcak
+    - serinlet
+    - soguk
+    - soğuk
+    - ilik
+    - ılık
+    - isitmali
+    - ısıtmalı
+    - isitma
+    - ısıtma
+  pipeline_wins_aspects:
+    - service_queue
+    - pool_lounger
+    - pool_queue
+    - housekeeping_service
+    - housekeeping_privacy
+    - capacity
+    - kids_capacity
+    - animation
+    - food_taste
+    - food_availability
+    - fb_extra_charge
+    - staff_behavior
+    - fb_staffing
+    - property_walkability
+    - location
+    - front_office
+    - drink_quality
+    - value_for_money
+    - operations_management
+    - safety
+    - guest_experience
+
+# ---------------------------------------------------------------------------
+# Housekeeping privacy / intrusion (not HVAC, not generic staff praise)
+# ---------------------------------------------------------------------------
+housekeeping_privacy:
+  entity_cues:
+    - temizlik calisan
+    - temizlik çalışan
+    - temizlik personel
+    - cleaning cleaning
+    - kapida temizlik
+    - kapıda temizlik
+    - odaya girdi
+    - odaya girdi
+    - odama girdi
+    - kapıyı çalmadan
+    - kapiyi calmadan
+    - mahremiyet
+    - gizlilik
+    - hoşuma gitmeyen
+    - hosuma gitmeyen
+    - saç kurut
+    - sac kurut
+    - sacimi kurut
+    - saçımı kurut
+    - sorry sorry
+    - odadan sorry
+    - diyerek ciksa
+    - diyerek çıksa
+    - kuruturken
+    - makinenin ses
+    - makine sesi
+    - calistirdigin makine
+    - çalıştırdığın makine
+  negative_cues:
+    - hoşuma gitmeyen
+    - hosuma gitmeyen
+    - hoş değildi
+    - hos degildi
+    - saçma
+    - sacma
+    - anlayamadim
+    - anlayamadım
+    - rahatsiz
+    - rahatsız
+  negative_score: -0.72
+
+# ---------------------------------------------------------------------------
+# F&B extra charge / alakart queue
+# Pricing cues alone (NOT amenity names — those are context)
+# ---------------------------------------------------------------------------
+fb_extra_charge_cues:
+  - paralı
+  - parali
+  - ücretli
+  - ucretli
+  - ekstra ücret
+  - ekstra ucret
+  - ek ücret
+  - ek ucret
+  - ücret isteniyor
+  - ucret isteniyor
+  - ücretli olması
+  - ucretli olmasi
+  - ücretli olması gereksiz
+  - ucretli olmasi gereksiz
+  - paralı olması
+  - parali olmasi
+  - paralı olması gereksiz
+  - parali olmasi gereksiz
+  - ücretliydi
+  - ucretliydi
+  - paralıydı
+  - paraliydi
+  - ödemeniz gereken
+  - odemeniz gereken
+  - euro ödem
+  - euro odem
+  - kişi başı ekstra
+  - kisi basi ekstra
+fb_extra_charge_payment_cues:
+  - ödemeniz gereken
+  - odemeniz gereken
+  - ödemen gereken
+  - odemen gereken
+  - euro ödem
+  - euro odem
+  - euro ödemeniz
+  - euro odemeniz
+  - kişi başı ekstra
+  - kisi basi ekstra
+  - ücret ödem
+  - ucret odem
+fb_extra_charge_context:
+  - portakal suyu
+  - meyve suyu
+  - sıkma portakal
+  - sikma portakal
+  - kahve
+  - minibar
+  - mini bar
+  - içecek
+  - icecek
+  - kahvaltı
+  - kahvalti
+  - breakfast
+  - brunch
+fb_extra_charge_taste_cues:
+  - lezzet
+  - lezzetli
+  - tadı
+  - tadi
+  - tatli
+  - tatlı
+  - delicious
+  - tasty
+fb_extra_charge_score: -0.55
+
+alakart_cues:
+  - alakart
+  - alacarte
+  - a la carte
+  - alakarta
+  - özel restoran
+  - ozel restoran
+
+capacity_sunbed_cues:
+  - yer tutma
+  - yer bulamaz
+  - yer bulamiyor
+  - yer bulamıyor
+  - şezlong
+  - sezlong
+  - şemsiye
+  - semsiye
+  - erken gitmezseniz
+  - erken gitmezsen
+
+# Strong negative sentiment (override false-positive "hoş/güzel" lexicon)
+strong_negative_cues:
+  - hoşuma gitmeyen
+  - hosuma gitmeyen
+  - hoş değildi
+  - hos degildi
+  - gitmeyen bir durum
+  - rahatsiz etti
+  - rahatsız etti
+  - bıkmış
+  - bikmis
+  - bunalmış
+  - bunalmis
+  - azarlar gibi
+  - geriyorlar
+  - sap adam
+  - pis hissettiri
+  - rahatsız edici
+  - rahatsiz edici
+  - yan gözle
+  - yan gozle
+  - komik kaçıyor
+  - komik kaciyor
+  - aldanmayın
+  - aldanmayin
+  - hoşnut kalmad
+  - hosnut kalmad
+  - hoşnut kalmamad
+  - hosnut kalmamad
+  - hoşnut kalmadığım
+  - hosnut kalmadigim
+  - hoşnut kalmamadığım
+  - hosnut kalmamadigim
+  - memnun etmedi
+  - memnun kalmad
+  - aç kald
+  - ac kald
+  - aç kaldığı
+  - ac kaldigi
+  - yemek bitti
+  - yemeğin bitti
+  - yemegin bitti
+  - yemeğin bittiği
+  - yemegin bittigi
+  - mutfak kapandı
+  - mutfak kapandi
+  - hamam böceği
+  - hamam bocegi
+  - hamambocegi
+  - böcek
+  - bocek
+  - sindirim
+  - yemeklerden kaynakli
+  - yemeklerden kaynaklı
+  - personel sayisinda yetersiz
+  - personel sayısında yetersiz
+  - hicde ic acici
+  - hiç de iç açıcı
+  - sinifta kalabilir
+  - sınıfta kalabilir
+  - sinifta kal
+  - sınıfta kal
+  - yemekhaneden hallice
+  - hallice
+  - kesinlikle tavsiye etmiyorum
+  - kesinlikle tavsiye etmiyoruz
+  - tavsiye etmiyorum
+  - tavsiye etmem
+  - asla tavsiye etmem
+  - hiç memnun kalmadık
+  - hic memnun kalmadik
+  - memnun kalmadık
+  - memnun kalmadim
+  - hiçbir şey yok
+  - hicbir sey yok
+  - uzun kuyruk
+  - uzun sira
+  - uzun sıra
+  - barda 1 2 çalışan
+  - barda 1 2 calisan
+  - personel sayısı az
+  - personel sayisi az
+  # Overnight 20260729 hard negatives
+  - temiz değildi
+  - temiz degildi
+  - temiz değillerdi
+  - temiz degillerdi
+  - kirliydi
+  - pis kokuyordu
+  - lezzetsizdi
+  - lezzetsiz
+  - tatsız
+  - tatsiz
+  - tatsızdı
+  - tatsizdi
+  - tatsız tuzsuz
+  - tatsiz tuzsuz
+  - yemekler soğuktu
+  - yemekler soguktu
+  - yemekler bayattı
+  - yemekler bayatti
+  - yemekler bayat
+  - aynı yemekler
+  - ayni yemekler
+  - aç kaldık
+  - ac kaldik
+  - aç kaldım
+  - ac kaldim
+  - kaba personel
+  - ilgisiz personel
+  - umursamaz personel
+  - yardımcı olmadı
+  - yardimci olmadi
+  - yardımcı olmadılar
+  - yardimci olmadilar
+  - eğitimsiz personel
+  - egitimsiz personel
+  - karasinek
+  - kara sinek
+  - fare gördük
+  - fare gorduk
+  - fare vardı
+  - fare vardi
+  - haşere
+  - hasere
+  - böcekli
+  - bocekli
+  - kuş yuvası
+  - kus yuvasi
+  - hijyen berbat
+  - hijyen yok
+  - hijyenik değildi
+  - hijyenik degildi
+  - zehirlendik
+  - zehirlendim
+  - mide bulantısı
+  - mide bulantisi
+  - yağ yüzüyor
+  - yag yuzuyor
+  - saatlerce bekledik
+  - beklemek zorunda kaldık
+  - beklemek zorunda kaldik
+  - şezlong bulamadık
+  - sezlong bulamadik
+  - yer bulamadık
+  - yer bulamadik
+  - paramıza yazık
+  - paramiza yazik
+  - fiyatına değmez
+  - fiyatina degmez
+  - bir daha gelmem
+  - asla gelmem
+  - pişman olduk
+  - pisman olduk
+  - berbat bir tatil
+  - hayal kırıklığına uğradık
+  - hayal kirikligina ugradik
+  # Gold-v2 overnight: Neutral-collapse killers (phrase-level; avoid bare "kötü")
+  - kalitesiz
+  - kalitesizdi
+  - kalitesizdı
+  - çok kalitesiz
+  - cok kalitesiz
+  - yenilemez
+  - yenilemez ol
+  - çok kötüydü
+  - cok kotuydu
+  - suluydu
+  - çok sulu
+  - cok sulu
+  - ısırıcı sinek
+  - isirici sinek
+  - mikrop kap
+  - yardımcı olmayan
+  - yardimci olmayan
+  - yardımcı olmuyor
+  - yardimci olmuyor
+  - yardımcı olmaya çalışmı
+  - yardimci olmaya calismi
+  - çok kaba
+  - cok kaba
+  - çok kötüyd
+  - cok kotuy
+  - çok kötü
+  - cok kotu
+  - en kötü
+  - en kotu
+  - en kötü yan
+  - en kotu yan
+  - en kötü otel
+  - en kotu otel
+  - en kötü konaklama
+  - en kotu konaklama
+  - berbat bir hizmet
+  - çok kötü bir hizmet
+  - cok kotu bir hizmet
+  - utanç verici
+  - utanc verici
+  - utanı verici
+  - utani verici
+  - rezalet bir
+  - korkunç bir
+  - korkunc bir
+  - iğrenç bir
+  - igrenc bir
+  - lezzetsizdi
+  - tatsızdı
+  - tatsizdi
+  - temizlenmemişti
+  - temizlenmemisti
+  - kötü temizlen
+  - kotu temizlen
+strong_negative_score: -0.68
+
+# Strong positive enjoyment (override Neutral on "keyif aldık" / harika / mükemmel)
+enjoyment_positive_cues:
+  - keyif aldık
+  - keyif aldım
+  - keyif aldığım
+  - keyif aldigim
+  - fazlasıyla keyif
+  - fazlasiyla keyif
+  - aşırı keyifli
+  - asiri keyifli
+  - çok keyif ald
+  - cok keyif ald
+  - keyiflendirdi
+  - keyiflendirdiler
+  - keyiflendiren
+enjoyment_positive_score: 0.72
+
+# Lexical praise used to upgrade Neutral / mild false-negatives
+strong_positive_cues:
+  - harika
+  - mükemmel
+  - mukemmel
+  - muhteşem
+  - muhtesem
+  - enfes
+  - nefis
+  - süper
+  - super
+  - çok güzel
+  - cok guzel
+  - gayet güzel
+  - gayet guzel
+  - mükemmeldi
+  - mukemmeldi
+  - harikaydı
+  - harikaydi
+  - sorunu yok
+  - sorun yok
+  - bağlantı sorunu yok
+  - baglanti sorunu yok
+  - süper konum
+  - super konum
+  - güzellik
+  - guzellik
+  - gerçek güzellik
+  - gercek guzellik
+  - güzeldi
+  - guzeldi
+  - en güzel
+  - en guzel
+  - muhteşemdi
+  - muhtesemdi
+  - güzel kokuyor
+  - guzel kokuyor
+  - memnun etti
+  - memnun ettiler
+  - bizi memnun
+  - bizi çok memnun
+  - bizi cok memnun
+  - çok memnun etti
+  - cok memnun etti
+  - keyiflendirdi
+  - keyiflendirdiler
+  - düşünülmüş
+  - dusunulmus
+  - güzel düşünülmüş
+  - guzel dusunulmus
+  - çok güzel düşünülmüş
+  - cok guzel dusunulmus
+  - lezzetli
+  - mutlu ayrildik
+  - mutlu ayrıldık
+  - memnun ayrildik
+  - memnun ayrıldık
+  - tercihimiz olacak
+  - tesekkur ederiz
+  - teşekkür ederiz
+  - misafirperverligi
+  - misafirperverliği
+  - ilgi alaka
+  - ikram edilen
+  - cok eglenceli
+  - çok eğlenceli
+  # Overnight 20260729 positive recovery (Positive→Negative escape)
+  - sorun yaşamadık
+  - sorun yasamadik
+  - hiçbir sorun yaşamadık
+  - hicbir sorun yasamadik
+  - hiç sorun yaşamadık
+  - hic sorun yasamadik
+  - sorun yoktu
+  - hiçbir sorun yok
+  - hicbir sorun yok
+  - ilgili hiçbir sorun
+  - ilgili hicbir sorun
+  - harika zaman geçirdik
+  - harika zaman gecirdik
+  - harika tatil geçirdik
+  - harika tatil gecirdik
+  - harika konaklama
+  - konaklamamızdan memnun kaldık
+  - konaklamamizdan memnun kaldik
+  - konaklamamızdan memnun
+  - konaklamamizdan memnun
+  - memnun kaldık
+  - memnun kaldik
+  - memnun kaldım
+  - memnun kaldim
+  - her zaman güler yüzlü
+  - her zaman guler yuzlu
+  - her zaman yardımcı
+  - her zaman yardimci
+  - personel her zaman
+  - yemekler her zaman
+  - her zaman taze
+  - gönül rahatlığıyla
+  - gonul rahatligiyla
+  - gönül rahatlığı ile
+  - gonul rahatligi ile
+  - dürüst olmak gerekirse iyi
+  - durust olmak gerekirse iyi
+  - teşekkür etmek istiyorum
+  - tesekkur etmek istiyorum
+  - kesinlikle tavsiye ederim
+  - herkese tavsiye ederim
+  - şiddetle tavsiye ederim
+  - siddetle tavsiye ederim
+  - tavsiye ederim
+  - tavsiye ediyoruz
+  - tekrar geleceğiz
+  - tekrar gelecegiz
+  - tekrar kalırız
+  - tekrar kaliriz
+  - tekrar tercih ederiz
+  - tercih ederiz
+  - paranızın karşılığı
+  - paranizin karsiligi
+  - para için değer
+  - para icin deger
+  - fiyatına değer
+  - fiyatina deger
+  - güler yüzlü personel
+  - guler yuzlu personel
+  - güler yüzlü yardımsever
+  - guler yuzlu yardimsever
+  - ilgili personel
+  - yardımsever personel
+  - yardimsever personel
+  - her şey mükemmeldi
+  - her sey mukemmeldi
+  - her şey harikaydı
+  - her sey harikaydi
+  - şezlong bulmakta hiç sorun
+  - sezlong bulmakta hic sorun
+  - bulmakta hiç sorun
+  - bulmakta hic sorun
+  - teşekkür etmek istiyoruz
+  - tesekkur etmek istiyoruz
+  - teşekkür etmek istiyorum
+  - tesekkur etmek istiyorum
+  - ellerinden gelenin iyisini
+  - inanılmaz derecede
+  - inanilmaz derecede
+  - yüksek kaliteli
+  - yuksek kaliteli
+  - otel harika
+  - harika vakit
+  - güzel tatil
+  - guzel tatil
+  - hiçbir sorun yaşamadık
+  - hic sorun yasamadik
+
+# Walk/distance complaint cues (NOT mere "yürüme mesafesinde" praise)
+property_walk_negative_cues:
+  - uzun sürüyor
+  - uzun suruyor
+  - çok uzun
+  - cok uzun
+  - mesafe uzun
+  - yürümeyi sevmeyen
+  - yurumeyi sevmeyen
+  - uzak
+  - yorucu
+  - bitkin
+  - tercih etmemeli
+  - tercih etmeyin
+  - yürümek bile uzun
+  - yurumek bile uzun
+
+# Segmentation: quoted speech must not split on internal commas
+segmentation:
+  protect_quoted_commas: true
+  ve_coordination_location_pairs:
+    - [havuz, deniz]
+    - [havuz, plaj]
+    - [plaj, deniz]
+    - [kaydırak, deniz]
+    - [kaydirak, deniz]
+    - [havuzdan, deniz]
+  topic_boundary_splits:
+    - [yemek beklemek, havuzda]
+    - [yemek beklemek, havuzda şezlong]
+    - [şezlong bulamamak, ve bu kalabalığa]
+    - [sezlong bulamamak, ve bu kalabaliga]
+    - [çalışanın olması, bizim her bara]
+    - [calisanin olmasi, bizim her bara]
+    - [temizlemişler, yemeklerde]
+    - [temizlemisler, yemeklerde]
+    - [otel büyük, ama işleyiş]
+    - [otel buyuk, ama isleyis]
+    - [gösteriyor, yemekte]
+    - [gosteriyor, yemekte]
+    # NOTE: Generic praise/topic pairs removed to prevent false splitting
+    # in long narratives (handled by guarded regex + classifier context).
+    # Long narrative boundary splitters — verb + additive connector
+    - [mevcuttu, ayrıca]
+    - [mevcuttu, ayrica]
+    - [mevcuttu, bir de]
+    - [kaldık, ayrıca]
+    - [kaldik, ayrica]
+    - [kaldık, bir de]
+    - [kaldik, bir de]
+    - [yetersizlikler, ayrıca]
+    - [yetersizlikler, ayrica]
+    - [yetersizlikler mevcuttu, ayrıca]
+    - [yetersizlikler mevcuttu, ayrica]
+    - [bulunuyordu, ayrıca]
+    - [bulunuyordu, ayrica]
+    - [oldu, ayrıca]
+    - [oldu, ayrica]
+    - [yaşadık, ayrıca]
+    - [yasadik, ayrica]
+    - [yaşadım, ayrıca]
+    - [yasadim, ayrica]
+    - [sorun, ayrıca]
+    - [sorun, ayrica]
+    # Long narrative boundary splitters
+    - [degildi, ne yazık]
+    - [degildi, ne yazik]
+    - [degildi, ne yazikki]
+    - [degildi, ne yazik ki]
+    - [güzel, ne yazık]
+    - [guzel, ne yazik]
+    - [oldu, herhangi]
+    - [sordular, harika]
+    - [sordu, harika]
+    # 2026Q3 hard-pattern split boundaries
+    - [memnun kaldık, ama]
+    - [memnun kaldik, ama]
+    - [güzeldi, fakat]
+    - [guzeldi, fakat]
+    - [güzeldi, ancak]
+    - [guzeldi, ancak]
+    - [harikaydı, ama]
+    - [harikaydi, ama]
+    - [güler yüzlüydü, ama]
+    - [guler yuzluydu, ama]
+    - [genel olarak, ama]
+    - [genel olarak, fakat]
+    - [tavsiye ederim, ama]
+    - [tavsiye ederim, fakat]
+    - [teşekkür ederim, ama]
+    - [tesekkur ederim, ama]
+    - [her şey dahil, ama]
+    - [her sey dahil, ama]
+    - [ultra her şey dahil, ama]
+    - [ultra her sey dahil, ama]
+    # Overnight 20260729 contrastive / enumeration boundaries
+    - [harikaydı, ama]
+    - [harikaydi, ama]
+    - [güzeldi, ama]
+    - [guzeldi, ama]
+    - [iyiydi, ama]
+    - [iyiydi, fakat]
+    - [temizdi, ama]
+    - [temizdi, fakat]
+    - [lezzetliydi, ama]
+    - [lezzetliydi, fakat]
+    - [memnun kaldık, fakat]
+    - [memnun kaldik, fakat]
+    - [memnun kaldık, ancak]
+    - [memnun kaldik, ancak]
+    - [tavsiye ederim, ancak]
+    - [sorun yoktu, ama]
+    - [sorun yoktu, fakat]
+    - [güler yüzlüydü, fakat]
+    - [guler yuzluydu, fakat]
+    - [yardımcıydı, ama]
+    - [yardimciydi, ama]
+    - [kalabalıktı, ama]
+    - [kalabalikti, ama]
+    - [pahalıydı, ama]
+    - [pahaliydi, ama]
+    - [ne yazık ki, ayrıca]
+    - [ne yazik ki, ayrica]
+    - [yemekler lezzetliydi, aksam]
+    - [yemekler lezzetliydi, eğlence]
+    - [yemekler lezzetliydi, eglence]
+    - [kahvaltısı lezzetli, aksam]
+    - [kahvaltisi lezzetli, aksam]
+    - [temiz odalar, yemekleri]
+    - [odalar guzel temiz, yemekleri]
+    - [personel ilgiliydi, yemek]
+    - [olmasına rağmen, yemekler]
+    - [olmasina ragmen, yemekler]
+
+staff_inexperience_cues:
+  - coluk cocuk
+  - çocuk coluk
+  - cocuklarin eline
+  - çocukların eline
+  - eline birakilmis
+  - eline bırakılmış
+  - eline birak
+  - eline bırak
+  - otel sanki
+  - yabanci personel
+  - yabancı personel
+  - deneyimsiz personel
+  - acemi personel
+  - çocuk personel
+  - cocuk personel
+  - eğitimsiz personel
+  - egitimsiz personel
+  - bilgisiz personel
+  - acemi çalışan
+  - acemi calisan
+  - deneyimsiz çalışan
+  - deneyimsiz calisan
+  - çocukların eline bırakılmış
+  - cocuklarin eline birakilmis
+  - çoluk çocuk personel
+  - coluk cocuk personel
+  - stajyer personel
+  - yetersiz eğitilmiş
+  - yetersiz egitilmis
+
+recommendation_negative_cues:
+  - tavsiye etmem
+  - tavsiye etmiyorum
+  - onermiyorum
+  - önermiyorum
+  - gondermem
+  - göndermem
+  - kimseye tavsiye
+  - kesinlikle tavsiye etmiyorum
+  - kesinlikle tavsiye etmiyoruz
+  - asla tavsiye etmem
+  - tavsiye edemem
+  - tekrar gelmem
+  - tekrar gelmeyecegim
+  - tekrar gelmeyeceğim
+  - kimseye tavsiye etmem
+  - kimseye önermem
+  - kimseye onermem
+  - asla tavsiye etmiyorum
+  - kesinlikle önermiyorum
+  - kesinlikle onermiyorum
+  - bir daha gelmeyeceğiz
+  - bir daha gelmeyecegiz
+  - tekrar gelmeyeceğiz
+  - tekrar gelmeyecegiz
+  - buraya gelmeyin
+  - uzak durun
+
+# ---------------------------------------------------------------------------
+# Queue department by context frame (NOT always F&B)
+# ---------------------------------------------------------------------------
+queue_context:
+  fb_cues:
+    - bar
+    - barda
+    - barlarda
+    - içecek
+    - icecek
+    - alakart
+    - alacarte
+    - alakarta
+    - a la carte
+    - restoran
+    - restorant
+    - restaurant
+    - büfe
+    - bufe
+    - pankek
+    - limonata
+    - soda
+    - kokteyl
+    - mojito
+    - mojita
+    - garson
+    - yemek
+  pool_cues:
+    - kaydırak
+    - kaydirak
+    - kaydırakları
+    - kaydiraklari
+    - su kaydırak
+    - su kaydirak
+    - havuz
+    - havuzdan
+    - havuzlar
+    - şezlong
+    - sezlong
+    - aquapark
+    - plaj
+    - lounger
+    - water slide
+  kids_cues:
+    - çocuk
+    - cocuk
+    - çocuklar
+    - cocuklar
+    - çocuk sayısı
+    - cocuk sayisi
+    - çocuk sayısı aşırı
+    - cocuk sayisi asiri
+  fo_cues:
+    - check-in
+    - checkin
+    - check-out
+    - checkout
+    - resepsiyon
+    - lobi
+    - lobby
+    - asansör
+    - asansor
+    - kapıda
+    - kapida
+    - rezervasyonsuz
+    - misafir kabul
+  # Bare "sıra" with no venue → F&B Servis/Kuyruk (pool/kids/FO context overrides)
+  bare_default: service_queue
+
+# Property size / walking distance (NOT room size, NOT F&B queue)
+property_layout:
+  walk_cues:
+    - yürümek
+    - yurumek
+    - yürümeyi
+    - yurumeyi
+    - yürüme
+    - yurume
+    - yürüd
+    - yürüyor
+    - uzun sürüyor
+    - uzun suruyor
+    - metre yürü
+    - metre yuru
+    - yürüme mesafesi
+    - yurume mesafesi
+    - yürüme mesafesinde
+    - yurume mesafesinde
+    - yürüyüş mesafesi
+    - yuruyus mesafesi
+  property_size_cues:
+    - otel çok büyük
+    - otel cok buyuk
+    - otel büyük
+    - otel buyuk
+    - tesis büyük
+    - tesis buyuk
+    - yürümeyi sevmeyen
+    - yurumeyi sevmeyen
+    - yürümeyi sevmeyen
+  layout_cues:
+    - havuzdan denize
+    - denize yürü
+    - denize yuru
+    - kaydırakların oradaki
+    - kaydiraklarin oradaki
+    - yürüme mesafesi
+    - yurume mesafesi
+
+# Bar staffing count (F&B ops — not generic Personel Davranışı)
+fb_staffing_cues:
+  - barlardaki çalışan
+  - barlardaki calisan
+  - bar çalışan sayı
+  - bar calisan sayi
+  - çalışan sayıları çok az
+  - calisan sayilari cok az
+  - çalışan sayısı az
+  - calisan sayisi az
+  - personel sayısı az
+  - personel sayisi az
+  - personel yetersiz
+  - çalışan sayısı yetersiz
+  - barda 1 2 çalışan
+  - barda 1-2 calisan
+  - barda 1 2 calisan
+  - her bara gittiğimizde 1 saat
+  - her bara gittigimizde 1 saat
+
+guest_safety_cues:
+  - sap adam
+  - sap adamlar
+  - yan gözle
+  - yan gozle
+  - pis hissettiri
+  - pis hissettiriyor
+  - rahatsız edici
+  - rahatsiz edici
+  - rahatsiz ediciler
+  - rahatsız ediciler
+  - taciz
+  - güvensiz hisset
+  - guvensiz hisset
+
+concept_mismatch_cues:
+  - aile oteli
+  - komik kaçıyor
+  - komik kaciyor
+  - aldanmayın
+  - aldanmayin
+  - 5 yıldızlı yorumlara
+  - 5 yildizli yorumlara
+  - yorumlara aldanmayın
+  - yorumlara aldanmayin
+  - beklenti
+  - vaadi
+  - vaad
+
+food_product_availability_cues:
+  - churros
+  - churrosu
+  - yiyemedik
+  - bugün yok
+  - bugun yok
+  - yarın yapılır
+  - yarin yapilir
+  - yine yoktu
+  - stok yok
+
+elevator_cleanliness_cues:
+  - asansörde
+  - asansorde
+  - asansör
+  - asansor
+  - biriken çöp
+  - biriken cop
+  - lift
+
+public_area_hk_cues:
+  - koridorlarda
+  - koridor
+  - umumi alan
+  - ortak alan
+  - kokteyl bardak
+  - bardakları
+  - bardaklari
+  - pis bardak
+  - bardak bırak
+  - bardak birak
