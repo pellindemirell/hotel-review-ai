@@ -1,0 +1,40 @@
+Kaynak      : /Users/emre/Documents/ANAPROJE/BACKEND/hotel-review-ai/reviews/adoraresort.csv
+Çapa (UTC)  : 2026-08-04T08:05:00Z
+
+Toplam satır          : 600
+  boş yorum           : 58
+  10 karakterden kısa : 4
+  tekrar eden Yorum ID: 0
+  tarihi çözülemeyen  : 0
+YAZILAN SATIR         : 538
+
+Puanı boş olup 3 atanan satır: 0
+
+Tarih aralığı: 2026-06-05 10:45 → 2026-08-03 19:35
+Farklı gün sayısı: 60
+
+Dil dağılımı:
+  en     448
+  tr     90
+
+Kovalar (yeniden eskiye):
+  etiket              adet  en yeni          en eski         
+  12 hours ago           1  2026-08-03 19:35 2026-08-03 19:35
+  13 hours ago           3  2026-08-03 18:55 2026-08-03 18:15
+  14 hours ago           4  2026-08-03 17:57 2026-08-03 17:12
+  18 hours ago           1  2026-08-03 13:35 2026-08-03 13:35
+  20 hours ago           3  2026-08-03 11:55 2026-08-03 11:15
+  1 day ago             21  2026-08-03 07:30 2026-08-02 08:39
+  2 days ago            23  2026-08-02 07:33 2026-08-01 08:36
+  3 days ago            21  2026-08-01 07:30 2026-07-31 08:39
+  4 days ago            14  2026-07-31 07:13 2026-07-30 08:56
+  5 days ago            13  2026-07-30 07:09 2026-07-29 09:00
+  6 days ago            15  2026-07-29 07:17 2026-07-28 08:53
+  1 week ago            56  2026-07-28 06:35 2026-07-21 09:35
+  2 weeks ago           75  2026-07-21 06:57 2026-07-14 09:12
+  3 weeks ago          113  2026-07-14 07:20 2026-07-07 08:49
+  4 weeks ago           40  2026-07-07 07:29 2026-07-05 08:41
+  1 month ago          135  2026-07-05 05:25 2026-06-05 10:45
+
+DOĞRULAMA 1 (kesin azalan zaman damgası): PASS
+DOĞRULAMA 2 (damga → etiket geri dönüşü): PASS

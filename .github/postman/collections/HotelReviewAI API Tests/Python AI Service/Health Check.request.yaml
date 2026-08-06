@@ -1,0 +1,5 @@
+$kind: http-request
+description: Checks if the Python FastAPI AI service is alive.
+url: http://localhost:8000/health
+method: GET
+order: 1000

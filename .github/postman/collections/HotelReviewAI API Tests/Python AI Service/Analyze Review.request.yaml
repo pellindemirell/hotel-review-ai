@@ -1,0 +1,15 @@
+$kind: http-request
+description: Sends a single review to be analyzed for sentiment, category, keywords, summary, and suggestion.
+url: http://localhost:8000/analyze-review
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+        "comment": "Oda temizliği çok kötüydü, banyoda kirli havlular vardı. Ancak kahvaltı güzeldi.",
+        "rating": 2,
+        "language": "tr"
+    }
+order: 2000

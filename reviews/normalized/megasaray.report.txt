@@ -1,0 +1,43 @@
+Kaynak      : /Users/emre/Documents/ANAPROJE/BACKEND/hotel-review-ai/reviews/megasaray.csv
+Çapa (UTC)  : 2026-08-04T08:09:54Z
+
+Toplam satır          : 600
+  boş yorum           : 54
+  10 karakterden kısa : 2
+  tekrar eden Yorum ID: 0
+  tarihi çözülemeyen  : 0
+YAZILAN SATIR         : 544
+
+Puanı boş olup 3 atanan satır: 8
+
+Tarih aralığı: 2026-04-06 12:12 → 2026-08-03 20:39
+Farklı gün sayısı: 120
+
+Dil dağılımı:
+  en     454
+  tr     89
+  ru     1
+
+Kovalar (yeniden eskiye):
+  etiket              adet  en yeni          en eski         
+  11 hours ago           1  2026-08-03 20:39 2026-08-03 20:39
+  13 hours ago           2  2026-08-03 18:54 2026-08-03 18:24
+  20 hours ago           1  2026-08-03 11:39 2026-08-03 11:39
+  21 hours ago           1  2026-08-03 10:39 2026-08-03 10:39
+  23 hours ago           1  2026-08-03 08:39 2026-08-03 08:39
+  1 day ago              4  2026-08-03 05:09 2026-08-02 11:09
+  2 days ago            13  2026-08-02 07:14 2026-08-01 09:05
+  3 days ago             4  2026-08-01 05:09 2026-07-31 11:09
+  4 days ago            11  2026-07-31 07:04 2026-07-30 09:15
+  5 days ago             5  2026-07-30 05:45 2026-07-29 10:33
+  6 days ago             6  2026-07-29 06:09 2026-07-28 10:09
+  1 week ago            45  2026-07-28 06:17 2026-07-21 10:01
+  2 weeks ago           46  2026-07-21 06:20 2026-07-14 09:59
+  3 weeks ago           39  2026-07-14 06:00 2026-07-07 10:19
+  4 weeks ago           20  2026-07-07 06:57 2026-07-05 09:21
+  1 month ago          151  2026-07-05 05:46 2026-06-05 10:32
+  2 months ago         105  2026-06-05 04:44 2026-05-06 11:35
+  3 months ago          89  2026-05-06 04:07 2026-04-06 12:12
+
+DOĞRULAMA 1 (kesin azalan zaman damgası): PASS
+DOĞRULAMA 2 (damga → etiket geri dönüşü): PASS

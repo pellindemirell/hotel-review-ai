@@ -1,0 +1,49 @@
+Kaynak      : /Users/emre/Documents/ANAPROJE/BACKEND/hotel-review-ai/reviews/crystalhotel.csv
+Çapa (UTC)  : 2026-08-04T08:21:03Z
+
+Toplam satır          : 600
+  boş yorum           : 81
+  10 karakterden kısa : 8
+  tekrar eden Yorum ID: 0
+  tarihi çözülemeyen  : 0
+YAZILAN SATIR         : 511
+
+Puanı boş olup 3 atanan satır: 1
+
+Tarih aralığı: 2026-06-05 11:02 → 2026-08-04 07:56
+Farklı gün sayısı: 60
+
+Dil dağılımı:
+  en     442
+  tr     69
+
+Kovalar (yeniden eskiye):
+  etiket              adet  en yeni          en eski         
+  24 minutes ago         1  2026-08-04 07:56 2026-08-04 07:56
+  33 minutes ago         1  2026-08-04 07:47 2026-08-04 07:47
+  1 hour ago             1  2026-08-04 06:51 2026-08-04 06:51
+  10 hours ago           1  2026-08-03 21:51 2026-08-03 21:51
+  11 hours ago           2  2026-08-03 21:06 2026-08-03 20:36
+  12 hours ago           3  2026-08-03 20:11 2026-08-03 19:31
+  13 hours ago           2  2026-08-03 19:06 2026-08-03 18:36
+  14 hours ago           3  2026-08-03 18:11 2026-08-03 17:31
+  15 hours ago           1  2026-08-03 16:51 2026-08-03 16:51
+  16 hours ago           2  2026-08-03 16:06 2026-08-03 15:36
+  17 hours ago           2  2026-08-03 15:06 2026-08-03 14:36
+  18 hours ago           4  2026-08-03 14:13 2026-08-03 13:28
+  20 hours ago           1  2026-08-03 11:51 2026-08-03 11:51
+  22 hours ago           1  2026-08-03 09:51 2026-08-03 09:51
+  23 hours ago           1  2026-08-03 08:51 2026-08-03 08:51
+  1 day ago             19  2026-08-03 07:43 2026-08-02 08:58
+  2 days ago            29  2026-08-02 07:56 2026-08-01 08:45
+  3 days ago            43  2026-08-01 08:04 2026-07-31 08:37
+  4 days ago            54  2026-07-31 08:07 2026-07-30 08:34
+  5 days ago            10  2026-07-30 07:09 2026-07-29 09:33
+  1 week ago            10  2026-07-27 23:57 2026-07-21 16:45
+  2 weeks ago           54  2026-07-21 06:47 2026-07-14 09:54
+  3 weeks ago          128  2026-07-14 07:41 2026-07-07 09:00
+  4 weeks ago            4  2026-07-07 02:21 2026-07-05 14:21
+  1 month ago          134  2026-07-05 05:39 2026-06-05 11:02
+
+DOĞRULAMA 1 (kesin azalan zaman damgası): PASS
+DOĞRULAMA 2 (damga → etiket geri dönüşü): PASS

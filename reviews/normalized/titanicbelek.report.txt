@@ -1,0 +1,44 @@
+Kaynak      : /Users/emre/Documents/ANAPROJE/BACKEND/hotel-review-ai/reviews/titanicbelek.csv
+Çapa (UTC)  : 2026-08-04T08:26:44Z
+
+Toplam satır          : 600
+  boş yorum           : 123
+  10 karakterden kısa : 2
+  tekrar eden Yorum ID: 0
+  tarihi çözülemeyen  : 0
+YAZILAN SATIR         : 475
+
+Puanı boş olup 3 atanan satır: 0
+
+Tarih aralığı: 2026-06-05 10:05 → 2026-08-04 08:15
+Farklı gün sayısı: 61
+
+Dil dağılımı:
+  en     402
+  tr     73
+
+Kovalar (yeniden eskiye):
+  etiket              adet  en yeni          en eski         
+  11 minutes ago         1  2026-08-04 08:15 2026-08-04 08:15
+  21 minutes ago         1  2026-08-04 08:05 2026-08-04 08:05
+  2 hours ago            1  2026-08-04 05:56 2026-08-04 05:56
+  13 hours ago           1  2026-08-03 18:56 2026-08-03 18:56
+  14 hours ago           1  2026-08-03 17:56 2026-08-03 17:56
+  16 hours ago           1  2026-08-03 15:56 2026-08-03 15:56
+  17 hours ago           1  2026-08-03 14:56 2026-08-03 14:56
+  18 hours ago           3  2026-08-03 14:16 2026-08-03 13:36
+  20 hours ago           1  2026-08-03 11:56 2026-08-03 11:56
+  1 day ago              9  2026-08-03 07:06 2026-08-02 09:46
+  2 days ago            13  2026-08-02 07:31 2026-08-01 09:22
+  3 days ago            14  2026-08-01 07:35 2026-07-31 09:18
+  4 days ago            14  2026-07-31 07:35 2026-07-30 09:18
+  5 days ago             8  2026-07-30 06:56 2026-07-29 09:56
+  6 days ago             8  2026-07-29 06:56 2026-07-28 09:56
+  1 week ago            49  2026-07-28 06:43 2026-07-21 10:09
+  2 weeks ago           49  2026-07-21 06:43 2026-07-14 10:09
+  3 weeks ago           62  2026-07-14 07:05 2026-07-07 09:48
+  4 weeks ago           20  2026-07-07 07:14 2026-07-05 09:38
+  1 month ago          218  2026-07-05 06:47 2026-06-05 10:05
+
+DOĞRULAMA 1 (kesin azalan zaman damgası): PASS
+DOĞRULAMA 2 (damga → etiket geri dönüşü): PASS

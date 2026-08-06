@@ -1,0 +1,49 @@
+version: "1.0"
+description: "Entity to department responsibility mapping — v1 seed (35+ rows, framework for 1000)"
+
+responsibilities:
+  - {entity_id: phy_hotel, department: front_office, role: primary}
+  - {entity_id: phy_building_main, department: front_office, role: primary}
+  - {entity_id: phy_building_annex, department: front_office, role: primary}
+  - {entity_id: phy_room, department: housekeeping, role: primary, aspect_keys: [room_cleanliness, room_size, room_smell]}
+  - {entity_id: phy_suite, department: housekeeping, role: primary}
+  - {entity_id: phy_bathroom, department: housekeeping, role: primary, aspect_keys: [bathroom_cleanliness]}
+  - {entity_id: phy_lobby, department: front_office, role: primary}
+  - {entity_id: phy_corridor, department: housekeeping, role: primary}
+  - {entity_id: fac_pool, department: havuz, role: primary, aspect_keys: [pool_cleanliness, pool_size]}
+  - {entity_id: fac_spa, department: spa, role: primary, aspect_keys: [spa_service, massage_quality]}
+  - {entity_id: fac_restaurant, department: restaurant, role: primary, aspect_keys: [food_quality, breakfast_variety]}
+  - {entity_id: fac_bar, department: bar, role: primary, aspect_keys: [drink_quality, minibar]}
+  - {entity_id: fac_gym, department: spa, role: primary}
+  - {entity_id: fac_beach, department: havuz, role: primary, aspect_keys: [beach_quality]}
+  - {entity_id: fac_aquapark, department: havuz, role: primary, aspect_keys: [aquapark]}
+  - {entity_id: fac_kitchen, department: restaurant, role: secondary}
+  - {entity_id: fac_parking, department: front_office, role: primary}
+  - {entity_id: fac_conference, department: front_office, role: primary}
+  - {entity_id: eq_air_conditioner, department: engineering_hvac, role: primary, aspect_keys: [hvac_cooling, hvac_heating, hvac_noise]}
+  - {entity_id: eq_split_ac, department: engineering_hvac, role: primary}
+  - {entity_id: eq_chiller, department: engineering_hvac, role: primary}
+  - {entity_id: eq_boiler, department: engineering_hvac, role: primary}
+  - {entity_id: eq_wifi_router, department: engineering_internet, role: primary, aspect_keys: [wifi_speed, wifi_coverage]}
+  - {entity_id: eq_access_point, department: engineering_internet, role: primary}
+  - {entity_id: eq_tv, department: teknik, role: primary, aspect_keys: [tv_quality]}
+  - {entity_id: eq_minibar, department: bar, role: primary, aspect_keys: [minibar]}
+  - {entity_id: eq_bed, department: housekeeping, role: primary, aspect_keys: [bed_comfort, bed_linen]}
+  - {entity_id: eq_mattress, department: housekeeping, role: primary, aspect_keys: [bed_comfort]}
+  - {entity_id: eq_shower_head, department: engineering_plumbing, role: primary, aspect_keys: [shower_pressure]}
+  - {entity_id: eq_toilet, department: engineering_plumbing, role: primary}
+  - {entity_id: eq_elevator, department: teknik, role: primary, aspect_keys: [elevator_service]}
+  - {entity_id: eq_pool_pump, department: havuz, role: primary}
+  - {entity_id: eq_safe, department: guvenlik, role: primary}
+  - {entity_id: hum_housekeeper, department: housekeeping, role: primary}
+  - {entity_id: hum_hvac_technician, department: engineering_hvac, role: primary}
+  - {entity_id: hum_waiter, department: personel, role: primary, aspect_keys: [staff_behavior]}
+  - {entity_id: hum_front_desk_agent, department: front_office, role: primary, aspect_keys: [reception_service]}
+  - {entity_id: hum_chef, department: restaurant, role: primary}
+  - {entity_id: hum_bartender, department: bar, role: primary}
+  - {entity_id: hum_spa_therapist, department: spa, role: primary}
+  - {entity_id: hum_animator, department: animasyon, role: primary, aspect_keys: [animation]}
+  - {entity_id: hum_security_guard, department: guvenlik, role: primary}
+  - {entity_id: hum_guest_relations, department: front_office, role: secondary}
+  - {entity_id: eq_aquapark_slide, department: havuz, role: primary}
+  - {entity_id: eq_pool_lounger, department: havuz, role: primary, aspect_keys: [pool_lounger]}

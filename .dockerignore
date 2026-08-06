@@ -1,0 +1,15 @@
+**/.git
+**/.gitignore
+**/.vscode
+**/.venv
+**/venv
+**/bin
+**/obj
+**/*.user
+**/*.suo
+**/node_modules
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.pytest_cache

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!--
+      NU1903: Microsoft.OpenApi 2.0.0 güvenlik uyarısı (GHSA-v5pm-xwqc-g5wc)
+      Bu, Microsoft.AspNetCore.OpenApi 10.0.0'ın transitif bağımlılığından kaynaklanmaktadır.
+      Doğrudan kontrol edilemiyor; Microsoft paketi güncellediğinde bu satır kaldırılmalıdır.
+    -->
+    <NoWarn>$(NoWarn);NU1903</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Scalar.AspNetCore" Version="2.6.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HotelReviewAI.Application\HotelReviewAI.Application.csproj" />
+    <ProjectReference Include="..\HotelReviewAI.Infrastructure\HotelReviewAI.Infrastructure.csproj" />
+    <ProjectReference Include="..\HotelReviewAI.Persistence\HotelReviewAI.Persistence.csproj" />
+    <ProjectReference Include="..\HotelReviewAI.Shared\HotelReviewAI.Shared.csproj" />
+  </ItemGroup>
+
+
+
+</Project>

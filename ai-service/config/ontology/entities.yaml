@@ -1,0 +1,185 @@
+version: "1.0"
+description: "Hotel ontology entity dictionary — v1 seed (physical, human, equipment)"
+
+physical:
+  - id: phy_hotel
+    subtype: hotel
+    labels: {tr: "Otel", en: "Hotel"}
+    department: front_office
+  - id: phy_building_main
+    subtype: building
+    parent_id: phy_hotel
+    labels: {tr: "Ana Bina", en: "Main Building"}
+    department: front_office
+  - id: phy_building_annex
+    subtype: building
+    parent_id: phy_hotel
+    labels: {tr: "Ek Bina", en: "Annex Building"}
+    department: front_office
+  - id: phy_floor
+    subtype: floor
+    parent_id: phy_building_main
+    labels: {tr: "Kat", en: "Floor"}
+    department: housekeeping
+  - id: phy_room
+    subtype: room
+    parent_id: phy_floor
+    labels: {tr: "Oda", en: "Room"}
+    department: housekeeping
+  - id: phy_suite
+    subtype: suite
+    parent_id: phy_floor
+    labels: {tr: "Süit", en: "Suite"}
+    department: housekeeping
+  - id: phy_corridor
+    subtype: corridor
+    parent_id: phy_building_main
+    labels: {tr: "Koridor", en: "Corridor"}
+    department: housekeeping
+  - id: phy_lobby
+    subtype: lobby
+    parent_id: phy_hotel
+    labels: {tr: "Lobi", en: "Lobby"}
+    department: front_office
+  - id: phy_bathroom
+    subtype: bathroom
+    parent_id: phy_room
+    labels: {tr: "Banyo", en: "Bathroom"}
+    department: housekeeping
+
+facilities:
+  - id: fac_pool
+    subtype: pool
+    labels: {tr: "Havuz", en: "Swimming Pool"}
+    department: havuz
+  - id: fac_spa
+    subtype: spa
+    labels: {tr: "Spa", en: "Spa"}
+    department: spa
+  - id: fac_restaurant
+    subtype: restaurant
+    labels: {tr: "Restoran", en: "Restaurant"}
+    department: restaurant
+  - id: fac_bar
+    subtype: bar
+    labels: {tr: "Bar", en: "Bar"}
+    department: bar
+  - id: fac_gym
+    subtype: gym
+    labels: {tr: "Fitness", en: "Gym"}
+    department: spa
+  - id: fac_parking
+    subtype: parking
+    labels: {tr: "Otopark", en: "Parking"}
+    department: front_office
+  - id: fac_beach
+    subtype: beach
+    labels: {tr: "Plaj", en: "Beach"}
+    department: havuz
+  - id: fac_conference
+    subtype: conference
+    labels: {tr: "Konferans Salonu", en: "Conference Room"}
+    department: front_office
+  - id: fac_kitchen
+    subtype: kitchen
+    labels: {tr: "Mutfak", en: "Kitchen"}
+    department: restaurant
+  - id: fac_aquapark
+    subtype: aquapark
+    labels: {tr: "Aquapark", en: "Water Park"}
+    department: havuz
+
+human:
+  - {id: hum_general_manager, subtype: executive, labels: {tr: "Genel Müdür", en: "General Manager"}, department: front_office}
+  - {id: hum_duty_manager, subtype: management, labels: {tr: "Görevli Müdür", en: "Duty Manager"}, department: front_office}
+  - {id: hum_front_desk_agent, subtype: front_office, labels: {tr: "Resepsiyonist", en: "Front Desk Agent"}, department: front_office}
+  - {id: hum_concierge, subtype: front_office, labels: {tr: "Concierge", en: "Concierge"}, department: front_office}
+  - {id: hum_bellboy, subtype: front_office, labels: {tr: "Bellboy", en: "Bellboy"}, department: front_office}
+  - {id: hum_housekeeper, subtype: housekeeping, labels: {tr: "Kat Görevlisi", en: "Housekeeper"}, department: housekeeping}
+  - {id: hum_hk_supervisor, subtype: housekeeping, labels: {tr: "HK Süpervizör", en: "HK Supervisor"}, department: housekeeping}
+  - {id: hum_hvac_technician, subtype: engineering, labels: {tr: "HVAC Teknisyeni", en: "HVAC Technician"}, department: engineering_hvac}
+  - {id: hum_plumber, subtype: engineering, labels: {tr: "Tesisatçı", en: "Plumber"}, department: engineering_plumbing}
+  - {id: hum_electrician, subtype: engineering, labels: {tr: "Elektrikçi", en: "Electrician"}, department: teknik}
+  - {id: hum_it_support, subtype: it, labels: {tr: "IT Destek", en: "IT Support"}, department: engineering_internet}
+  - {id: hum_chef, subtype: f_b, labels: {tr: "Şef", en: "Chef"}, department: restaurant}
+  - {id: hum_waiter, subtype: f_b, labels: {tr: "Garson", en: "Waiter"}, department: personel}
+  - {id: hum_bartender, subtype: f_b, labels: {tr: "Barmen", en: "Bartender"}, department: bar}
+  - {id: hum_spa_therapist, subtype: spa, labels: {tr: "Spa Terapisti", en: "Spa Therapist"}, department: spa}
+  - {id: hum_lifeguard, subtype: pool, labels: {tr: "Cankurtaran", en: "Lifeguard"}, department: havuz}
+  - {id: hum_animator, subtype: entertainment, labels: {tr: "Animatör", en: "Animator"}, department: animasyon}
+  - {id: hum_security_guard, subtype: security, labels: {tr: "Güvenlik Görevlisi", en: "Security Guard"}, department: guvenlik}
+  - {id: hum_valet, subtype: front_office, labels: {tr: "Vale", en: "Valet"}, department: front_office}
+  - {id: hum_laundry_attendant, subtype: housekeeping, labels: {tr: "Çamaşırhane Görevlisi", en: "Laundry Attendant"}, department: housekeeping}
+  - {id: hum_purchasing_officer, subtype: finance, labels: {tr: "Satın Alma", en: "Purchasing Officer"}, department: front_office}
+  - {id: hum_hr_officer, subtype: hr, labels: {tr: "İK Uzmanı", en: "HR Officer"}, department: personel}
+  - {id: hum_guest_relations, subtype: front_office, labels: {tr: "Misafir İlişkileri", en: "Guest Relations"}, department: front_office}
+  - {id: hum_night_auditor, subtype: finance, labels: {tr: "Gece Denetçisi", en: "Night Auditor"}, department: front_office}
+  - {id: hum_pool_attendant, subtype: pool, labels: {tr: "Havuz Görevlisi", en: "Pool Attendant"}, department: havuz}
+
+equipment:
+  - {id: eq_air_conditioner, subtype: hvac, labels: {tr: "Klima", en: "Air Conditioner"}, department: engineering_hvac, parent_id: phy_room}
+  - {id: eq_split_ac, subtype: hvac, labels: {tr: "Split Klima", en: "Split AC"}, department: engineering_hvac, parent_id: eq_air_conditioner}
+  - {id: eq_fan_coil, subtype: hvac, labels: {tr: "Fan Coil", en: "Fan Coil Unit"}, department: engineering_hvac}
+  - {id: eq_chiller, subtype: hvac, labels: {tr: "Chiller", en: "Chiller"}, department: engineering_hvac}
+  - {id: eq_boiler, subtype: hvac, labels: {tr: "Kazan", en: "Boiler"}, department: engineering_hvac}
+  - {id: eq_thermostat, subtype: hvac, labels: {tr: "Termostat", en: "Thermostat"}, department: engineering_hvac}
+  - {id: eq_ac_remote, subtype: hvac, labels: {tr: "Klima Kumandası", en: "AC Remote"}, department: engineering_hvac}
+  - {id: eq_wifi_router, subtype: internet, labels: {tr: "WiFi Router", en: "WiFi Router"}, department: engineering_internet}
+  - {id: eq_access_point, subtype: internet, labels: {tr: "Access Point", en: "Access Point"}, department: engineering_internet}
+  - {id: eq_network_switch, subtype: internet, labels: {tr: "Network Switch", en: "Network Switch"}, department: engineering_internet}
+  - {id: eq_tv, subtype: av, labels: {tr: "Televizyon", en: "Television"}, department: teknik, parent_id: phy_room}
+  - {id: eq_tv_remote, subtype: av, labels: {tr: "TV Kumandası", en: "TV Remote"}, department: teknik}
+  - {id: eq_minibar, subtype: f_b, labels: {tr: "Minibar", en: "Minibar"}, department: bar, parent_id: phy_room}
+  - {id: eq_safe, subtype: security, labels: {tr: "Kasa", en: "In-room Safe"}, department: guvenlik, parent_id: phy_room}
+  - {id: eq_elevator, subtype: vertical_transport, labels: {tr: "Asansör", en: "Elevator"}, department: teknik}
+  - {id: eq_bed, subtype: furniture, labels: {tr: "Yatak", en: "Bed"}, department: housekeeping, parent_id: phy_room}
+  - {id: eq_mattress, subtype: furniture, labels: {tr: "Yatak Süngeri", en: "Mattress"}, department: housekeeping, parent_id: eq_bed}
+  - {id: eq_pillow, subtype: linen, labels: {tr: "Yastık", en: "Pillow"}, department: housekeeping}
+  - {id: eq_shower_head, subtype: plumbing, labels: {tr: "Duş Başlığı", en: "Shower Head"}, department: engineering_plumbing, parent_id: phy_bathroom}
+  - {id: eq_toilet, subtype: plumbing, labels: {tr: "Klozet", en: "Toilet"}, department: engineering_plumbing, parent_id: phy_bathroom}
+  - {id: eq_faucet, subtype: plumbing, labels: {tr: "Musluk", en: "Faucet"}, department: engineering_plumbing}
+  - {id: eq_water_heater, subtype: plumbing, labels: {tr: "Su Isıtıcı", en: "Water Heater"}, department: engineering_plumbing}
+  - {id: eq_coffee_machine, subtype: f_b, labels: {tr: "Kahve Makinesi", en: "Coffee Machine"}, department: restaurant}
+  - {id: eq_refrigerator, subtype: kitchen, labels: {tr: "Buzdolabı", en: "Refrigerator"}, department: restaurant}
+  - {id: eq_oven, subtype: kitchen, labels: {tr: "Fırın", en: "Oven"}, department: restaurant}
+  - {id: eq_dishwasher, subtype: kitchen, labels: {tr: "Bulaşık Makinesi", en: "Dishwasher"}, department: restaurant}
+  - {id: eq_pool_pump, subtype: pool, labels: {tr: "Havuz Pompası", en: "Pool Pump"}, department: havuz}
+  - {id: eq_pool_filter, subtype: pool, labels: {tr: "Havuz Filtresi", en: "Pool Filter"}, department: havuz}
+  - {id: eq_spa_jacuzzi, subtype: spa, labels: {tr: "Jakuzi", en: "Jacuzzi"}, department: spa}
+  - {id: eq_sauna_heater, subtype: spa, labels: {tr: "Sauna Isıtıcı", en: "Sauna Heater"}, department: spa}
+  - {id: eq_iron, subtype: housekeeping, labels: {tr: "Ütü", en: "Iron"}, department: housekeeping}
+  - {id: eq_hair_dryer, subtype: amenities, labels: {tr: "Saç Kurutma", en: "Hair Dryer"}, department: housekeeping}
+  - {id: eq_door_lock, subtype: security, labels: {tr: "Kapı Kilidi", en: "Door Lock"}, department: guvenlik}
+  - {id: eq_smoke_detector, subtype: safety, labels: {tr: "Duman Dedektörü", en: "Smoke Detector"}, department: guvenlik}
+  - {id: eq_fire_extinguisher, subtype: safety, labels: {tr: "Yangın Söndürücü", en: "Fire Extinguisher"}, department: guvenlik}
+  - {id: eq_laundry_machine, subtype: laundry, labels: {tr: "Çamaşır Makinesi", en: "Washing Machine"}, department: housekeeping}
+  - {id: eq_vacuum_cleaner, subtype: housekeeping, labels: {tr: "Elektrikli Süpürge", en: "Vacuum Cleaner"}, department: housekeeping}
+  - {id: eq_projector, subtype: av, labels: {tr: "Projeksiyon", en: "Projector"}, department: teknik}
+  - {id: eq_pos_terminal, subtype: f_b, labels: {tr: "POS Terminal", en: "POS Terminal"}, department: restaurant}
+  - {id: eq_ice_machine, subtype: f_b, labels: {tr: "Buz Makinesi", en: "Ice Machine"}, department: bar}
+  - {id: eq_blender, subtype: bar, labels: {tr: "Blender", en: "Blender"}, department: bar}
+  - {id: eq_gym_treadmill, subtype: gym, labels: {tr: "Koşu Bandı", en: "Treadmill"}, department: spa}
+  - {id: eq_solar_panel, subtype: energy, labels: {tr: "Güneş Paneli", en: "Solar Panel"}, department: teknik}
+  - {id: eq_generator, subtype: energy, labels: {tr: "Jeneratör", en: "Generator"}, department: teknik}
+  - {id: eq_cctv_camera, subtype: security, labels: {tr: "Güvenlik Kamerası", en: "CCTV Camera"}, department: guvenlik}
+  - {id: eq_key_card_reader, subtype: security, labels: {tr: "Kartlı Geçiş", en: "Key Card Reader"}, department: guvenlik}
+  - {id: eq_phone, subtype: telecom, labels: {tr: "Oda Telefonu", en: "Room Phone"}, department: teknik}
+  - {id: eq_curtain_motor, subtype: room_automation, labels: {tr: "Perde Motoru", en: "Curtain Motor"}, department: teknik}
+  - {id: eq_blackout_blind, subtype: furniture, labels: {tr: "Karartma Perdesi", en: "Blackout Blind"}, department: housekeeping}
+  - {id: eq_desk_lamp, subtype: furniture, labels: {tr: "Masa Lambası", en: "Desk Lamp"}, department: housekeeping}
+  - {id: eq_balcony_railing, subtype: structure, labels: {tr: "Balkon Demiri", en: "Balcony Railing"}, department: teknik}
+  - {id: eq_water_dispenser, subtype: f_b, labels: {tr: "Su Sebili", en: "Water Dispenser"}, department: restaurant}
+  - {id: eq_toaster, subtype: kitchen, labels: {tr: "Tost Makinesi", en: "Toaster"}, department: restaurant}
+  - {id: eq_kettle, subtype: amenities, labels: {tr: "Su Isıtıcısı", en: "Kettle"}, department: housekeeping}
+  - {id: eq_bath_towel_warmer, subtype: amenities, labels: {tr: "Havlu Isıtıcı", en: "Towel Warmer"}, department: housekeeping}
+  - {id: eq_aquapark_slide, subtype: aquapark, labels: {tr: "Su Kaydırağı", en: "Water Slide"}, department: havuz}
+  - {id: eq_pool_lounger, subtype: pool, labels: {tr: "Şezlong", en: "Pool Lounger"}, department: havuz}
+  - {id: eq_umbrella, subtype: beach, labels: {tr: "Şemsiye", en: "Beach Umbrella"}, department: havuz}
+  - {id: eq_baby_cot, subtype: furniture, labels: {tr: "Bebek Yatağı", en: "Baby Cot"}, department: housekeeping}
+  - {id: eq_wheelchair, subtype: accessibility, labels: {tr: "Tekerlekli Sandalye", en: "Wheelchair"}, department: front_office}
+  - {id: eq_pms_terminal, subtype: it, labels: {tr: "PMS Terminal", en: "PMS Terminal"}, department: engineering_internet}
+  - {id: eq_printer, subtype: it, labels: {tr: "Yazıcı", en: "Printer"}, department: engineering_internet}
+  - {id: eq_backup_ups, subtype: it, labels: {tr: "UPS", en: "UPS"}, department: teknik}
+  - {id: eq_hvac_filter, subtype: hvac, labels: {tr: "HVAC Filtresi", en: "HVAC Filter"}, department: engineering_hvac}
+  - {id: eq_compressor, subtype: hvac, labels: {tr: "Kompresör", en: "Compressor"}, department: engineering_hvac}
+  - {id: eq_ductwork, subtype: hvac, labels: {tr: "Havalandırma Kanalı", en: "Ductwork"}, department: engineering_hvac}
