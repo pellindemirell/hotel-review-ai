@@ -77,8 +77,8 @@ class CategoryService:
         else:
             # Bu durum sessiz geçerse sistem "çalışıyor" görünüp ML doğruluğu tamamen
             # devre dışı kalıyor. Aranan yolu da yazıyoruz ki eksik olan görünür olsun.
-            logger.warning(
-                "ML KATEGORİ MODELİ YOK — kural tabanlı fallback kullanılacak. "
+            logger.info(
+                "ML kategori modeli bulunamadı — kural tabanlı fallback kullanılacak. "
                 "Aranan dizin: %s (category_model.joblib + vectorizer.joblib). "
                 "Farklı bir konum için MODEL_DIR ortam değişkenini ayarlayın.",
                 MODEL_DIR,
