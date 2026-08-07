@@ -1,4 +1,5 @@
 using HotelReviewAI.Application.Commands.Reviews;
+using HotelReviewAI.Application.Interfaces;
 using HotelReviewAI.Application.Queries.Reviews;
 using HotelReviewAI.Domain.Enums;
 using HotelReviewAI.Shared.Responses;
@@ -19,10 +20,12 @@ namespace HotelReviewAI.Api.Controllers;
 public class ReviewsController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IReviewPhotoStorage _photoStorage;
 
-    public ReviewsController(IMediator mediator)
+    public ReviewsController(IMediator mediator, IReviewPhotoStorage photoStorage)
     {
         _mediator = mediator;
+        _photoStorage = photoStorage;
     }
 
     /// <summary>
@@ -36,6 +39,68 @@ public class ReviewsController : ControllerBase
     {
         var effectiveCommand = command with { HotelId = hotelIdHeader ?? command.HotelId };
         var id = await _mediator.Send(effectiveCommand);
+        return Accepted(BaseResponse<Guid>.Ok(id, "Yorum kaydedildi ve AI analizi için kuyruğa alındı."));
+    }
+
+    /// <summary>
+    /// Görselli manuel yorum girişi - Target Client: Web Panel (Angular)
+    /// </summary>
+    /// <remarks>
+    /// Ayrı bir uç: <c>POST /api/reviews</c> JSON gövdesi alıyor ve sözleşmesi
+    /// korunuyor. Dosya yüklemek multipart/form-data gerektirdiğinden aynı
+    /// action ikisini birden karşılayamaz. Görsel yükleme mantığı mobil uçla
+    /// ortak (IReviewPhotoStorage), böylece Cloudinary/yerel yedek davranışı
+    /// iki yerde ayrışmaz.
+    /// </remarks>
+    [HttpPost("with-photo")]
+    [Consumes("multipart/form-data")]
+    [Tags("Web Panel (Angular) - Reviews")]
+    public async Task<IActionResult> CreateWithPhoto(
+        [FromForm] string guestName,
+        [FromForm] string comment,
+        [FromForm] int rating,
+        [FromForm] string language,
+        [FromForm] string source,
+        IFormFile? photo,
+        [FromHeader(Name = "X-Hotel-Id")] Guid? hotelIdHeader = null,
+        CancellationToken ct = default)
+    {
+        string? photoUrl = null;
+
+        if (photo is { Length: > 0 })
+        {
+            var validationError = _photoStorage.Validate(photo.Length, photo.FileName, photo.ContentType);
+            if (validationError is not null)
+            {
+                return BadRequest(BaseResponse<object>.Fail(validationError));
+            }
+
+            byte[] bytes;
+            using (var buffer = new MemoryStream())
+            {
+                await photo.CopyToAsync(buffer, ct);
+                bytes = buffer.ToArray();
+            }
+
+            photoUrl = await _photoStorage.SaveAsync(bytes, photo.FileName, ct);
+        }
+
+        if (!Enum.TryParse<ReviewSource>(source, ignoreCase: true, out var parsedSource))
+        {
+            parsedSource = ReviewSource.Manual;
+        }
+
+        var command = new CreateReviewCommand(
+            GuestName: guestName,
+            Comment: comment,
+            Rating: rating,
+            Language: language,
+            Source: parsedSource,
+            ReviewDate: DateTime.UtcNow,
+            HotelId: hotelIdHeader,
+            PhotoUrl: photoUrl);
+
+        var id = await _mediator.Send(command, ct);
         return Accepted(BaseResponse<Guid>.Ok(id, "Yorum kaydedildi ve AI analizi için kuyruğa alındı."));
     }
 

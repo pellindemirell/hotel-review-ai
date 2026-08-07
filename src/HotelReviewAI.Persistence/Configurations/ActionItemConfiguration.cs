@@ -30,5 +30,12 @@ public class ActionItemConfiguration : IEntityTypeConfiguration<ActionItem>
               .WithMany()
               .HasForeignKey(a => a.CategoryId)
               .OnDelete(DeleteBehavior.SetNull);
+
+        // Ekip üyesi ataması yalnızca kayıt amaçlı. Çalışan silinirse görev
+        // silinmemeli, atama boşa düşmeli — bu yüzden SetNull.
+        entity.HasOne(a => a.AssignedStaff)
+              .WithMany()
+              .HasForeignKey(a => a.AssignedStaffId)
+              .OnDelete(DeleteBehavior.SetNull);
     }
 }

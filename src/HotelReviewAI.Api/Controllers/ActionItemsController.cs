@@ -74,4 +74,24 @@ public class ActionItemsController : ControllerBase
 
         return Ok(BaseResponse<object>.Ok(null!, "Görev durumu güncellendi."));
     }
+
+    /// <summary>
+    /// Görevi ekip üyesine not düş - Target Client: Web Panel (Angular)
+    /// </summary>
+    /// <remarks>
+    /// YALNIZCA KAYIT amaçlıdır: görev durumunu değiştirmez, bildirim
+    /// göndermez, yetki ve filtreleri etkilemez. Departman yöneticisinin
+    /// "bu işi kime vermiştim" sorusuna sonradan bakabilmesi içindir.
+    /// Gövdede staffId null gönderilirse kayıt temizlenir.
+    /// </remarks>
+    [HttpPatch("{id:guid}/assign-staff")]
+    [Authorize(Roles = "DepartmentManager")]
+    [Tags("Web Panel (Angular) - Staff")]
+    public async Task<IActionResult> AssignStaff(Guid id, [FromBody] AssignStaffRequest request)
+    {
+        await _mediator.Send(new AssignActionItemStaffCommand(id, request.StaffId));
+        return Ok(BaseResponse<object>.Ok(null!, "Kayıt güncellendi."));
+    }
+
+    public record AssignStaffRequest(Guid? StaffId);
 }

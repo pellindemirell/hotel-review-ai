@@ -10,4 +10,6 @@ public record CreateReviewCommand(
     string Language,
     ReviewSource Source,
     DateTime? ReviewDate,
-    Guid? HotelId = null) : IRequest<Guid>;
+    Guid? HotelId = null,
+    /// <summary>Yüklenmiş görselin adresi; yoksa null. Ek kaydı bundan üretilir.</summary>
+    string? PhotoUrl = null) : IRequest<Guid>;
