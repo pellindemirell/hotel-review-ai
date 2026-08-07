@@ -11,6 +11,9 @@ public class ActionItemRepository : GenericRepository<ActionItem>, IActionItemRe
     {
     }
 
+    public async Task<IEnumerable<ActionItem>> GetByReviewIdAsync(Guid reviewId) =>
+        await DbSet.Where(a => a.ReviewId == reviewId).ToListAsync();
+
     public async Task<IEnumerable<ActionItem>> GetByDepartmentIdAsync(Guid departmentId) =>
         await DbSet.Where(a => a.DepartmentId == departmentId).ToListAsync();
 

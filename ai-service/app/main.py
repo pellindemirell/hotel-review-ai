@@ -41,6 +41,8 @@ from app.services.turkish_nlp_utils import normalize_turkish
 from app.services.absa_service import split_clauses_absa
 from app.review_intelligence import ReviewIntelligenceService
 from app.operational_intelligence.engine import HodipEngine
+from app.services.deep_llm_service import DeepHotelLLMService
+from app.services.eval_service import EvalService, SystemEvaluationReport
 from app.security import api_key_middleware, allowed_origins
 
 # Loglama Yapılandırması
@@ -82,8 +84,7 @@ hodip_engine = HodipEngine()
 ANALYZE_TIMEOUT_SEC = float(os.getenv("ANALYZE_TIMEOUT_SEC", "120"))
 ANALYZE_INCLUDE_RI_DEFAULT = os.getenv("ANALYZE_INCLUDE_RI", "0").strip().lower() in ("1", "true", "yes")
 # Analiz için ayrı havuz — RI / warmup ile paylaşılmaz; terk edilen işler diğer istekleri bloke etmesin
-_ANALYZE_MAX_CONCURRENCY = int(os.getenv("ANALYZE_MAX_CONCURRENCY", "4"))
-_ANALYZE_EXECUTOR = ThreadPoolExecutor(max_workers=_ANALYZE_MAX_CONCURRENCY, thread_name_prefix="review-analyze")
+_ANALYZE_EXECUTOR = ThreadPoolExecutor(max_workers=4, thread_name_prefix="review-analyze")
 _SIDE_EXECUTOR = ThreadPoolExecutor(max_workers=2, thread_name_prefix="review-side")
 _RI_EXECUTOR = ThreadPoolExecutor(max_workers=2, thread_name_prefix="review-ri")
 _analyze_generation = 0
@@ -155,6 +156,8 @@ class AbsaAspectResponse(BaseModel):
     satisfactionLevel: str
     keywords: List[str]
     suggestion: str
+    llmExplanation: Optional[str] = None
+    llmStatus: Optional[str] = None
 
 class AbsaResponse(BaseModel):
     aspects: List[AbsaAspectResponse]
@@ -478,8 +481,7 @@ async def translate_text(request: TranslateRequest):
     Tek bir metni Türkçeye çevirir.
 
     TranslationService zaten /analyze-review içinde kullanılıyordu ama dışarıya
-    açılmamıştı; panelin "Türkçeye çevir" butonu bu ucu çağırıyor. Servisin
-    kendi LRU önbelleği (TRANSLATE_CACHE_MAX) burada da geçerli.
+    açılmamıştı; panelin "Türkçeye çevir" butonu bu ucu çağırıyor.
     """
     text = (request.text or "").strip()
     if not text:
@@ -506,10 +508,7 @@ async def translate_text(request: TranslateRequest):
 @app.get("/health", summary="Sağlık Kontrolü")
 @app.get("/health-status", summary="Sağlık Kontrolü")
 async def health_check():
-    # `ready` alanı .NET tarafının sözleşmesi (AiAnalysisService.IsHealthyAsync);
-    # eksik olduğunda arka plan worker servisi "hazır değil" sayıp hiçbir analiz
-    # işini işlemiyordu.
-    return {"status": "ok", "ready": True}
+    return {"status": "ok"}
 
 def _should_run_absa(text: str, is_mixed: bool) -> bool:
     """Her yorumda ABSA tetiklenir — aspect coverage için."""
@@ -539,7 +538,7 @@ def _side_persist(comment: str, rating: Optional[int], resp_dict: dict, absa_asp
         room_issue_service.register_from_comment(comment, review_id=stored_id, created_at=None)
         entity_tracker_service.register_from_comment(comment, review_id=stored_id, created_at=None)
     except Exception:
-        pass
+        logger.debug("_side_persist: hata yutuldu", exc_info=True)
     try:
         learning_service.record_from_analysis(
             review_id=stored_id or f"anon-{hash(comment) & 0xFFFFFF:06x}",
@@ -550,7 +549,7 @@ def _side_persist(comment: str, rating: Optional[int], resp_dict: dict, absa_asp
             source="live",
         )
     except Exception:
-        pass
+        logger.debug("_side_persist: hata yutuldu", exc_info=True)
 
 
 def _analyze_review_sync(request: ReviewRequest, generation: int = 0) -> ReviewResponse:
@@ -829,7 +828,7 @@ async def review_intelligence_analyze_batch(request: ReviewIntelligenceBatchRequ
 
 @app.post("/analyze-absa", response_model=AbsaResponse, summary="ABSA — Çoklu Departman / Aspect Analizi")
 async def analyze_absa(request: ReviewRequest):
-    """Yorumu cümleciklere ayırır; her aspect için departman, duygu, öncelik döner."""
+    """Yorumu cümleciklere ayırır; her aspect için departman, duygu, öncelik ve Causal LLM açıklaması döner."""
     try:
         turkish_comment, _ = TranslationService.translate_to_turkish(
             text=request.comment,
@@ -837,13 +836,37 @@ async def analyze_absa(request: ReviewRequest):
         )
         result = AbsaService.analyze(turkish_comment, rating=request.rating)
         data = AbsaService.to_dict(result)
+
+        # Causal Deep Hotel LLM Zeka Katmanı ile Aspect Zenginleştirme
+        try:
+            llm_service = DeepHotelLLMService.get_instance()
+            for asp in data.get("aspects", []):
+                asp = llm_service.enrich_absa_aspect(asp)
+                asp["llmExplanation"] = asp.get("llm_explanation")
+                asp["llmStatus"] = asp.get("llm_status")
+        except Exception as llm_err:
+            logger.warning(f"Deep LLM enrichment skipped: {llm_err}")
+
         try:
             review_store.add_absa_aspects(f"absa-{hash(turkish_comment) & 0xFFFFFF:06x}", data.get("aspects", []))
         except Exception:
-            pass
+            logger.debug("analyze_absa: hata yutuldu", exc_info=True)
         return AbsaResponse(**data)
     except Exception as e:
         logger.error(f"/analyze-absa hatası: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/metrics/f1-report", response_model=SystemEvaluationReport, summary="Sistem F1 Score & Doğruluk Metrikleri Raporu")
+@app.post("/metrics/evaluate", response_model=SystemEvaluationReport, summary="Sistem Metrik Değerlendirmesini Tetikle")
+async def evaluate_system_metrics():
+    """Canlı Sistem F1 Score, Hassasiyet (Precision), Duyarlılık (Recall), Başarım Oranı (Accuracy) ve LLM Kayıp Metriklerini Hesaplar."""
+    try:
+        loop = asyncio.get_running_loop()
+        report = await loop.run_in_executor(_SIDE_EXECUTOR, EvalService.evaluate_system)
+        return report
+    except Exception as e:
+        logger.error(f"/metrics/f1-report hatası: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -917,16 +940,12 @@ async def analyze_single(request: AnalyzeRequest):
 @app.post("/analyze/batch", response_model=BatchAnalyzeResponse, summary="Toplu yorum analizi (HTTP-only)")
 async def analyze_batch_endpoint(request: BatchAnalyzeRequest):
     """Hüseyin: toplu analiz, her yorum bağımsız işlenir."""
-    semaphore = asyncio.Semaphore(_ANALYZE_MAX_CONCURRENCY)
-
-    async def _one(item):
-        async with semaphore:
-            return await analyze_single(
-                AnalyzeRequest(comment=item.comment, language=item.language)
-            )
-
-    results = await asyncio.gather(*(_one(item) for item in request.reviews))
-    return BatchAnalyzeResponse(success=True, results=list(results))
+    results = []
+    for item in request.reviews:
+        inner_req = AnalyzeRequest(comment=item.comment, language=item.language)
+        res = await analyze_single(inner_req)
+        results.append(res)
+    return BatchAnalyzeResponse(success=True, results=results)
 
 
 # ---------------------------------------------------------------------------
@@ -939,20 +958,11 @@ async def analyze_review_fast(request: ReviewRequest):
     """Hızlı ABSA pipeline + BERTurk. sentiment, category, keywords, summary, suggestion, confidence döner."""
     from app.services.absa_service import AbsaService
     from collections import Counter
-
-    # Çeviri (ağ I/O) ve ABSA (CPU-yoğun) senkron çalışıyor. Doğrudan çağrıldığında
-    # `async def` içinde event loop'u bloke ediyor, analiz sürerken /health dahil
-    # hiçbir uç yanıt veremiyordu. Ayrı havuza alıyoruz.
-    def _run_analysis() -> dict:
-        turkish_comment, _ = TranslationService.translate_to_turkish(
-            text=request.comment, source_lang=request.language,
-        )
-        multi_res = AbsaService.analyze_multidomain(turkish_comment, rating=request.rating)
-        return AbsaService.to_multidomain_dict(multi_res)
-
-    dict_res = await asyncio.get_running_loop().run_in_executor(
-        _ANALYZE_EXECUTOR, _run_analysis
+    turkish_comment, _ = TranslationService.translate_to_turkish(
+        text=request.comment, source_lang=request.language,
     )
+    multi_res = AbsaService.analyze_multidomain(turkish_comment, rating=request.rating)
+    dict_res = AbsaService.to_multidomain_dict(multi_res)
     aspects = dict_res.get("aspects", [])
 
     if not aspects:
@@ -996,16 +1006,11 @@ async def analyze_review_fast(request: ReviewRequest):
 
 @app.post("/analyze-batch", summary="Toplu analiz (flat format) — Pelinsu")
 async def analyze_batch_fast(request: BatchReviewRequest):
-    # Önceden `for` döngüsüyle tek tek await ediliyordu; toplu analiz kazancı yoktu.
-    # Semaphore, _ANALYZE_EXECUTOR'ın worker sayısıyla uyumlu tutuluyor.
-    semaphore = asyncio.Semaphore(_ANALYZE_MAX_CONCURRENCY)
-
-    async def _one(item):
-        async with semaphore:
-            return await analyze_review_fast(item)
-
-    results = await asyncio.gather(*(_one(item) for item in request.comments))
-    return BatchReviewResponse(analysis_results=list(results))
+    results = []
+    for item in request.comments:
+        res = await analyze_review_fast(item)
+        results.append(res)
+    return BatchReviewResponse(analysis_results=results)
 
 
 @app.post("/analyze-multidomain", response_model=MultiDomainAbsaResponse, summary="Çok Alanlı Ontology ABSA")
@@ -1025,7 +1030,7 @@ async def analyze_multidomain(request: MultiDomainReviewRequest):
         try:
             entity_tracker_service.register_from_comment(turkish_comment)
         except Exception:
-            pass
+            logger.debug("analyze_multidomain: hata yutuldu", exc_info=True)
         return MultiDomainAbsaResponse(**data)
     except Exception as e:
         logger.error(f"/analyze-multidomain hatası: {e}")
@@ -1059,19 +1064,11 @@ def ontology_domain_detail(domain_id: str):
 
 
 @app.post("/ocr-image", response_model=OcrResponse, summary="Görsel Netlik ve Metin Okuma (OCR)")
-async def ocr_image(
-    file: UploadFile | None = File(default=None),
-    image: UploadFile | None = File(default=None),
-):
-    # .NET istemcisi dosyayı "file" alanıyla gönderiyor (AiAnalysisService.PerformOcrAsync),
-    # bu uç ise yalnızca "image" kabul ediyordu → her istek 422. İkisi de destekleniyor.
-    upload = file or image
-    if upload is None:
-        raise HTTPException(status_code=400, detail="Görsel dosyası gönderilmedi ('file' veya 'image').")
-    if not (upload.content_type or "").startswith("image/"):
+async def ocr_image(image: UploadFile = File(...)):
+    if not image.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="Geçersiz görsel dosyası.")
     try:
-        image_bytes = await upload.read()
+        image_bytes = await image.read()
         result = OcrService.process_image(image_bytes)
         return OcrResponse(**result)
     except Exception as e:
@@ -1619,7 +1616,7 @@ async def import_reviews_csv_endpoint(
             try:
                 mapping = _json.loads(column_mapping)
             except _json.JSONDecodeError:
-                pass
+                logger.debug("import_reviews_csv_endpoint: hata yutuldu", exc_info=True)
         try:
             result = MultiScraperService.scrape_hotel(
                 name=platform or "CSV Import",
@@ -1638,7 +1635,7 @@ async def import_reviews_csv_endpoint(
             try:
                 os.unlink(tmp_path)
             except OSError:
-                pass
+                logger.debug("import_reviews_csv_endpoint: hata yutuldu", exc_info=True)
         return _multi_to_scrape_response(result)
     except HTTPException:
         raise

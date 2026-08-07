@@ -72,7 +72,7 @@ class ReviewIntelligencePipeline:
     ) -> ReviewIntelligenceResult:
         import time as _time
         _t0 = _time.perf_counter()
-        _MAX_MS = 8000  # RI pipeline internal timeout — 8s
+        _MAX_MS = 30000  # RI pipeline internal timeout — 30s budget
 
         def _remaining_ms() -> float:
             return _MAX_MS - (_time.perf_counter() - _t0) * 1000

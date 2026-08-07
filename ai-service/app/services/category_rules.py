@@ -2,7 +2,10 @@
 Deterministik otel departmanı kategori sınıflandırması.
 Aynı girdi → her zaman aynı çıktı. Rastgelelik yok.
 """
+
 from __future__ import annotations
+
+import logging
 
 import re
 from dataclasses import dataclass
@@ -49,7 +52,7 @@ CATEGORY_PHRASES: dict[str, list[tuple[str, float]]] = {
         ("housekeeping geç", 5.0), ("havlu değiştirilmedi", 5.5), ("toz her yerde", 4.0),
         ("hijyen berbat", 5.0), ("oda kokuyordu", 4.5), ("pis banyo", 5.0),
         ("boş tabaklar", 5.5), ("bos tabaklar", 5.5), ("koridorlara bırakılan", 5.5),
-        ("pike istedik", 5.5), ("pike getirilmedi", 5.5),
+        ("pike istedik", 5.5), ("pike getirilmedi", 5.5), ("yorgan", 6.0), ("yorganlar", 6.0), ("yorganları", 6.0),
         ("umumi tuvaletler", 6.0), ("tuvaletler tertemiz", 5.5),
         ("odalar çok küçük", 6.5), ("odalar cok kucuk", 6.5), ("oda çok küçük", 6.5),
         ("oda küçük", 5.5), ("odalar küçük", 5.5), ("odalar dar", 5.5),
@@ -142,6 +145,8 @@ CATEGORY_PHRASES: dict[str, list[tuple[str, float]]] = {
         ("barmen ilgisiz", 5.5), ("hostes kaba", 5.5),
         ("animatör ilgili", 5.0), ("animatör ilgisiz", 5.5),
         ("istemeyerek", 6.0), ("istemeyerek yapiyor", 6.5),
+        ("yüzümüze bakmadan", 6.5), ("yuzumuze bakmadan", 6.5), ("havaya konuşuyorlar", 6.5), ("havaya konusuyorlar", 6.5),
+        ("küçük otel tercih etseydiniz", 6.5), ("kucuk otel tercih etseydiniz", 6.5), ("tercih etseydiniz", 6.0),
     ],
     "RECEPTION_TEMP": [
         ("check-in yavaş", 6.0), ("check-in çok yavaş", 6.5), ("check-in", 4.0),
@@ -202,12 +207,6 @@ CATEGORY_PHRASES: dict[str, list[tuple[str, float]]] = {
         ("ödeme sorunu", 5.0), ("fiyat performans", 4.0),
         ("yanlış fatura", 6.0), ("ekstra ucret", 6.0),
     ],
-    CAT_GROUNDS: [
-        ("taksi bulamadı", 7.0), ("taksi bulamadık", 7.0), ("taksi göndermek", 6.5),
-        ("taksiciler kabul etmedi", 7.0), ("hastaneden otele", 7.0), ("araba ile", 5.5),
-        ("araç ile", 6.0), ("hastane", 6.0), ("ambulans", 6.5), ("ulaşım", 6.0),
-        ("transfer", 6.0), ("shuttle", 6.0), ("otopark", 5.5), ("güvenlik", 5.5),
-    ],
 }
 
 CATEGORY_PHRASES[CAT_RECEPTION] = CATEGORY_PHRASES.pop("RECEPTION_TEMP", []) + CATEGORY_PHRASES.pop("FINANCE_TEMP", [])
@@ -216,7 +215,7 @@ try:
     from app.services.lexicon_loader import merge_category_phrases
     CATEGORY_PHRASES = merge_category_phrases(CATEGORY_PHRASES)
 except Exception:
-    pass
+    logging.getLogger(__name__).debug("?: hata yutuldu", exc_info=True)
 
 # Tek kelime ağırlıkları
 CATEGORY_KEYWORD_WEIGHTS: dict[str, dict[str, float]] = {
@@ -224,6 +223,7 @@ CATEGORY_KEYWORD_WEIGHTS: dict[str, dict[str, float]] = {
         "oda": 2.0, "banyo": 2.5, "havlu": 2.5, "çarşaf": 2.5, "yatak": 2.0, "temizlik": 3.0,
         "temiz": 2.0, "kirli": 2.5, "lekeli": 2.5, "pis": 2.5, "hijyen": 2.5, "toz": 2.0,
         "duş": 1.5, "tuvalet": 2.0, "housekeeping": 3.0, "dağınık": 2.0,
+        "yorgan": 3.5, "yorganlar": 3.5, "yorganları": 3.5,
     },
     CAT_FOOD: {
         "yemek": 3.0, "lezzet": 2.5, "lezzetli": 2.5, "lezzetsiz": 3.0, "kahvaltı": 3.0,
@@ -248,6 +248,7 @@ CATEGORY_KEYWORD_WEIGHTS: dict[str, dict[str, float]] = {
         "suratsiz": 3.0, "suratsız": 3.0, "lakayit": 3.0, "bağırdı": 2.5,
         "barmen": 2.0, "sef": 2.0, "şef": 2.0, "animatör": 2.0, "mudur": 1.5, "müdür": 1.5,
         "hizmet": 2.0, "servis": 2.0, "ekip": 2.0,
+        "konuşuyorlar": 3.0, "konusuyorlar": 3.0, "bakmadan": 2.5,
     },
     "RECEPTION_TEMP": {
         "resepsiyon": 2.5, "giriş": 2.5, "çıkış": 2.5, "check": 2.0, "checkin": 2.5,
@@ -281,11 +282,6 @@ CATEGORY_KEYWORD_WEIGHTS: dict[str, dict[str, float]] = {
         "fiyat": 2.5, "fatura": 3.0, "ücret": 2.5, "ucret": 2.5, "pahalı": 2.5, "fahiş": 2.5,
         "depozito": 2.5, "iade": 2.0, "ödeme": 2.5, "odeme": 2.5, "overcharge": 3.0,
     },
-    CAT_GROUNDS: {
-        "taksi": 4.0, "araç": 3.5, "araba": 3.5, "transfer": 3.5, "ulaşım": 3.5,
-        "hastane": 3.5, "ambulans": 3.5, "otopark": 3.0, "güvenlik": 3.0, "shuttle": 3.5,
-        "getiremediler": 4.0, "götüremediler": 4.0,
-    },
 }
 
 _reception_dict = CATEGORY_KEYWORD_WEIGHTS.pop("RECEPTION_TEMP", {})
@@ -311,6 +307,7 @@ class RuleClassificationResult:
 
 def _prepare_text(text: str) -> tuple[str, list[str]]:
     cleaned = normalize_turkish(text)
+    cleaned = cleaned.replace("lelekli", "lekeli").replace("lelekliydi", "lekeliydi")
     cleaned = re.sub(r"[^\w\s]", " ", cleaned)
     cleaned = re.sub(r"\s+", " ", cleaned).strip()
     tokens = tokenize_turkish(cleaned)
@@ -417,9 +414,35 @@ def _score_categories(cleaned: str, tokens: list[str]) -> dict[str, float]:
 
 def _apply_disambiguation(cleaned: str, tokens: list[str], scores: dict[str, float]) -> None:
     """Departman çakışmalarını deterministik çöz."""
-    # Taksi/araç/hastane/ulaşım -> Çevre, Güvenlik & Ulaşım
-    if any(w in cleaned for w in ("taksi", "ambulans", "hastane", "transfer", "shuttle", "getiremediler", "götüremediler")):
-        scores[CAT_GROUNDS] += 5.0
+    # Resepsiyon / Check-in / Ön Büro özel çapa
+    if any(w in cleaned for w in ("resepsiyon", "resepsiyondaki", "check-in", "checkin", "check in", "ön büro", "on buro")) and any(
+        w in cleaned for w in ("çalışanlar", "calisanlar", "güler yüzlü", "guleryuzlu", "yardımsever", "yardimsever", "hızlı", "hizli", "giriş")
+    ):
+        scores[CAT_RECEPTION] += 9.0
+        scores[CAT_STAFF] -= 4.0
+
+    # Ses yalıtımı / gürültü → Otel Atmosferi & Misafir Profili (Oda HK değil)
+    if any(w in cleaned for w in ("gürültü", "gurultu", "ses yalıtımı", "ses yalitimi", "ses yalitimi yetersiz", "ses yalıtımı yetersiz", "yan odadan")):
+        scores[CAT_OTHER] += 8.5
+        scores[CAT_CLEANING] -= 6.0
+        scores[CAT_SPA] -= 4.0
+
+    # Garson davranışı / sipariş gecikmesi → Personel Davranışı
+    if "garson" in cleaned or "garsonlar" in cleaned:
+        if any(w in cleaned for w in ("geç bakıyordu", "gec bakiyordu", "ilgisiz", "yarım saat", "yarim saat", "bekletti", "kaba")):
+            scores[CAT_STAFF] += 8.5
+            scores[CAT_FOOD] -= 4.0
+
+    # Odadaki çarşaf / havlu / yatak lekesi → Oda Hizmetleri & Housekeeping
+    if any(w in cleaned for w in ("çarşaf", "carsaf", "çarşaflar", "carsaflar", "lekeli", "lekeliydi")) and "oda" in cleaned:
+        scores[CAT_CLEANING] += 9.0
+        scores[CAT_FOOD] -= 5.0
+
+    # Fiyat performans / standart otel → Otel Atmosferi (Muhasebe değil)
+    if "fiyat performans" in cleaned or "standart bir otel" in cleaned:
+        if not any(w in cleaned for w in ("fatura", "overcharge", "ekstra ücret", "depozito")):
+            scores[CAT_OTHER] += 8.0
+            scores[CAT_FINANCE] -= 8.0
 
     # kibar/kibardı → Personel; bar alt-dizesi tuzaklarını engelle
     if any(w in tokens or w in cleaned for w in ("kibar", "kibardı", "kibardi", "kibarca")):

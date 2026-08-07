@@ -1,6 +1,9 @@
 """OpsCopilotAdapter — routes staff ops queries through Gateway → Planner → Tools."""
 
+
 from __future__ import annotations
+
+import logging
 
 import os
 import re
@@ -233,7 +236,7 @@ class OpsCopilotAdapter:
                     mem.add_turn(session_id, role, content, msg.get("metadata") or {})
                     existing_contents.add(content)
         except Exception:
-            pass
+            logging.getLogger(__name__).debug("_hydrate_gateway_memory: hata yutuldu", exc_info=True)
 
     @staticmethod
     def _map_role(role: Optional[str]) -> str:

@@ -18,8 +18,8 @@ logger = logging.getLogger(__name__)
 
 _CANDIDATE_DIRS = [
     os.environ.get("BERTURK_MODEL_DIR"),
+    os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "simulation", "berturk_clause_model")),
     os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "simulation", "berturk_clause_model")),
-    r"D:\KodYazılımStaj1\simulation\berturk_clause_model",
 ]
 _MODEL_DIR = None
 for _d in _CANDIDATE_DIRS:

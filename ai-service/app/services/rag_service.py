@@ -290,7 +290,7 @@ class RagService:
                 total_rating += int(m.get("rating", 0))
                 rating_count += 1
             except (ValueError, TypeError):
-                pass
+                logger.debug("_build_local_answer: hata yutuldu", exc_info=True)
 
         total = len(matches)
         top_cat = max(cat_counts, key=cat_counts.get)
@@ -599,7 +599,7 @@ CEVAP:"""
             if built and built.strip():
                 return built
         except Exception:
-            pass
+            logger.debug("generate_summary: hata yutuldu", exc_info=True)
 
         # Fallback: complaint-keyword sentence pick
         raw = re.sub(r"\s+", " ", text.strip())

@@ -15,7 +15,10 @@ Each case tracks:
 This is how the system learns: "same operational problem, different words"
 """
 
+
 from __future__ import annotations
+
+import logging
 
 import hashlib
 import json
@@ -92,7 +95,7 @@ class OperationalMemoryGraph:
                 self._cases = data.get("cases", {})
                 self._review_to_case = defaultdict(set, data.get("review_to_case", {}))
             except Exception:
-                pass
+                logging.getLogger(__name__).debug("_load: hata yutuldu", exc_info=True)
 
     def save(self) -> None:
         os.makedirs(os.path.dirname(self._persist_path), exist_ok=True)

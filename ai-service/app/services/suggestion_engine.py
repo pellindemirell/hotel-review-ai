@@ -2,7 +2,10 @@
 Bağlam odaklı departman aksiyon önerisi motoru.
 Metin, kategori, duygu ve alt kalıplara göre spesifik Türkçe öneri üretir.
 """
+
 from __future__ import annotations
+
+import logging
 
 from dataclasses import dataclass, field
 from typing import Optional
@@ -337,7 +340,7 @@ STAFF_RULES = [
 RECEPTION_RULES = [
     _SubRule(
         ("yönlendirme", "yonlendirme", "bilgilendirme", "bilgi verilmedi", "telefon numar", "bilgilendirme kağıdı", "bilgilendirme kagidi"),
-        "Ön Büro ve Misafir İlişkileri oda bilgilendirme kartı / telefon numaraları ve resepsiyon yönlendirme süreçlerini güncellemeli; finans aksiyonu gerektirmez.",
+        "Ön Büro ve Misafir İlişkileri oda bilgilendirme kartı / telefon numaraları ve resepsiyon yönlendirme süreçlerini güncellemeli.",
         weight=14,
         sentiment_hint="Negative",
     ),
@@ -409,7 +412,7 @@ def _apply_lexicon_suggestion_rules() -> None:
                     CATEGORY_RULES[cat].append(rule)
                     existing_sugs.add(rule.suggestion)
     except Exception:
-        pass
+        logging.getLogger(__name__).debug("_apply_lexicon_suggestion_rules: hata yutuldu", exc_info=True)
 
 
 _apply_lexicon_suggestion_rules()

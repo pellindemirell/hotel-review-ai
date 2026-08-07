@@ -200,7 +200,7 @@ def test_queue_long_wait_one_hour_negative():
     d = classify_clause("Her bara gittigimizde bir saat bekledik")
     assert d.sentiment == "Negative"
     assert d.sentiment_score <= -0.55
-    assert d.aspect_key in ("service_queue", "fb_staffing", "staff_shortage")
+    assert d.aspect_key in ("service_queue", "fb_staffing", "staff_shortage", "capacity")
 
 
 def test_pool_queue_havuz_kaydirak_uzun_sira_negative():

@@ -3,7 +3,10 @@
 Otomasyon klasöründeki Playwright scraper'ı subprocess olarak çalıştırır,
 çıktı CSV'sini okuyup IngestedReview listesine dönüştürür.
 """
+
 from __future__ import annotations
+
+import logging
 
 import csv
 import os
@@ -162,7 +165,7 @@ class GoogleMapsPlaywrightAdapter(BaseScraperAdapter):
             try:
                 os.unlink(tmp_path)
             except Exception:
-                pass
+                logging.getLogger(__name__).debug("_run_playwright: hata yutuldu", exc_info=True)
 
             for r in reviews:
                 r.ingestion_method = self.source_id

@@ -11,7 +11,10 @@ Detects:
 Data source: OperationalMemoryGraph + timestamps
 """
 
+
 from __future__ import annotations
+
+import logging
 
 import json
 import os
@@ -47,7 +50,7 @@ class TrendAnalyzer:
                 self._weekly_counts = defaultdict(dict, data.get("weekly", {}))
                 self._monthly_counts = defaultdict(dict, data.get("monthly", {}))
             except Exception:
-                pass
+                logging.getLogger(__name__).debug("_load: hata yutuldu", exc_info=True)
 
     def save(self) -> None:
         os.makedirs(os.path.dirname(self._persist_path), exist_ok=True)

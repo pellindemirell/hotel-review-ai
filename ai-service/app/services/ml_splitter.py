@@ -21,7 +21,6 @@ _CANDIDATE_DIRS = [
     os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "simulation")),
     os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "simulation")),
     os.path.normpath(os.path.join(os.getcwd(), "simulation")),
-    r"D:\KodYazılımStaj1\simulation",
 ]
 
 _clf = None
@@ -109,7 +108,7 @@ DEPT_KEYWORDS = {
 }
 
 CANDIDATES = [
-    r'\.', r'\!', r'\?', r'\,', r'\;', r'\:',
+    r'\.', r'\!', r'\?', r'\,', r'\;', r'\:', r'\|',
     r'\bve\b', r'\bveya\b', r'\bama\b', r'\bfakat\b', r'\bancak\b', r'\blakin\b',
     r'\brağmen\b', r'\bragmen\b',
     r'\bçünkü\b', r'\bcunku\b', r'\bayrıca\b', r'\bayrica\b', r'\bhatta\b',
@@ -228,7 +227,7 @@ def split_clauses_ml(text: str) -> Optional[List[str]]:
         split_indices = []
         for m, pred, tokens, left_ctx, right_ctx in zip(candidates, predictions, tokens_list, left_list, right_list):
             # Override 1: Hard punctuation boundaries should always split
-            if tokens in ('.', '!', '?'):
+            if tokens in ('.', '!', '?', '|'):
                 pred = 1
             # Override 2: Contrastive/causal conjunctions connecting two clauses with verbs should split
             elif tokens in ('ama', 'fakat', 'ancak', 'lakin', 'çünkü', 'cunku', 'rağmen', 'ragmen') and _has_verb_any(left_ctx) and _has_verb_any(right_ctx):
@@ -261,14 +260,9 @@ def split_clauses_ml(text: str) -> Optional[List[str]]:
                     proximity = any(w in joined_lr for w in ("yakin", "yakın", "uzak", "mesafe", "yakind"))
                     if proximity:
                         pred = 0
-                    elif dept_shift and _has_verb_any(left_ctx) and _has_verb_any(right_ctx):
-                        # Cross-department "ve" with verbs on both sides → force split
+                    elif dept_shift or (_has_verb_any(left_ctx) and _has_verb_any(right_ctx) and len(left_ctx.strip()) >= 12 and len(right_ctx.strip()) >= 12):
+                        # Cross-department "ve" or dual-verb long clause "ve" → force split
                         pred = 1
-                    elif _has_verb_any(left_ctx) and _has_verb_any(right_ctx):
-                        if dept_shift and (len(left_ctx.strip()) >= 12 and len(right_ctx.strip()) >= 12):
-                            pred = 1
-                        else:
-                            pred = 0
                     else:
                         pred = 0
             # Override 4: conservative split on comma/semicolon to reduce false splits in long narratives

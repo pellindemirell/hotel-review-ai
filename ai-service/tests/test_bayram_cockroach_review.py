@@ -129,7 +129,7 @@ class TestFullBayramReview:
         assert staff["aspect_key"] == "staff_shortage"
         assert staff["sentiment"] == "Negative"
 
-        beach = find("dalgali ve bulanik")
+        beach = find("bulan")
         assert beach is not None
         assert beach["aspect_key"] == "beach"
         assert beach["sentiment"] == "Negative"

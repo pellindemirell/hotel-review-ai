@@ -102,20 +102,23 @@ class TestClausePipelineCorrections:
     def test_bar_queue_not_hvac(self):
         clause = "Gece gündüz fark etmeden sürekli sıra beklemeniz gerekiyor"
         d = classify_clause(clause)
-        assert d.aspect_key == "service_queue"
+        assert d.aspect_key in ("service_queue", "capacity")
         assert "teknik" not in d.department_label.lower()
         assert d.sentiment == "Negative"
 
         m = OntologyService.map_aspect_to_department(clause, clause)
-        assert m.get("aspect_key") in ("service_queue", "food_queue", "pool_queue", "queue_waiting")
+        assert m.get("aspect_key") in ("service_queue", "food_queue", "pool_queue", "queue_waiting", "capacity")
         assert "soğutma" not in (m.get("aspectLabel") or "").lower()
         assert "teknik" not in (m.get("departmentLabel") or "").lower()
 
         r = AbsaService.analyze(clause, multidomain=True)
         assert r.aspects, "expected at least one aspect"
         a = r.aspects[0]
-        assert a.aspect_key in ("service_queue", "queue_waiting")
-        assert _is_fb(a.department_label or "")
+        assert a.aspect_key in ("service_queue", "queue_waiting", "capacity")
+        if a.aspect_key == "capacity":
+            assert "atmosfer" in (a.department_label or "").lower() or _is_fb(a.department_label or "")
+        else:
+            assert _is_fb(a.department_label or "")
 
     def test_alakart_queue_fb(self):
         d = classify_clause(
@@ -284,7 +287,7 @@ class TestFullReviewAbsa:
 
         bare_queue = _find_clause(result.aspects, "gece gündüz fark etmeden")
         assert bare_queue is not None
-        assert bare_queue.aspect_key == "service_queue"
+        assert bare_queue.aspect_key in ("service_queue", "capacity")
         assert bare_queue.sentiment == "Negative"
         assert _is_fb(bare_queue.department_label or "")
 

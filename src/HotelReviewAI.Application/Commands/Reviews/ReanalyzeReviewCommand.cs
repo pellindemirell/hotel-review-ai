@@ -13,6 +13,7 @@ public class ReanalyzeReviewHandler : IRequestHandler<ReanalyzeReviewCommand, bo
 {
     private readonly IReviewRepository _reviewRepository;
     private readonly IReviewAnalysisRepository _reviewAnalysisRepository;
+    private readonly IActionItemRepository _actionItemRepository;
     private readonly IReviewAnalysisProcessingService _analysisProcessingService;
 
     private readonly ICurrentUserService _currentUserService;
@@ -20,11 +21,13 @@ public class ReanalyzeReviewHandler : IRequestHandler<ReanalyzeReviewCommand, bo
     public ReanalyzeReviewHandler(
         IReviewRepository reviewRepository,
         IReviewAnalysisRepository reviewAnalysisRepository,
+        IActionItemRepository actionItemRepository,
         IReviewAnalysisProcessingService analysisProcessingService,
         ICurrentUserService currentUserService)
     {
         _reviewRepository = reviewRepository;
         _reviewAnalysisRepository = reviewAnalysisRepository;
+        _actionItemRepository = actionItemRepository;
         _analysisProcessingService = analysisProcessingService;
         _currentUserService = currentUserService;
     }
@@ -50,6 +53,22 @@ public class ReanalyzeReviewHandler : IRequestHandler<ReanalyzeReviewCommand, bo
         {
             await _reviewAnalysisRepository.SoftDeleteRangeAsync(existingAnalyses);
             await _reviewAnalysisRepository.SaveChangesAsync();
+        }
+
+        // Eski ActionItem'lar da pasifleştirilmeli: ProcessAnalysisAsync her negatif
+        // aspect için koşulsuz yeni ActionItem ekliyor. Önceden yalnızca analizler
+        // soft-delete ediliyordu, dolayısıyla her yeniden analiz panelde aynı yorumun
+        // aksiyonlarını ikinci kez oluşturuyor ve liste mükerrer kayıtla şişiyordu.
+        // Yalnızca dokunulmamış (Open + atanmamış) kayıtlar pasifleştirilir; personelin
+        // üstlendiği veya kapattığı iş yeniden analizle silinmemeli.
+        var existingActionItems = await _actionItemRepository.GetByReviewIdAsync(request.ReviewId);
+        var untouchedActionItems = existingActionItems
+            .Where(a => a.Status == ActionItemStatus.Open && a.AssignedTo == null)
+            .ToList();
+        if (untouchedActionItems.Count > 0)
+        {
+            await _actionItemRepository.SoftDeleteRangeAsync(untouchedActionItems);
+            await _actionItemRepository.SaveChangesAsync();
         }
 
         // 2. AI analizi ve otomatik aksiyon işlemlerini ortak servise devret (isReanalysis: true)

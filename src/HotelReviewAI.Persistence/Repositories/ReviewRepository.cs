@@ -21,7 +21,15 @@ public class ReviewRepository : GenericRepository<Review>, IReviewRepository
 
     public async Task<(IEnumerable<Review> Items, int TotalCount)> GetFilteredReviewsAsync(ReviewFilter filter)
     {
-        var query = DbSet.Include(r => r.Analyses).ThenInclude(a => a.Category).AsQueryable();
+        // Attachments da yüklenmeli: MappingConfig, ReviewListItemDto.PhotoUrl'i
+        // src.Attachments.First().FileUrl üzerinden dolduruyor. Include olmadan
+        // koleksiyon boş geliyor, PhotoUrl sessizce null kalıyordu — fotoğraflı
+        // yorumlar listede görünüyor ama görselleri hiç çıkmıyordu (detay ucunda
+        // çıkıyordu, çünkü GetByIdWithDetailsAsync Attachments'ı zaten Include ediyor).
+        var query = DbSet
+            .Include(r => r.Analyses).ThenInclude(a => a.Category)
+            .Include(r => r.Attachments)
+            .AsQueryable();
 
         if (filter.DateFrom is not null)
         {
