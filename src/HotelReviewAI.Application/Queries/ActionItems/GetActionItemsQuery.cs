@@ -21,21 +21,31 @@ public class ActionItemDetailsDto
     public string Title { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
     public DateTime? DueDate { get; set; }
+
+    /// <summary>
+    /// Departman yöneticisinin bu işi verdiği ekip üyesi — yalnızca kayıt.
+    /// Yetki, filtre ve durum akışını etkilemez.
+    /// </summary>
+    public Guid? AssignedStaffId { get; set; }
+    public string? AssignedStaffName { get; set; }
 }
 
 public class GetActionItemsHandler : IRequestHandler<GetActionItemsQuery, List<ActionItemDetailsDto>>
 {
     private readonly IActionItemRepository _actionItemRepository;
     private readonly IDepartmentRepository _departmentRepository;
+    private readonly IStaffMemberRepository _staffMemberRepository;
     private readonly ICurrentUserService _currentUserService;
 
     public GetActionItemsHandler(
         IActionItemRepository actionItemRepository,
         IDepartmentRepository departmentRepository,
+        IStaffMemberRepository staffMemberRepository,
         ICurrentUserService currentUserService)
     {
         _actionItemRepository = actionItemRepository;
         _departmentRepository = departmentRepository;
+        _staffMemberRepository = staffMemberRepository;
         _currentUserService = currentUserService;
     }
 
@@ -62,10 +72,20 @@ public class GetActionItemsHandler : IRequestHandler<GetActionItemsQuery, List<A
 
         var departments = (await _departmentRepository.GetAllAsync()).ToDictionary(d => d.Id);
 
+        // Adlar ayrı sorguyla çekiliyor: Include ile gelen ilişki global
+        // IsActive filtresine takıldığından, ekipten çıkarılmış çalışanın adı
+        // null geliyor ve "kime verdim" notu boşa düşüyordu.
+        var staffNames = await _staffMemberRepository.GetNamesByIdsAsync(
+            items.Where(x => x.AssignedStaffId.HasValue).Select(x => x.AssignedStaffId!.Value));
+
         return items.Select(x =>
         {
             var dto = x.Adapt<ActionItemDetailsDto>();
             dto.DepartmentName = departments.TryGetValue(x.DepartmentId, out var dept) ? dept.Name : "Bilinmeyen";
+            dto.AssignedStaffName = x.AssignedStaffId.HasValue
+                && staffNames.TryGetValue(x.AssignedStaffId.Value, out var staffName)
+                    ? staffName
+                    : null;
             return dto;
         }).ToList();
     }

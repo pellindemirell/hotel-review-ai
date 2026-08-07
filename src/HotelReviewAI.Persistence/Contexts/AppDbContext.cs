@@ -25,6 +25,7 @@ public class AppDbContext : DbContext
     public DbSet<Department> Departments => Set<Department>();
     public DbSet<Hotel> Hotels => Set<Hotel>();
     public DbSet<AnalysisJob> AnalysisJobs => Set<AnalysisJob>();
+    public DbSet<StaffMember> StaffMembers => Set<StaffMember>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

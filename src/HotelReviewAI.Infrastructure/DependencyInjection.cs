@@ -18,6 +18,8 @@ public static class DependencyInjection
 
         // Cloudinary görsel depolama servisi
         services.AddScoped<ICloudinaryService, CloudinaryService>();
+        // Yorum görseli yükleme — mobil ve web paneli ortak kullanır
+        services.AddScoped<IReviewPhotoStorage, ReviewPhotoStorage>();
 
         // Mevcut kullanıcı claim'lerini okuyan servis (Interceptor ve Handler'lar için)
         services.AddHttpContextAccessor();

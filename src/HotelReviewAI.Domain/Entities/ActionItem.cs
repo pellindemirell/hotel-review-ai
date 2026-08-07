@@ -13,6 +13,15 @@ public class ActionItem : BaseEntity
     public Guid? AssignedTo { get; set; }
     public User? AssignedUser { get; set; }
 
+    /// <summary>
+    /// Departman yöneticisinin bu işi verdiği ekip üyesi — YALNIZCA KAYIT.
+    /// Hiçbir iş mantığını etkilemez: yetki, filtre, bildirim ve durum akışı
+    /// bu alandan bağımsızdır. Amaç yöneticinin "bu işi kime vermiştim"
+    /// sorusuna sonradan bakabilmesi. Çalışanın sistemde hesabı yoktur.
+    /// </summary>
+    public Guid? AssignedStaffId { get; set; }
+    public StaffMember? AssignedStaff { get; set; }
+
     public Guid? HotelId { get; set; }
     public Hotel? Hotel { get; set; }
 

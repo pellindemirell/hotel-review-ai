@@ -138,7 +138,11 @@ public class AiAnalysisService : IAiAnalysisService
             using var content = new MultipartFormDataContent();
             var streamContent = new StreamContent(imageStream);
             streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(contentType);
-            content.Add(streamContent, "file", fileName);
+            // Alan adı "image" olmalı: ai-service tarafındaki uç
+            // `async def ocr_image(image: UploadFile = File(...))` şeklinde tanımlı.
+            // Burada "file" gönderiliyordu ve her OCR isteği 422 ile reddediliyordu;
+            // hata yakalanıp null döndüğü için OcrText sessizce hep boş kalıyordu.
+            content.Add(streamContent, "image", fileName);
 
             var response = await _httpClient.PostAsync("/ocr-image", content, ct);
             if (!response.IsSuccessStatusCode)

@@ -32,6 +32,13 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
         options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+        // Tarihler UTC'ye normalize edilir. Tarayıcının <input type="date">
+        // alanı saat dilimsiz ("2026-08-06") gönderiyor ve Npgsql bunu
+        // "timestamp with time zone" kolonuna yazmayı reddediyordu. Tek tek
+        // komutlarda değil burada çözülüyor ki her yeni tarih alanı için
+        // tekrar etmesin (bkz. UtcDateTimeConverter).
+        options.JsonSerializerOptions.Converters.Add(new HotelReviewAI.Api.Serialization.UtcDateTimeConverter());
+        options.JsonSerializerOptions.Converters.Add(new HotelReviewAI.Api.Serialization.NullableUtcDateTimeConverter());
     })
     .ConfigureApiBehaviorOptions(options =>
     {

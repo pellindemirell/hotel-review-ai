@@ -11,6 +11,14 @@ public class ActionItemRepository : GenericRepository<ActionItem>, IActionItemRe
     {
     }
 
+    public async Task<IEnumerable<ActionItem>> GetByAssignedStaffIdAsync(Guid staffId) =>
+        await DbSet
+            .Include(a => a.Review)
+            .Where(a => a.AssignedStaffId == staffId)
+            // En yeni önce: yönetici genelde son verdiği işi arıyor.
+            .OrderByDescending(a => a.UpdatedAt ?? a.CreatedAt)
+            .ToListAsync();
+
     public async Task<IEnumerable<ActionItem>> GetByReviewIdAsync(Guid reviewId) =>
         await DbSet.Where(a => a.ReviewId == reviewId).ToListAsync();
 
@@ -22,7 +30,13 @@ public class ActionItemRepository : GenericRepository<ActionItem>, IActionItemRe
 
     public async Task<IEnumerable<ActionItem>> GetFilteredAsync(Guid? departmentId, Guid? assignedTo, Guid? hotelId)
     {
-        var query = DbSet.Include(a => a.Review).AsQueryable();
+        // AssignedStaff da yüklenmeli: ActionItemDetailsDto.AssignedStaffName
+        // bu ilişkiden doldurulur. Include olmadan isim sessizce null kalır
+        // (aynı hatayı Reviews listesinde Attachments ile yaşamıştık).
+        var query = DbSet
+            .Include(a => a.Review)
+            .Include(a => a.AssignedStaff)
+            .AsQueryable();
 
         if (departmentId.HasValue)
         {
