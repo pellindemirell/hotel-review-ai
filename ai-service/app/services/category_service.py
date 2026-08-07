@@ -24,27 +24,7 @@ from app.services.turkish_nlp_utils import (
 
 logger = logging.getLogger("ai_service")
 
-# Model dizini: önce MODEL_DIR ortam değişkeni, sonra repo-göreli `simulation/`.
-# Önceden tek bir Windows mutlak yolu ("D:\\KodYazılımStaj1\\simulation") gömülüydü;
-# başka hiçbir işletim sisteminde bulunamıyor, model sessizce yüklenmiyordu.
-_HERE = os.path.dirname(os.path.abspath(__file__))
-_CANDIDATE_MODEL_DIRS = [
-    os.environ.get("MODEL_DIR"),
-    os.path.normpath(os.path.join(_HERE, "..", "..", "simulation")),
-    os.path.normpath(os.path.join(_HERE, "..", "..", "..", "simulation")),
-    os.path.normpath(os.path.join(os.getcwd(), "simulation")),
-]
-
-
-def _resolve_model_dir() -> str:
-    for candidate in _CANDIDATE_MODEL_DIRS:
-        if candidate and os.path.isfile(os.path.join(candidate, "category_model.joblib")):
-            return candidate
-    # Bulunamazsa ilk geçerli adayı döndür; load_model() zaten var-mı kontrolü yapıyor.
-    return next((c for c in _CANDIDATE_MODEL_DIRS if c), _HERE)
-
-
-MODEL_DIR = _resolve_model_dir()
+MODEL_DIR = os.getenv("SIMULATION_DIR", os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "simulation")))
 MODEL_PATH = os.path.join(MODEL_DIR, "category_model.joblib")
 VECTORIZER_PATH = os.path.join(MODEL_DIR, "vectorizer.joblib")
 CSV_PATH = os.path.join(MODEL_DIR, "synthetic_reviews.csv")
@@ -75,14 +55,7 @@ class CategoryService:
                 self.model = None
                 self.vectorizer = None
         else:
-            # Bu durum sessiz geçerse sistem "çalışıyor" görünüp ML doğruluğu tamamen
-            # devre dışı kalıyor. Aranan yolu da yazıyoruz ki eksik olan görünür olsun.
-            logger.info(
-                "ML kategori modeli bulunamadı — kural tabanlı fallback kullanılacak. "
-                "Aranan dizin: %s (category_model.joblib + vectorizer.joblib). "
-                "Farklı bir konum için MODEL_DIR ortam değişkenini ayarlayın.",
-                MODEL_DIR,
-            )
+            logger.warning("Model dosyaları bulunamadı, kural tabanlı fallback çalışacak.")
 
     def reload_model(self) -> bool:
         """Force reload after retrain so holdout/eval sees fresh artifacts."""

@@ -15,27 +15,39 @@ public record CreateMobileReviewCommand(
     int Rating,
     string Language,
     string? PhotoUrl,
-    string? OcrText
+    string? OcrText,
+    Guid? HotelId = null
 ) : IRequest<Guid>;
 
 public class CreateMobileReviewHandler : IRequestHandler<CreateMobileReviewCommand, Guid>
 {
     private readonly IReviewRepository _reviewRepository;
     private readonly IReviewAttachmentRepository _reviewAttachmentRepository;
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMediator _mediator;
 
     public CreateMobileReviewHandler(
         IReviewRepository reviewRepository,
         IReviewAttachmentRepository reviewAttachmentRepository,
+        ICurrentUserService currentUserService,
         IMediator mediator)
     {
         _reviewRepository = reviewRepository;
         _reviewAttachmentRepository = reviewAttachmentRepository;
+        _currentUserService = currentUserService;
         _mediator = mediator;
     }
 
     public async Task<Guid> Handle(CreateMobileReviewCommand request, CancellationToken cancellationToken)
     {
+        // HotelId hiç geçilmediği için mobil yorumlar NULL otelle kaydediliyordu.
+        // GetReviewsHandler, HotelAdmin/DepartmentManager için filtreyi
+        // HotelId = <kullanıcının oteli> olarak zorluyor; NULL hiçbir zaman
+        // eşleşmediğinden bu yorumlar panelde hiç görünmüyordu.
+        // Öncelik istekten gelen değerde (X-Hotel-Id header'ı), yoksa oturumdaki
+        // kullanıcının oteli kullanılır.
+        var effectiveHotelId = request.HotelId ?? _currentUserService.HotelId;
+
         var review = Review.Create(
             guestName: request.GuestName,
             comment: request.Comment,
@@ -43,7 +55,8 @@ public class CreateMobileReviewHandler : IRequestHandler<CreateMobileReviewComma
             language: request.Language,
             source: ReviewSource.Mobile,
             reviewDate: DateTime.UtcNow,
-            createdBy: null
+            createdBy: null,
+            hotelId: effectiveHotelId
         );
 
         await _reviewRepository.AddAsync(review);

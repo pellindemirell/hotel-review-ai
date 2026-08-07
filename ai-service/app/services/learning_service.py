@@ -4,7 +4,10 @@ Sürekli öğrenme (continuous / reinforcement learning) servisi.
 Her analiz edilen yorum learning_buffer'a yazılır; eşik aşıldığında veya
 manuel tetiklemede kategori modeli (SGD partial_fit) ve RAG indeksi güncellenir.
 """
+
 from __future__ import annotations
+
+import logging
 
 import csv
 import json
@@ -141,7 +144,7 @@ class LearningService:
                 )
                 count += 1
         except Exception:
-            pass
+            logging.getLogger(__name__).debug("_bootstrap_existing_data: hata yutuldu", exc_info=True)
 
         sim_dir = os.path.join(_PROJECT_ROOT, "simulation")
         csv_sources = [
@@ -311,7 +314,7 @@ class LearningService:
                 review_id=review_id,
             )
         except Exception:
-            pass
+            logging.getLogger(__name__).debug("record_from_analysis: hata yutuldu", exc_info=True)
         should = self.should_retrain()
         return {
             "stored": True,
@@ -327,7 +330,7 @@ class LearningService:
             from app.services.review_store import get_review_store
             get_review_store().add_absa_aspects("learning", aspects)
         except Exception:
-            pass
+            logging.getLogger(__name__).debug("_update_department_absa: hata yutuldu", exc_info=True)
 
     def record_correction(
         self,
@@ -411,7 +414,7 @@ class LearningService:
             stats["feedback_store"] = store_stats
             stats["category_distribution"] = trainer_stats.get("category_distribution") or store_stats.get("category_distribution", [])
         except Exception:
-            pass
+            logging.getLogger(__name__).debug("get_stats: hata yutuldu", exc_info=True)
         return stats
 
     def get_recent_buffer(self, limit: int = 20) -> list[dict[str, Any]]:

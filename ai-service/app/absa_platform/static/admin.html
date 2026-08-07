@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HCOS Admin Dashboard</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#0f172a; color:#e2e8f0; padding:20px; }
+.header { background:#1e293b; border-radius:12px; padding:16px 24px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; }
+.header h1 { font-size:20px; color:#38bdf8; }
+.header button { padding:6px 16px; background:#dc2626; color:#fff; border:none; border-radius:6px; cursor:pointer; }
+
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px; margin-bottom:20px; }
+.card { background:#1e293b; border:1px solid #334155; border-radius:10px; padding:16px; }
+.card h3 { font-size:14px; color:#94a3b8; margin-bottom:8px; }
+.card .big { font-size:32px; font-weight:700; color:#38bdf8; }
+.card .sub { font-size:13px; color:#64748b; margin-top:4px; }
+
+.user-table { width:100%; border-collapse:collapse; background:#1e293b; border-radius:10px; overflow:hidden; margin-bottom:20px; }
+.user-table th { background:#334155; padding:10px 12px; text-align:left; font-size:13px; color:#94a3b8; }
+.user-table td { padding:10px 12px; border-bottom:1px solid #334155; font-size:13px; }
+.user-table .bar { height:6px; border-radius:3px; background:#334155; overflow:hidden; }
+.user-table .bar-fill { height:100%; border-radius:3px; background:#4ade80; }
+.badge { padding:2px 8px; border-radius:4px; font-size:11px; }
+.badge.completed { background:#4ade8020; color:#4ade80; }
+.badge.pending { background:#f59e0b20; color:#f59e0b; }
+
+.correction-list { max-height:400px; overflow-y:auto; }
+.correction-item { padding:8px 0; border-bottom:1px solid #334155; font-size:13px; }
+.correction-item .meta { color:#64748b; font-size:12px; margin-top:2px; }
+
+.accuracy-grid { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; }
+.accuracy-card { background:#1e293b; border:1px solid #334155; border-radius:8px; padding:12px; min-width:180px; text-align:center; }
+.accuracy-card .pct { font-size:28px; font-weight:700; }
+.accuracy-card .pct.high { color:#4ade80; }
+.accuracy-card .pct.med { color:#f59e0b; }
+.accuracy-card .pct.low { color:#ef4444; }
+.accuracy-card .label { font-size:12px; color:#64748b; margin-top:4px; }
+
+.tab-bar { display:flex; gap:4px; margin-bottom:16px; }
+.tab-bar button { padding:8px 20px; background:#1e293b; border:1px solid #334155; color:#94a3b8; border-radius:6px; cursor:pointer; font-size:13px; }
+.tab-bar button.active { background:#38bdf8; color:#0f172a; border-color:#38bdf8; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>HCOS Admin Dashboard</h1>
+  <button onclick="logout()">Çıkış</button>
+</div>
+
+<div id="loginBanner" style="display:none;background:#1e293b;border-radius:12px;padding:40px;text-align:center;max-width:400px;margin:40px auto">
+  <h2 style="margin-bottom:16px">Admin Girişi</h2>
+  <input type="password" id="adminToken" placeholder="admin123" style="padding:12px;background:#0f172a;border:1px solid #334155;color:#e2e8f0;border-radius:8px;width:100%;margin-bottom:12px">
+  <button onclick="adminLogin()" style="padding:12px 32px;background:#38bdf8;color:#0f172a;border:none;border-radius:8px;cursor:pointer;font-size:16px;font-weight:600">Giriş</button>
+  <div id="loginErr" style="color:#ef4444;margin-top:8px;display:none">Geçersiz token</div>
+</div>
+
+<div id="dashboard" style="display:none">
+  <div class="grid" id="globalStats"></div>
+
+  <div class="tab-bar">
+    <button class="active" onclick="switchTab('progress',this)">İlerleme</button>
+    <button onclick="switchTab('accuracy',this)">Doğruluk</button>
+    <button onclick="switchTab('corrections',this)">Son Düzeltmeler</button>
+    <button onclick="switchTab('training',this)">Eğitim Verisi</button>
+  </div>
+
+  <div id="tabProgress"></div>
+  <div id="tabAccuracy" style="display:none"></div>
+  <div id="tabCorrections" style="display:none"></div>
+  <div id="tabTraining" style="display:none"></div>
+</div>
+
+<script>
+let state = { token: null, data: null };
+
+async function api(path, opts) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (state.token) headers['Authorization'] = 'Bearer ' + state.token;
+  const r = await fetch(path, { headers, ...opts });
+  if (r.status === 401) { state.token = null; showLogin(); throw new Error('expired'); }
+  return r.json();
+}
+
+function showLogin() {
+  document.getElementById('loginBanner').style.display = 'block';
+  document.getElementById('dashboard').style.display = 'none';
+}
+
+function adminLogin() {
+  const t = document.getElementById('adminToken').value.trim();
+  api('/api/login', { method:'POST', body: JSON.stringify({ token: t }) }).then(r => {
+    if (r.token) {
+      state.token = r.token;
+      if (r.user.role !== 'admin') { document.getElementById('loginErr').style.display='block'; return; }
+      document.getElementById('loginBanner').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      loadAll();
+    }
+  }).catch(() => { document.getElementById('loginErr').style.display='block'; });
+}
+
+function logout() { state.token = null; showLogin(); }
+
+async function loadAll() {
+  state.data = await api('/api/admin/progress');
+  renderGlobal();
+  renderProgress();
+  renderAccuracy();
+  renderCorrections();
+}
+
+function renderGlobal() {
+  const g = state.data.global;
+  const pct = g.total ? (g.done/g.total*100).toFixed(1) : 0;
+  document.getElementById('globalStats').innerHTML = `
+    <div class="card"><h3>Toplam Yorum</h3><div class="big">${g.total}</div></div>
+    <div class="card"><h3>Tamamlanan</h3><div class="big" style="color:#4ade80">${g.done}</div><div class="sub">%${pct}</div></div>
+    <div class="card"><h3>Kalan</h3><div class="big" style="color:#f59e0b">${g.total - g.done}</div></div>
+    <div class="card"><h3>Doğruluk (Ort)</h3><div class="big" style="color:#38bdf8">?%</div><div class="sub">Düzeltme bazlı</div></div>
+  `;
+}
+
+function renderProgress() {
+  const users = state.data.users;
+  document.getElementById('tabProgress').innerHTML = `
+    <table class="user-table">
+      <tr><th>Stajyer</th><th>Toplam</th><th>Tamam</th><th>Atlanan</th><th>Kalan</th><th>İlerleme</th><th></th></tr>
+      ${users.map(u => {
+        const pct = u.total ? (u.done/u.total*100).toFixed(0) : 0;
+        return `<tr>
+          <td><strong>${u.display_name}</strong><br><span style="color:#64748b;font-size:11px">@${u.username}</span></td>
+          <td>${u.total}</td>
+          <td style="color:#4ade80">${u.done}</td>
+          <td style="color:#f59e0b">${u.skipped || 0}</td>
+          <td style="color:#94a3b8">${u.pending + u.in_progress}</td>
+          <td style="width:150px"><div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div></td>
+          <td style="color:#94a3b8;font-size:13px">%${pct}</td>
+        </tr>`;
+      }).join('')}
+    </table>
+    <p style="color:#64748b;font-size:12px;margin-top:8px">Son güncelleme: ${new Date().toLocaleTimeString('tr-TR')}</p>
+  `;
+}
+
+function renderAccuracy() {
+  const acc = state.data.accuracy_by_type || {};
+  const keys = Object.keys(acc);
+  if (!keys.length) {
+    document.getElementById('tabAccuracy').innerHTML = '<p style="color:#64748b">Henüz düzeltme yapılmadı</p>';
+    return;
+  }
+  document.getElementById('tabAccuracy').innerHTML = `
+    <div class="accuracy-grid">
+      ${keys.map(k => {
+        const a = acc[k];
+        const cls = a.accuracy_pct >= 90 ? 'high' : a.accuracy_pct >= 70 ? 'med' : 'low';
+        return `<div class="accuracy-card">
+          <div class="pct ${cls}">%${a.accuracy_pct}</div>
+          <div class="label">${k} (${a.total} işlem)</div>
+          <div style="font-size:11px;color:#64748b;margin-top:4px">✓${a.approved} · ✗${a.corrected}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+}
+
+function renderCorrections() {
+  const corrections = state.data.recent_corrections || [];
+  if (!corrections.length) {
+    document.getElementById('tabCorrections').innerHTML = '<p style="color:#64748b">Henüz düzeltme yapılmadı</p>';
+    return;
+  }
+  document.getElementById('tabCorrections').innerHTML = `
+    <div class="card" style="padding:0">
+      <div class="correction-list">
+        ${corrections.map(c => `
+          <div class="correction-item" style="padding:10px 16px">
+            <div><strong>${c.user_name || c.user_id}</strong> — ${c.action === 'approved' ? '✓ onayladı' : c.action === 'skipped' ? '⏭ atladı' : '✗ düzeltti'} <strong>${c.field_type}</strong>: ${c.field_name}</div>
+            <div class="meta">${c.review_text ? c.review_text.substring(0, 100) + '...' : ''} · ${new Date(c.created_at).toLocaleString('tr-TR')}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['progress','accuracy','corrections','training'].forEach(t => {
+    document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1)).style.display = t === tab ? 'block' : 'none';
+  });
+  if (tab === 'training') loadTrainingData();
+}
+
+async function loadTrainingData() {
+  document.getElementById('tabTraining').innerHTML = '<p style="color:#64748b">Eğitim verisi yükleniyor...</p>';
+  const data = await api('/api/training/export');
+  document.getElementById('tabTraining').innerHTML = `
+    <p style="margin-bottom:12px;color:#94a3b8">${data.count} yorum eğitim için hazır</p>
+    <pre style="background:#1e293b;padding:16px;border-radius:8px;overflow:auto;max-height:500px;font-size:12px;color:#94a3b8">${escapeHtml(JSON.stringify(data.data.slice(0, 3), null, 2))}</pre>
+  `;
+}
+
+function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+// Auto-login check
+const saved = localStorage.getItem('hcos_admin_token');
+if (saved) { state.token = saved; loadAll().catch(() => showLogin()); }
+else showLogin();
+
+// Override api to save token
+const origApi = api;
+api = async function(path, opts) {
+  const r = await origApi(path, opts);
+  if (path === '/api/login' && r.token) localStorage.setItem('hcos_admin_token', r.token);
+  return r;
+};
+</script>
+</body>
+</html>

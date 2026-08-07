@@ -251,7 +251,12 @@ def split_clauses(text: str) -> list[str]:
 
 
 def _keyword_sentiment(clause: str) -> tuple[str, float]:
-    """Simple keyword sentiment baseline for the pipeline."""
+    """Enhanced sentiment calculation delegating to turkish_nlp_utils detect_strong_sentiment."""
+    from app.services.turkish_nlp_utils import detect_strong_sentiment
+    sent, score = detect_strong_sentiment(clause)
+    if sent:
+        return sent, score or 0.0
+
     low = clause.lower()
     low_folded = _fold_tr_word(low)
     pos = 0.0
@@ -262,7 +267,7 @@ def _keyword_sentiment(clause: str) -> tuple[str, float]:
                        "lezzetli", "sessiz", "hizli", "hızlı", "iyi", "begen", "beğen",
                        "ilgili", "ilgiliydi", "güzeldi", "guzeldi", "basariliydi",
                        "yardimci", "yardımcı", "yardım", "yardim", "nazik", "güleryüz",
-                       "guleryuz", "ilgilen", "ilgilendi", "destek", "coşuyor", "cosuyor",
+                       "guleryuz", "ilgilendi", "destek", "coşuyor", "cosuyor",
                        "başarılıydı", "basariliydi", "beğendik", "begeni", "beğeni",
                        "güzel", "guzel", "iyiydi", "iyi"]
     negative_words = ["kotu", "kötü", "berbat", "pis", "kirli", "yorgun", "pisman", "pişman",
@@ -270,7 +275,7 @@ def _keyword_sentiment(clause: str) -> tuple[str, float]:
                        "karisik", "karışık", "yorucu", "kaba", "ilgisiz", "gurultu", "gürültü",
                        "ariza", "arıza", "bozuk", "çalışmıyor", "calismiyor", "sorun", "hata",
                        "bekleme", "kuyruk", "dusuk", "düşük", "yok", "bulamiyor", "bulamıyor",
-                       "ugras", "uğraş", "beklemiyordum", "beklemezdim"]
+                       "ugras", "uğraş", "beklemiyordum", "beklemezdim", "ilgilenmedi", "ilgilenmediler"]
 
     # Match both native Turkish and ASCII-folded forms
     for w in positive_words:
@@ -586,7 +591,7 @@ def _ml_consensus_agrees(clause: str, dept: str) -> bool:
             idx = int(probs.argmax())
             tfidf_dept = _clause_labels[idx]
         except Exception:
-            pass
+            logger.debug("_ml_consensus_agrees: hata yutuldu", exc_info=True)
     # Run embedding model
     emb_dept = None
     if _emb_model and _emb_sbert and _emb_clf is not None:
@@ -596,7 +601,7 @@ def _ml_consensus_agrees(clause: str, dept: str) -> bool:
             idx = int(probs.argmax())
             emb_dept = _emb_labels[idx]
         except Exception:
-            pass
+            logger.debug("_ml_consensus_agrees: hata yutuldu", exc_info=True)
     # Both must agree with the proposed dept
     if tfidf_dept is not None and emb_dept is not None:
         return tfidf_dept == dept and emb_dept == dept
@@ -657,16 +662,11 @@ def _select_department(
 
 def analyze_text(text: str) -> list[dict]:
     """Analyze text using clause_pipeline + BERTurk ensemble for accurate detection."""
-    from app.services.ontology_service import OntologyService
-    from app.services.clause_pipeline import classify_clauses
+    from app.services.ontology_service import OntologyService, reload_ontology
+    from app.services.clause_pipeline import reload_pipeline_config, classify_clauses
     from app.services.ml_classifier import classify_berturk, CANONICAL as CANONICAL_DEPTS
-
-    # NOT: Burada her çağrıda reload_ontology() + reload_pipeline_config() yapılıyordu.
-    # Bu, lru_cache'leri temizleyip domain_ontology.json ile 3007 satırlık
-    # clause_pipeline.yaml dosyasını HER YORUM İÇİN yeniden parse ettiriyordu
-    # (500 yorumluk batch'te 500 kez). Config dosyaları çalışma anında değişmediği
-    # için yeniden yükleme yalnızca açıkça istendiğinde yapılmalı; ilgili
-    # reload_* fonksiyonları hâlâ mevcut ve /ontology/reload gibi uçlardan çağrılabilir.
+    reload_ontology()
+    reload_pipeline_config()
 
     clauses = split_clauses(text)
     decisions = classify_clauses(clauses, sentiment_fn=_keyword_sentiment, mapping_fn=OntologyService.map_aspect_to_department)
@@ -900,7 +900,7 @@ def _clause_ml_predict(text: str) -> tuple[str | None, float]:
             if probs[idx] > best_prob:
                 best_dept, best_prob = _emb_labels[idx], float(probs[idx])
         except Exception:
-            pass
+            logger.debug("_clause_ml_predict: hata yutuldu", exc_info=True)
 
     # Try TF-IDF model (good for Turkish)
     _load_clause_ml()
@@ -914,6 +914,6 @@ def _clause_ml_predict(text: str) -> tuple[str | None, float]:
             if probs[idx] > best_prob:
                 best_dept, best_prob = _clause_labels[idx], float(probs[idx])
         except Exception:
-            pass
+            logger.debug("_clause_ml_predict: hata yutuldu", exc_info=True)
 
     return best_dept, best_prob

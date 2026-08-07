@@ -2,7 +2,10 @@
 Aspect-Based Sentiment Analysis (ABSA) — çoklu departman / çoklu boyut / çoklu domain analizi.
 Yorumları cümleciklere ayırır; her biri için domain, departman, duygu, aspect ve öncelik üretir.
 """
+
 from __future__ import annotations
+
+import logging
 
 import re
 from dataclasses import dataclass, field
@@ -53,7 +56,6 @@ ASPECT_RULES: list[tuple[str, str, str]] = [
     (r"\b(havuz|aquapark|aquaprk|kaydirak|cakil)\b", "Havuz & Aquapark", CAT_SPA),
     (r"\b(wifi|wi-?fi|internet)\b", "WiFi / İnternet", CAT_TECH),
     (r"\b(klima|tv|asansor|elektrik|priz|sicak su|duş|demirler)\b", "Teknik Altyapı", CAT_TECH),
-    (r"\b(taksi|transfer|ulasim|ulaşım|arac|araç|araba|hastane|ambulans|shuttle|otopark|guvenlik|güvenlik|getiremediler|götüremediler)\b", "Ulaşım & Transfer", CAT_GROUNDS),
     (r"\b(garson|personel|calisan|kaba|ilgisiz|saygisiz|hostes|turkce|türkçe)\b", "Personel Davranışı", CAT_STAFF),
     (r"\b(resepsiyon|check.?in|check.?out|giris|cikis|lobi|kayit)\b", "Resepsiyon & Giriş", CAT_RECEPTION),
     (r"\b(kuyruk|kuyruklar|sira|sıra|bekleme)\b", "Servis / Kuyruk", CAT_FOOD),
@@ -76,6 +78,7 @@ _CLAUSE_MARKERS = {
     "rakı", "şarap", "bira", "minibar", "aquaprk", "meyve", "meyveler",
     "kavun", "cilek", "kiraz", "kaymak", "kiyma", "kıyma", "catal", "çatal",
     "bicak", "bıçak", "soda", "limonata", "kuyruk", "kuyruklar", "pankek",
+    "konum", "lokasyon", "ulasim", "ulaşım", "mesafe",
     # English clause markers
     "room", "bed", "bathroom", "food", "breakfast", "dinner", "lunch",
     "staff", "waiter", "waitress", "service", "reception", "checkin",
@@ -141,7 +144,7 @@ def _should_skip_clause(clause: str) -> bool:
         if ClausePipeline.should_drop(clause):
             return True
     except Exception:
-        pass
+        logging.getLogger(__name__).debug("_should_skip_clause: hata yutuldu", exc_info=True)
     words = c.split()
     if len(words) == 1:
         if words[0] in _SKIP_SINGLE_WORDS:
@@ -169,54 +172,101 @@ def normalize_to_8_departments(label: str) -> str:
     if not label:
         return "Otel Atmosferi & Misafir Profili"
         
-    s = str(label).strip().lower()
+    from app.services.turkish_nlp_utils import normalize_turkish
+    s = normalize_turkish(str(label).lower()).strip()
     
-    # 1. housekeeping
-    if s in ("housekeeping", "oda hizmetleri & housekeeping", "kat hizmetleri & temizlik", "kat hizmetleri", "temizlik", "oda hizmetleri"):
+    # 1. Housekeeping
+    if s in (
+        "housekeeping", "oda hizmetleri & housekeeping", "kat hizmetleri & temizlik", 
+        "kat hizmetleri", "temizlik", "oda hizmetleri", "oda temizligi", "banyo temizligi"
+    ):
         return "Oda Hizmetleri & Housekeeping"
         
-    # 2. food_beverage
-    if s in ("food_beverage", "yiyecek & içecek (f&b)", "yiyecek & içecek", "yiyecek ve içecek", "restoran", "bar", "restoran & bar", "mutfak & yiyecek", "f&b"):
+    # 2. Food & Beverage
+    if s in (
+        "food_beverage", "yiyecek & icecek (f&b)", "yiyecek & icecek", "yiyecek ve icecek", 
+        "restoran", "bar", "restoran & bar", "mutfak & yiyecek", "f&b", "yiyecek & içecek (f&b)",
+        "yiyecek & içecek"
+    ):
         return "Yiyecek & İçecek (F&B)"
         
-    # 3. front_office
-    if s in ("front_office", "ön büro & misafir ilişkileri", "ön büro", "misafir ilişkileri", "resepsiyon", "finans", "fatura & ödeme", "fatura", "ödeme"):
+    # 3. Front Office
+    if s in (
+        "front_office", "on buro & misafir iliskileri", "on buro", "misafir iliskileri", 
+        "resepsiyon", "finans", "fatura & odeme", "fatura", "odeme", "ön büro & misafir ilişkileri",
+        "ön büro", "misafir ilişkileri", "fatura & ödeme", "ödeme"
+    ):
         return "Ön Büro & Misafir İlişkileri"
         
-    # 4. engineering
-    if s in ("engineering", "teknik servis & it", "teknik servis", "it & teknik", "bakım & onarım", "klima", "wifi"):
+    # 4. Technical / Engineering
+    if s in (
+        "engineering", "teknik servis & it", "teknik servis", "it & teknik", 
+        "bakim & onarim", "klima", "wifi", "bakım & onarım"
+    ):
         return "Teknik Servis & IT"
         
-    # 5. leisure
-    if s in ("leisure", "rekreasyon & eğlence", "rekreasyon ve eğlence", "spa_wellness", "spa & wellness", "spa", "havuz", "plaj & deniz", "plaj", "deniz", "animasyon & etkinlik", "animasyon", "eğlence", "aktivite", "çocuk kulübü", "spor & fitness"):
+    # 5. Leisure & Recreation
+    if s in (
+        "leisure", "rekreasyon & eglence", "rekreasyon ve eglence", "spa_wellness", 
+        "spa & wellness", "spa", "havuz", "plaj & deniz", "plaj", "deniz", 
+        "animasyon & etkinlik", "animasyon", "eglence", "aktivite", "cocuk kulubu", 
+        "spor & fitness", "rekreasyon & eğlence", "rekreasyon ve eğlence", "eğlence", 
+        "çocuk kulübü"
+    ):
         return "Rekreasyon & Eğlence"
         
-    # 6. grounds
-    if s in ("grounds", "çevre, güvenlik & ulaşım", "çevre & güvenlik & ulaşım", "çevre & bahçe", "otopark & vale", "otopark", "güvenlik", "ulaşım & transfer", "ulaşım", "konum", "manzara"):
+    # 6. Grounds & Security & Transport
+    if s in (
+        "grounds", "cevre, guvenlik & ulasim", "cevre & guvenlik & ulasim", 
+        "cevre & bahce", "otopark & vale", "otopark", "guvenlik", "ulasim & transfer", 
+        "ulasim", "konum", "manzara", "çevre, güvenlik & ulaşım", "çevre & güvenlik & ulaşım",
+        "çevre & bahçe", "güvenlik", "ulaşım & transfer", "ulaşım"
+    ):
         return "Çevre, Güvenlik & Ulaşım"
         
-    # 7. atmosphere
-    if s in ("atmosphere", "otel atmosferi & misafir profili", "otel atmosferi", "genel atmosfer", "management", "yönetim", "other", "diğer", "genel", "dijital"):
-        return "Otel Atmosferi & Misafir Profili"
-        
-    # 8. staff
-    if s in ("staff", "staff_behavior", "personel davranışı", "personel tutumu", "personel"):
+    # 7. Staff Behavior
+    if s in (
+        "staff", "staff_behavior", "personel davranisi", "personel tutumu", 
+        "personel", "personel davranışı"
+    ):
+        return "Personel Davranışı"
+
+    # Word boundary fallback checks for legacy raw strings
+    if re.search(r"\b(housekeeping|temizlik|kat hizmetleri)\b", s):
+        return "Oda Hizmetleri & Housekeeping"
+    if re.search(r"\b(food_beverage|yiyecek|restoran|f&b)\b", s) or re.search(r"\bbar\b", s):
+        return "Yiyecek & İçecek (F&B)"
+    if re.search(r"\b(front_office|resepsiyon|misafir iliskileri|on buro)\b", s):
+        return "Ön Büro & Misafir İlişkileri"
+    if re.search(r"\b(engineering|teknik servis)\b", s):
+        return "Teknik Servis & IT"
+    if re.search(r"\b(leisure|rekreasyon|eglence|havuz|plaj|spa|animasyon)\b", s):
+        return "Rekreasyon & Eğlence"
+    if re.search(r"\b(grounds|cevre|guvenlik|ulasim|otopark)\b", s):
+        return "Çevre, Güvenlik & Ulaşım"
+    if re.search(r"\b(staff|personel)\b", s):
         return "Personel Davranışı"
         
     return "Otel Atmosferi & Misafir Profili"
 
 
 def _fix_combined_department_label(clause: str, label: str) -> str:
-    """Map any department label strictly to one of the 8 canonical departments."""
+    """Map any department label strictly to one of the 8 canonical departments.
+    If label is already a specific canonical department, preserve it to prevent generic keyword hijacking.
+    """
+    canonical = normalize_to_8_departments(label)
+    if canonical != "Otel Atmosferi & Misafir Profili":
+        return canonical
+
     from app.services.turkish_nlp_utils import normalize_turkish
     n = normalize_turkish(clause.lower())
     
-    # Keyword overrides to correct department mapping
-    if any(w in n for w in ("oda", "odalar", "odalari", "banyo", "temiz", "temizlik", "çarşaf", "carsaf", "havlu", "yatak")):
+    # Keyword overrides for generic/atmosphere inputs to correct department mapping
+    if re.search(r"\b(oda|odalar|odalari|odadaydi|odadaydı|banyo|temiz|temizlik|çarşaf|carsaf|havlu|yatak|eşya|eşyası|esyasi|konaklayan)\b", n):
         if not any(w in n for w in ("yemek", "restoran", "büfe", "bufe", "garson")):
             return "Oda Hizmetleri & Housekeeping"
             
-    if any(w in n for w in ("yemek", "kahvalti", "kahvaltı", "restoran", "büfe", "bufe", "lezzetli", "garson", "servis", "bira", "şarap", "sarap", "kokteyl", "barda", "barlarda", "rakı", "raki", "menü", "menu", "minibar")):
+    if any(w in n for w in ("yemek", "kahvalti", "kahvaltı", "restoran", "büfe", "bufe", "lezzetli", "lezzet", "garson", "servis", "bira", "şarap", "sarap", "kokteyl", "barda", "barlarda", "rakı", "raki", "menü", "menu", "minibar", "makarna", "tavuk", "yiyecek", "tatlı", "tatli", "içki", "icki", "alkol", "çorba", "corba")):
         if not any(w in n for w in ("oda temizliği", "banyo temizliği")):
             return "Yiyecek & İçecek (F&B)"
             
@@ -226,7 +276,7 @@ def _fix_combined_department_label(clause: str, label: str) -> str:
     if any(w in n for w in ("klima", "wifi", "internet", "asansör", "asansor", "tv", "televizyon", "arıza", "çalışmıyor", "calismiyor")):
         return "Teknik Servis & IT"
         
-    if any(w in n for w in ("havuz", "plaj", "deniz", "sahil", "spa", "masaj", "sauna", "animasyon", "etkinlik", "gösteri", "gosteri", "çocuk kulübü", "miniclub", "fitness", "gym")):
+    if any(w in n for w in ("havuz", "plaj", "deniz", "sahil", "spa", "masaj", "sauna", "animasyon", "etkinlik", "gösteri", "gosteri", "çocuk kulübü", "miniclub", "fitness", "gym", "şezlong", "sezlong", "iskele", "şeritle", "seritle")):
         return "Rekreasyon & Eğlence"
         
     if any(w in n for w in ("otopark", "park yeri", "güvenlik", "guvenlik", "ulaşım", "ulasim", "transfer", "bahçe", "bahce", "konum", "manzara")):
@@ -235,7 +285,7 @@ def _fix_combined_department_label(clause: str, label: str) -> str:
     if any(w in n for w in ("personel", "çalışan", "calisan", "eleman", "görevli", "gorevli")) and not any(w in n for w in ("yemek", "restoran", "banyo")):
         return "Personel Davranışı"
         
-    return normalize_to_8_departments(label)
+    return canonical
 
 
 def _apply_pipeline_refine(
@@ -331,10 +381,8 @@ def _apply_pipeline_refine(
             ) or decision.aspect_key in (
                 "service_queue", "food_queue", "pool_queue", "pool_lounger", "capacity",
                 "fb_staffing", "property_walkability", "kids_capacity", "housekeeping_privacy",
-                "animation", "beach", "parking", "staff_behavior", "food_availability",
-                "operations_management", "elevator_cleanliness", "safety", "guest_experience",
-                "pest_hygiene", "food_illness", "staff_shortage", "overall_experience", "allergen_protocol",
-                "guest_info", "dining_ambiance", "drink_variety", "housekeeping_service",
+                "animation", "guest_info", "dining_ambiance", "drink_variety", "housekeeping_service",
+                "air_conditioning", "drink_quality", "room_noise", "tech_general", "minibar_tech",
             )
             # High-confidence ontology must NOT block pipeline on HVAC substring traps
             # or systemic frame resolutions (queue context / walkability / staffing)
@@ -347,7 +395,7 @@ def _apply_pipeline_refine(
                     "service_queue", "food_queue", "pool_queue", "fb_staffing",
                     "property_walkability", "kids_capacity", "capacity", "beach", "parking", "staff_behavior",
                     "pest_hygiene", "food_illness", "staff_shortage", "overall_experience", "allergen_protocol",
-                    "guest_info", "dining_ambiance", "drink_variety", "housekeeping_service",
+                    "air_conditioning", "drink_quality", "room_noise", "tech_general", "minibar_tech",
                 )
             ):
                 final_dept = department_label
@@ -600,8 +648,18 @@ def _refine_clause_sentiment(clause: str, full_text: str, ctx: _TopicContext, se
         return "Negative", min(score if score < 0 else -0.75, -0.75)
     if any(w in n for w in ("beklentilerimizi karsilamadi", "beklentilerimizi karşılamadı", "karsilanmadigini gosterdi", "karşılanmadığını gösterdi", "karsilanmiyor", "karşılanmıyor", "farkli degil", "farklı değil")):
         return "Negative", min(score if score < 0 else -0.70, -0.70)
-    if any(w in n for w in ("tercih edecegimi sanmiyorum", "tercih edeceğimi sanmıyorum", "tercih etmem", "tercih etmiyorum", "gelecegimi sanmiyorum", "geleceğimi sanmıyorum", "bir daha gelmem", "bir daha gitmem", "bir daha kapisindan gecmem", "bir daha kapısından geçmem", "tavsiye etmiyorum", "onermiyorum", "önermiyorum", "kalmayi dusunmuyorum", "kalmayı düşünmüyorum", "tekrar kalmam", "tercih edilmemesi", "tercih edilmemesi gereken", "tercih edilmemeli")):
+    if any(w in n for w in ("tercih edecegimi sanmiyorum", "tercih edeceğimi sanmıyorum", "tercih etmem", "tercih etmiyorum", "gelecegimi sanmiyorum", "geleceğimi sanmıyorum", "bir daha gelmem", "bir daha gitmem", "bir daha kapisindan gecmem", "bir daha kapısından geçmem", "tavsiye etmiyorum", "onermiyorum", "önermiyorum", "kalmayi dusunmuyorum", "kalmayı düşünmüyorum", "tekrar kalmam", "tercih edilmemesi", "tercih edilmemesi gereken", "tercih edilmemeli", "isletme degil", "işletme değil", "tavsiye edebilecegim bir isletme degil", "tavsiye edebileceğim bir işletme değil")):
         return "Negative", min(score if score < 0 else -0.80, -0.80)
+    if any(w in n for w in ("tekrar gidecegim", "tekrar gideceğim", "tavsiye edebilecegim", "tavsiye edebileceğim")) and any(w in n for w in ("degil", "değil", "yok", "etmem", "sanmıyorum")):
+        return "Negative", min(score if score < 0 else -0.80, -0.80)
+    if any(w in n for w in ("bitse de gitsem", "bitse de gitsek", "bitse de donsek", "bitse de dönsek")):
+        return "Negative", min(score if score < 0 else -0.75, -0.75)
+    if any(w in n for w in ("esyasi hala", "eşyası hala", "esyaları hala", "eşyaları hala", "once konaklayan", "önce konaklayan", "onceki musterinin", "önceki müşterinin")):
+        return "Negative", min(score if score < 0 else -0.70, -0.70)
+    if any(w in n for w in ("diyemezsiniz", "diyemiyorsunuz", "diyemezsin")) and not any(w in n for w in ("sorun yok", "problem yok")):
+        return "Negative", min(score if score < 0 else -0.65, -0.65)
+    if any(w in n for w in ("seritle kapat", "şeritle kapat", "kapatmislar", "kapatmışlar")) and not any(w in n for w in ("sorun yok", "problem yok")):
+        return "Negative", min(score if score < 0 else -0.65, -0.65)
     # Capacity, queue, understaffing & service unavailability complaints
     if any(w in n for w in ("verilemiyor", "verilemedi", "verilmedi", "temin edilemedi", "saglanamadi", "sağlanamadı", "ne zaman geleceği belli değil")):
         return "Negative", min(score if score < 0 else -0.70, -0.70)
@@ -616,9 +674,12 @@ def _refine_clause_sentiment(clause: str, full_text: str, ctx: _TopicContext, se
         if any(w in n for w in ("kaliteli", "taze", "lezzetli", "temiz", "guzel", "güzel", "iyi", "yeterli", "cesitli", "çeşitli", "harika")):
             if not any(w in n for w in ("sorun yok", "şikayet yok", "kusur yok")):
                 return "Negative", min(score if score < 0 else -0.70, -0.70)
-    if any(w in n for w in ("kirikti", "kırıktı", "akmiyordu", "akmıyordu", "akmiyor", "akmıyor", "pismemisti", "pişmemişti", "pismemis", "pişmemiş", "cigdi", "çiğdi", "calismiyordu", "çalışmıyordu", "bozuktu", "sicak su yoktu", "sıcak su yoktu", "su gelmiyordu")):
+    if any(w in n for w in ("kirikti", "kırıktı", "akmiyordu", "akmıyordu", "akmiyor", "akmıyor", "akmadi", "akmadı", "pismemisti", "pişmemişti", "pismemis", "pişmemiş", "cigdi", "çiğdi", "calismiyordu", "çalışmıyordu", "bozuktu", "sicak su yoktu", "sıcak su yoktu", "su gelmiyordu", "soğutmuy", "sogutmuy", "sıcak üflü", "sicak uflu", "üflemiy", "uflemiy", "pişiy", "pisiy", "donduk", "donuyoruz", "kalorifer")):
         if not any(w in n for w in ("sorun yok", "problem yok", "kusur yok")):
             return "Negative", min(score if score < 0 else -0.65, -0.65)
+    if n.startswith("ne ") or " ne de " in n or " ne " in n:
+        if any(w in n for w in ("beğendik", "begendik", "temiz", "güzel", "guzel", "iyi", "harika", "memnun")):
+            return "Negative", min(score if score < 0 else -0.70, -0.70)
     if any(w in n for w in ("böcekli", "bocekli", "sinekler vardı", "sinekler vardi", "yağ yüzüyor", "yag yuzuyor", "içi kirli", "ici kirli", "pis olabilir")):
         return "Negative", min(score if score < 0 else -0.72, -0.72)
     if any(w in n for w in ("sinifta kal", "sınıfta kal", "hallice", "yemekhaneden halli")):
@@ -632,6 +693,12 @@ def _refine_clause_sentiment(clause: str, full_text: str, ctx: _TopicContext, se
     if any(w in n for w in ("bulamadım", "bulamadim", "bulamadık", "bulamadik", "bulamadim", "bulamadık")):
         if not any(w in n for w in ("sorun", "problem", "kusur", "hata", "eksiklik yok")):
             return "Negative", min(score if score < 0 else -0.65, -0.65)
+    if any(w in n for w in ("su gibi", "alkol koymuyor", "alkol yoktu", "sahte içki", "sahte icki", "kaliteli olmayan içki", "kaliteli olmayan icki", "sulandırılmış", "sulandirilmis")):
+        return "Negative", min(score if score < 0 else -0.75, -0.75)
+    if any(w in n for w in ("kapıda kaldık", "kapida kaldik", "kartlarımızı kapattılar", "kartlarimizi kapattilar", "oda kartı çalışmadı", "eşyalarımız içerde kaldı", "esyalarimiz icerde kaldi", "kapattılar eşyalarımız", "kapattilar esyalarimiz")):
+        return "Negative", min(score if score < 0 else -0.75, -0.75)
+    if any(w in n for w in ("kontenjan bitti", "yer vermediler", "yer vermedi", "yer kalmadı dediler", "yer kalmadi dediler")):
+        return "Negative", min(score if score < 0 else -0.70, -0.70)
     if any(w in n for w in ("yardımcı olamadı", "yardimci olamadi", "yardımcı olamadılar", "yardımcı olmayan", "yardimci olmayan", "yardımcı olmuyor", "yardimci olmuyor", "yardımcı olmaya çalışmı", "yardimci olmaya calismi", "çok kaba", "cok kaba", "surekli acmadi", "sürekli açmadı", "kodlattık", "kodlattik", "damlatıyor", "damlatiyor", "yerler ıslanıyor", "siyah küf", "siyah kuf", "küf vardı", "kireçten görünmüyordu", "leke vardı", "toz içindeydi", "çok gürültülüydü", "uyuyamıyorsunuz", "uyuyamiyorsunuz", "uyuyamadık", "uyuyamadik", "uyuyamadım", "uyuyamadim")):
         return "Negative", min(score if score < 0 else -0.65, -0.65)
     if any(w in n for w in ("ragmen", "rağmen")) and any(w in n for w in ("kotu", "kötü", "berbat", "lezzetsiz", "rezalet", "berbattı", "berbatti")):
@@ -878,72 +945,81 @@ def _looks_independent(clause: str) -> bool:
     return bool(toks & _CLAUSE_MARKERS)
 
 
+_RE_NEWLINES = re.compile(r"[\r\n]+")
+_RE_EMOJIS = re.compile(r"[\U0001F300-\U0001F9FF\U00002600-\U000026FF\U00002700-\U000027BF]+")
+_RE_DOT_PAREN_L = re.compile(r"\.\(")
+_RE_DOT_PAREN_R = re.compile(r"\)\.")
+_RE_PAREN_WORD = re.compile(r"\)(?=\S)")
+_RE_JOINED_SENTENCE = re.compile(r"([.!?])([A-Za-zÇçĞğİıÖöŞşÜü])")
+_RE_DATE_RANGE = re.compile(r"\b(\d{1,2})[\.\/](\d{1,2})\s*[-–]\s*(\d{1,2})[\.\/](\d{1,2})\b")
+_RE_DATE_FULL = re.compile(r"\b(\d{1,2})[\.\/](\d{1,2})[\.\/](\d{2,4})\b")
+_RE_DATE_SHORT = re.compile(r"\b(\d{1,2})\.(\d{2})\b")
+_RE_TIME_RANGE = re.compile(r"\b(\d{1,2})\.(\d{2})(\s*[-–]\s*)(\d{1,2})\.(\d{2})\b")
+_RE_THOUSAND = re.compile(r"\b(\d{1,3})\.(\d{3})\b")
+_RE_DECIMAL_COMMA = re.compile(r"\b(\d+),(\d+)\b")
+_RE_ORDINAL = re.compile(r"(\d+)\.\s*(hafta|haftası|sinif|sınıf|kat|gun|gün)", re.IGNORECASE)
+_RE_MIN_DOT = re.compile(r"\b(\d+)\s*dk\.", re.IGNORECASE)
+_RE_MIN_WORD = re.compile(r"\b(\d+)\s*dk\b", re.IGNORECASE)
+_RE_PIPE = re.compile(r"\s*\|\s*")
+_RE_NUM_BULLET = re.compile(r"\s+(?=\d+[\.\)\-]\s)")
+_RE_DOT_JOIN = re.compile(r"\.(?=\S)")
+_RE_PUNCT_JOIN = re.compile(r"[!?](?=\S)")
+_RE_SEMI = re.compile(r";")
+_RE_ROOM_SIZE_FOOD = re.compile(
+    r"(odalar?\s+(?:çok\s+|cok\s+)?(?:küçük|kucuk|dar|minik))"
+    r"(\s+)(yemek(?:ler(?:in)?)?|lezzet|kahvaltı|kahvalti|kiyma|kıyma)",
+    re.IGNORECASE
+)
+_RE_WAIT_POOL = re.compile(r"(yemek beklemek)\s+(havuzda)", re.IGNORECASE)
+_RE_SUNBED_OVERLOAD = re.compile(r"(şezlong bulamamak|sezlong bulamamak)\s+(ve bu kalabalığa|ve bu kalabaliga)", re.IGNORECASE)
+
+
 def _preprocess_for_split(text: str) -> str:
     """Cümle sınırları ve parantez — virgül/ve bölmesinden önce normalize et."""
     # Newlines and Emojis -> sentence boundaries
-    text = re.sub(r"[\r\n]+", ". ", text)
-    text = re.sub(r"[\U0001F300-\U0001F9FF\U00002600-\U000026FF\U00002700-\U000027BF]+", ". ", text)
+    text = _RE_NEWLINES.sub(". ", text)
+    text = _RE_EMOJIS.sub(". ", text)
 
-    text = re.sub(r"\.\(", ". ", text)
-    text = re.sub(r"\)\.", ". ", text)
-    text = re.sub(r"\)(?=\S)", ") ", text)
+    text = _RE_DOT_PAREN_L.sub(". ", text)
+    text = _RE_DOT_PAREN_R.sub(". ", text)
+    text = _RE_PAREN_WORD.sub(") ", text)
     # TripAdvisor / yapışık cümle: "kaldık.Deniz" → "kaldık. Deniz" (harfler arası nokta)
-    text = re.sub(r"([.!?])([A-Za-zÇçĞğİıÖöŞşÜü])", r"\1 \2", text)
+    text = _RE_JOINED_SENTENCE.sub(r"\1 \2", text)
 
     # 1. Tarih Aralıkları (ör: 29.06-05.07) ve Tam Tarihler (ör: 12.05.2023, 30.06)
-    text = re.sub(r"\b(\d{1,2})[\.\/](\d{1,2})\s*[-–]\s*(\d{1,2})[\.\/](\d{1,2})\b", r"\1§\2-\3§\4", text)
-    text = re.sub(r"\b(\d{1,2})[\.\/](\d{1,2})[\.\/](\d{2,4})\b", r"\1§\2§\3", text)
-    text = re.sub(r"\b(\d{1,2})\.(\d{2})\b", r"\1§\2", text)
+    text = _RE_DATE_RANGE.sub(r"\1§\2-\3§\4", text)
+    text = _RE_DATE_FULL.sub(r"\1§\2§\3", text)
+    text = _RE_DATE_SHORT.sub(r"\1§\2", text)
 
     # 2. Saati & Saat Aralıkları (ör: 18.00-24.00, 14.30)
-    text = re.sub(
-        r"\b(\d{1,2})\.(\d{2})(\s*[-–]\s*)(\d{1,2})\.(\d{2})\b",
-        r"\1§\2\3\4§\5",
-        text,
-    )
+    text = _RE_TIME_RANGE.sub(r"\1§\2\3\4§\5", text)
 
     # 3. Binlik Ayracı (ör: 1.500 TL, 10.000)
-    text = re.sub(r"\b(\d{1,3})\.(\d{3})\b", r"\1§\2", text)
+    text = _RE_THOUSAND.sub(r"\1§\2", text)
 
     # 4. Ondalık Sayılar Virgüllü (ör: 2,5 saat, 3,5 yıldız) -> Virgül bölmesinde ayrılmamalı!
-    text = re.sub(r"\b(\d+),(\d+)\b", r"\1€\2", text)
+    text = _RE_DECIMAL_COMMA.sub(r"\1€\2", text)
 
     # 5. Sıra Sayıları / Belirli İfadeler (ör: 2. hafta, 1. gün, 2. kat)
-    text = re.sub(r"(\d+)\.\s*(hafta|haftası|sinif|sınıf|kat|gun|gün)", r"\1§ \2", text, flags=re.IGNORECASE)
+    text = _RE_ORDINAL.sub(r"\1§ \2", text)
 
     # 5b. Dakika kısaltması "5 dk. yürümek" — nokta cümle sınırı olmasın
-    text = re.sub(r"\b(\d+)\s*dk\.", r"\1 dk§", text, flags=re.IGNORECASE)
-    text = re.sub(r"\b(\d+)\s*dk\b", r"\1 dk", text, flags=re.IGNORECASE)
+    text = _RE_MIN_DOT.sub(r"\1 dk§", text)
+    text = _RE_MIN_WORD.sub(r"\1 dk", text)
 
     # Pipe ve numaralı madde ayırıcıları
-    text = re.sub(r"\s*\|\s*", ". ", text)
-    text = re.sub(r"\s+(?=\d+[\.\)\-]\s)", ". ", text)
+    text = _RE_PIPE.sub(". ", text)
+    text = _RE_NUM_BULLET.sub(". ", text)
 
-    text = re.sub(r"\.(?=\S)", ". ", text)
-    text = re.sub(r"[!?](?=\S)", lambda m: m.group(0) + " ", text)
-    text = re.sub(r";", ". ", text)
+    text = _RE_DOT_JOIN.sub(". ", text)
+    text = _RE_PUNCT_JOIN.sub(lambda m: m.group(0) + " ", text)
+    text = _RE_SEMI.sub(". ", text)
 
     # Oda boyutu + yemek yan yana: "odalar çok küçük yemeklerin lezzeti..."
-    text = re.sub(
-        r"(odalar?\s+(?:çok\s+|cok\s+)?(?:küçük|kucuk|dar|minik))"
-        r"(\s+)(yemek(?:ler(?:in)?)?|lezzet|kahvaltı|kahvalti|kiyma|kıyma)",
-        r"\1. \3",
-        text,
-        flags=re.IGNORECASE,
-    )
+    text = _RE_ROOM_SIZE_FOOD.sub(r"\1. \3", text)
     # Operational overload mega-clause: split food queue / pool / bar / ops topics
-    text = re.sub(
-        r"(yemek beklemek)\s+(havuzda)",
-        r"\1. \2",
-        text,
-        flags=re.IGNORECASE,
-    )
-    text = re.sub(
-        r"(şezlong bulamamak|sezlong bulamamak)\s+(ve bu kalabalığa|ve bu kalabaliga)",
-        r"\1. \2",
-        text,
-        flags=re.IGNORECASE,
-    )
+    text = _RE_WAIT_POOL.sub(r"\1. \2", text)
+    text = _RE_SUNBED_OVERLOAD.sub(r"\1. \2", text)
     text = re.sub(
         r"(çalışanın olması|calisanin olmasi)\s+(bizim her bara)",
         r"\1. \2",
@@ -1042,7 +1118,7 @@ def _preprocess_for_split(text: str) -> str:
                     flags=re.IGNORECASE,
                 )
     except Exception:
-        pass
+        logging.getLogger(__name__).debug("_is_safe_topic_boundary_pair: hata yutuldu", exc_info=True)
     # Noktalamasız uzun yorumlar için yüklem + yeni cümle başı ayırıcı
     # Fiil gövdeleri (geçmiş/şimdiki zaman, 1./3. tekil/çoğul)
     text = re.sub(
@@ -1067,7 +1143,7 @@ def _preprocess_for_split(text: str) -> str:
         from app.services.clause_pipeline import load_pipeline_config
         seg_cfg = (load_pipeline_config().get("segmentation") or {})
     except Exception:
-        pass
+        logging.getLogger(__name__).debug("_is_safe_topic_boundary_pair: hata yutuldu", exc_info=True)
     if seg_cfg.get("protect_quoted_commas", True):
         def _comma_guard(m: re.Match) -> str:
             return m.group(1) + m.group(2).replace(",", "§COMMA§") + m.group(3)
@@ -1218,6 +1294,22 @@ def _is_ve_coordination(left: str, right: str) -> bool:
     right = right.lstrip(".,;: ")
     if "guzel ve yeterli" in f"{left} ve {right}" or "güzel ve yeterli" in f"{left} ve {right}":
         return True
+    # "havuz ve denizde" — location list, not independent clauses
+    loc_pairs = [("havuz", "deniz"), ("havuz", "plaj"), ("plaj", "deniz")]
+    try:
+        from app.services.clause_pipeline import load_pipeline_config
+        for pair in (load_pipeline_config().get("segmentation") or {}).get("ve_coordination_location_pairs") or loc_pairs:
+            if isinstance(pair, (list, tuple)) and len(pair) == 2:
+                loc_pairs.append(tuple(pair))
+    except Exception:
+        logging.getLogger(__name__).debug("_is_ve_coordination: hata yutuldu", exc_info=True)
+    left_t = left.split()[-1] if left.split() else ""
+    right_t = right.lstrip().split()[0] if right.split() else ""
+    lf, rf = _fold(left_t), _fold(right_t)
+    for a, b in loc_pairs:
+        if (lf == _fold(a) and rf.startswith(_fold(b))) or (lf == _fold(b) and rf.startswith(_fold(a))):
+            return True
+
     # Cross-topic force-split: "havuz kirli ve personel ilgisiz" must NOT stay coordinated
     # (normalize_turkish may strip -ydi → kirli, which is a COORDINATION_ADJECTIVE).
     # Exception: proximity enumerations ("havuzlara ve restoranlara çok yakındı").
@@ -1227,21 +1319,6 @@ def _is_ve_coordination(left: str, right: str) -> bool:
         proximity = any(w in joined_f for w in ("yakin", "uzak", "mesafe", "yakind"))
         if not proximity:
             return False
-    # "havuz ve denizde" — location list, not independent clauses
-    loc_pairs = [("havuz", "deniz"), ("havuz", "plaj"), ("plaj", "deniz")]
-    try:
-        from app.services.clause_pipeline import load_pipeline_config
-        for pair in (load_pipeline_config().get("segmentation") or {}).get("ve_coordination_location_pairs") or loc_pairs:
-            if isinstance(pair, (list, tuple)) and len(pair) == 2:
-                loc_pairs.append(tuple(pair))
-    except Exception:
-        pass
-    left_t = left.split()[-1] if left.split() else ""
-    right_t = right.lstrip().split()[0] if right.split() else ""
-    lf, rf = _fold(left_t), _fold(right_t)
-    for a, b in loc_pairs:
-        if lf == _fold(a) and rf.startswith(_fold(b)):
-            return True
     left_words = left.split()
     right_words = right.split()
 
@@ -1329,34 +1406,41 @@ def _rule_split_clauses(text: str) -> list[str]:
                         out.extend(_split_one(p, depth + 1))
                     return out
 
+        # Correlative conjunctions: hem ... hem ..., ne ... ne ...
+        for corr_pat, prefix in (
+            (r"(?i)\bhem\s+(.*?)\s+hem\s+(?:de\s+)?(.*)", "hem "),
+            (r"(?i)\bne\s+(.*?)\s+ne\s+(?:de\s+)?(.*)", "ne "),
+        ):
+            m_corr = re.search(corr_pat, clause)
+            if m_corr:
+                pre_text = clause[: m_corr.start()].strip()
+                part1, part2 = m_corr.group(1).strip(), m_corr.group(2).strip()
+                if part1 and part2 and len(part1.split()) >= 1 and len(part2.split()) >= 1:
+                    out: list[str] = []
+                    if pre_text:
+                        out.extend(_split_one(pre_text, depth + 1))
+                    out.extend(_split_one(f"{prefix}{part1}", depth + 1))
+                    out.extend(_split_one(f"{prefix}de {part2}" if prefix == "ne " else f"{prefix}{part2}", depth + 1))
+                    return out
+
         m_ragmen = re.search(
-            r"(?i)\b\w{3,30}(?:mesine|masına|masina)\s+(?:rağmen|ragmen)\s+",
+            r"(?i)\b[a-zA-ZçğıöşüÇĞİÖŞÜ]{3,30}(?:mesine|masına|masina|sine|sına|sina)\s+(?:rağmen|ragmen)\s+",
             clause,
         )
-        if m_ragmen and m_ragmen.end() < len(clause) - 4:
-            # Keep the *-masına/mesine token on the left side
-            left_end = m_ragmen.start()
-            # Find start of the *-masına word
-            token_m = re.search(r"(?i)(\w{3,30}(?:mesine|masına|masina))\s+(?:rağmen|ragmen)\s+", clause[left_end:])
+        if m_ragmen and m_ragmen.end() < len(clause) - 3:
+            token_m = re.search(
+                r"(?i)([a-zA-ZçğıöşüÇĞİÖŞÜ]{3,30}(?:mesine|masına|masina|sine|sına|sina))\s+(?:rağmen|ragmen)\s+",
+                clause,
+            )
             if token_m:
-                abs_token_start = left_end + token_m.start()
+                abs_token_start = token_m.start()
                 left = clause[: abs_token_start + len(token_m.group(1))].strip()
                 right = clause[m_ragmen.end() :].strip()
-                if len(left.split()) >= 3 and len(right.split()) >= 3:
-                    lf, rf = _ve_topic_family(left), _ve_topic_family(right)
-                    right_n = normalize_turkish(right.lower())
-                    has_venue = any(
-                        w in right_n
-                        for w in (
-                            "yemek", "havuz", "oda", "personel", "restoran", "plaj",
-                            "klima", "wifi", "temizlik", "kahvalt",
-                        )
-                    )
-                    if (lf and rf and lf != rf) or (has_venue and _has_verb_token(right.split())):
-                        out: list[str] = []
-                        out.extend(_split_one(left, depth + 1))
-                        out.extend(_split_one(right, depth + 1))
-                        return out
+                if len(left.split()) >= 2 and len(right.split()) >= 2:
+                    out: list[str] = []
+                    out.extend(_split_one(left, depth + 1))
+                    out.extend(_split_one(right, depth + 1))
+                    return out
 
         if "," in clause or ";" in clause:
             parts = re.split(r"[,;]", clause)
@@ -1541,7 +1625,6 @@ def _detect_aspect(clause: str, department: str) -> str:
         CAT_STAFF: "Personel",
         CAT_RECEPTION: "Resepsiyon",
         CAT_FINANCE: "Finans",
-        CAT_GROUNDS: "Ulaşım & Transfer",
         CAT_OTHER: "Genel",
     }
     return dept_defaults.get(department, "Genel")
@@ -1752,7 +1835,7 @@ def _refine_generic_aspects(full_text: str, aspects: list) -> list:
         "staff_behavior": "Personel Davranışı",
         "staff_shortage": "Personel Davranışı",
         "room_cleanliness": "Oda Hizmetleri & Housekeeping",
-        "room_noise": "Oda Hizmetleri & Housekeeping",
+        "room_noise": "Otel Atmosferi & Misafir Profili",
         "housekeeping_service": "Oda Hizmetleri & Housekeeping",
         "housekeeping_privacy": "Oda Hizmetleri & Housekeeping",
         "elevator_cleanliness": "Oda Hizmetleri & Housekeeping",
@@ -2177,12 +2260,13 @@ def _enforce_8_official_taxonomy(aspects):
     # (aspect_key, aspect_label, default_dept_id, default_dept_label)
     aspect_map = {
         # housekeeping
+        "housekeeping": ("room_cleanliness", "Oda Temizliği", "housekeeping", "Oda Hizmetleri & Housekeeping"),
         "room_cleanliness": ("room_cleanliness", "Oda Temizliği", "housekeeping", "Oda Hizmetleri & Housekeeping"),
         "bed_comfort": ("bed_comfort", "Yatak Konforu", "housekeeping", "Oda Hizmetleri & Housekeeping"),
         "bathroom": ("bathroom", "Banyo & Tuvalet", "housekeeping", "Oda Hizmetleri & Housekeeping"),
         "linen_towel": ("linen_towel", "Çarşaf & Havlu", "housekeeping", "Oda Hizmetleri & Housekeeping"),
         "room_size": ("room_size", "Oda Boyutu", "housekeeping", "Oda Hizmetleri & Housekeeping"),
-        "soundproofing": ("soundproofing", "Ses Yalıtımı", "housekeeping", "Oda Hizmetleri & Housekeeping"),
+        "soundproofing": ("soundproofing", "Ses Yalıtımı", "atmosphere", "Otel Atmosferi & Misafir Profili"),
         "amenities": ("amenities", "Buklet Malzemeleri", "housekeeping", "Oda Hizmetleri & Housekeeping"),
 
         # food_beverage
@@ -2209,6 +2293,7 @@ def _enforce_8_official_taxonomy(aspects):
         "food_illness": ("food_illness", "Gıda Güvenliği / Sindirim", "food_beverage", "Yiyecek & İçecek (F&B)"),
 
         # front_office
+        "front_office": ("reception_service", "Resepsiyon Hizmeti", "front_office", "Ön Büro & Misafir İlişkileri"),
         "check_in_out": ("check_in_out", "Giriş/Çıkış", "front_office", "Ön Büro & Misafir İlişkileri"),
         "reception_service": ("reception_service", "Resepsiyon Hizmeti", "front_office", "Ön Büro & Misafir İlişkileri"),
         "booking": ("booking", "Rezervasyon", "front_office", "Ön Büro & Misafir İlişkileri"),
@@ -2432,6 +2517,8 @@ class AbsaService:
 
             dept = cls._canonicalize_label(dept if isinstance(dept, str) else dept)
             department_label = cls._canonicalize_label(department_label)
+            if dept in ("Oda Hizmetleri & Housekeeping", "Yiyecek & İçecek (F&B)", "Ön Büro & Misafir İlişkileri", "Teknik Servis & IT", "Rekreasyon & Eğlence", "Çevre, Güvenlik & Ulaşım", "Personel Davranışı"):
+                department_label = dept
             aspects.append(AbsaAspect(
                 clause=clause,
                 aspect=aspect,
@@ -2457,11 +2544,11 @@ class AbsaService:
         # UI hotel yolu: ontology tarama (map_aspect ~1s/cümle) atlanır
         if multidomain:
             aspects = _refine_generic_aspects(text, aspects)
-            _genel_guard = ("yemek","kahvaltı","kahvalti","restoran","havuz","plaj","spa","oda","banyo","wifi","klima","bar","içecek","icecek","personel","garson","animasyon","bufe","büfe")
+            _genel_guard = ("yemek","kahvaltı","kahvalti","restoran","havuz","plaj","spa","oda","banyo","wifi","klima","bar","içecek","icecek","personel","garson","animasyon","bufe","büfe","tekila","viski","votka","cin","alkol","içki","icki","kokteyl")
             for i, a in enumerate(aspects):
                 _ac = (getattr(a, 'clause', '') or '').lower()
                 _acn = normalize_turkish(_ac)
-                if any(x in _ac for x in ("bir daha olsa", "asla", "herşey", "her şey", "hersey", "müşteri temsilcisi", "musteri temsilcisi")):
+                if any(x in _ac for x in ("bir daha olsa", "asla", "müşteri temsilcisi", "musteri temsilcisi")) or (any(x in _ac for x in ("herşey", "her şey", "hersey")) and not any(x in _ac for x in ("her şey dahil", "herşey dahil", "hersey dahil"))):
                     if not any(kw in _acn for kw in _genel_guard):
                         aspects[i].department_label = "Genel"
                         if hasattr(aspects[i], 'department'): aspects[i].department = "genel"
@@ -2486,7 +2573,7 @@ class AbsaService:
                         overall_sent = "Mixed"
                         overall_sc = round(mixed.overall_score or 0.0, 2)
         except Exception:
-            pass
+            logging.getLogger(__name__).debug("analyze: hata yutuldu", exc_info=True)
         if multidomain:
             if rating is not None and len(aspects) == 1:
                 overall_sent, overall_sc = SentimentService.analyze_sentiment(text, rating)
@@ -2585,7 +2672,7 @@ class AbsaService:
                                 sentiment = best_t.sentiment
                             conf = max(conf, best_t.confidence)
                 except Exception:
-                    pass
+                    logging.getLogger(__name__).debug("analyze_multidomain: hata yutuldu", exc_info=True)
 
             # Final keyword-based override: catch pipeline/transformer/engine errors
             from app.services.ontology_service import _keyword_final_override
@@ -2594,6 +2681,28 @@ class AbsaService:
                 dept_label = _ko
             # Additional local overrides for known failures — use raw clause.lower()
             _cl = clause.lower()
+
+            # ── "misafir ilişkileri" phrases → Personel (NOT F&B) ──
+            # "misafir ilişkileri masası sorunumuzu ciddiye aldı" was misrouted to F&B
+            # because "masası" triggered food heuristics. Catch this pattern early.
+            _mi_cues = ("misafir ilişkileri", "misafir iliskileri")
+            if any(x in _cl for x in _mi_cues):
+                _mi_positive = any(x in _cl for x in (
+                    "ciddiye", "ilgilend", "yardımcı", "yardimc", "çözüm", "cozum",
+                    "sorunumuz", "aldı", "aldi", "teşekkür", "tesekkur",
+                ))
+                _mi_negative = any(x in _cl for x in (
+                    "ilgisiz", "ilgilenmedi", "umursamad", "çözmedi", "cozmedi",
+                    "yardımcı olmad", "yardimc olmad",
+                ))
+                if _mi_positive or _mi_negative:
+                    dept_label = "Personel Davranışı"
+                    dept_id = "staff"
+                    aspect_key = "staff_attitude"
+                    aspect_label = "Personel Tutumu"
+                    if _mi_positive and not _mi_negative:
+                        sentiment = "Positive"
+                        score = 0.75
             _cl_fold = normalize_turkish(_cl)
             _pest_clause = any(
                 x in _cl or x in _cl_fold
@@ -2658,46 +2767,46 @@ class AbsaService:
                 dept_id = "pool"
                 aspect_key = "pool"
                 aspect_label = "Havuz"
-            if not _proximity_loc and any(x in _cl for x in ("plaj", "deniz", "çakıl", "cakil")) and not any(x in _cl for x in ("yemek", "restoran", "dondurma", "pastane")):
+            if not _proximity_loc and any(x in _cl for x in ("plaj", "deniz", "çakıl", "cakil", "beach", "sea", "пляж", "море")) and not any(x in _cl for x in ("yemek", "restoran", "dondurma", "pastane", "food", "restaurant")):
                 dept_label = "Plaj & Deniz"
                 dept_id = "beach"
                 aspect_key = "beach"
                 aspect_label = "Plaj & Deniz"
-            if any(x in _cl for x in ("animasyon", "animatör", "animator", "etkinlik", "show", "yarışma", "yarisma", "kids club", "konser")):
+            if any(x in _cl for x in ("animasyon", "animatör", "animator", "etkinlik", "show", "yarışma", "yarisma", "kids club", "konser", "animation", "entertainment")):
                 dept_label = "Animasyon & Etkinlik"
                 dept_id = "animation_events"
                 aspect_key = "animation"
                 aspect_label = "Animasyon & Etkinlik"
-            if any(x in _cl for x in ("spa", "masaj", "sauna", "hamam", "jakuzi", "wellness", "fitness")) and not _pest_clause:
+            if (re.search(r"\bspa\b", _cl) or any(x in _cl for x in ("masaj", "sauna", "hamam", "jakuzi", "wellness", "fitness", "massage", "спа-центр", "спа"))) and not _pest_clause:
                 dept_label = "Spa"
                 dept_id = "spa_wellness"
                 aspect_key = "spa_massage"
                 aspect_label = "Spa & Masaj"
-            if any(x in _cl for x in ("klima", "wifi", "internet", "sıcak su", "sicak su", "duş basınç", "dus basinc", "asansör", "asansor", "tv kanal", "termostat", "lavabo tıkan", "lavabo tikan")):
+            if any(x in _cl for x in ("klima", "wifi", "wi-fi", "internet", "sıcak su", "sicak su", "duş basınç", "dus basinc", "asansör", "asansor", "tv kanal", "termostat", "lavabo tıkan", "lavabo tikan", "air conditioning", "aircon", "кондиционер")):
                 dept_label = "Teknik Servis & IT"
                 dept_id = "engineering"
-                if "klima" in _cl or "termostat" in _cl:
+                if "klima" in _cl or "termostat" in _cl or "air conditioning" in _cl or "aircon" in _cl or "кондиционер" in _cl:
                     aspect_key, aspect_label = "air_conditioning", "Klima"
-                elif "wifi" in _cl or "internet" in _cl:
+                elif "wifi" in _cl or "internet" in _cl or "wi-fi" in _cl or "интернет" in _cl or "вай фай" in _cl:
                     aspect_key, aspect_label = "wifi_internet", "WiFi / İnternet"
                 else:
                     aspect_key, aspect_label = "maintenance", "Bakım & Onarım"
-            if any(x in _cl for x in ("check-in", "checkin", "resepsiyon", "fatura", "overbooking", "oda kart", "depozito", "concierge")):
+            if any(x in _cl for x in ("check-in", "checkin", "resepsiyon", "reception", "receptionist", "front desk", "fatura", "overbooking", "oda kart", "depozito", "concierge", "рецепшн", "ресепшн", "администратор")):
                 dept_label = "Ön Büro & Misafir İlişkileri"
                 dept_id = "front_office"
                 aspect_key = "reception_service"
                 aspect_label = "Resepsiyon Hizmeti"
-            if any(x in _cl for x in ("personel yetersiz", "personel eksik", "çalışan sayısı", "calisan sayisi", "ilgisiz", "kaba", "deneyimsiz", "acemi personel", "14 saat", "garson", "barmen")):
-                if "yemek" not in _cl or "garson" in _cl or "barmen" in _cl or "personel" in _cl:
+            if any(x in _cl for x in ("personel yetersiz", "personel eksik", "çalışan sayısı", "calisan sayisi", "ilgisiz", "kaba", "deneyimsiz", "acemi personel", "14 saat", "garson", "barmen", "waiter", "waiters", "staff", "unresponsive", "официант", "официанты", "персонал", "грубили")):
+                if ("yemek" not in _cl and "food" not in _cl and "еда" not in _cl) or "garson" in _cl or "barmen" in _cl or "personel" in _cl or "waiter" in _cl or "staff" in _cl or "персонал" in _cl:
                     dept_label = "Personel Davranışı"
                     dept_id = "staff"
                     aspect_key = "staff_attitude"
                     aspect_label = "Personel Tutumu"
-            if any(x in _cl for x in ("oda pis", "oda kirli", "temizlenmedi", "küf", "kuf", "toz içinde", "çarşaf", "carsaf", "banyo derz", "oda tertemiz", "oda temiz")):
+            if any(x in _cl for x in ("oda pis", "oda kirli", "temizlenmedi", "küf", "kuf", "toz içinde", "çarşaf", "carsaf", "banyo derz", "banyo zemin", "banyonun zemin", "banyo ıslak", "banyo islak", "oda tertemiz", "oda temiz", "dirty room", "dirty towels", "dirty sheets", "clean room", "spacious", "чистый номер", "грязный номер", "ванной", "постельное белье")):
                 dept_label = "Oda Hizmetleri & Housekeeping"
                 dept_id = "housekeeping"
-                aspect_key = "room_cleanliness"
-                aspect_label = "Oda Temizliği"
+                aspect_key = "room_size" if ("spacious" in _cl or "просторный" in _cl) else ("linen_towel" if ("çarşaf" in _cl or "carsaf" in _cl or "towels" in _cl or "sheets" in _cl or "постельное" in _cl) else "bathroom")
+                aspect_label = "Oda Boyutu" if aspect_key == "room_size" else ("Çarşaf & Havlu" if aspect_key == "linen_towel" else "Banyo & Tuvalet")
             if "misafirin en temel ihtiyaçları" in _cl or "misafirin en temel ihtiyaclari" in _cl:
                 dept_label = "Ön Büro & Misafir İlişkileri"
                 dept_id = "front_office"
@@ -2787,7 +2896,7 @@ class AbsaService:
                 dept_id = "staff"
                 aspect_key = "staff_shortage"
                 aspect_label = "Personel Yetersizliği"
-            elif any(x in _cl for x in ("personel", "çalışan", "calisan", "garson", "barmen", "yardımsever", "yardimsever", "kibar")) and any(x in _cl for x in ("kibar", "ilgili", "yardim", "yardım", "kaba", "ilgisiz", "yetersiz", "eksik", "o ne")):
+            elif any(x in _cl for x in ("personel", "çalışan", "calisan", "garson", "barmen", "yardımsever", "yardimsever", "kibar")) and any(x in _cl for x in ("kibar", "ilgili", "yardim", "yardım", "kaba", "ilgisiz", "yetersiz", "eksik", "o ne", "geç", "gec", "bakıyordu", "bakiyordu", "yarım saat", "yarim saat")):
                 dept_label = "Personel Davranışı"
                 dept_id = "staff"
                 aspect_key = "staff_attitude"
@@ -2797,11 +2906,16 @@ class AbsaService:
                 dept_id = "housekeeping"
                 aspect_key = "housekeeping_service"
                 aspect_label = "Kat Hizmetleri"
-            if ("oda" in _cl and "temiz" in _cl) or "ses yalıtım" in _cl or "ses yalitim" in _cl:
+            if "ses yalıtım" in _cl or "ses yalitim" in _cl or "gürültü" in _cl or "gurultu" in _cl:
+                dept_label = "Otel Atmosferi & Misafir Profili"
+                dept_id = "atmosphere"
+                aspect_key = "soundproofing"
+                aspect_label = "Ses Yalıtımı"
+            elif ("oda" in _cl and "temiz" in _cl):
                 dept_label = "Oda Hizmetleri & Housekeeping"
                 dept_id = "housekeeping"
-                aspect_key = "soundproofing" if "yalıt" in _cl or "yalit" in _cl else "room_cleanliness"
-                aspect_label = "Ses Yalıtımı" if aspect_key == "soundproofing" else "Oda Temizliği"
+                aspect_key = "room_cleanliness"
+                aspect_label = "Oda Temizliği"
             if "minibar görevlisi" in _cl or "minibar gorevlisi" in _cl or ("mini bar" in _cl and "temiz" in _cl) or ("minibar" in _cl and "temiz" in _cl and "oda" in _cl):
                 dept_label = "Oda Hizmetleri & Housekeeping"
                 dept_id = "housekeeping"
@@ -2881,7 +2995,7 @@ class AbsaService:
                     dept_id = "bar"
                     aspect_key = "minibar"
                     aspect_label = "Minibar"
-            if any(x in _cl for x in ("spa", "wellness", "masaj", "sauna", "jakuzi", "fitness")) and "hamam böcek" not in _cl and "hamam bocek" not in _cl:
+            if (re.search(r"\bspa\b", _cl) or any(x in _cl for x in ("wellness", "masaj", "sauna", "jakuzi", "fitness"))) and "hamam böcek" not in _cl and "hamam bocek" not in _cl:
                 # "havuz ... masaj" compound keeps Havuz priority (not Spa)
                 if "havuz" in _cl and "masaj" in _cl:
                     dept_label = "Havuz"
@@ -3005,6 +3119,15 @@ class AbsaService:
                     dept_label = "Kat Hizmetleri & Temizlik"
                 if "kuyruk" in _cl and "sıra" in _cl:
                     dept_label = "Restoran"
+                # Explicit "ön büro" mention -> route to Front Office
+                if any(x in _cl for x in ("ön büro", "on buro", "front office", "front desk")):
+                    dept_label = "Ön Büro & Misafir İlişkileri"
+                # "lobide beklemek" -> Front Office (lobby wait)
+                if "lobi" in _cl and any(x in _cl for x in ("bekle", "bekleme", "saat")):
+                    dept_label = "Ön Büro & Misafir İlişkileri"
+                # "banyo zemini ıslak" / "düştüm" -> Housekeeping
+                if "banyo" in _cl and any(x in _cl for x in ("zemin", "ıslak", "islak", "düş", "dus")):
+                    dept_label = "Oda Hizmetleri & Housekeeping"
             if dept_label == "Plaj & Deniz" and "dondurma" in _cl:
                 dept_label = "Restoran"
             if dept_label == "Bar" and "restoran" in _cl and any(x in _cl for x in ("yemek","icecek","içecek","kalite")):
@@ -3076,7 +3199,7 @@ class AbsaService:
                 domain=domain_id,
                 domain_label=domain_label,
                 department=dept_id,
-                department_label=dept_label,
+                department_label=normalize_to_8_departments(dept_label),
                 aspect=aspect_key,
                 aspect_label=aspect_label,
                 entity_type=entity.get("entity_type", "generic_unit") if entity else "generic_unit",
@@ -3110,7 +3233,7 @@ class AbsaService:
                     clause=a.clause, domain=mapping.get("domain", a.domain),
                     domain_label=mapping.get("domainLabel", a.domain_label),
                     department=mapping.get("department", a.department),
-                    department_label=nd,
+                    department_label=normalize_to_8_departments(nd),
                     aspect=mapping.get("aspect_key", a.aspect),
                     aspect_label=mapping.get("aspectLabel", a.aspect_label),
                     entity_type=a.entity_type, entity_id=a.entity_id,
@@ -3141,11 +3264,11 @@ class AbsaService:
             for a in aspects
         ]
         aspects = _refine_generic_aspects(text, aspects)
-        _genel_guard = ("yemek","kahvaltı","kahvalti","restoran","havuz","plaj","spa","oda","banyo","wifi","klima","bar","içecek","icecek","personel","garson","animasyon","bufe","büfe")
+        _genel_guard = ("yemek","kahvaltı","kahvalti","restoran","havuz","plaj","spa","oda","banyo","wifi","klima","bar","içecek","icecek","personel","garson","animasyon","bufe","büfe","tekila","viski","votka","cin","alkol","içki","icki","kokteyl")
         for i, a in enumerate(aspects):
             _ac = (getattr(a, 'clause', '') or '').lower()
             _acn = normalize_turkish(_ac)
-            if any(x in _ac for x in ("bir daha olsa", "asla", "herşey", "her şey", "hersey", "müşteri temsilcisi", "musteri temsilcisi")):
+            if any(x in _ac for x in ("bir daha olsa", "asla", "müşteri temsilcisi", "musteri temsilcisi")) or (any(x in _ac for x in ("herşey", "her şey", "hersey")) and not any(x in _ac for x in ("her şey dahil", "herşey dahil", "hersey dahil"))):
                 if not any(kw in _acn for kw in _genel_guard):
                     aspects[i].department_label = "Genel"
                     if hasattr(aspects[i], 'department'): aspects[i].department = "genel"
@@ -3214,7 +3337,8 @@ class AbsaService:
                     "aspect": a.aspect,
                     "aspectLabel": a.aspect_label or a.aspect,
                     "aspectKey": a.aspect_key,
-                    "department": a.department_label or a.department,
+                    "department": normalize_to_8_departments(a.department_label or a.department),
+                    "departmentLabel": normalize_to_8_departments(a.department_label or a.department),
                     "departmentKey": a.department,
                     "domain": a.domain,
                     "domainLabel": a.domain_label,
@@ -3250,8 +3374,8 @@ class AbsaService:
                     "domain": a.domain,
                     "domainLabel": a.domain_label,
                     "subdomain": a.domain,
-                    "department": a.department,
-                    "departmentLabel": a.department_label,
+                    "department": normalize_to_8_departments(a.department_label or a.department),
+                    "departmentLabel": normalize_to_8_departments(a.department_label or a.department),
                     "aspect": a.aspect,
                     "aspectLabel": a.aspect_label,
                     "entity": a.entity,

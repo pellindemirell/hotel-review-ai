@@ -1,7 +1,10 @@
 """
 Çoklu sektör ontoloji servisi — domain, departman, aspect eşlemesi.
 """
+
 from __future__ import annotations
+
+import logging
 
 import json
 import os
@@ -9,7 +12,7 @@ import re
 from functools import lru_cache
 from typing import Any, Optional
 
-from app.services.turkish_nlp_utils import normalize_turkish, tokenize_turkish
+from app.services.turkish_nlp_utils import fold_tr, fold_tr_chars, normalize_turkish, tokenize_turkish
 
 # Kısa anahtar kelimelerde alt-dize yanlış pozitifini önle (kibar→bar, beklemeden→bekleme)
 _BOUNDARY_KWS = frozenset({
@@ -43,13 +46,14 @@ def _load_raw() -> dict[str, Any]:
         return json.load(f)
 
 
-def reload_ontology() -> None:
-    _load_raw.cache_clear()
-    try:
-        from app.ontology.engine import reload_hotel_ontology_engine
-        reload_hotel_ontology_engine()
-    except Exception:
-        pass
+def reload_ontology(force: bool = False) -> None:
+    if force:
+        _load_raw.cache_clear()
+        try:
+            from app.ontology.engine import reload_hotel_ontology_engine
+            reload_hotel_ontology_engine()
+        except Exception:
+            logging.getLogger(__name__).debug("reload_ontology: hata yutuldu", exc_info=True)
 
 
 def _positive_context_blocks(kw: str, normalized: str) -> bool:
@@ -88,71 +92,6 @@ def _keyword_matches(kw: str, normalized: str, tokens: Optional[set[str]] = None
     return any(nkw in t or t.startswith(nkw) for t in tok_set if len(t) >= len(nkw))
 
 
-_DRINK_BOUNDARY = frozenset({"bira", "raki", "sarap", "soda", "barmen"})
-
-_STANDARD_ASPECT_TO_DEPT = {
-    # Housekeeping
-    "room_cleanliness": ("housekeeping", "Oda Hizmetleri & Housekeeping", "Oda Temizliği"),
-    "bed_comfort": ("housekeeping", "Oda Hizmetleri & Housekeeping", "Yatak Konforu"),
-    "linen_towel": ("housekeeping", "Oda Hizmetleri & Housekeeping", "Çarşaf & Havlu"),
-    "bathroom": ("housekeeping", "Oda Hizmetleri & Housekeeping", "Banyo & Tuvalet"),
-    "room_size": ("housekeeping", "Oda Hizmetleri & Housekeeping", "Oda Boyutu"),
-    "soundproofing": ("housekeeping", "Oda Hizmetleri & Housekeeping", "Ses Yalıtımı"),
-    "amenities": ("housekeeping", "Oda Hizmetleri & Housekeeping", "Buklet Malzemeleri"),
-    # Engineering
-    "air_conditioning": ("engineering", "Teknik Servis & IT", "Klima / İklimlendirme"),
-    "wifi_internet": ("engineering", "Teknik Servis & IT", "WiFi / İnternet"),
-    "elevator": ("engineering", "Teknik Servis & IT", "Asansör"),
-    "tv_entertainment": ("engineering", "Teknik Servis & IT", "TV & Eğlence"),
-    "maintenance": ("engineering", "Teknik Servis & IT", "Bakım & Onarım"),
-    # Grounds
-    "parking": ("grounds", "Çevre, Güvenlik & Ulaşım", "Otopark & Vale"),
-    "security": ("grounds", "Çevre, Güvenlik & Ulaşım", "Güvenlik"),
-    "location": ("grounds", "Çevre, Güvenlik & Ulaşım", "Konum"),
-    "view": ("grounds", "Çevre, Güvenlik & Ulaşım", "Manzara"),
-    "transportation": ("grounds", "Çevre, Güvenlik & Ulaşım", "Ulaşım & Transfer"),
-    "environment": ("grounds", "Çevre, Güvenlik & Ulaşım", "Çevre & Bahçe"),
-    # Spa & Wellness / Pool & Beach / Animation & Events -> Rekreasyon & Eğlence
-    "fitness": ("leisure", "Rekreasyon & Eğlence", "Spor & Fitness"),
-    "spa_massage": ("leisure", "Rekreasyon & Eğlence", "Spa & Masaj"),
-    "pool": ("leisure", "Rekreasyon & Eğlence", "Havuz & Aquapark"),
-    "beach": ("leisure", "Rekreasyon & Eğlence", "Plaj & Deniz"),
-    "kids_club": ("leisure", "Rekreasyon & Eğlence", "Çocuk Kulübü"),
-    "animation": ("leisure", "Rekreasyon & Eğlence", "Animasyon & Etkinlik"),
-    # Front Office
-    "price_value": ("front_office", "Ön Büro & Misafir İlişkileri", "Fiyat & Değer"),
-    "billing": ("front_office", "Ön Büro & Misafir İlişkileri", "Fatura & Ödeme"),
-    "booking": ("front_office", "Ön Büro & Misafir İlişkileri", "Rezervasyon"),
-    "check_in_out": ("front_office", "Ön Büro & Misafir İlişkileri", "Giriş/Çıkış"),
-    "reception_service": ("front_office", "Ön Büro & Misafir İlişkileri", "Resepsiyon Hizmetleri"),
-    "complaint_resolution": ("front_office", "Ön Büro & Misafir İlişkileri", "Şikayet Çözümü"),
-    # Restaurant / Bar -> Yiyecek & İçecek (F&B)
-    "queue_waiting": ("food_beverage", "Yiyecek & İçecek (F&B)", "Servis / Kuyruk"),
-    "restaurant_service": ("food_beverage", "Yiyecek & İçecek (F&B)", "Restoran Servisi"),
-    "menu_variety": ("food_beverage", "Yiyecek & İçecek (F&B)", "Menü Çeşitliliği"),
-    "breakfast": ("food_beverage", "Yiyecek & İçecek (F&B)", "Kahvaltı"),
-    "food_quality": ("food_beverage", "Yiyecek & İçecek (F&B)", "Yemek Kalitesi"),
-    "pest_hygiene": ("food_beverage", "Yiyecek & İçecek (F&B)", "Haşere / Gıda Hijyeni"),
-    "food_illness": ("food_beverage", "Yiyecek & İçecek (F&B)", "Gıda Güvenliği / Sindirim"),
-    "allergen_protocol": ("food_beverage", "Yiyecek & İçecek (F&B)", "Alerjen Protokolü"),
-    "drink_quality": ("food_beverage", "Yiyecek & İçecek (F&B)", "İçecek Kalitesi"),
-    "minibar": ("food_beverage", "Yiyecek & İçecek (F&B)", "Minibar"),
-    # Staff
-    "communication": ("staff", "Personel Davranışı", "Dil & İletişim"),
-    "professionalism": ("staff", "Personel Davranışı", "Profesyonellik"),
-    "staff_attitude": ("staff", "Personel Davranışı", "Personel Tutumu"),
-    "staff_service": ("staff", "Personel Davranışı", "Personel Hizmeti"),
-    "staff_shortage": ("staff", "Personel Davranışı", "Personel Yetersizliği"),
-    # Atmosphere
-    "crowd": ("atmosphere", "Otel Atmosferi & Misafir Profili", "Kalabalık / Yoğunluk"),
-    "guest_profile": ("atmosphere", "Otel Atmosferi & Misafir Profili", "Misafir Profili"),
-    "general_management": ("atmosphere", "Otel Atmosferi & Misafir Profili", "Genel Yönetim"),
-    "general_atmosphere": ("atmosphere", "Otel Atmosferi & Misafir Profili", "Genel Atmosfer"),
-    "overall_experience": ("atmosphere", "Otel Atmosferi & Misafir Profili", "Genel Deneyim"),
-    "noise_level": ("atmosphere", "Otel Atmosferi & Misafir Profili", "Sessizlik / Gürültü"),
-}
-
-
 def _has_minibar_context(normalized: str) -> bool:
     return bool(
         re.search(r"\bmini\s*bar", normalized)
@@ -183,20 +122,15 @@ def _is_aquapark_maintenance_context(normalized: str, tokens: set[str]) -> bool:
     return has_aquapark and has_maint
 
 
-def _fold_tr(text: str) -> str:
-    """Türkçe karakterleri ASCII'ye indir — kural eşlemesi için."""
-    t = normalize_turkish(text)
-    for src, dst in (("ş", "s"), ("ı", "i"), ("ğ", "g"), ("ü", "u"), ("ö", "o"), ("ç", "c")):
-        t = t.replace(src, dst)
-    return t
+# Ortak uygulamaya yönlendirildi (turkish_nlp_utils.fold_tr); önbellek orada.
+_fold_tr = fold_tr
 
 
 def _fold_tr_raw(text: str) -> str:
     """Türkçe karakterleri ASCII'ye indir, ancak morfolojik analiz yapma."""
-    t = text.lower().strip()
-    for src, dst in (("ş", "s"), ("ı", "i"), ("ğ", "g"), ("ü", "u"), ("ö", "o"), ("ç", "c")):
-        t = t.replace(src, dst)
-    return t
+    # normalize_turkish UYGULANMAZ — bu fonksiyonun amacı morfolojik analiz
+    # yapmadan ham katlama; yalnızca karakter eşlemesi ortak kaynaktan gelir.
+    return fold_tr_chars(text.lower().strip())
 
 
 
@@ -412,30 +346,6 @@ class OntologyService:
         return domains
 
     @classmethod
-    def list_domains(cls) -> list[dict[str, Any]]:
-        """Alan listesi; `get_all_domains` ile aynı veriyi `id` anahtarıyla da verir.
-
-        Çağrı yerleri (`/ontology/domains`, analytics_service) bu adı ve `d["id"]`
-        alanını kullanıyordu ama yöntem hiç tanımlanmamıştı — üç ontoloji ucu ve
-        dashboard'un `available_domains` alanı AttributeError ile 500 dönüyordu.
-        """
-        return [{**d, "id": d["key"]} for d in cls.get_all_domains()]
-
-    @classmethod
-    def get_domain(cls, domain_key: str) -> Optional[dict[str, Any]]:
-        """Tek bir alanın tam tanımı; anahtar veya etiketle bulunur.
-
-        `departments` alanı düz liste olarak eklenir: çağrı yerleri
-        (`/ontology/domains/{id}`, rag_service) `dom.get("departments", [])`
-        bekliyor ama ham ontolojide departmanlar subdomain'lerin altında.
-        """
-        norm = normalize_turkish(domain_key.lower())
-        for d in _load_raw().get("domains", []):
-            if d["key"] == norm or normalize_turkish(d["label"].lower()) == norm:
-                return {**d, "id": d["key"], "departments": cls.get_departments(d["key"])}
-        return None
-
-    @classmethod
     def get_departments(cls, domain_key: str, subdomain_key: Optional[str] = None) -> list[dict[str, Any]]:
         norm = normalize_turkish(domain_key.lower())
         for d in _load_raw().get("domains", []):
@@ -522,8 +432,7 @@ class OntologyService:
         raw_tokens = [w for w in re.split(r"[^a-z0-9]", raw_folded) if w]
 
         def _has_kw(*words: str) -> bool:
-            # _DRINK_BOUNDARY modül seviyesine taşındı; bu closure dosyada 113 kez
-            # çağrıldığı için frozenset her seferinde yeniden yaratılıyordu.
+            _DRINK_BOUNDARY = frozenset({"bira", "raki", "raki", "sarap", "soda", "barmen"})
             for w in words:
                 wf = _fold_tr_raw(w)
                 if " " in wf:
@@ -547,8 +456,68 @@ class OntologyService:
                         return True
             return False
 
-        # _STANDARD_ASPECT_TO_DEPT modül seviyesine taşındı (aşağıda tanımlı):
-        # 55 elemanlı bu sözlük her clause için yeniden inşa ediliyordu.
+        _STANDARD_ASPECT_TO_DEPT = {
+            # Housekeeping
+            "room_cleanliness": ("housekeeping", "Oda Hizmetleri & Housekeeping", "Oda Temizliği"),
+            "bed_comfort": ("housekeeping", "Oda Hizmetleri & Housekeeping", "Yatak Konforu"),
+            "linen_towel": ("housekeeping", "Oda Hizmetleri & Housekeeping", "Çarşaf & Havlu"),
+            "bathroom": ("housekeeping", "Oda Hizmetleri & Housekeeping", "Banyo & Tuvalet"),
+            "room_size": ("housekeeping", "Oda Hizmetleri & Housekeeping", "Oda Boyutu"),
+            "soundproofing": ("housekeeping", "Oda Hizmetleri & Housekeeping", "Ses Yalıtımı"),
+            "amenities": ("housekeeping", "Oda Hizmetleri & Housekeeping", "Buklet Malzemeleri"),
+            # Engineering
+            "air_conditioning": ("engineering", "Teknik Servis & IT", "Klima / İklimlendirme"),
+            "wifi_internet": ("engineering", "Teknik Servis & IT", "WiFi / İnternet"),
+            "elevator": ("engineering", "Teknik Servis & IT", "Asansör"),
+            "tv_entertainment": ("engineering", "Teknik Servis & IT", "TV & Eğlence"),
+            "maintenance": ("engineering", "Teknik Servis & IT", "Bakım & Onarım"),
+            # Grounds
+            "parking": ("grounds", "Çevre, Güvenlik & Ulaşım", "Otopark & Vale"),
+            "security": ("grounds", "Çevre, Güvenlik & Ulaşım", "Güvenlik"),
+            "location": ("grounds", "Çevre, Güvenlik & Ulaşım", "Konum"),
+            "view": ("grounds", "Çevre, Güvenlik & Ulaşım", "Manzara"),
+            "transportation": ("grounds", "Çevre, Güvenlik & Ulaşım", "Ulaşım & Transfer"),
+            "environment": ("grounds", "Çevre, Güvenlik & Ulaşım", "Çevre & Bahçe"),
+            # Spa & Wellness / Pool & Beach / Animation & Events -> Rekreasyon & Eğlence
+            "fitness": ("leisure", "Rekreasyon & Eğlence", "Spor & Fitness"),
+            "spa_massage": ("leisure", "Rekreasyon & Eğlence", "Spa & Masaj"),
+            "pool": ("leisure", "Rekreasyon & Eğlence", "Havuz & Aquapark"),
+            "beach": ("leisure", "Rekreasyon & Eğlence", "Plaj & Deniz"),
+            "kids_club": ("leisure", "Rekreasyon & Eğlence", "Çocuk Kulübü"),
+            "animation": ("leisure", "Rekreasyon & Eğlence", "Animasyon & Etkinlik"),
+            # Front Office
+            "price_value": ("front_office", "Ön Büro & Misafir İlişkileri", "Fiyat & Değer"),
+            "billing": ("front_office", "Ön Büro & Misafir İlişkileri", "Fatura & Ödeme"),
+            "booking": ("front_office", "Ön Büro & Misafir İlişkileri", "Rezervasyon"),
+            "check_in_out": ("front_office", "Ön Büro & Misafir İlişkileri", "Giriş/Çıkış"),
+            "reception_service": ("front_office", "Ön Büro & Misafir İlişkileri", "Resepsiyon Hizmetleri"),
+            "complaint_resolution": ("front_office", "Ön Büro & Misafir İlişkileri", "Şikayet Çözümü"),
+            # Restaurant / Bar -> Yiyecek & İçecek (F&B)
+            "queue_waiting": ("food_beverage", "Yiyecek & İçecek (F&B)", "Servis / Kuyruk"),
+            "restaurant_service": ("food_beverage", "Yiyecek & İçecek (F&B)", "Restoran Servisi"),
+            "menu_variety": ("food_beverage", "Yiyecek & İçecek (F&B)", "Menü Çeşitliliği"),
+            "breakfast": ("food_beverage", "Yiyecek & İçecek (F&B)", "Kahvaltı"),
+            "food_quality": ("food_beverage", "Yiyecek & İçecek (F&B)", "Yemek Kalitesi"),
+            "pest_hygiene": ("food_beverage", "Yiyecek & İçecek (F&B)", "Haşere / Gıda Hijyeni"),
+            "food_illness": ("food_beverage", "Yiyecek & İçecek (F&B)", "Gıda Güvenliği / Sindirim"),
+            "allergen_protocol": ("food_beverage", "Yiyecek & İçecek (F&B)", "Alerjen Protokolü"),
+            "drink_quality": ("food_beverage", "Yiyecek & İçecek (F&B)", "İçecek Kalitesi"),
+            "drink_variety": ("food_beverage", "Yiyecek & İçecek (F&B)", "İçecek Çeşitliliği"),
+            "minibar": ("food_beverage", "Yiyecek & İçecek (F&B)", "Minibar"),
+            # Staff
+            "communication": ("staff", "Personel Davranışı", "Dil & İletişim"),
+            "professionalism": ("staff", "Personel Davranışı", "Profesyonellik"),
+            "staff_attitude": ("staff", "Personel Davranışı", "Personel Tutumu"),
+            "staff_service": ("staff", "Personel Davranışı", "Personel Hizmeti"),
+            "staff_shortage": ("staff", "Personel Davranışı", "Personel Yetersizliği"),
+            # Atmosphere
+            "crowd": ("atmosphere", "Otel Atmosferi & Misafir Profili", "Kalabalık / Yoğunluk"),
+            "guest_profile": ("atmosphere", "Otel Atmosferi & Misafir Profili", "Misafir Profili"),
+            "general_management": ("atmosphere", "Otel Atmosferi & Misafir Profili", "Genel Yönetim"),
+            "general_atmosphere": ("atmosphere", "Otel Atmosferi & Misafir Profili", "Genel Atmosfer"),
+            "overall_experience": ("atmosphere", "Otel Atmosferi & Misafir Profili", "Genel Deneyim"),
+            "noise_level": ("atmosphere", "Otel Atmosferi & Misafir Profili", "Sessizlik / Gürültü"),
+        }
 
         def _get_standard_mapping(aspect_key: str, method: str, confidence: float = 0.98) -> dict[str, Any]:
             dept_key, dept_label, asp_label = _STANDARD_ASPECT_TO_DEPT[aspect_key]
@@ -574,6 +543,14 @@ class OntologyService:
             and any(w in raw_folded for w in ("rahatsiz", "rahatsız"))
         ):
             return _get_standard_mapping("food_illness", "food_illness_override")
+
+        # Food / Buffet Variety (büfe çeşitliliği, yemek çeşitliliği)
+        if _has_kw("bufe", "büfe", "menu", "menü", "yemek", "tatli", "tatlı", "salata") and _has_kw("cesit", "çeşit", "cesitlilik", "çeşitlilik", "secenek", "seçenek", "zayif", "zayıf", "az", "yok"):
+            return _get_standard_mapping("menu_variety", "buffet_variety_override")
+
+        # Staff Language / Communication (personel Türkçe bilmiyor)
+        if _has_kw("personel", "personeli", "çalışan", "calisan", "garson", "resepsiyon") and _has_kw("turkce", "türkçe", "dil", "ingilizce", "lisan", "anlamiyor", "anlamıyor", "bilmiyor"):
+            return _get_standard_mapping("communication", "staff_language_override")
 
         # Staff shortage / Kadro yetersizliği (NOT Restaurant)
         if (
@@ -670,28 +647,48 @@ class OntologyService:
         if _has_kw("pastane", "kahve kosesi", "kahve köşesi", "lokum", "turk kahvesi", "türk kahvesi"):
             return _get_standard_mapping("food_quality", "patisserie_override")
 
+        # 0h4b. Food hair / pest / hygiene override
+        if any(w in raw_folded for w in ("kil cikti", "kıl çıktı", "kili cikti", "kılı çıktı", "sac kili", "saç kılı", "simsiyah kılı", "simsiyah kili")) or (
+            any(w in raw_folded for w in ("makarna", "restorantta", "restoranda", "yiyecek", "sefimin", "şefimin")) and any(w in raw_folded for w in ("kil", "kıl", "sinek", "bocek", "böcek"))
+        ):
+            return _get_standard_mapping("pest_hygiene", "food_hair_hygiene_override")
+
         # 0h5. Mutlu ayrıldık / loyalty — atmosphere NOT HK
         if any(p in raw_folded for p in ("mutlu ayrild", "mutlu ayrıl", "tercihimiz olacak", "memnun ayril", "memnun ayrıl")):
             return _get_standard_mapping("general_atmosphere", "loyalty_satisfaction_override")
 
-        # 0h6. Don't recommend — atmosphere NOT room cleaning / food hygiene
+        # 0h6. Don't recommend — entity pre-screening before collapsing to general atmosphere
         if _has_kw("tavsiye etmem", "tavsiye etmiyorum", "onermiyorum", "önermiyorum") or (
             "tavsiye etmem" in raw_folded or "gondere mem" in raw_folded or "göndermem" in raw_folded
         ):
-            if any(w in raw_folded for w in ("kil", "kıl", "makarna", "sefimin", "şefimin", "restorantta", "restoranda", "sineki", "sinek")):
+            # Check for food hygiene / hair / pest
+            if any(w in raw_folded for w in ("kil", "kıl", "makarna", "sefimin", "şefimin", "restorantta", "restoranda", "sineki", "sinek", "bocek", "böcek", "zehirlen", "mide")):
                 return _get_standard_mapping("pest_hygiene", "food_hair_override")
+            # Check for pool / beach / sunbed
+            if any(w in raw_folded for w in ("sezlong", "şezlong", "havuz", "plaj", "deniz")):
+                return _get_standard_mapping("pool", "pool_beach_override")
+            # Check for room cleaning / housekeeping
+            if any(w in raw_folded for w in ("kirli", "temizlen", "banyo", "klima", "yatak", "havlu", "pis", "toz")):
+                return _get_standard_mapping("room_cleanliness", "housekeeping_override")
+            # Check for staff attitude / manager
+            if any(w in raw_folded for w in ("gece müdürü", "gece muduru", "resepsiyon", "kaba", "suratsiz", "suratsız", "garson tutum")):
+                return _get_standard_mapping("staff_attitude", "staff_attitude_override")
             return _get_standard_mapping("general_atmosphere", "no_recommend_override")
 
-        # Night shift manager / supervisor refusing to help sick guest
+        # Category 2: Minibar attendant / towel override (Housekeeping over F&B)
+        if _has_kw("minibar", "mini bar") and any(w in raw_folded for w in ("havlu", "temizlik", "degistirmedi", "değiştirmedi", "gorevli", "görevli")):
+            return _get_standard_mapping("linen_towel", "minibar_towel_cleaning_override")
+
+        # Category 4: Night shift manager / supervisor refusing to help sick guest (Staff attitude)
         if any(w in raw_folded for w in ("gece vardiyasi", "gece vardiyasi amiri", "vardiya amiri", "sirita sirita", "sırıta sırıta", "gece müdürü", "gece muduru")):
             return _get_standard_mapping("staff_attitude", "night_manager_override")
 
-        # Table clearing / slow table service
+        # Category 4: Table clearing / slow table service (Restaurant service over general staff)
         if any(w in raw_folded for w in ("masayi toplama", "masayı toplama", "masalari toplama", "masaları toplama", "iceri almalari", "içeri almaları")):
             return _get_standard_mapping("restaurant_service", "table_clearing_override")
 
-        # Excessive walking / long distances to rooms/facilities
-        if any(w in raw_folded for w in ("yurunuyor", "yürünüyor", "yuruyoruz", "yürüyoruz", "yol yürün", "yol yurun")):
+        # Category 5: Excessive walking / long distances to rooms/facilities (Walking distance layout)
+        if any(w in raw_folded for w in ("yurunuyor", "yürünüyor", "yuruyoruz", "yürüyoruz", "yol yürün", "yol yurun", "mesafe", "odadan denize", "kilometre", "cok fazla yurunuyor")):
             return _get_standard_mapping("room_size", "walking_distance_override")
 
         # Missed event / animation attendance issue
@@ -759,7 +756,9 @@ class OntologyService:
             return _get_standard_mapping("wifi_internet", "wifi_hyphen_override")
 
         # 0s. Billing (ekstra ucretler)
-        if "ekstra ucret" in raw_folded or "ekstra ücret" in raw_folded:
+        if ("ekstra ucret" in raw_folded or "ekstra ücret" in raw_folded) and not any(
+            w in raw_folded for w in ("tekila", "viski", "votka", "cin", "alkol", "icecek", "içecek", "kokteyl", "bira", "sarap", "şarap", "minibar", "mini bar")
+        ):
             return _get_standard_mapping("billing", "billing_phrase_override")
 
         # 0s2. Pool bar / Bar rules
@@ -800,8 +799,8 @@ class OntologyService:
         if _has_kw("aquapark", "aquaprk", "aqua"):
             return _get_standard_mapping("pool", "aquapark_override")
 
-        # 0u. Garson + attitude/kaba/istemeyerek → Personel (before restaurant rules)
-        if _has_kw("garson", "barmen") and _has_kw("kaba", "istemeyerek", "suratsiz", "suratsız", "ilgisiz", "lakayit", "lakayıt", "tavir", "tavır"):
+        # 0u. Garson + attitude/kaba/istemeyerek/slowness → Personel (before restaurant rules)
+        if _has_kw("garson", "barmen") and _has_kw("kaba", "istemeyerek", "suratsiz", "suratsız", "ilgisiz", "lakayit", "lakayıt", "tavir", "tavır", "gec", "geç", "bakıyordu", "bakıyordu", "bekletti", "yarim saat", "yarım saat"):
             return _get_standard_mapping("staff_attitude", "staff_garson_attitude_override")
 
         # 0u. Restaurant Service (specific patterns)
@@ -823,7 +822,7 @@ class OntologyService:
         if "makarna" in raw_folded or "makarna cesidi" in raw_folded or "makarna çeşidi" in raw_folded:
             return _get_standard_mapping("menu_variety", "pasta_menu_override")
 
-        # 0w. Drink Quality (specific drinks and cocktails)
+        # 0w. Drink Quality / Variety (specific drinks and cocktails)
         if _has_kw(
             "kokteyl", "kokteyller", "kokteyli", "bira", "sarap", "şarap", "raki", "rakı", 
             "tekila", "viski", "cin", "vodka", "votka", "sampanya", "şampanya", "likor", "likör", 
@@ -831,6 +830,8 @@ class OntologyService:
         ):
             # Skip if minibar context or staff order context or food context
             if not _has_kw("minibar", "mini bar", "buzdolabi") and not (_has_kw("personel", "garson") and _has_kw("siparis", "sipariş", "kaba", "suratsiz", "suratsız")) and not any(w in raw_folded for w in ("makarna", "kıyma", "kiyma", "çorba", "corba", "tavuk")):
+                if any(w in raw_folded for w in ("bol", "cesit", "çeşit", "cesitli", "çeşitli", "secenek", "seçenek", "zengin")):
+                    return _get_standard_mapping("drink_variety", "drink_variety_override")
                 return _get_standard_mapping("drink_quality", "drink_specific_override")
 
         # 0x. Bar kuyrugu
@@ -891,7 +892,7 @@ class OntologyService:
                 return _get_standard_mapping("room_cleanliness", "room_clean_override")
             elif _has_kw("banyo", "tuvalet", "wc", "lavabo", "klozet"):
                 return _get_standard_mapping("room_cleanliness", "bathroom_clean_override")
-            elif _has_kw("restoran", "yemekhane", "bufe", "büfe", "masa", "catal", "çatal", "bicak", "bıçak", "kasik", "kaşık"):
+            elif _has_kw("restoran", "yemekhane", "bufe", "büfe", "masa", "catal", "çatal", "bicak", "bıçak", "kasik", "kaşık") and not _has_kw("oda", "odadaki", "odamiz", "odamız"):
                 return _get_standard_mapping("restaurant_service", "restaurant_clean_override")
             elif _has_kw("havuz", "aquapark", "kaydirak", "kaydırak"):
                 return _get_standard_mapping("pool", "pool_clean_override")

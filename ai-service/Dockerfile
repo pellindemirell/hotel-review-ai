@@ -11,17 +11,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# NOT: Playwright kurulumu kaldırıldı — `playwright` requirements.txt'te yoktu,
-# dolayısıyla `playwright install-deps` komutu bulunamıyor ve imaj build edilemiyordu.
-# Scraper adaptörleri gerektiğinde playwright'ı requirements'a ekleyip bu adımı geri alın.
-
 COPY . .
 
 ENV PYTHONPATH=/app
 
 EXPOSE 8000
 
-# Ürün API'si app.main:app. Önceden burada app.absa_platform.main:app vardı; o ayrı bir
-# iç etiketleme aracı ve /analyze-review, /health, /ocr-image uçlarını sunmuyor,
-# dolayısıyla .NET entegrasyonu container'da her istekte 404 alıyordu.
+# Ürün API'si app.main:app. Burada app.absa_platform.main:app vardı; o ayrı bir
+# iç etiketleme aracı ve /analyze-review, /health, /translate, /ocr-image
+# uçlarını sunmuyor — .NET entegrasyonu container'da her istekte 404 alıyordu.
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

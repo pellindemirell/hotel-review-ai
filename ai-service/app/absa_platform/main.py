@@ -267,7 +267,7 @@ def get_next_review(request: Request):
                     db.execute("UPDATE reviews SET review_text_translated=? WHERE id=?", (translated, review["id"]))
                     review["review_text_translated"] = translated
             except Exception:
-                pass
+                logger.debug("get_next_review: hata yutuldu", exc_info=True)
 
         # Ceviri varsa her zaman Turkce metin uzerinden yeniden analiz et
         reanalyzed = False

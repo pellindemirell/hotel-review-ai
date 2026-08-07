@@ -31,7 +31,11 @@ ai-service/.venv/
 ai-service/.env
 ai-service/**/*.db
 ai-service/**/*.bak
+ai-service/**/*.corrupted
 ai-service/**/__pycache__/
+# Eğitilmiş model ağırlıkları (~54 MB). Repoyu şişirmemesi için dışarıda;
+# WhatsApp'tan gelen paketle birlikte elle kopyalanıyor.
+ai-service/**/*.pt
 
 # ===== Docker / ENV =====
 .env
@@ -49,3 +53,6 @@ docker-compose.override.yml
 **/logs/
 **/*.log
 src/HotelReviewAI.Api/logs/
+# Kullanıcı yüklemeleri — çalışma zamanı verisi, depoya girmemeli.
+# (Cloudinary yapılandırılmadığında yedek yol buraya yazıyor.)
+src/HotelReviewAI.Api/wwwroot/uploads/

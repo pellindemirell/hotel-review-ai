@@ -3,6 +3,11 @@ uvicorn==0.30.1
 pydantic==2.7.4
 scikit-learn==1.5.0
 joblib==1.4.2
+spacy==3.7.5
+# Yeni sinirsel katman (app/models/*, deep_llm_service, custom_neural_absa_provider)
+# koşulsuz `import torch` yapıyor ve app/data/*.pt ağırlıklarını yüklüyor.
+# Gelen pakette eksikti; torch olmadan servis import aşamasında çöküyor.
+torch==2.3.1
 opencv-python-headless==4.10.0.84
 pytesseract==0.3.10
 langdetect==1.0.9

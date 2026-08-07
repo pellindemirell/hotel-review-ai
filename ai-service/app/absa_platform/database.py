@@ -21,10 +21,15 @@ from typing import Optional
 
 BASE_DIR = Path(__file__).parent
 
-PG_CONN_URL = os.getenv(
-    "POSTGRES_DB_URL",
-    os.getenv("DATABASE_URL", "postgresql://stajor1:stajor1*-@192.168.40.140:5432/stajor")
-)
+# Bağlantı bilgisi yalnızca ortamdan gelir. Önceden üretim sunucusunun IP'si ve
+# şifresi varsayılan olarak gömülüydü; hem sırrı depoya taşıyordu hem de
+# yapılandırma eksikken sessizce üretim veritabanına bağlanıyordu.
+PG_CONN_URL = os.getenv("POSTGRES_DB_URL") or os.getenv("DATABASE_URL")
+if not PG_CONN_URL:
+    raise RuntimeError(
+        "POSTGRES_DB_URL veya DATABASE_URL tanımlı değil. "
+        ".env dosyanıza ekleyin (örnek için .env.example)."
+    )
 # Convert asyncpg/sqlalchemy URL to standard psycopg2 URL
 if PG_CONN_URL.startswith("postgresql+asyncpg://"):
     PG_CONN_URL = PG_CONN_URL.replace("postgresql+asyncpg://", "postgresql://", 1)

@@ -11,7 +11,10 @@ Every prediction stores:
   - is_verified (human confirmed?)
 """
 
+
 from __future__ import annotations
+
+import logging
 
 import json
 import os
@@ -60,7 +63,7 @@ class ConfidenceLearner:
                 self._records = data.get("records", [])
                 self._calibrators = data.get("calibrators", {})
             except Exception:
-                pass
+                logging.getLogger(__name__).debug("_load: hata yutuldu", exc_info=True)
 
     def save(self) -> None:
         os.makedirs(os.path.dirname(self._persist_path), exist_ok=True)
@@ -77,7 +80,7 @@ class ConfidenceLearner:
                 cal = self._calibrators[method]
                 return float(cal.predict([[raw_score]])[0])
             except Exception:
-                pass
+                logging.getLogger(__name__).debug("calibrate: hata yutuldu", exc_info=True)
 
         # Cold start: simple scaling
         if method == "exact_match":

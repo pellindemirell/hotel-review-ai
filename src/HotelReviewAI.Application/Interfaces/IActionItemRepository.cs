@@ -7,6 +7,7 @@ namespace HotelReviewAI.Application.Interfaces;
 
 public interface IActionItemRepository : IGenericRepository<ActionItem>
 {
+    Task<IEnumerable<ActionItem>> GetByReviewIdAsync(Guid reviewId);
     Task<IEnumerable<ActionItem>> GetByDepartmentIdAsync(Guid departmentId);
     Task<IEnumerable<ActionItem>> GetByUserIdAsync(Guid userId);
     Task<IEnumerable<ActionItem>> GetFilteredAsync(Guid? departmentId, Guid? assignedTo, Guid? hotelId);

@@ -11,17 +11,14 @@ from app.ontology.models import AspectMapping, EntityRef, Segment
 from app.services.turkish_nlp_utils import (
     NEGATIVE_WORDS,
     POSITIVE_WORDS,
+    fold_tr,
     normalize_turkish,
     tokenize_turkish,
 )
 
 
-def _fold_tr(text: str) -> str:
-    """Türkçe karakterleri ASCII'ye indir — kural eşlemesi için."""
-    t = normalize_turkish(text)
-    for src, dst in (("ş", "s"), ("ı", "i"), ("ğ", "g"), ("ü", "u"), ("ö", "o"), ("ç", "c")):
-        t = t.replace(src, dst)
-    return t
+# Ortak uygulamaya yönlendirildi (turkish_nlp_utils.fold_tr); önbellek orada.
+_fold_tr = fold_tr
 
 # Department display labels (aligns with domain_ontology.json + enterprise keys)
 _DEPT_LABELS: dict[str, str] = {

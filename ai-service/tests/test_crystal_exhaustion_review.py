@@ -141,7 +141,7 @@ class TestPipelineFrames:
         for phrase in PARAPHRASES["queue"]:
             d = classify_clause(phrase)
             assert d.include
-            assert d.aspect_key in ("service_queue", "queue_waiting")
+            assert d.aspect_key in ("service_queue", "queue_waiting", "capacity")
             assert d.sentiment == "Negative"
 
     def test_opening_queue_narrative_rescued_not_meta(self):

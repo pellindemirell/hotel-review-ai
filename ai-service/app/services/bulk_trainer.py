@@ -4,7 +4,10 @@ Toplu (bulk) öğrenme — tüm etiketli/analiz edilmiş yorumlardan cümlecik b
 Crystal CSV'leri, batch analiz JSON, learning buffer ve isteğe bağlı mega_reviews
 kaynaklarından aspect-departman-duygu örnekleri üretir; learning_store + incremental_trainer'a yazar.
 """
+
 from __future__ import annotations
+
+import logging
 
 import csv
 import json
@@ -184,7 +187,7 @@ class BulkTrainer:
                         "aspects": row.get("aspects") or [],
                     })
         except OSError:
-            pass
+            logging.getLogger(__name__).debug("load_reviews_from_jsonl: hata yutuldu", exc_info=True)
         return rows
 
     def load_marrakesh_labeled_samples(self, path: str, max_rows: int = 5000) -> list[dict[str, Any]]:
@@ -240,7 +243,7 @@ class BulkTrainer:
                             "weight": 1,
                         })
         except OSError:
-            pass
+            logging.getLogger(__name__).debug("load_marrakesh_labeled_samples: hata yutuldu", exc_info=True)
         return samples
 
     def discover_data_sources(self, data_dir: str, max_rows: Optional[int] = None) -> tuple[list[str], list[str]]:
@@ -289,7 +292,7 @@ class BulkTrainer:
                         "source": f"csv:{os.path.basename(path)}",
                     })
         except OSError:
-            pass
+            logging.getLogger(__name__).debug("load_reviews_from_csv: hata yutuldu", exc_info=True)
         return rows
 
     def load_batch_analysis_json(self, path: Optional[str] = None) -> list[dict[str, Any]]:
@@ -414,7 +417,7 @@ class BulkTrainer:
                     if c:
                         existing.add(c)
             except Exception:
-                pass
+                logging.getLogger(__name__).debug("ingest_samples: hata yutuldu", exc_info=True)
 
         added = 0
         skipped = 0
@@ -471,7 +474,7 @@ class BulkTrainer:
                         source=f"bulk:{s.get('source', 'train')}",
                     )
                 except Exception:
-                    pass
+                    logging.getLogger(__name__).debug("ingest_samples: hata yutuldu", exc_info=True)
 
             sent = labels["sentiment"].lower()
             for kw in labels["keywords"]:
@@ -607,7 +610,7 @@ class BulkTrainer:
             with open(BULK_META_PATH, encoding="utf-8", mode="w") as f:
                 json.dump(meta, f, ensure_ascii=False, indent=2)
         except OSError:
-            pass
+            logging.getLogger(__name__).debug("run_bulk_train: hata yutuldu", exc_info=True)
 
         return stats
 

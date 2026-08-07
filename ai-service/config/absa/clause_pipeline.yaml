@@ -115,6 +115,12 @@ frames:
       - bedroom
       - rooms
       - bathroom
+      - yatak
+      - yatakodası
+      - yatak odası
+      - kanepe
+      - suite
+      - süit
       # Russian
       - номер
       - кроват
@@ -293,6 +299,7 @@ frames:
       - bar
       - barda
       - barlarda
+      - bara
       - limonata
       - soda
       - içecek
@@ -398,10 +405,6 @@ frames:
       - mide bulant
       - ishal
       - kusma
-      - rahatsız edici
-      - rahatsiz edici
-      - rahatsız eici
-      - rahatsiz eici
       - yemeklerden kaynakli
       - yemeklerden kaynaklı
   staff_shortage:
@@ -546,8 +549,6 @@ frames:
       - herhangi bir icecek alinamiyor
       - yorgunluk
     quantity_cues:
-      - kişilik
-      - kisilik
       - dakika
       - dk
       - saat
@@ -647,6 +648,22 @@ frames:
       - alakart
   value:
     entity_cues:
+      - fiyat
+      - fiyatlar
+      - fiyatlar
+      - pahalı
+      - pahali
+      - ucuz
+      - ücret
+      - ucret
+      - ücretli
+      - ucretli
+      - para
+      - parayla
+      - bütçe
+      - butce
+      - cebimden
+      - cebime
       - pişman
       - pisman
       - paramız çöp
@@ -659,13 +676,18 @@ frames:
       - carcur
       - parasını çarçur
       - parasini carcur
-      # English cues
+      - mal
+      - maliyet
+      - masraf
       - overpriced
       - expensive
       - rip off
       - not worth
       - waste of money
       - regretted
+      - cost
+      - price
+      - pricing
   staff:
     entity_cues:
       - personel
@@ -719,6 +741,16 @@ frames:
       - yardimci ol
       - yardımcı oldu
       - yardimci oldu
+      - yardıma hazır
+      - yardima hazir
+      - dost canlısı
+      - dost canlisi
+      - enerjik
+      - enerjiklerdi
+      - cana yakın
+      - cana yakin
+      - arkadas canli
+      - arkadaş canlı
       - ilgi ve alaka
       - ilgili alakalı
       - ilgili alakali
@@ -769,6 +801,8 @@ frames:
       - animator
       - show
       - masa tenisi
+      - tenis
+      - basketbol
       - bayram nedeniyle
       - kids club
       - çocuk kulüb
@@ -791,18 +825,24 @@ frames:
       - stage show
       - mini club
       - disco
+      - gösteri
+      - gösteriler
+      - gosteri
+      - şov
+      - oyun
+      - oyunlar
       - eğlence
       - eglence
       - parti
-       - eğlenceli
-       - eglenceli
-       - gösteri
-       - gosteri
-       - akşam eğlence
-       - aksam eglence
-       - su spor
-       - gece hayat
-       - анимация
+      - eğlenceli
+      - eglenceli
+      - gösteri
+      - gosteri
+      - akşam eğlence
+      - aksam eglence
+      - su spor
+      - gece hayat
+      - анимация
   tech:
     entity_cues:
       - wifi
@@ -1088,6 +1128,53 @@ frames:
       - konum kotu
       - ulaşım yok
       - ulasim yok
+  family_friendly:
+    entity_cues:
+      - aile
+      - aileler
+      - ailece
+      - ailelik
+      - çocuk
+      - çocuklu
+      - cocuklu
+      - çocuklar
+      - cocuklar
+      - bebek
+      - bebekli
+      - bebekler
+      - bebek için
+      - bebek icin
+      - çocuk için
+      - cocuk icin
+      - aile için
+      - aile icin
+      - aile odası
+      - aile odasi
+      - bebek yatağı
+      - bebek yatagi
+      - mama sandalyesi
+      - çocuk havuzu
+      - cocuk havuzu
+      - aquapark
+      - kaydırak
+      - kaydirak
+      - miniclub
+      - mini club
+      - kids club
+      - family
+      - families
+      - baby
+      - kid
+      - kids
+      - child
+      - children
+      - stroller
+      - pram
+      - crib
+      - cot
+      - highchair
+      - playground
+      - sandbox
   housekeeping:
     entity_cues:
       - temizlik
@@ -1176,7 +1263,7 @@ aspect_resolution:
     aspect_key: room_cleanliness
     aspect_label: Oda & Banyo Temizliği
     department: housekeeping
-    department_label: Kat Hizmetleri & Temizlik
+    department_label: Oda Hizmetleri & Housekeeping
     category: Oda Hizmetleri & Housekeeping
   table_cleanliness:
     aspect_key: table_cleanliness
@@ -1316,6 +1403,30 @@ aspect_resolution:
     department: engineering
     department_label: Teknik Servis & IT
     category: Teknik Servis & IT
+  air_conditioning:
+    aspect_key: air_conditioning
+    aspect_label: Klima / İklimlendirme
+    department: engineering
+    department_label: Teknik Servis & IT
+    category: Teknik Servis & IT
+  room_comfort:
+    aspect_key: room_comfort
+    aspect_label: Oda Konforu
+    department: housekeeping
+    department_label: Oda Hizmetleri & Housekeeping
+    category: Oda Hizmetleri & Housekeeping
+  room_features:
+    aspect_key: room_features
+    aspect_label: Oda Özellikleri
+    department: housekeeping
+    department_label: Oda Hizmetleri & Housekeeping
+    category: Oda Hizmetleri & Housekeeping
+  facility_features:
+    aspect_key: facility_features
+    aspect_label: Tesis Özellikleri
+    department: atmosphere
+    department_label: Otel Atmosferi & Misafir Profili
+    category: Otel Atmosferi & Misafir Profili
   value_for_money:
     aspect_key: value_for_money
     aspect_label: Fiyat / Performans
@@ -1448,6 +1559,12 @@ aspect_resolution:
     department: grounds
     department_label: Çevre, Güvenlik & Ulaşım
     category: Çevre, Güvenlik & Ulaşım
+  family_friendly:
+    aspect_key: family_friendly
+    aspect_label: Aile & Çocuk Dostu
+    department: leisure
+    department_label: Rekreasyon & Eğlence
+    category: Rekreasyon & Eğlence
 
 # ---------------------------------------------------------------------------
 # Department anti-patterns (block unless required cues present)
@@ -1673,6 +1790,18 @@ sarcasm_negative_cues:
   - yazilanlara inanmayin
   - yorumlara kanmayın
   - yorumlara kanmayin
+  - güler yüz yoktu
+  - guler yuz yoktu
+  - güler yüzü yoktu
+  - guler yuzu yoktu
+  - bitse de gitsem
+  - bitse de gitsek
+  - bitse de dónsek
+  - bitse de donsek
+  - şeritle kapatmışlar
+  - seritle kapatmislar
+  - şeritle kapat
+  - seritle kapat
 
 disappointment_negative_cues:
   - diye tuttuk
@@ -2806,6 +2935,10 @@ recommendation_negative_cues:
   - kimseye tavsiye etmem
   - kimseye önermem
   - kimseye onermem
+  - bir daha tercih etmeyecegim
+  - bir daha tercih etmeyeceğim
+  - bir daha gelmem
+  - asla gelmem
   - asla tavsiye etmiyorum
   - kesinlikle önermiyorum
   - kesinlikle onermiyorum
@@ -2824,6 +2957,7 @@ queue_context:
     - bar
     - barda
     - barlarda
+    - bara
     - içecek
     - icecek
     - alakart
@@ -2882,8 +3016,67 @@ queue_context:
     - kapida
     - rezervasyonsuz
     - misafir kabul
-  # Bare "sıra" with no venue → F&B Servis/Kuyruk (pool/kids/FO context overrides)
-  bare_default: service_queue
+    - giriş
+    - giris
+    - girişte
+    - giriste
+    - giriş yapmak
+    - giriş işlemleri
+    - giriş işlemi
+    - yerleşmek
+    - yerleşme
+    - odalara yerleşmek
+    - anahtar
+    - fatura
+    - kasa
+    - kasada
+    - bavul
+    - bagaj
+    - kayıt
+    - kayit
+    - oda teslimi
+    - odaların verilmesi
+    - odamızı al
+    - odamızı vermed
+  parking_cues:
+    - otopark
+    - otoparka
+    - vale
+    - valet
+    - garaj
+    - araba
+    - arabalık
+    - arabanızı
+    - park yeri
+    - park etmek
+  transport_cues:
+    - transfer
+    - transfer servisi
+    - shuttle
+    - taksi
+    - otobüs
+    - otobus
+    - minibüs
+    - minibus
+    - dolmuş
+    - havaalanı servisi
+  anim_cues:
+    - amfitiyatro
+    - gösteri
+    - gosteri
+    - konser
+    - sahne
+    - etkinlik
+    - animasyon
+    - show
+  towel_cues:
+    - havlu
+    - havlutopla
+    - havlu kartı
+    - havlukartı
+    - plaj havlusu
+  # Bare "sıra" with no venue → capacity (general operations)
+  bare_default: capacity
 
 # Property size / walking distance (NOT room size, NOT F&B queue)
 property_layout:
@@ -2952,8 +3145,6 @@ guest_safety_cues:
   - yan gozle
   - pis hissettiri
   - pis hissettiriyor
-  - rahatsız edici
-  - rahatsiz edici
   - rahatsiz ediciler
   - rahatsız ediciler
   - taciz

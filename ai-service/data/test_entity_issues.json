@@ -1,0 +1,177 @@
+{
+  "version": 1,
+  "issue_count": 4,
+  "comment_count": 8,
+  "issues": [
+    {
+      "id": "c8353f88",
+      "entity_type": "room",
+      "entity_id": "504",
+      "entity_label": "Oda 504",
+      "issue_type": "priz",
+      "status": "resolved",
+      "domain": "hotel",
+      "first_reported": "2026-07-03T10:00:00+00:00",
+      "last_reported": "2026-07-04T09:15:00+00:00",
+      "resolved_at": "2026-07-04T09:15:00+00:00",
+      "scheduled_date": null,
+      "comment_ids": [
+        "6c862b13",
+        "e1c24484",
+        "44055ad8"
+      ],
+      "notes": "oda 504 te priz çalışmıyor şarj edemiyorum"
+    },
+    {
+      "id": "d40a38fc",
+      "entity_type": "room",
+      "entity_id": "504",
+      "entity_label": "Oda 504",
+      "issue_type": "klima",
+      "status": "scheduled",
+      "domain": "hotel",
+      "first_reported": "2026-07-06T08:00:00+00:00",
+      "last_reported": "2026-07-08T16:00:00+00:00",
+      "resolved_at": null,
+      "scheduled_date": "2026-07-10",
+      "comment_ids": [
+        "f3c8b603",
+        "0b6d250e",
+        "e425a490"
+      ],
+      "notes": "oda 504 klima bozuk oda çok sıcak"
+    },
+    {
+      "id": "01bf79d7",
+      "entity_type": "room",
+      "entity_id": "702",
+      "entity_label": "Oda 702",
+      "issue_type": "klima",
+      "status": "open",
+      "domain": "hotel",
+      "first_reported": "2026-07-05T22:00:00+00:00",
+      "last_reported": "2026-07-05T22:00:00+00:00",
+      "resolved_at": null,
+      "scheduled_date": null,
+      "comment_ids": [
+        "904b4c85"
+      ],
+      "notes": "702 numaralı odada klima bozuk gece uyuyamadık"
+    },
+    {
+      "id": "137e25cf",
+      "entity_type": "room",
+      "entity_id": "705",
+      "entity_label": "Oda 705",
+      "issue_type": "klima",
+      "status": "open",
+      "domain": "hotel",
+      "first_reported": "2026-07-06T13:00:00+00:00",
+      "last_reported": "2026-07-06T13:00:00+00:00",
+      "resolved_at": null,
+      "scheduled_date": null,
+      "comment_ids": [
+        "6efc00d4"
+      ],
+      "notes": "705 te klima arızalı çok sıcak"
+    }
+  ],
+  "comments": [
+    {
+      "id": "6c862b13",
+      "entity_type": "room",
+      "entity_id": "504",
+      "entity_label": "Oda 504",
+      "comment": "oda 504 te priz çalışmıyor şarj edemiyorum",
+      "issue_type": "priz",
+      "domain": "hotel",
+      "review_id": "demo-0",
+      "created_at": "2026-07-03T10:00:00+00:00",
+      "is_resolution": false
+    },
+    {
+      "id": "e1c24484",
+      "entity_type": "room",
+      "entity_id": "504",
+      "entity_label": "Oda 504",
+      "comment": "504 numaralı odada priz arızası devam ediyor",
+      "issue_type": "priz",
+      "domain": "hotel",
+      "review_id": "demo-1",
+      "created_at": "2026-07-03T14:30:00+00:00",
+      "is_resolution": false
+    },
+    {
+      "id": "44055ad8",
+      "entity_type": "room",
+      "entity_id": "504",
+      "entity_label": "Oda 504",
+      "comment": "504 te priz tamir edildi düzeldi teşekkürler",
+      "issue_type": "priz",
+      "domain": "hotel",
+      "review_id": "demo-2",
+      "created_at": "2026-07-04T09:15:00+00:00",
+      "is_resolution": true
+    },
+    {
+      "id": "f3c8b603",
+      "entity_type": "room",
+      "entity_id": "504",
+      "entity_label": "Oda 504",
+      "comment": "oda 504 klima bozuk oda çok sıcak",
+      "issue_type": "klima",
+      "domain": "hotel",
+      "review_id": "demo-3",
+      "created_at": "2026-07-06T08:00:00+00:00",
+      "is_resolution": false
+    },
+    {
+      "id": "0b6d250e",
+      "entity_type": "room",
+      "entity_id": "504",
+      "entity_label": "Oda 504",
+      "comment": "504 nolu odada klima 3 gündür çalışmıyor",
+      "issue_type": "klima",
+      "domain": "hotel",
+      "review_id": "demo-4",
+      "created_at": "2026-07-07T11:00:00+00:00",
+      "is_resolution": false
+    },
+    {
+      "id": "e425a490",
+      "entity_type": "room",
+      "entity_id": "504",
+      "entity_label": "Oda 504",
+      "comment": "504 te klima arızası için 10.07.2026 teknik servis gelecek",
+      "issue_type": "klima",
+      "domain": "hotel",
+      "review_id": "demo-5",
+      "created_at": "2026-07-08T16:00:00+00:00",
+      "is_resolution": false
+    },
+    {
+      "id": "904b4c85",
+      "entity_type": "room",
+      "entity_id": "702",
+      "entity_label": "Oda 702",
+      "comment": "702 numaralı odada klima bozuk gece uyuyamadık",
+      "issue_type": "klima",
+      "domain": "hotel",
+      "review_id": "demo-6",
+      "created_at": "2026-07-05T22:00:00+00:00",
+      "is_resolution": false
+    },
+    {
+      "id": "6efc00d4",
+      "entity_type": "room",
+      "entity_id": "705",
+      "entity_label": "Oda 705",
+      "comment": "705 te klima arızalı çok sıcak",
+      "issue_type": "klima",
+      "domain": "hotel",
+      "review_id": "demo-7",
+      "created_at": "2026-07-06T13:00:00+00:00",
+      "is_resolution": false
+    }
+  ]
+}

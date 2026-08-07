@@ -40,10 +40,11 @@ register_uuid()
 
 csv.field_size_limit(10 * 1024 * 1024)
 
-DEFAULT_DSN = os.getenv(
-    "REVIEWS_DB_URL",
-    "postgresql://stajor1:stajor1*-@192.168.40.140:5432/stajor",
-)
+# Bağlantı bilgisi ortamdan gelir; üretim şifresi koda gömülü değil.
+DEFAULT_DSN = os.getenv("REVIEWS_DB_URL") or os.getenv("DATABASE_URL")
+if DEFAULT_DSN and DEFAULT_DSN.startswith("postgresql+asyncpg://"):
+    # Bu script psycopg2 kullanıyor; asyncpg sürücü ekini kaldır.
+    DEFAULT_DSN = DEFAULT_DSN.replace("postgresql+asyncpg://", "postgresql://", 1)
 
 # Dosya adı -> Hotels."Name". Kimlikler koda gömülmüyor, isimden okunuyor;
 # böylece yanlış otele yazma riski tek bir yerde ve gözle görülür kalıyor.
@@ -80,6 +81,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--only", action="append", default=[], metavar="AD",
                         help="sadece bu dosyayı yükle (birden çok kez verilebilir)")
     args = parser.parse_args(argv)
+
+    if not args.dsn:
+        print(
+            "HATA: veritabanı adresi yok. REVIEWS_DB_URL ya da DATABASE_URL "
+            "ortam değişkenini tanımlayın veya --dsn ile verin.",
+            file=sys.stderr,
+        )
+        return 2
 
     wanted = set(args.only) if args.only else set(FILE_TO_HOTEL)
     unknown = wanted - set(FILE_TO_HOTEL)

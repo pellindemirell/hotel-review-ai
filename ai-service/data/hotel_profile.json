@@ -1,0 +1,65 @@
+{
+  "name": "Crystal Waterworld Resort & Spa",
+  "hotel": {
+    "name": "Crystal Waterworld Resort & Spa",
+    "stars": 5,
+    "description": "Belek bölgesinde lüks her şey dahil tatil köyü",
+    "address": "Belek Mahallesi, Antalya"
+  },
+  "breakfast": {
+    "hours": "07:00-10:30",
+    "location": "Ana Restoran",
+    "type": "Açık büfe",
+    "vegan": true,
+    "gluten_free": true,
+    "menu_items": [
+      "Peynir ve zeytin çeşitleri",
+      "Sıcak/soğuk omlet ve yumurta çeşitleri",
+      "Reçel, bal, tereyağı",
+      "Taze meyve ve sebze",
+      "Sıcak yemekler (menemen, sucuk-yumurta)",
+      "Glutensiz ekmek ve vegan süt alternatifleri"
+    ]
+  },
+  "pool": {
+    "hours": "08:00-20:00",
+    "children_pool": true,
+    "count": 3,
+    "description": "3 aquapark, 1 açık yüzme havuzu, 1 çocuk havuzu"
+  },
+  "spa": {
+    "hours": "10:00-22:00",
+    "services": ["Türk hamamı", "Masaj", "Sauna", "Buhar odası"],
+    "paid": true
+  },
+  "wifi": {
+    "free": true,
+    "password_location": "Oda kartı / Resepsiyon",
+    "speed": "Ücretsiz 10 Mbps"
+  },
+  "parking": {
+    "free": true,
+    "capacity": 200,
+    "type": "Açık otopark"
+  },
+  "check_in": "14:00",
+  "check_out": "12:00",
+  "services": [
+    "7/24 resepsiyon",
+    "Oda servisi",
+    "Çamaşırhane",
+    "Fitness center (07:00-22:00)",
+    "SPA & Wellness",
+    "Aquapark (3 havuz)",
+    "Kids club (4-12 yaş, 10:00-18:00)",
+    "Mini golf",
+    "Futbol sahası",
+    "Tenis kortu",
+    "Animasyon ekibi"
+  ],
+  "restaurants": [
+    {"name": "Ana Restoran", "type": "Açık büfe", "hours": "07:00-21:30"},
+    {"name": "A La Carte İtalyan", "type": "Ala carte", "hours": "18:00-22:00"},
+    {"name": "Snack Bar", "type": "Atıştırmalık", "hours": "10:00-18:00"}
+  ]
+}

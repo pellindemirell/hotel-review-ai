@@ -12,7 +12,10 @@ Stages:
 
 Prefer extending config/absa/clause_pipeline.yaml over Crystal-specific if/else.
 """
+
 from __future__ import annotations
+
+import logging
 
 import os
 import re
@@ -30,6 +33,11 @@ _CONFIG_PATH = os.path.join(
 )
 
 
+# _match_cue / _any_cue / _count_cues her cümlecik için tüm cue listesini gezip
+# _fold'u hem metne hem de YAML'deki SABİT cue dizelerine uyguluyor; sonuçta tek
+# analizde ~30.000 çağrı oluşuyor ve her biri normalize_turkish + NFKD ayrıştırma
+# yapıyor. Saf fonksiyon olduğu için önbellek davranışı değiştirmez.
+@lru_cache(maxsize=50000)
 def _fold(text: str) -> str:
     """ASCII-fold Turkish; strip combining marks (hari̇ka → harika)."""
     t = normalize_turkish(text or "").lower()
@@ -82,7 +90,25 @@ class ClauseDecision:
 
 
 def _cue_str(c: Any) -> str:
-    """YAML may parse 18.00 as float — always coerce cues to string."""
+    """YAML may parse 18.00 as float — always coerce cues to string.
+
+    Cue değerleri YAML'den geliyor ve config bir kez yükleniyor; aynı sabit
+    değer her cümlecikte yeniden dizeye çevriliyordu (40 yorumda ~3.8M çağrı).
+    Önbellek bunu tekilleştirir. dict/list gibi hash'lenemeyen bir cue gelirse
+    TypeError yakalanıp önbelleksiz yola düşülür — davranış korunur.
+    """
+    try:
+        return _cue_str_cached(c)
+    except TypeError:
+        return _cue_str_uncached(c)
+
+
+@lru_cache(maxsize=16384)
+def _cue_str_cached(c: Any) -> str:
+    return _cue_str_uncached(c)
+
+
+def _cue_str_uncached(c: Any) -> str:
     if c is None:
         return ""
     if isinstance(c, float):
@@ -94,26 +120,36 @@ def _cue_str(c: Any) -> str:
     return str(c)
 
 
+@lru_cache(maxsize=4096)
+def _get_compiled_cue_regex(pattern_str: str) -> re.Pattern:
+    return re.compile(pattern_str)
+
+
+# Analiz yolunun tek en sıcak fonksiyonu: _any_cue/_count_cues her cümlecik için
+# TÜM cue listesini gezdiğinden 40 yorumda ~3.8 milyon kez çağrılıyordu. Üç
+# argümanı da string ve fonksiyon saf (yalnızca sabitleri okuyor, önbellekli
+# yardımcıları çağırıyor), dolayısıyla sonuç doğrudan önbelleklenebilir.
+@lru_cache(maxsize=200000)
 def _match_cue(text: str, folded: str, cs: str) -> bool:
     cs_low = cs.lower()
     cs_fold = _fold(cs)
     if cs_low.startswith(r"\b") or cs_low.endswith(r"\b"):
-        return bool(re.search(cs_low, text) or re.search(cs_fold, folded))
+        return bool(_get_compiled_cue_regex(cs_low).search(text) or _get_compiled_cue_regex(cs_fold).search(folded))
     if cs_low in ("bekle", "hamam", "deniz", "plaj", "sira", "sıra"):
         pattern_text = rf"(?<![a-zA-ZıİşŞğĞüÜöÖçÇ]){re.escape(cs_low)}(?![a-zA-ZıİşŞğĞüÜöÖçÇ])"
         pattern_fold = rf"(?<![a-zA-ZıİşŞğĞüÜöÖçÇ]){re.escape(cs_fold)}(?![a-zA-ZıİşŞğĞüÜöÖçÇ])"
-        return bool(re.search(pattern_text, text) or re.search(pattern_fold, folded))
+        return bool(_get_compiled_cue_regex(pattern_text).search(text) or _get_compiled_cue_regex(pattern_fold).search(folded))
     # "çeşit" ⊂ "çeşitli" (various stains) must NOT fire bar/food variety
     if cs_fold in ("cesit",) or cs_low in ("çeşit", "cesit"):
         if "cesitlilik" in folded or "çeşitlilik" in text:
             return True
         pattern_fold = rf"(?<![a-zA-ZıİşŞğĞüÜöÖçÇ])cesit(?!li)(?![a-zA-ZıİşŞğĞüÜöÖçÇ])"
         pattern_text = rf"(?<![a-zA-ZıİşŞğĞüÜöÖçÇ])(?:çeşit|cesit)(?!li)(?![a-zA-ZıİşŞğĞüÜöÖçÇ])"
-        return bool(re.search(pattern_text, text) or re.search(pattern_fold, folded))
+        return bool(_get_compiled_cue_regex(pattern_text).search(text) or _get_compiled_cue_regex(pattern_fold).search(folded))
     if len(cs_low) <= 4:
         pattern_text = rf"(?<![a-zA-ZıİşŞğĞüÜöÖçÇ]){re.escape(cs_low)}(?![a-zA-ZıİşŞğĞüÜöÖçÇ])"
         pattern_fold = rf"(?<![a-zA-ZıİşŞğĞüÜöÖçÇ]){re.escape(cs_fold)}(?![a-zA-ZıİşŞğĞüÜöÖçÇ])"
-        return bool(re.search(pattern_text, text) or re.search(pattern_fold, folded))
+        return bool(_get_compiled_cue_regex(pattern_text).search(text) or _get_compiled_cue_regex(pattern_fold).search(folded))
     return cs_low in text or cs_fold in folded
 
 
@@ -122,47 +158,57 @@ _PEST_TOKENS = (
     "bocekler", "böcekler", "hasere", "haşere", "hamambocegi", "hamamböceği",
     "hamam bocegi", "hamam böceği", "hamam boceginin", "hamam böceğinin",
     "hamam boceg", "hamam böceğ", "bocekli", "böcekli", "karasinek", "kara sinek",
+    "kil", "kıl", "kili", "kılı", "sac kili", "saç kılı",
 )
 
 
+@lru_cache(maxsize=100000)
 def _has_pest_signal(text: str, folded: str) -> bool:
     """Cockroach / pest — never spa/hamam bath."""
-    blob = f"{text} {folded}"
-    return any(w in blob for w in _PEST_TOKENS)
-
-
-def _any_cue(text: str, folded: str, cues: list) -> bool:
-    for c in cues or []:
-        cs = _cue_str(c)
-        if not cs:
-            continue
-        # Expectation / whitelist traps: "bekle" ⊂ "beklemeden", "beklenti"
-        if cs.lower() == "bekle":
-            if any(w in text or w in folded for w in ("beklemeden", "beklenti", "beklentisi", "beklentiler", "beklentinin", "beklentimin", "beklediğim", "bekledigim")):
-                continue
-        if cs.lower() == "hamam":
-            if _has_pest_signal(text, folded):
-                continue
-        if _match_cue(text, folded, cs):
-            return True
+    blob = f"{text} {folded}".lower()
+    for w in _PEST_TOKENS:
+        if len(w) <= 4:
+            if re.search(rf"(?<![a-zA-ZıİşŞğĞüÜöÖçÇ]){re.escape(w)}(?![a-zA-ZıİşŞğĞüÜöÖçÇ])", blob):
+                return True
+        else:
+            if w in blob:
+                return True
     return False
 
 
-def _count_cues(text: str, folded: str, cues: list) -> int:
-    n = 0
+# Expectation / whitelist traps: "bekle" ⊂ "beklemeden", "beklenti"
+_BEKLE_TRAPS = (
+    "beklemeden", "beklenti", "beklentisi", "beklentiler",
+    "beklentinin", "beklentimin", "beklediğim", "bekledigim",
+)
+
+
+def _iter_matching_cues(text: str, folded: str, cues: list):
+    """Eşleşen cue'ları üretir — _any_cue ve _count_cues'un ortak gövdesi.
+
+    Önceden iki fonksiyon aynı tuzak mantığını (bekle / hamam istisnaları)
+    ayrı ayrı barındırıyordu; tek fark `return True` yerine `n += 1` idi.
+    Birine kural eklenip diğerine eklenmediğinde davranış sessizce çatallanıyordu.
+    """
     for c in cues or []:
         cs = _cue_str(c)
         if not cs:
             continue
-        if cs.lower() == "bekle":
-            if any(w in text or w in folded for w in ("beklemeden", "beklenti", "beklentisi", "beklentiler", "beklentinin", "beklentimin", "beklediğim", "bekledigim")):
-                continue
-        if cs.lower() == "hamam":
-            if _has_pest_signal(text, folded):
-                continue
+        cs_low = cs.lower()
+        if cs_low == "bekle" and any(w in text or w in folded for w in _BEKLE_TRAPS):
+            continue
+        if cs_low == "hamam" and _has_pest_signal(text, folded):
+            continue
         if _match_cue(text, folded, cs):
-            n += 1
-    return n
+            yield cs
+
+
+def _any_cue(text: str, folded: str, cues: list) -> bool:
+    return any(True for _ in _iter_matching_cues(text, folded, cues))
+
+
+def _count_cues(text: str, folded: str, cues: list) -> int:
+    return sum(1 for _ in _iter_matching_cues(text, folded, cues))
 
 
 # ---------------------------------------------------------------------------
@@ -420,7 +466,7 @@ def detect_frames(clause: str, cfg: Optional[dict] = None) -> dict[str, float]:
 
     # Havuz temiz → pool, not spa (masaj keyword override)
     if any(w in folded for w in ("havuz",)) and _any_cue(low, folded, ["temiz", "kirli", "pis", "buyuk", "büyük", "güzel", "guzel"]):
-        if any(w in folded for w in ("masaj", "spa")):
+        if _any_cue(low, folded, ["masaj", "spa"]):
             scores["pool"] = max(scores.get("pool", 0), scores.get("spa_wellness", 0) + 3.0)
 
     # "iki büyük havuz / havuz da temizdi" → pool not room or housekeeping
@@ -462,8 +508,8 @@ def detect_frames(clause: str, cfg: Optional[dict] = None) -> dict[str, float]:
 
     # Spa + randevu/bekleme → spa (not queue/restaurant)
     # NEVER treat "hamam böceği" as spa — word-boundary hamam only, pest wins
-    spa_wellness_cues = ("spa", "masaj", "sauna", "wellness")
-    has_spa = any(w in folded for w in spa_wellness_cues) or (
+    spa_wellness_cues = ["spa", "masaj", "sauna", "wellness"]
+    has_spa = _any_cue(low, folded, spa_wellness_cues) or (
         _match_cue(low, folded, "hamam") and not _has_pest_signal(low, folded)
     )
     if has_spa and any(
@@ -505,6 +551,10 @@ def detect_frames(clause: str, cfg: Optional[dict] = None) -> dict[str, float]:
         "beklediğimin alt", "hayal kirikligi", "hayal kırıklığı",
     )):
         scores["overall_disappointment"] = scores.get("overall_disappointment", 0) + 6.0
+        # "hijyen" in same clause → room/hygiene context, not generic disappointment
+        if _any_cue(low, folded, ["hijyen", "temizlik", "kirli", "pis", "dışkı", "diski", "kusmuk"]):
+            scores["room"] = scores.get("room", 0) + 8.0
+            scores["overall_disappointment"] = max(0.0, scores.get("overall_disappointment", 0) - 6.0)
 
     # Allergen inquiry on entry (service protocol, not taste)
     if any(w in folded for w in ("alerjiniz", "alerji", "allerji", "alerjen", "allergen")) and any(
@@ -592,6 +642,19 @@ def detect_frames(clause: str, cfg: Optional[dict] = None) -> dict[str, float]:
         scores["housekeeping"] = scores.get("housekeeping", 0) + 5.0
     if any(w in folded for w in ("pike", "yastik", "yastık", "nevresim")):
         scores["housekeeping"] = scores.get("housekeeping", 0) + 2.0
+
+    # "arkadaş canlısıydı" / "dost canlısı" → staff
+    if any(w in folded for w in ("arkadaş canlı", "arkadas canli", "arkadaş canlısı", "arkadas canlisi",
+                                  "dost canlı", "dost canli", "dost canlısı", "dost canlisi")):
+        scores["staff"] = scores.get("staff", 0) + 3.0
+
+    # "yardıma hazır" / "her zaman yardıma" → staff
+    if any(w in folded for w in ("yardıma hazır", "yardima hazir", "her zaman yardıma", "her zaman yardima")):
+        scores["staff"] = scores.get("staff", 0) + 3.0
+
+    # "cana yakın" / "enerjik" → staff
+    if any(w in folded for w in ("cana yakın", "cana yakin", "enerjik", "enerjiklerdi")):
+        scores["staff"] = scores.get("staff", 0) + 2.0
 
     if "masa tenisi" in folded:
         scores["animation"] = scores.get("animation", 0) + 4.0
@@ -733,29 +796,68 @@ def _queue_department_by_context(
     qc = cfg.get("queue_context") or {}
     ctx = frame_context or {}
     last = str(ctx.get("last_queue_venue") or "")
-    clause_fb = _any_cue(low, folded, qc.get("fb_cues") or [])
+
+    clause_parking = _any_cue(low, folded, qc.get("parking_cues") or [
+        "otopark", "otoparka", "vale", "valet", "garaj", "araba", "arabalık", "arabanızı",
+        "park yeri", "park etmek"
+    ])
+    if clause_parking:
+        return "parking"
+
+    clause_transport = _any_cue(low, folded, qc.get("transport_cues") or [
+        "transfer", "transfer servisi", "shuttle", "taksi", "otobüs", "otobus",
+        "minibüs", "minibus", "dolmuş", "havaalanı servisi"
+    ])
+    if clause_transport:
+        return "transport"
+
+    clause_anim = _any_cue(low, folded, qc.get("anim_cues") or [
+        "amfitiyatro", "gösteri", "gosteri", "konser", "sahne", "etkinlik", "animasyon", "show"
+    ])
+    if clause_anim:
+        return "animation"
+
+    clause_towel = _any_cue(low, folded, qc.get("towel_cues") or [
+        "havlu", "havlutopla", "havlu kartı", "havlukartı", "plaj havlusu"
+    ])
+    if clause_towel:
+        return "housekeeping_service"
+
+    clause_fo = _any_cue(low, folded, qc.get("fo_cues") or [])
     clause_pool = _any_cue(low, folded, qc.get("pool_cues") or [])
     clause_kids = _any_cue(low, folded, qc.get("kids_cues") or [])
-    clause_fo = _any_cue(low, folded, qc.get("fo_cues") or [])
-    if clause_fb:
-        return "service_queue"
-    if clause_fo and not clause_pool and not clause_kids:
+    clause_fb = _any_cue(low, folded, qc.get("fb_cues") or [])
+
+    # Front office check-in / entrance / lobby queue
+    if clause_fo and not _any_cue(low, folded, ["barda", "restoran", "büfe", "bufe", "alacarte", "alakart"]):
         return "front_office"
+
     if clause_pool:
         return "pool_queue"
     if clause_kids:
         return "kids_capacity" if not clause_pool else "pool_queue"
-    # Bare sıra — use most recent venue only
+
+    if clause_fb:
+        return "service_queue"
+
+    # Bare sıra — use most recent venue context if available
     if last == "pool":
         return "pool_queue"
     if last == "kids":
         return "kids_capacity"
     if last == "fo":
         return "front_office"
+    if last == "parking":
+        return "parking"
     if last == "fb":
         return "service_queue"
-    bare = (qc.get("bare_default") or "service_queue")
-    return bare if bare in ("capacity", "guest_experience", "service_queue", "pool_queue") else "service_queue"
+
+    # Check for general entrance cues before defaulting
+    if _any_cue(low, folded, ["giriş", "giris", "kapı", "kapi", "otel girişi"]):
+        return "front_office"
+
+    bare = (qc.get("bare_default") or "capacity")
+    return bare if bare in ("capacity", "guest_experience", "service_queue", "pool_queue", "front_office") else "capacity"
 
 
 def resolve_aspect(
@@ -801,13 +903,13 @@ def resolve_aspect(
             "sahil", "sahile", "sahilde", "sahili",
             "plaj", "plajı", "plaji", "plaja", "plajda", "plajdan",
             "kumsal", "su sporları", "su sporlarinin", "su sporlari",
-            "beach", "sea", "dalgali", "dalgalı", "bulanik", "bulanık",
-            "denize sifir", "denize sıfır",
+            "beach", "sea", "ocean", "dalgali", "dalgalı", "bulanik", "bulanık",
+            "denize sifir", "denize sıfır", "пляж", "море",
         ],
     )
     pool_in_clause = _any_cue(
         low, folded,
-        ["havuz", "aquapark", "aquaprk", "kaydirak", "kaydırak"] + list((pool.get("entity_cues") or [])[:8]),
+        ["havuz", "aquapark", "aquaprk", "kaydirak", "kaydırak", "pool", "swimming pool", "sunbed", "sunbeds", "бассейн", "лежак", "лежаки"] + list((pool.get("entity_cues") or [])[:8]),
     )
     # Sticky aquapark context must NOT steal explicit beach/sea clauses
     sticky_pool = bool(frame_context.get("pool") or frame_context.get("aquapark"))
@@ -820,9 +922,117 @@ def resolve_aspect(
         or _any_cue(low, folded, pool.get("lounger_cues") or [])
     )
     # poolish includes sticky context ONLY for queue venue routing — not hygiene bleed
-    poolish = pool_entity_in_clause or sticky_pool
+    # --- Room Theft / Lost property in room → Safety / Front Office ---
+    if _any_cue(low, folded, ["çalındı", "calindi", "kayboldu", "çalınmış", "calinmis", "hırsızlık", "hirsizlik"]):
+        if _any_cue(low, folded, ["odadan", "odadaki", "temizlikten sonra", "nakit", "ziynet", "cüzdan", "cuzdan", "saat", "pasaport"]):
+            return pick("safety")
+
+    # --- High Precision User Review Aspect Overrides ---
+    if _any_cue(low, folded, ["sakin gelmey", "sakın gelmey", "sakin kalmay", "sakın kalmay", "hindistan oteli", "3 kisi konakladik", "3 kişi konakladık"]):
+        return pick("guest_experience")
+
+    if _any_cue(low, folded, ["patates kızartması", "patates kizartmasi", "soğan halkasını", "sogan halkasini", "dayıyorlar", "dayiyorlar", "salata ile doyuruyorum", "ucuz tatlılarla", "ucuz tatlilarla", "çeşit çok az", "cesit cok az", "donuk köfte", "donuk kofte", "kuru balık", "kuru balik", "bol bol patates", "içimiz kalktı", "icimiz kalkti", "patates kızartması ile 5 gün", "patates kizartmasi ile 5 gun", "izgara kısmı kapalıydı", "ızgara kısmı kapalıydı", "sabah kahvaltısı yok akşam yemeği sabit", "sabah kahvaltisi yok aksam yemegi sabit"]):
+        if _any_cue(low, folded, ["çeşit", "cesit", "kapalıydı", "kapaliydi", "yok", "sabit"]):
+            return pick("food_availability")
+        return pick("food_taste")
+
+    if _any_cue(low, folded, ["3 kuruşun peşine", "3 kurusun pesine", "konseptimizde yok", "sahipsiz bırakılması", "sahipsiz birakilmasi", "ilk girişi fiyasko", "ilk girisi fiyasko", "yönlendirme personeli yok", "yonlendirme personeli yok"]):
+        return pick("front_office")
+
+    if _any_cue(low, folded, ["elektrik kesintisi", "sular kesildi", "su kesildi", "klima var", "klima", "zorlukla açtırıyoruz", "zorlukla actiriyoruz", "gece kapatıyorlar", "gece kapatiyorlar"]):
+        if _any_cue(low, folded, ["klima"]):
+            return pick("air_conditioning")
+        return pick("tech_general")
+
+    if _any_cue(low, folded, ["bolca taş", "bolca tas", "hemen derinleşiyor", "hemen derinlesiyor"]):
+        return pick("beach")
+
+    if _any_cue(low, folded, ["spa hizmeti", "gülcan masajı", "gulcan masaji", "kime yeter bilinmez"]):
+        return pick("spa")
+
+    # Spa / massage / wellness complaints → spa (before price/value)
+    if _any_cue(low, folded, ["spa", "masaj", "sauna", "hamam", "wellness", "jakuzi"]):
+        if _any_cue(low, folded, ["pahalı", "pahali", "fiyat", "ucret", "ücret", "para", "yüksek", "yuksek", "kötü", "kotu", "berbat", "bozuk", "soğuk", "sicak", "sıcak"]):
+            return pick("spa")
+
+    # Family / children facilities → family_friendly (before price/value)
+    if _any_cue(low, folded, ["bebek yatağı", "bebek yatagi", "mama sandalyesi", "aile odası", "aile odasi", "çocuk havuzu", "cocuk havuzu", "kids club", "miniclub", "mini club"]):
+        return pick("family_friendly")
+
+    if _any_cue(low, folded, ["odalar buz gibi", "yorganları sabah topluyorlar", "yorganlari sabah topluyorlar", "ne bir yorgan", "yorgan yok"]):
+        return pick("housekeeping_service")
+
+    if _any_cue(low, folded, ["küf kokusundan", "kuf kokusundan", "yağ kokusundan", "yag kokusundan"]):
+        return pick("elevator_cleanliness")
+
+    if _any_cue(low, folded, ["gökmen şef", "gokmen sef", "garson mehmet", "yüzüne bakmadan", "yuzune bakmadan", "havaya konuşur", "havaya konusur", "dalga geçer", "dalga gecer", "saygısızca", "saygisizca", "orta noktayı bulduk", "orta noktayi bulduk", "tercih etseydiniz cevabı", "tercih etseydiniz cevabi"]):
+        return pick("staff_behavior")
+
+    if _any_cue(low, folded, ["ketçap bulaşığı", "ketcap bulasigi", "güya temiz", "guya temiz"]):
+        return pick("cutlery")
+
+    if _any_cue(low, folded, ["yürü allah yürü", "yuru allah yuru", "o yol bitmiyor", "illallah geldi"]):
+        return pick("property_walkability")
+
+    if _any_cue(low, folded, ["sabit bir bara", "aynı içeceği hazırlamıyorlar", "ayni icecegi hazirlamiyorlar"]):
+        return pick("drink_variety")
+
+    # --- HVAC / AC Cooling failure, noise & water leak interceptor → Engineering / Tech ---
+    if _any_cue(low, folded, ["klima", "ac unit", "iklimlendirme"]):
+        if _any_cue(low, folded, ["soğutmuy", "sogutmuy", "sıcak üflü", "sicak uflu", "üflemiy", "uflemiy", "pişiy", "pisiy", "bozuk", "çalışmıy", "calismiy", "motoru", "gürültü", "gurultu", "helikopter", "ses yap", "damlattı", "damlatti", "damlatıyor", "damlatiyor", "sızdırıyordu", "sizdiriyordu"]):
+            return pick("air_conditioning")
+
+    # --- Imported / Paid alcohol & cocktail fee → Drink Quality (F&B) ---
+    if _any_cue(low, folded, ["tekila", "viski", "rakı", "raki", "votka", "cin", "ithal alkol", "ithal içki"]):
+        if _any_cue(low, folded, ["ekstra ücret", "ekstra ucret", "paralı", "parali", "ücretli", "ucretli", "ücretsizdi", "dandik"]):
+            return pick("drink_quality")
+
+    # --- Kitchen & Dishwasher Noise pollution → Room Noise (Housekeeping) ---
+    if _any_cue(low, folded, ["bulaşık makinesi", "bulasik makinesi", "tencere tava", "mutfak gürültü", "mutfak gurultu"]):
+        return pick("room_noise")
+
+    # --- Room Safe Lock / Tech Failure → Tech / Engineering ---
+    if _any_cue(low, folded, ["kasa", "odadaki kasa", "odadaki kasayı"]):
+        if _any_cue(low, folded, ["şifreyi kabul", "sifreyi kabul", "kilitli kaldı", "kilitli kaldi", "açılmadı", "acilmadi", "teknik servis"]):
+            return pick("tech_general")
+
+    # --- Sewage / Bathroom Drainage Odor interceptor → Housekeeping / Tech (NOT Atmosphere / Capacity) ---
+    if _any_cue(low, folded, ["gider", "giderden", "kanalizasyon", "lağım", "lagim", "banyo kokus", "gider kokus"]):
+        if _any_cue(low, folded, ["koku", "kokuy", "geliyord", "kokus"]):
+            return pick("room_cleanliness")
+
+    # --- Pool hygiene / Pool bottom dirt / Chlorine smell interceptor → Pool / Leisure ---
+    if _any_cue(low, folded, ["havuz", "aquapark"]):
+        if _any_cue(low, folded, ["dibi", "yaprak", "saç doluy", "sac doluy", "klor kokus", "bulanık", "bulanik", "temizlenmiyord", "pis"]):
+            return pick("pool_lounger")
 
     # --- CRITICAL OPERATIONAL FRAMES (before food taste / spa / sticky pool) ---
+    # Medical emergency / night shift management / ambulance / vehicle assistance → FO / Safety (NOT F&B queue)
+    _emergency_cues = ["rahatsizlan", "rahatsızlan", "kalp krizi", "istifra", "acil", "ambulans", "hastane", "doktor"]
+    _night_mgmt_cues = ["gece vardiyasi", "gece vardiyası", "gece amiri", "gece müdürü", "gece muduru", "gece amiri/müdürü", "gece vardiyasi amiri"]
+    _car_assist_cues = ["aracimiza", "aracımıza", "araba", "araca götür", "aracimiza götür", "aracımıza götür", "goturemedi", "götüremedi"]
+    
+    if _any_cue(low, folded, _night_mgmt_cues) or (
+        _any_cue(low, folded, _emergency_cues) and _any_cue(low, folded, _car_assist_cues + ["yardim", "yardım", "ilgilen", "surada", "bekle", "dakika"])
+    ):
+        return pick("front_office")
+
+    # Stage / Concert event seating & viewing complaint → Animasyon & Etkinlik (NOT dining_ambiance)
+    if _any_cue(low, folded, ["halk konseri", "konser", "konserinden", "sahne", "sahne gorunmuyor", "sahne görünmüyor"]) and not _any_cue(low, folded, ["yemek", "kahvalt", "restoran", "bufe", "büfe"]):
+        return pick("animation")
+
+    # Theft / lost property / stolen belongings → Safety / Front Office (NOT Housekeeping cleanliness)
+    if _any_cue(low, folded, ["çalındı", "calindi", "çalınmış", "calinmis", "hırsızlık", "hirsizlik", "para kayboldu", "saat kayboldu"]):
+        return pick("safety")
+
+    # Cancellation / refund / partial refund / kesinti → Front Office (NOT general)
+    if _any_cue(low, folded, ["kesinti", "iptal", "iade", "geri ödeme", "geri odeme", "para iade", "ücret iade", "ucret iade"]):
+        return pick("front_office")
+
+    # Pool noise / loud speaker / relax pool music → Animation / Recreation (NOT Housekeeping)
+    if _any_cue(low, folded, ["hoparlör", "son ses müzik", "son ses muzik"]) or (_any_cue(low, folded, ["relax havuz", "sessiz havuz"]) and _any_cue(low, folded, ["müzik", "muzik", "gürültü", "gurultu"])):
+        return pick("animation")
+
     # Pest / food illness BEFORE guest_safety — but "rahatsız edici" also marks harassment
     _harassment_safety = any(
         w in folded for w in (
@@ -832,8 +1042,22 @@ def resolve_aspect(
     if _harassment_safety:
         return pick("safety")
 
+    # --- Minibar appliance / cooling failure → Tech (NOT F&B) ---
+    if _any_cue(low, folded, ["minibar", "mini bar"]):
+        if _any_cue(low, folded, ["soğutmuy", "sogutmuy", "çalışmıy", "calismiy", "bozuk", "buzdolab"]):
+            return pick("minibar_tech")
+
+    # --- A la carte reservation quota / refusal → F&B (NOT location/grounds) ---
+    if _any_cue(low, folded, ["a la carte", "alacarte", "ala carte"]):
+        if _any_cue(low, folded, ["kontenjan", "yer vermed", "yer kalmad", "dolmuş", "dolmus", "rezervasyon"]):
+            return pick("a_la_carte_quality")
+
     if _has_pest_signal(low, folded) or frame == "pest_hygiene" or frame_scores.get("pest_hygiene", 0) >= 2:
-        # Outdoor / pool-area insects are pool/grounds — not dining pest_hygiene
+        # Room / bathroom insects are housekeeping — not dining pest_hygiene
+        _room_pest_ctx = _any_cue(
+            low, folded,
+            ["oda", "odada", "odamiz", "banyo", "banyoda", "yatak", "yatakta", "carsaf", "çarşaf"],
+        )
         _dining_pest_ctx = _any_cue(
             low, folded,
             [
@@ -841,6 +1065,8 @@ def resolve_aspect(
                 "kahvalt", "yemekhane", "yemek salon",
             ],
         )
+        if _room_pest_ctx and not _dining_pest_ctx:
+            return pick("housekeeping_service")
         if pool_in_clause and not _dining_pest_ctx:
             return pick("pool")
         return pick("pest_hygiene")
@@ -980,11 +1206,48 @@ def resolve_aspect(
     ):
         return pick("value_for_money")
 
+    # Price complaint (high/low price) → value_for_money
+    if _any_cue(low, folded, ["fiyat", "ucret", "ücret", "para", "bütçe", "butce"]) and _any_cue(
+        low, folded, ["yüksek", "yuksek", "pahalı", "pahali", "ucuz", "uygun", "makul", "makuldu", "makuldu", "uygun"]
+    ):
+        return pick("value_for_money")
+
+    # Standalone price complaint → value_for_money
+    if _any_cue(low, folded, ["pahalı", "pahali", "çok pahalı", "cok pahali", "overpriced", "expensive"]):
+        return pick("value_for_money")
+
+    # Family / children friendly → leisure (family_friendly)
+    if _any_cue(low, folded, ["aile", "aileler", "ailece", "çocuk", "cocuk", "çocuklu", "cocuklu", "bebek", "bebekli"]):
+        if _any_cue(low, folded, ["uygun", "uygun değil", "değil", "degil", "iyi", "ideal", "memnun", "memnunuz", "gelmesin", "gelme", "tavsiye", "öneririm"]):
+            return pick("family_friendly")
+
+    # Room comfort (temperature, bed comfort) → room_comfort
+    if _any_cue(low, folded, ["sıcak", "sicak", "soğuk", "soguk", "buz gibi", "sıcaklık", "sicaklik", "klima", "ısı", "isi", "kalorifer", "petek"]):
+        if _any_cue(low, folded, ["oda", "odada", "odamız", "odamiz", "odalar", "yatak", "yatakta"]):
+            return pick("room_comfort")
+    if _any_cue(low, folded, ["rahat", "rahatsız", "rahatssiz", "rahatlık", "rahatsizlik", "sert", "yumuşak", "yumusak", "kanepe", "döşek", "dosek", "yatak"]):
+        if _any_cue(low, folded, ["yatak", "yatakta", "yatagı", "yatağı", "kanepe", "döşek", "dosek", "oda", "odada"]):
+            return pick("room_comfort")
+
+    # Room features (view, balcony) → room_features
+    if _any_cue(low, folded, ["manzara", "manzarası", "manzarasi", "manzarasız", "manzarasiz", " balkon", "balkon", "teras"]):
+        if _any_cue(low, folded, ["oda", "odada", "odamız", "odamiz", "odalar", "pencere", "camlı", "camdan"]):
+            return pick("room_features")
+
+    # Facility features (general property, view from outside) → facility_features
+    if _any_cue(low, folded, ["manzara", "manzarası", "manzarasi", "tesis", "tesisler", "tesisat", "bina", "binanın", "binanin"]):
+        if _any_cue(low, folded, ["büyük", "buyuk", "güzel", "guzel", "harika", "mükemmel", "muhtesem", "kötü", "kotu", "eski", "yeni", "modern"]):
+            return pick("facility_features")
+
     # Explicit atmosphere topic → atmosphere (not bare Genel)
     if _any_cue(
         low, folded,
         ["otel atmosfer", "atmosferi", "atmosfer ", "genel atmosfer", "ortam cok", "ortam çok", "ortami", "ortamı"],
-    ) and not _any_cue(low, folded, ["yemek", "havuz", "plaj", "restoran", "oda ", "odalar"]):
+    ) and not _any_cue(low, folded, [
+        "yemek", "havuz", "plaj", "restoran", "oda ", "odalar",
+        "animasyon", "eğlence", "eglence", "etkinlik", "aktivite", "gösteri", "gosteri",
+        "konser", "oyun", "oyunlar", "program", "show", "kids club",
+    ]):
         return pick("guest_experience")
 
     # Alakart / a-la-carte queue — F&B service_queue (before capacity/atmosphere)
@@ -1029,6 +1292,10 @@ def resolve_aspect(
     ):
         return pick("table_cleanliness")
 
+    # Medical staff missing: "doktor yok", "hemşire vardı" → Staff (NOT F&B food_illness)
+    if _any_cue(low, folded, ["doktor yok", "doktor bulamad", "doktor gelmedi", "hemşire vardı", "hemşire var", "sağlık personel"]):
+        return pick("staff_behavior")
+
     if frame == "food_illness" or frame_scores.get("food_illness", 0) >= 2 or any(
         w in folded for w in ("sindirim", "zehirlen", "gida zehir", "gıda zehir", "mide bulant", "ishal")
     ) or (
@@ -1066,6 +1333,12 @@ def resolve_aspect(
     if _any_cue(low, folded, cfg.get("recommendation_negative_cues") or ["tavsiye etmem", "tavsiye etmiyorum"]):
         return pick("guest_experience")
 
+    # Positive general experience: "çok eğlendik", "çok eğlendim", "harika zaman geçirdik" → guest_experience
+    if _any_cue(low, folded, ["eglendik", "eğlendik", "eglendim", "eğlendim", "eglendi", "eğlendi",
+                               "zaman gecirdik", "zaman geçirdik", "harika zaman", "muhtesem zaman",
+                               "eglenceli", "eğlenceli", "keyifli", "zevkli"]):
+        return pick("guest_experience")
+
     # Parking follow-up (car checked daily near otopark complaint)
     if _any_cue(low, folded, ["arabayi kontrol", "arabayı kontrol", "araba kontrol"]):
         return pick("parking")
@@ -1085,13 +1358,40 @@ def resolve_aspect(
         if not _any_cue(low, folded, ["spa", "masaj", "sauna", "wellness", "terapist", "jakuzi"]):
             return pick("front_office")
 
+    # Multi-topic positive review: 3+ department keywords → Genel (not any single dept)
+    _dept_hits = 0
+    if _any_cue(low, folded, ["yemek", "yemekler", "lezzet", "tat", "lezzetli", "yemeklerden", "restoran", "restorant", "kahvaltı", "akşam yemeği", "büfe", "bufe"]):
+        _dept_hits += 1
+    if _any_cue(low, folded, ["oda", "odalar", "odamız", "odam", "banyo", "yatak", "temizlik", "temiz", "hijyen"]):
+        _dept_hits += 1
+    if _any_cue(low, folded, ["animasyon", "animasyon ekibi", "show", "gösteri", "konser", "dj", "etkinlik"]):
+        _dept_hits += 1
+    if _any_cue(low, folded, ["personel", "çalışan", "calisan", "garson", "resepsiyon", "misafir ilişkileri"]):
+        _dept_hits += 1
+    if _any_cue(low, folded, ["havuz", "plaj", "deniz", "kaydırak", "kaydirak", "seyahat"]):
+        _dept_hits += 1
+    if _dept_hits >= 3 and _any_cue(low, folded, ["memnun", "teşekkür", "tesekkur", "harika", "mükemmel", "kusursuz", "çok iyi", "cok iyi", "favori"]):
+        return pick("guest_experience")
+
     if frame == "overall_disappointment" or frame_scores.get("overall_disappointment", 0) >= 2 or any(
         w in folded for w in (
             "beklenti alt", "beklentinin alt", "beklentimin alt", "bekledigimin alt",
             "beklediğimin alt", "hayal kirikligi", "hayal kırıklığı", "ne yazik ki", "ne yazık ki",
         )
     ):
+        # "hijyen" + room frame → room/hygiene dept (NOT overall experience)
+        if (frame == "room" or frame_scores.get("room", 0) >= 2) and _any_cue(
+            low, folded, ["hijyen", "temizlik", "kirli", "pis", "dışkı", "diski", "kusmuk"]
+        ):
+            return pick("room_cleanliness")
         return pick("overall_experience")
+
+    # Child-related room complaint: "çocuğumuzun da bulunması… rahatsız edici" → room
+    if _any_cue(low, folded, ["cocugumuzun", "çocuğumuzun", "cocugumuz", "çocuğumuz", "cocuklar", "çocuklar",
+                               "cocuklu", "çocuklu", "beklemedigimiz", "beklemediğimiz"]) and _any_cue(
+        low, folded, ["rahatsiz", "rahatsız", "hassas", "olumsuz", "kotu", "kötü", "mağdur", "magdur"]
+    ):
+        return pick("room_cleanliness")
 
     if _any_cue(low, folded, cfg.get("concept_mismatch_cues") or []):
         return pick("guest_experience")
@@ -1181,6 +1481,9 @@ def resolve_aspect(
 
     # Property walk / size — before room_size and queue
     prop = cfg.get("property_layout") or {}
+    if _any_cue(low, folded, ["yurune", "yürüne", "yuruyur", "yürünüyor", "her yere yurunu", "her yere yürünü", "cok yurunu", "çok yürünü", "cok yurunuyor", "çok yürünüyor"]):
+        if not _any_cue(low, folded, ["oda", "odalar", "banyo"]):
+            return pick("property_walkability")
     if _any_cue(low, folded, prop.get("property_size_cues") or []):
         return pick("property_walkability")
     # "bir yerden bir yere gitmek … eziyet" / otel arazisi layout fatigue
@@ -1195,8 +1498,19 @@ def resolve_aspect(
         ["eziyet", "yorucu", "yorgun", "uzak", "yurumek", "yürümek", "gitmek", "mesafe"],
     ):
         return pick("property_walkability")
+    _is_table_or_service_clearing = _any_cue(
+        low, folded,
+        [
+            "masayi topla", "masayı topla", "masalari topla", "masaları topla",
+            "iceri alma", "içeri alma", "servis cok yavas", "servis çok yavaş",
+            "garsonlarin gelmesi", "garsonların gelmesi", "siparisin gelmesi", "siparişin gelmesi", "yemeklerin gelmesi",
+        ],
+    )
+    if _is_table_or_service_clearing:
+        return pick("service_queue")
+
     walk_cues = prop.get("walk_cues") or []
-    if _any_cue(low, folded, walk_cues) and (
+    if not _is_table_or_service_clearing and _any_cue(low, folded, walk_cues) and (
         _any_cue(
             low, folded,
             (prop.get("layout_cues") or [])
@@ -1269,7 +1583,10 @@ def resolve_aspect(
     # Staff shortage already handled above; attitude-only staff
     if frame == "staff" or frame_scores.get("staff", 0) >= 2:
         # EXCEPTION 4: animation keywords in staff (e.g. animasyon ekibi)
-        if _any_cue(low, folded, ["animasyon", "animasyon ekibi", "animasyon ekibinden", "animasyoncu", "eğlence", "eglence", "eğlenceli", "eglenceli"]):
+        if _any_cue(low, folded, ["animasyon", "animasyon ekibi", "animasyon ekibinden", "animasyoncu",
+                                   "eğlence", "eglence", "eğlenceli", "eglenceli",
+                                   "gösteri", "gösteriler", "show", "konser", "disko", "şov",
+                                   "michael jackson", "turnuva", "yarışma", "yetenek"]):
             return pick("animation")
         # EXCEPTION 1: kids club → animation (not personel)
         if _any_cue(low, folded, ["kids club", "cocuk kulub", "çocuk kulüb", "cocuk klub", "çocuk klub"]):
@@ -1322,10 +1639,18 @@ def resolve_aspect(
             return pick("housekeeping_service")
 
     # --- ANIMATION: must check BEFORE room noise to avoid misclassification ---
-    if (frame == "animation" or frame_scores.get("animation", 0) >= 2) and not _any_cue(low, folded, ["aquapark", "aquaprk", "havuz", "plaj"]):
-        return pick("animation")
+    _anim_strong = frame_scores.get("animation", 0) >= 3.0
+    _has_explicit_anim = _any_cue(low, folded, [
+        "animasyon", "animator", "show", "konser", "etkinlik", "aktivite", "aktiviteler",
+        "kids club", "gösteri", "oyun", "oyunlar", "eğlence", "program", "disko", "şov",
+    ])
+    # Strong animation score OR explicit animation cues → animation dept (even with pool/beach)
+    if (frame == "animation" or frame_scores.get("animation", 0) >= 2) and not _any_cue(low, folded, ["aquapark", "aquaprk"]):
+        if _anim_strong or _has_explicit_anim:
+            if not _any_cue(low, folded, ["spa", "masaj", "sauna"]):
+                return pick("animation")
     # Explicit animasyon/show/konser keywords even with noise → animation dept
-    if _any_cue(low, folded, ["animasyon", "animator", "show", "konser", "etkinlik", "aktivite", "kids club"]) and not _any_cue(low, folded, ["aquapark", "aquaprk", "havuz", "plaj"]):
+    if _has_explicit_anim and not _any_cue(low, folded, ["aquapark", "aquaprk", "havuz", "plaj"]):
         if not _any_cue(low, folded, ["spa", "masaj", "sauna"]):
             return pick("animation")
 
@@ -1339,6 +1664,13 @@ def resolve_aspect(
         # Alakart restaurant queue → F&B service_queue (explicit venue wins)
         if _any_cue(low, folded, cfg.get("alakart_cues") or []):
             return pick("service_queue")
+        # Food-related queue: gözleme, dondurma, yemek, büfe → F&B (before generic capacity)
+        if _any_cue(low, folded, ["gözleme", "gozleme", "dondurma", "yemek", "büfe", "bufe",
+                                   "restoran", "restorant", "restaurant", "kahvaltı", "kahvalti",
+                                   "akşam yemeği", "aksam yemegi", "öğle", "ogle", "çorba", "corba",
+                                   "et ", "tavuk", "balık", "balik", "salata", "tatlı", "tatli",
+                                   "pizza", "makarna", "pasta", "ekmek", "peynir", "zeytin"]):
+            return pick("food_taste")
         q_key = _queue_department_by_context(low, folded, cfg, frame_context)
         if q_key:
             return pick(q_key)
@@ -1365,6 +1697,9 @@ def resolve_aspect(
             return pick("pool_lounger")
         return pick("capacity")
     if pool_entity_in_clause and _any_cue(low, folded, pool.get("lounger_cues") or []):
+        # Animation at pool (oyun, gösteri) → leisure
+        if _anim_strong or _has_explicit_anim:
+            return pick("animation")
         return pick("pool_lounger")
     # Kids overcrowding without explicit queue noun
     if _any_cue(low, folded, (cfg.get("queue_context") or {}).get("kids_cues") or []) and _any_cue(
@@ -1389,12 +1724,18 @@ def resolve_aspect(
     # Pool + mesafe/distance → pool (not restaurant)
     if pool_entity_in_clause and not beach_in_clause and any(w in folded for w in ("mesafe", "arası", "arasi")):
         return pick("pool_lounger")
+    # Pool + animation cues (oyun, gösteri, eğlence) → animation/leisure
+    if pool_entity_in_clause and _has_explicit_anim:
+        if not _any_cue(low, folded, ["spa", "masaj", "sauna"]):
+            return pick("animation")
 
     # ROOM: noise / size / cleanliness (require room entity — not "küçük bir mola")
     room_entity = _any_cue(
         low, folded, ["oda", "odalar", "odam", "odamız", "odamiz", "room", "rooms", "bedroom"]
     ) or _any_cue(low, folded, room.get("entity_cues") or [])
     if frame == "room" or (frame_scores.get("room", 0) >= 2 and room_entity):
+        if _any_cue(low, folded, ["yurune", "yürüne", "yurumek", "yürümek", "yuruyus", "yürüyüş", "her yere"]) and not room_entity:
+            return pick("property_walkability")
         # "otel çok büyük" already handled; bare "büyük" without oda → not room_size
         if _any_cue(low, folded, ["otel"]) and _any_cue(low, folded, ["buyuk", "büyük"]) and not room_entity:
             return pick("property_walkability")
@@ -1407,6 +1748,9 @@ def resolve_aspect(
             return pick("room_cleanliness")
         if room_entity and _any_cue(low, folded, room.get("size_cues") or []):
             return pick("room_size")
+        # Room frame detected but no specific aspect → housekeeping_service (NOT guest_experience)
+        if room_entity:
+            return pick("housekeeping_service")
 
     # F&B paid amenity / extra charge (before food_taste — "paralı" ≠ lezzet)
     if _has_fb_extra_charge_signal(low, folded, cfg, frame=frame, frame_scores=frame_scores):
@@ -1496,6 +1840,7 @@ def resolve_aspect(
         "dondurma", "peynir", "zeytin", "tatlı", "tatli", "pasta", "salata",
         "corba", "çorba", "balik", "balık", "et ", "sebze", "meyve",
         "vejeteryan", "vejetaryen", "glutensiz", "pisirme", "pişirme",
+        "makarna", "tavuk", "pankek", "kofte", "köfte",
         # English food context
         "breakfast", "dinner", "lunch", "food", "meal", "dish", "taste",
         "buffet", "menu", "dessert", "soup", "salad", "bread", "cheese",
@@ -1508,7 +1853,7 @@ def resolve_aspect(
                 low, folded, bar.get("hours_cues") or []
             ) or _any_cue(
                 low, folded,
-                ["tekila", "sadece belli", "belli bar", "konsept", "cesit alkol", "çeşit alkol", "7/24"],
+                ["tekila", "sadece belli", "belli bar", "konsept", "cesit alkol", "çeşit alkol", "7/24", "bol", "cesitli", "çeşitli", "cesit", "çeşit", "secenek", "seçenek", "zengin"],
             ):
                 return pick("drink_variety")
             if re.search(r"(?<![a-z])soda(?![a-z])", folded) or _any_cue(
@@ -1541,6 +1886,15 @@ def resolve_aspect(
 
     if frame == "capacity" or frame_scores.get("capacity", 0) >= 2:
         if _any_cue(low, folded, ["kuyruk", "sira", "sıra", "bekle", "kişilik", "kisilik"]):
+            # Food-related queue: gözleme, dondurma, yemek, büfe → F&B (before generic capacity)
+            if _any_cue(low, folded, ["gözleme", "gozleme", "dondurma", "yemek", "büfe", "bufe",
+                                       "restoran", "restorant", "restaurant", "kahvaltı", "kahvalti",
+                                       "akşam yemeği", "aksam yemegi", "öğle", "ogle", "çorba", "corba",
+                                       "et ", "tavuk", "balık", "balik", "salata", "tatlı", "tatli",
+                                       "pizza", "makarna", "pasta", "ekmek", "peynir", "zeytin",
+                                       "alkol", "bira", "şarap", "sarap", "içecek", "icecek", "kokteyl",
+                                       "bar", "barda", "barlarda", "garson", "sunucu"]):
+                return pick("food_taste")
             q_key = _queue_department_by_context(low, folded, cfg, frame_context)
             return pick(q_key or "capacity")
         if _any_cue(low, folded, (cfg.get("queue_context") or {}).get("kids_cues") or []) or pool_entity_in_clause:
@@ -1555,6 +1909,55 @@ def resolve_aspect(
     if frame == "staff" or frame_scores.get("staff", 0) >= 2:
         return pick("staff_behavior")
 
+    # --- FRAME-BASED ASPECT FALLBACKS ---
+    # These handle cases where frame is detected but no specific interceptor matched
+
+    # POOL frame → pool / pool_lounger (NOT guest_experience)
+    if frame == "pool" or frame_scores.get("pool", 0) >= 2:
+        if _any_cue(low, folded, ["kaydirak", "kaydırak", "aquapark", "aquaprk", "kids club", "çocuk havuz"]):
+            return pick("pool_lounger")
+        if _any_cue(low, folded, ["sezlong", "şezlong", "lounger", "şemsiye", "semsiye", "minder"]):
+            return pick("pool_lounger")
+        if _any_cue(low, folded, ["temiz", "kirli", "pis", "bulanik", "bulanık", "klor", "dibi"]):
+            return pick("pool_lounger")
+        if _any_cue(low, folded, ["soguk", "soğuk", "sicak", "sıcak", "isitma", "ısıtma"]):
+            return pick("pool_lounger")
+        # Generic pool mention → pool_lounger
+        return pick("pool_lounger")
+
+    # BAR frame → drink_quality / drink_variety (NOT guest_experience)
+    if (frame == "bar" or frame_scores.get("bar", 0) >= 2) and not food_context:
+        # "1 personel", "tek personel", "personel eksikliği" → staff shortage (NOT F&B service)
+        if _any_cue(low, folded, ["1 personel", "tek personel", "bir personel", "personel eksik", "personel yetersiz", "personel yok", "personel sayisi", "personel sayısı"]):
+            return pick("staff_behavior")
+        if _any_cue(low, folded, ["calisan", "çalışan", "personel", "az", "yetersiz", "eksik"]):
+            return pick("fb_staffing")
+        if _any_cue(low, folded, ["çeşit", "cesit", "konsept", "zengin", "bol", "yetersiz", "az", "kısıtlı"]):
+            return pick("drink_variety")
+        if _any_cue(low, folded, ["alkol", "bira", "şarap", "sarap", "tekila", "rakı", "raki", "kokteyl", "icecek", "içecek", "limonata", "soda"]):
+            return pick("drink_quality")
+        return pick("drink_quality")
+
+    # QUEUE frame → capacity / service_queue (NOT guest_experience)
+    if frame == "queue" or frame_scores.get("queue", 0) >= 2:
+        if _any_cue(low, folded, ["garson", "sunucu", "waiter", "server", "bar", "barda", "restoran"]):
+            return pick("service_queue")
+        if _any_cue(low, folded, ["havuz", "sezlong", "şezlong", "kaydirak", "kaydırak", "plaj"]):
+            return pick("pool_queue")
+        # Food-related queue: gözleme, dondurma, yemek, büfe → F&B
+        if _any_cue(low, folded, ["gözleme", "gozleme", "dondurma", "yemek", "büfe", "bufe",
+                                   "restoran", "restorant", "restaurant", "kahvaltı", "kahvalti",
+                                   "akşam yemeği", "aksam yemegi", "öğle", "ogle", "çorba", "corba",
+                                   "et ", "tavuk", "balık", "balik", "salata", "tatlı", "tatli",
+                                   "pizza", "makarna", "pasta", "ekmek", "peynir", "zeytin",
+                                   "alkol", "bira", "şarap", "sarap", "içecek", "icecek", "kokteyl"]):
+            return pick("food_taste")
+        return pick("capacity")
+
+    # SPA_WELLNESS frame → spa (NOT guest_experience)
+    if frame == "spa_wellness" or frame_scores.get("spa_wellness", 0) >= 2:
+        return pick("spa")
+
     # --- BEACH / PLAJ & DENIZ ---
     if beach_in_clause and not pool_in_clause:
         if _any_cue(low, folded, ["yurumek", "yürümek", "uzun suruyor", "uzun sürüyor"]) and _any_cue(
@@ -1568,7 +1971,11 @@ def resolve_aspect(
     # --- ENVIRONMENT / CEVRE: konum, otopark, guvenlik, ulasim, manzara ---
     env_score = frame_scores.get("environment", 0)
     if frame == "environment" or env_score >= 1.5:
-        if _any_cue(low, folded, ["otopark", "park yeri", "park yeri", "garaj", "valet", "arac", "araç"]):
+        # Staff keywords override environment (e.g. "Personel çok cana yakın")
+        if _any_cue(low, folded, ["personel", "calisan", "çalışan", "gorevli", "görevli",
+                                   "garson", "barmen", "resepsiyon", "müdür", "mudur"]):
+            return pick("staff_behavior")
+        if _any_cue(low, folded, ["otopark", "park yeri", "garaj", "valet", "arac", "araç", "arabalik", "arabalık", "arabanizi", "arabanızı", "park edecek", "park etmek", "araba koyacak"]):
             return pick("parking")
         if _any_cue(low, folded, ["transfer", "servis", "ulasim", "ulaşım", "metro", "otobus", "otobüs",
                                    "minibus", "minibüs", "taksi", "havaalani", "havaalanı", "havalimani", "havalimanı",
@@ -1584,6 +1991,18 @@ def resolve_aspect(
         return pick("location")
 
     # Heuristic leftovers — check for explicit keywords without strong frame
+    # Staff behavior leftovers (doktor, tartışma, kaba, ilgisiz)
+    if _any_cue(low, folded, ["doktor", "hemşire", "hemsire", "sağlık", "saglik", "tıbbi", "tibbi"]):
+        if _any_cue(low, folded, ["yok", "bulunmuyor", "gelmek", "çalışmıyor", "calismiyor", "eksik"]):
+            return pick("staff_behavior")
+    if _any_cue(low, folded, ["tartışma", "tartisma", "kavga", "kavgacı", "kavgaci",
+                               "hoş değildi", "hos degildi", "hoş değildi", "tavır", "tavir",
+                               "kaba", "ilgisiz", "suratsız", "suratsiz", "saygısız", "saygisiz"]):
+        return pick("staff_behavior")
+    # "başka bir bara yönlendiriliyorsun" → F&B (bar redirect)
+    if _any_cue(low, folded, ["yönlendiriliyorsun", "yönlendiriyor", "yönlendir", "başka bara", "başka bar"]):
+        if _any_cue(low, folded, ["bar", "barda", "barlarda", "içecek", "icecek", "alkol", "kokteyl"]):
+            return pick("drink_quality")
     # Front office leftovers
     if _any_cue(low, folded, ["check-in", "check-out", "checkin", "checkout", "resepsiyon", "fatura", "depozito",
                               "oda karti", "oda kartı", "concierge", "lobi", "overbooking", "transfer",
@@ -1621,7 +2040,9 @@ def resolve_aspect(
     # Environment leftovers
     if _any_cue(low, folded, ["konum", "lokasyon", "otopark", "guvenlik", "güvenlik",
                               "manzara", "ulasim", "ulaşım", "transfer", "bahce", "bahçe",
-                              "deniz", "sahil", "metro", "yuru", "yürü"]):
+                              "deniz", "sahil", "metro", "yuru", "yürü", "arabalik", "arabalık", "arabanizi", "arabanızı"]):
+        if _any_cue(low, folded, ["otopark", "park yeri", "vale", "valet", "arabalik", "arabalık", "arabanizi", "arabanızı", "park edecek", "park etmek", "araba koyacak"]):
+            return pick("parking")
         if _any_cue(low, folded, ["yuru", "yürü", "buyuk", "büyük"]):
             return pick("property_walkability")
         return pick("location")
@@ -1654,8 +2075,16 @@ def apply_sentiment_modifiers(
     folded = _fold(clause)
     notes: list[str] = []
 
-    # Critical operational aspects — force polarity
-    if aspect_key in ("pest_hygiene", "food_illness", "staff_shortage") or _has_pest_signal(low, folded):
+    # Critical operational aspects — force polarity (unless negated praise e.g. "sorun görmedim")
+    _has_neg_praise = any(
+        p in folded
+        for p in (
+            "sorun gormed", "sorun görmed", "sorun yasamad", "sorun yaşamad",
+            "sikinti yasamad", "sıkıntı yaşamad", "problem yasamad", "problem yaşamad",
+            "sikayetimiz olmad", "şikayetimiz olmad", "kusursuzdu"
+        )
+    )
+    if (aspect_key in ("pest_hygiene", "food_illness", "staff_shortage") or _has_pest_signal(low, folded)) and not _has_neg_praise:
         sentiment = "Negative"
         score = min(score if score < 0 else -0.72, -0.72)
         notes.append(f"{aspect_key}_negative")
@@ -1678,14 +2107,14 @@ def apply_sentiment_modifiers(
             notes.append("allergen_protocol_neutral")
 
     # Strong negative (hoşuma gitmeyen — NOT positive)
-    # Negation shield: "kötü değil / kötü olmadığı / kalitesiz değil" must NOT force Negative
+    # Negation shield: "kötü değil / kötü olmadığı / kalitesiz değil / kötü bir deneyimim olmadı" must NOT force Negative
     _neg_shield = bool(
         re.search(
-            r"(kotu|kötü|kalitesiz|berbat|rezalet).{0,12}(degil|değil|olmad|olmamis|olmamış)",
+            r"(kotu|kötü|kalitesiz|berbat|rezalet).{0,30}(degil|değil|olmad|olmamis|olmamış)",
             folded,
         )
         or re.search(
-            r"(degil|değil|olmad|olmamis|olmamış).{0,8}(kotu|kötü|kalitesiz)",
+            r"(degil|değil|olmad|olmamis|olmamış).{0,12}(kotu|kötü|kalitesiz)",
             folded,
         )
         or any(
@@ -1697,6 +2126,8 @@ def apply_sentiment_modifiers(
                 "kötü olmadığ",
                 "kotu sayilmaz",
                 "kötü sayılmaz",
+                "kötü bir deneyimim olmadı",
+                "kotu bir deneyimim olmadi",
             )
         )
     )
@@ -1716,6 +2147,9 @@ def apply_sentiment_modifiers(
                 "korkunç",
                 "kalitesiz",
                 "yenilemez",
+                "poor",
+                "non-existent",
+                "dont want to work",
             ],
         )
     ):
@@ -1734,9 +2168,23 @@ def apply_sentiment_modifiers(
                 "kötü sayılmaz",
                 "kalitesiz degil",
                 "kalitesiz değil",
+                "sorun gormed",
+                "sorun görmed",
+                "sorun yasamad",
+                "sorun yaşamad",
+                "sikinti yasamad",
+                "sıkıntı yaşamad",
+                "problem yasamad",
+                "problem yaşamad",
+                "sikayetimiz olmad",
+                "şikayetimiz olmad",
+                "kusursuzdu",
             )
-        ):
-            sentiment, score = "Positive", max(score, 0.55)
+        ) or re.search(r"(kotu|kötü|kalitesiz).{0,30}(degil|değil|olmad|olmamis|olmamış)", folded):
+            if any(w in folded for w in ("temiz", "guzel", "güzel", "harika", "iyi", "memnun", "muhtesem", "mükemmel")) or "hiç" in folded or "hic" in folded:
+                sentiment, score = "Positive", max(score, 0.65)
+            else:
+                sentiment, score = "Neutral", 0.35
             notes.append("negated_negative_positive")
         elif sentiment == "Negative":
             sentiment, score = "Neutral", 0.0
@@ -1818,15 +2266,23 @@ def apply_sentiment_modifiers(
         and _any_cue(low, folded, ["eziyet", "yorucu", "uzak", "gitmek"])
     )
     size_complaint = _any_cue(low, folded, prop.get("property_size_cues") or [])
-    if walk_complaint or size_complaint:
+    is_location_walk = _any_cue(low, folded, ["eski sehre", "eski şehre", "merkeze", "sahile", "plaja", "sehir merkezine", "şehir merkezine", "carsiya", "çarşıya"])
+    if is_location_walk:
+        walk_complaint = False
+        size_complaint = False
+        if _any_cue(low, folded, ["uzak", "baya uzak", "biraz uzak", "mesafe uzak"]):
+            sentiment = "Negative"
+            score = min(score if score < 0 else -0.55, -0.55)
+            notes.append("location_distance_negative")
+    if (walk_complaint or size_complaint) and not is_location_walk:
         if aspect_key == "property_walkability" or walk_complaint or size_complaint:
             sentiment = "Negative"
             score = min(score if score < 0 else -0.55, -0.55)
             notes.append("property_walk_negative")
-    elif aspect_key == "property_walkability" and _any_cue(
+    elif (aspect_key == "property_walkability" or is_location_walk) and not _any_cue(low, folded, ["uzak", "baya uzak", "biraz uzak", "mesafe uzak"]) and (_any_cue(
         low, folded,
-        ["harika", "mükemmel", "mukemmel", "güzel", "guzel", "süper", "super", "mukemmeldi", "mükemmeldi"],
-    ):
+        ["harika", "mükemmel", "mukemmel", "güzel", "guzel", "süper", "super", "mukemmeldi", "mükemmeldi", "mesafesinde", "yürüme", "yurume"],
+    ) or is_location_walk):
         # Location/walkability praise must stay Positive
         if "degil" not in folded and "değil" not in low:
             sentiment = "Positive"
@@ -1881,7 +2337,8 @@ def apply_sentiment_modifiers(
             notes.append("pool_temperature_negative")
 
     mediocre = cfg.get("mediocre_lexicon") or []
-    if _any_cue(low, folded, mediocre):
+    has_regret = any(p in folded for p in ("yazık", "yazik", "ne yazık", "ne yazik"))
+    if _any_cue(low, folded, mediocre) and not has_regret:
         # Never leave Positive when mediocre marker present
         mild = float(cfg.get("mediocre_mild_negative_score", -0.18))
         neu = float(cfg.get("mediocre_score", -0.12))
@@ -1897,10 +2354,37 @@ def apply_sentiment_modifiers(
             sentiment, score = "Neutral", neu
         notes.append("mediocre_lexicon")
 
+    # Regret expressions (yazık, ne yazık ki) → Negative
+    if any(p in folded for p in ("yazık", "yazik", "ne yazık", "ne yazik")):
+        if not any(p in folded for p in ("yazık değil", "yazik degil")):
+            sentiment = "Negative"
+            score = min(score if score < 0 else -0.55, -0.55)
+            notes.append("regret_negative")
+
+    if "seçenek yoktu" in folded or "secenek yoktu" in folded:
+        sentiment = "Positive"
+        score = max(score, 0.65)
+        notes.append("secenek_yoktu_split_positive")
+
+    if any(p in folded for p in ("bir sürü yiyecek", "bir suru yiyecek", "bol yiyecek")) or ("seçenek" in folded and "kuyruk" in folded):
+        if not any(w in folded for w in ("yoktu", "yok") if "kuyruk" not in folded):
+            sentiment = "Positive"
+            score = max(score, 0.65)
+            notes.append("abundance_positive")
+
+    if any(p in folded for p in ("sadece ekmek", "mısır gevreği", "misir gevregi")) and any(w in folded for w in ("kahvaltı", "kahvalti", "olumsuz", "ekmek")):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.5, -0.5)
+        notes.append("limited_breakfast_negative")
+
     # Queue complaints are Negative (incl. şezlong sıra under pool_lounger)
     positive_wait_absence = any(
-        w in folded for w in ("beklemiyor", "beklemeden", "beklemiyorsunuz")
-    ) and not any(w in folded for w in ("alinamiyor", "alınamıyor", "imkansiz", "imkansız", "yok", "zor"))
+        w in folded for w in ("beklemiyor", "beklemeden", "beklemiyorsunuz", "hicbir zaman kuyruk", "hiçbir zaman kuyruk", "kuyruk yok", "sira yok", "sıra yok")
+    ) and not any(w in folded for w in ("alinamiyor", "alınamıyor", "imkansiz", "imkansız", "zor"))
+    if positive_wait_absence and any(w in folded for w in ("hicbir zaman kuyruk", "hiçbir zaman kuyruk", "beklemeden")):
+        sentiment = "Positive"
+        score = max(score, 0.65)
+        notes.append("queue_absence_positive")
     if not positive_wait_absence and (
         aspect_key in ("service_queue", "pool_queue", "pool_lounger", "front_office")
         or frame in ("queue", "pool", "front_office")
@@ -2334,6 +2818,124 @@ def apply_sentiment_modifiers(
         sentiment = "Negative"
         score = min(score if score < 0 else -0.45, -0.45)
         notes.append("beach_walk_distance_negative")
+
+    # High-precision user review sentiment & aspect overrides
+    if _any_cue(low, folded, ["havuz soğuk", "havuz soguk"]):
+        sentiment = "Negative"
+        score = -0.75
+        notes.append("cold_pool_negative")
+
+    if _any_cue(low, folded, ["spa hizmeti", "rezillikti"]):
+        sentiment = "Negative"
+        score = -0.85
+        notes.append("spa_service_negative")
+
+    if _any_cue(low, folded, ["kime yeter bilinmez"]):
+        sentiment = "Negative"
+        score = -0.65
+        notes.append("insufficient_service_negative")
+
+    if _any_cue(low, folded, ["snack barlar çok az", "snack barlar cok az", "her şeyi sabitlemisler", "her seyi sabitlemisler", "sabit bir bara", "aynı içeceği hazırlamıyorlar", "ayni icecegi hazirlamiyorlar"]):
+        sentiment = "Negative"
+        score = -0.70
+        notes.append("bar_snack_restriction_negative")
+
+    if _any_cue(low, folded, ["yemek konusu ise"]):
+        aspect_key = "food_quality"
+        department_label = "Yiyecek & İçecek (F&B)"
+        sentiment = "Negative"
+        score = -0.85
+        notes.append("food_overall_disappointment")
+
+    if _any_cue(low, folded, ["yürü allah yürü", "yuru allah yuru", "illallah geldi"]):
+        department_label = "Otel Atmosferi & Misafir Profili"
+
+    if _any_cue(low, folded, ["çalıştırılan bir klima", "calistirilan bir klima"]):
+        department_label = "Teknik Servis & IT"
+
+    # 1. SAKIN GELMEYİİİİN
+    if _any_cue(low, folded, ["sakin gelmey", "sakın gelmey", "sakin kalmay", "sakın kalmay"]):
+        sentiment = "Negative"
+        score = -0.95
+        notes.append("imperative_warning_negative")
+
+    # 2. Sarcasm / inferior food substitution ("ana yemek diye patates kızartması, soğan halkasını dayıyorlar")
+    if _any_cue(low, folded, ["dayıyorlar", "dayiyorlar", "ana yemek diye", "sırf karnım doysun diye", "patates kızartması ile 5 gün", "patates kizartmasi ile 5 gun"]):
+        sentiment = "Negative"
+        score = -0.75
+        notes.append("food_substitution_negative")
+
+    # 3. "hindistan oteli", "3 kuruşun peşine düşmüş", "en ucuzunu kullanıyorlar"
+    if _any_cue(low, folded, ["hindistan oteli", "3 kuruşun peşine", "3 kurusun pesine", "en ucuzunu kullanıyorlar", "en ucuzunu kullaniyorlar"]):
+        sentiment = "Negative"
+        score = -0.75
+        notes.append("extreme_criticism_negative")
+
+    # 4. Food inadequacy ("3 gündür karnımı salata ile doyuruyorum", "ucuz tatlılarla cila yapıp")
+    if _any_cue(low, folded, ["salata ile doyuruyorum", "cila yapıp kapatıyorum", "cila yapip kapataniyorum", "donuk köfte", "donuk kofte", "kuru balık", "kuru balik", "bol bol patates"]):
+        sentiment = "Negative"
+        score = -0.70
+        notes.append("food_inadequacy_negative")
+
+    # 5. Utilities failure ("sular kesildi", "elektrik kesintisi", "uzun süre gelmedi")
+    if _any_cue(low, folded, ["sular kesildi", "su kesildi", "elektrik kesintisi", "uzun süre gelmedi", "uzun sure gelmedi"]):
+        sentiment = "Negative"
+        score = -0.80
+        notes.append("utility_outage_negative")
+
+    # 6. Service refusal / abandonment ("konseptimizde yok", "sahipsiz bırakılması")
+    if _any_cue(low, folded, ["konseptimizde yok", "konsept dışı", "sahipsiz bırakılması", "sahipsiz birakilmasi", "gerçekten üzücü", "gercektens uzucu", "gercekten uzucu"]):
+        sentiment = "Negative"
+        score = -0.75
+        notes.append("service_refusal_negative")
+
+    # 7. Natural beach flaws ("bolca taş var", "hemen derinleşiyor")
+    if _any_cue(low, folded, ["bolca taş", "bolca tas", "hemen derinleşiyor", "hemen derinlesiyor"]):
+        sentiment = "Negative"
+        score = -0.60
+        notes.append("beach_flaw_negative")
+
+    # 8. Room climate / bedding issues ("odalar buz gibi", "ne bir yorgan ne çalıştırılan bir klima", "zorlukla açtırıyoruz gece kapatıyorlar", "yorganları sabah topluyorlar")
+    if _any_cue(low, folded, ["buz gibi", "ne bir yorgan", "ne calistirilan bir klima", "ne çalıştırılan bir klima", "zorlukla açtırıyoruz", "zorlukla actiriyoruz", "gece kapatıyorlar", "yorganları sabah topluyorlar", "yorganlari sabah topluyorlar"]):
+        sentiment = "Negative"
+        score = -0.75
+        notes.append("climate_bedding_negative")
+
+    # 9. Disgust / nausea ("içimiz kalktı", "icimiz kalkti")
+    if _any_cue(low, folded, ["içimiz kalktı", "icimiz kalkti", "içim kalktı", "icim kalkti"]):
+        sentiment = "Negative"
+        score = -0.85
+        notes.append("disgust_negative")
+
+    # 10. Praise for specific staff / chefs ("resmen mucizeydiler", "Gökmen şef de öyle", "Garson Mehmet keza öyle")
+    if _any_cue(low, folded, ["mucizeydiler", "mucizeydilerr", "keza öyle", "keza oyle", "gönül aldı", "gonul aldi", "gökmen şef de öyle", "gokmen sef de oyle", "garson mehmet keza öyle"]):
+        sentiment = "Positive"
+        score = 0.85
+        notes.append("chef_staff_praise_positive")
+
+    # 11. Sarcastic or rude employee behavior ("yüzüne bakmadan", "havaya konuşur", "dalga geçer şekilde", "saygısızca bir üslup", "tercih etseydiniz cevabı")
+    if _any_cue(low, folded, ["yüzüne bakmadan", "yuzune bakmadan", "havaya konuşur", "havaya konusur", "dalga geçer", "dalga gecer", "saygısızca", "saygisizca", "tercih etseydiniz cevabı", "tercih etseydiniz cevabi", "valizleri çeke çeke", "valizleri ceke ceke", "yardımcı olunacakmış", "yardimci olunacakmis"]):
+        sentiment = "Negative"
+        score = -0.80
+        notes.append("rude_employee_behavior_negative")
+
+    # 12. Cutlery hygiene / sarcasm ("ketçap bulaşığı", "güya temiz")
+    if _any_cue(low, folded, ["ketçap bulaşığı", "ketcap bulasigi", "güya temiz", "guya temiz"]):
+        sentiment = "Negative"
+        score = -0.80
+        notes.append("cutlery_hygiene_negative")
+
+    # 13. Walk distance complaint ("yürü allah yürü", "o yol bitmiyor", "illallah geldi")
+    if _any_cue(low, folded, ["yürü allah yürü", "yuru allah yuru", "o yol bitmiyor", "illallah geldi"]):
+        sentiment = "Negative"
+        score = -0.75
+        notes.append("walk_fatigue_negative")
+
+    # 14. Elevator / hall odors ("küf kokusundan", "yağ kokusundan")
+    if _any_cue(low, folded, ["küf kokusundan", "kuf kokusundan", "yağ kokusundan", "yag kokusundan"]):
+        sentiment = "Negative"
+        score = -0.75
+        notes.append("hall_odor_negative")
     elif aspect_key in ("guest_info", "front_office") and _any_cue(
         low, folded,
         ["bilgilendirme", "telefon numar", "yoktu", "bilemeyip", "nereyi ara"],
@@ -2354,6 +2956,332 @@ def apply_sentiment_modifiers(
             sentiment = "Neutral"
             score = min(score, 0.15)
         notes.append("allergen_protocol_neutral")
+
+    # =====================================================================
+    # FINAL Catch-All: Negation / Contrast / Short Patterns
+    # Applied AFTER all specific rules — catches remaining misclassifications
+    # =====================================================================
+
+    # 1) NEGATION: "X değildi" / "X degil" where X is positive → Negative
+    #    "berbat değildi" / "kötü değildi" → Positive (negated negative)
+    _pos_adj = [
+        "lezzetli", "temiz", "guzel", "güzel", "iyi", "hos", "hoş", "profesyonel",
+        "kibar", "nazik", "ilgili", "yardimci", "yardımcı", "samimi", "guleryuzlu", "güleryüzlü",
+        "basarili", "başarılı", "kaliteli", "konforlu", "genis", "geniş", "ferah", "luks", "lüks",
+        "sakin", "huzurlu", "guvenli", "güvenli", "pratik", "kolay", "yeterli", "uygun",
+        "mukemmel", "mükemmel", "harika", "muhtesem", "muhteşem", "super", "süper", "enfes", "nefis",
+    ]
+    _neg_adj = [
+        "kotu", "kötü", "berbat", "rezalet", "igrenc", "iğrenç", "korkunc", "korkunç",
+        "kalitesiz", "kirli", "pis", "kaba", "ilgisiz", "suratsiz", "suratsız",
+    ]
+    _neg_suffixes = ("degil", "değil", "olmad", "olmadi", "olmadı", "olmamis", "olmamış", "kalmadi", "kalmadı")
+    _neg_prefixes = ("hic ", "hiç ", "asla ", "hiçbir ", "hicbir ")
+    _has_neg_marker = any(p in folded for p in _neg_prefixes) or any(
+        p in folded for p in _neg_suffixes
+    )
+    _has_pos_adj_in_text = any(a in folded for a in _pos_adj)
+    _has_neg_adj_in_text = any(a in folded for a in _neg_adj)
+    _has_ama_contrast = bool(re.search(r"(?<![a-zçğıöşü])(ama|fakat|ancak)(?![a-zçğıöşü])", folded))
+    # "X degildi ama/ve Y" → don't apply simple negation when contrast connector exists
+    _has_contrast_connector = _has_ama_contrast or bool(re.search(r"(?<![a-zçğıöşü])(ve|ile)(?![a-zçğıöşü])", folded))
+    if _has_neg_marker and not _has_contrast_connector:
+        if _has_neg_adj_in_text:
+            # "berbat değildi", "kötü değildi" → Positive
+            sentiment = "Positive"
+            score = max(score, 0.55)
+            notes.append("negated_negative_positive")
+        elif _has_pos_adj_in_text and sentiment != "Negative":
+            # "lezzetli değildi", "temiz değildi" → Negative
+            sentiment = "Negative"
+            score = min(score if score < 0 else -0.65, -0.65)
+            notes.append("negation_negative")
+
+    # 2) SHORT NEGATIVE PATTERNS: "pis X", "bozuk X", "kirli X", "kaba X", "kokuyor X", "soğuk X"
+    _short_neg_cues = [
+        "pis", "bozuk", "kirli", "kaba", "kokuyor", "kokan", "lekeli",
+        "calismayan", "çalışmayan", "rahatsiz", "rahatsız",
+    ]
+    if sentiment == "Neutral" and _any_cue(low, folded, _short_neg_cues):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.55, -0.55)
+        notes.append("short_negative_pattern")
+    # Standalone "soğuk" / "soguk" in negative context (not "soğuk içecek" which is neutral)
+    if sentiment == "Neutral" and any(w in folded for w in ("soguk", "soğuk")):
+        if any(w in folded for w in ("dus", "duş", "su", "oda", "banyo", "klima")):
+            sentiment = "Negative"
+            score = min(score if score < 0 else -0.45, -0.45)
+            notes.append("temperature_negative")
+
+    # 3) "AMA" CONTRAST: "guzeldi ama X" where X is negative → Negative
+    _ama_match = re.search(
+        r"(.+?)\s+(ama|fakat|ancak|lakin)\s+(.+)",
+        folded,
+    )
+    if _ama_match:
+        after_ama = _ama_match.group(3)
+        _after_neg_words = [
+            "kaba", "ilgisiz", "kotu", "kötü", "berbat", "kirli", "pis",
+            "pahali", "pahalı", "yavas", "yavaş", "gurultu", "gürültü", "sicak", "sıcak",
+            "soğuk", "soguk", "karanlik", "karalık", "kucuk", "küçük", "dar",
+            "zor", "yorucu", "sinir", "rahatsiz", "rahatsız", "rezalet",
+        ]
+        if _any_cue(after_ama, after_ama, _after_neg_words):
+            if sentiment != "Negative":
+                sentiment = "Negative"
+                score = min(score if score < 0 else -0.5, -0.5)
+                notes.append("ama_contrast_negative")
+
+    # 4) PAST TENSE POSITIVE: "dost canlısıydı", "cana yakındı", "kusursuzdu", "tertemizdi" → Positive
+    _past_pos_words = [
+        "dost canlisiy", "dost canlısıy", "cana yakini", "cana yakını", "cana yakindi", "cana yakındı",
+        "guleryuzluy", "güleryüzlüyd", "guleryuzuyd", "güler yüzlüyd",
+        "yardimciyd", "yardımcıyd", "yardimci oldu", "yardımcı oldu",
+        "ilgilend", "kibardi", "kibardı", "nazikti", "samimiydi",
+        "profesyoneldi", "basariliyd", "başarılıyd",
+        "kusursuzdu", "kusursuzdi", "tertemizdi", "tertemizdi",
+        "mukemmeldi", "mükemmeldi", "harikaydi", "harikaydı",
+        "muhtesemdi", "muhteşemdi", "superdi", "süperdi",
+        "memnundu", "memnunduk", "memnun kaldik", "memnun kaldık",
+    ]
+    if sentiment == "Neutral" and _any_cue(low, folded, _past_pos_words):
+        sentiment = "Positive"
+        score = max(score, 0.65)
+        notes.append("past_tense_positive")
+
+    # 4b) "X çok temizdi" / "X çok iyiydi" → Positive (adj in past tense with intensifier)
+    if sentiment == "Neutral" and re.search(r"(cok|çok)\s+(temiz|iyiydi|temizdi|guzeldi|güzeldi|guzel|güzel|iyiydi|uygundu|uygundu)", folded):
+        if not any(n in folded for n in ("değil", "degil")):
+            sentiment = "Positive"
+            score = max(score, 0.65)
+            notes.append("intensified_positive_past")
+
+    # 5) "çok X" where X is negative adjective → Negative (also standalone negative adj)
+    _very_neg_adj = [
+        "kotu", "kötü", "berbat", "kucuk", "küçük", "dar", "pahali", "pahalı",
+        "yavas", "yavaş", "gurultulu", "gürültülü", "sicak", "sıcak", "kirli", "pis",
+        "yavas", "yavaş",
+    ]
+    if sentiment == "Neutral":
+        # "çok pahalıydı", "çok küçüktü", "çok yavaştı"
+        if re.search(r"çok\s+(" + "|".join(_very_neg_adj) + r")", folded):
+            sentiment = "Negative"
+            score = min(score if score < 0 else -0.55, -0.55)
+            notes.append("very_negative_adj")
+        # Standalone negative adjective at end: "banyo çok temizdi" handled by past_tense_positive
+        # But "çok pahalıydı" standalone
+        elif any(a in folded for a in _very_neg_adj) and _any_cue(low, folded, ["çok", "cok", "oldukca", "oldukça"]):
+            sentiment = "Negative"
+            score = min(score if score < 0 else -0.5, -0.5)
+            notes.append("intensified_negative")
+
+    # 6) IMPERATIVE / RECOMMENDATION NEGATIVE: "gitmeyin", "almayın", "tavsiye etmem"
+    _imperative_neg = [
+        "gitmeyin", "gelmeyin", "almayin", "almayın", "tavsiye etmiyorum", "tavsiye etmem",
+        "para vermeyin", "gitmeyin bu", "gelmeyin bu", "almayin bu", "almayın bu",
+        "tutmayin", "tutmayın", "göndermem", "gondere mem",
+    ]
+    if sentiment != "Negative" and _any_cue(low, folded, _imperative_neg):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.7, -0.7)
+        notes.append("imperative_negative")
+
+    # 7) IDIOMS: "çöpe attık", "daha kötüsü olamazdı", "para yazık"
+    _idiom_neg = [
+        "cope attik", "çöpe attık", "cope attik", "çöpe attı",
+        "daha kotusu olamaz", "daha kötüsü olamaz",
+        "para yazik", "para yazık", "yazık oldu",
+    ]
+    if sentiment != "Negative" and _any_cue(low, folded, _idiom_neg):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.65, -0.65)
+        notes.append("idiom_negative")
+
+    # 8) PRAISE POSITIVE: catch remaining Neutral cases with positive adjectives
+    _extra_pos_cues = [
+        "kusursuz", "kusursuzdu", "kusursuzdi", "tertemiz", "tertemizdi",
+        "en iyi", "en iyisi", "en iyisiydi",
+        "mukemmel", "mükemmel", "harika", "muhtesem", "muhteşem",
+        "super", "süper", "mükemmeldi", "harikaydı",
+        "konforlu", "rahat", "rahattı",
+        "uygundu", "uygundu", "gayet uygundu",
+        "merkezi", "merkeziydi", "merkezde",
+    ]
+    if sentiment == "Neutral" and _any_cue(low, folded, _extra_pos_cues):
+        if not any(n in folded for n in ("değil", "degil", "olmadı", "olmadi")):
+            sentiment = "Positive"
+            score = max(score, 0.65)
+            notes.append("extra_positive_catch")
+
+    # 9) "hiç X yoktu" / "X yoktu" patterns → Negative (but NOT "hiç sıra yoktu" which is Positive)
+    _queue_absence = any(w in folded for w in (
+        "hic siray", "hiç sıray", "hic kuyruk", "hiç kuyruk",
+        "sira yok", "sıra yok", "kuyruk yok", "hicbir siray", "hiçbir sıray",
+    ))
+    if _queue_absence and sentiment != "Negative":
+        sentiment = "Positive"
+        score = max(score, 0.65)
+        notes.append("queue_absence_positive")
+    _existence_neg = [
+        "yoktu", "yok", "bulunmuyor", "mevcut degil", "mevcut değil",
+        "eksik", "kalmadi", "kalmadı", "tukendi", "tükenendi", "bitti",
+    ]
+    if sentiment == "Neutral" and not _queue_absence and _any_cue(low, folded, _existence_neg):
+        if any(w in folded for w in ("havuz", "yemek", "icecek", "içecek", "personel", "odada", "banyoda")):
+            sentiment = "Negative"
+            score = min(score if score < 0 else -0.45, -0.45)
+            notes.append("existence_negative")
+
+    # 10) "ses yalitimi" praise override: "ses yalıtımı mükemmeldi" → Positive (NOT Negative)
+    if "ses yalitimi" in folded or "ses yalıtımı" in folded:
+        if _any_cue(low, folded, ["mukemmel", "mükemmel", "harika", "cok iyi", "çok iyi", "mükemmeldi", "harikaydi"]):
+            sentiment = "Positive"
+            score = max(score, 0.75)
+            notes.append("sound_insulation_praise")
+
+    # =====================================================================
+    # COMPREHENSIVE CATCH-ALL: Real-world review patterns
+    # =====================================================================
+
+    # 11) CRITICAL HYGIENE: "dışkısı", "kusmuk", "böcek" → always Negative
+    #     BUT NOT expectation statements: "beklenen... hijyen", "olması gereken... temizlik"
+    _is_expectation = _any_cue(low, folded, [
+        "beklenen", "bekliyoruz", "beklerken", "olmali", "olmalı", "olmasi gereken", "olması gereken",
+        "umariz", "umuyoruz", "dilek", "talep", "istek",
+    ])
+    if sentiment != "Negative" and not _is_expectation and not _has_neg_praise and _any_cue(low, folded, [
+        "diskisi", "dışkısı", "kusmuk", "kusma", "kustum", "kustu",
+        "bocek", "böcek", "hamambocegi", "hamam böceği",
+        "pislik", "kirli", "hijyensiz", "hijyen sifir", "hijyen sıfır", "hijyen yok", "hijyen sorunu", "lifi", "bit",
+    ]):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.8, -0.8)
+        notes.append("critical_hygiene_negative")
+
+    # 12) STAFF COMPLAINT: "1 personel", "personel yok", "tek personel", "personel eksikliği"
+    if sentiment != "Negative" and _any_cue(low, folded, [
+        "personel eksikli", "personel yetersiz", "personel sayisi", "personel sayısı",
+        "tek personel", "1 personel", "bir personel", "personel yok",
+        "calisan personel", "çalışan personel", "personel calismi", "personel çalışmı",
+    ]):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.65, -0.65)
+        notes.append("staff_complaint_negative")
+
+    # 13) QUEUE / WAIT: "sıra var", "sıra beklemek", "kuyruk", "beklemek zorunda"
+    if sentiment != "Negative" and _any_cue(low, folded, [
+        "sira var", "sıra var", "siraya", "sıraya", "kuyruk",
+        "beklemek zorunda", "beklemeniz", "beklemek durumunda",
+        "bekleme süresi", "bekleyiş", "saatlerce bek",
+        "gozleme", "gözleme", "dondurma",
+    ]):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.55, -0.55)
+        notes.append("queue_wait_negative")
+    # "şezlong konusunda sorun yaşadık" / "şezlong yetersiz"
+    if sentiment == "Neutral" and _any_cue(low, folded, [
+        "sezlong", "şezlong", "lounger", "sandalye",
+    ]) and _any_cue(low, folded, [
+        "sorun", "yetersiz", "az", "kotu", "kötü", "problem", "eksik", "bulamad",
+    ]):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.55, -0.55)
+        notes.append("lounger_complaint_negative")
+    # "başka bir bara yönlendiriliyorsun" → Negative
+    if sentiment == "Neutral" and _any_cue(low, folded, [
+        "yönlendiriliyorsun", "yönlendiriyor", "yönlendir", "başka bara", "başka bar",
+    ]):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.4, -0.4)
+        notes.append("redirect_negative")
+    # "içecek listesi yazmıyor" / "konsept yazmıyor"
+    if sentiment == "Neutral" and _any_cue(low, folded, [
+        "yazmiyor", "yazmıyor", "bilinmiyor", "bilmen de mümkün değil",
+        "anlamak mümkün değil", "anlamak mumkun degil",
+    ]) and _any_cue(low, folded, [
+        "liste", "konsept", "icecek", "içecek", "alkol", "menu", "menü",
+    ]):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.45, -0.45)
+        notes.append("menu_info_missing_negative")
+    # "şansına bağlı" / "şansına" → Negative (luck-based frustration)
+    if sentiment == "Neutral" and _any_cue(low, folded, [
+        "sansina", "şansına", "sansina bagli", "şansına bağlı",
+        "talihine", "kaderine",
+    ]):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.45, -0.45)
+        notes.append("luck_based_negative")
+
+    # 14) "YETERSİZ" standalone → Negative
+    if sentiment == "Neutral" and _any_cue(low, folded, [
+        "yetersiz", "yetersizdi", "yetersiz old", "yetersizdi",
+        "noksan", "eksik", "kifayetsiz",
+    ]):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.55, -0.55)
+        notes.append("insufficiency_negative")
+
+    # 15) "bir daha tercih etmeyeceğim" / "bir daha gelmem" → Negative
+    if sentiment != "Negative" and _any_cue(low, folded, [
+        "bir daha tercih", "bir daha gelm", "bir daha tutm",
+        "bir daha gitm", "bir daha kalmam", "bir daha konak",
+        "tavsiye etmiyorum", "tavsiye etmem", "göndermem",
+        "gitmeyin", "gelmeyin", "almayın", "almayin",
+        "para Vermeyin", "para vermeyin",
+    ]):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.75, -0.75)
+        notes.append("recommendation_negative_strong")
+
+    # 16) "tartışma" / "kavga" / "tavır" → Negative (staff behavior)
+    if sentiment != "Negative" and _any_cue(low, folded, [
+        "tartisma", "tartışma", "tartismak", "tartışmak",
+        "kavga", "kavgacı", "saygisiz", "saygısız",
+        "tavr", "tavır", "hoş degildi", "hoş değildi",
+        "kaba", "ilgisiz", "suratsiz", "suratsız",
+    ]):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.6, -0.6)
+        notes.append("staff_behavior_negative")
+
+    # 17) "iptal" / "kesinti" / "iade" → Negative (operational)
+    if sentiment != "Negative" and _any_cue(low, folded, [
+        "iptal", "iptal et", "kesinti", "iade", "geri odeme", "geri ödeme",
+        "ucret iade", "ücret iade", "para iade",
+    ]):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.5, -0.5)
+        notes.append("cancellation_negative")
+
+    # 18) "doktor yok" / "hemşire vardı" → Negative (medical staff missing)
+    if sentiment != "Negative" and _any_cue(low, folded, [
+        "doktor yok", "doktor bulamad", "doktor gelmedi",
+        "doktor calismi", "doktor çalışmı",
+    ]):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.65, -0.65)
+        notes.append("doctor_missing_negative")
+
+    # 19) STRONG POSITIVE: "çok eğlendik", "çok memnun kaldık", "çok güzel"
+    if sentiment == "Neutral" and _any_cue(low, folded, [
+        "cok eglendik", "çok eğlendik", "cok eglendi", "çok eğlendi",
+        "cok memnun", "çok memnun", "cok guzel", "çok güzel",
+        "cok iyi", "çok iyi", "cok keyif", "çok keyif",
+        "muhtesem", "muhteşem", "mukemmel", "mükemmel",
+        "harika", "süper", "super", "enfes", "nefis",
+        "cok eglenceli", "çok eğlenceli",
+    ]):
+        if not any(n in folded for n in ("değil", "degil", "olmadı", "olmadi")):
+            sentiment = "Positive"
+            score = max(score, 0.72)
+            notes.append("strong_positive_catch")
+
+    # 20) "yetersiz" + any noun → Negative (general insufficiency)
+    if sentiment == "Neutral" and re.search(r"yetersiz", folded):
+        sentiment = "Negative"
+        score = min(score if score < 0 else -0.55, -0.55)
+        notes.append("yetersiz_negative")
 
     return sentiment, round(score, 2), notes
 
@@ -2627,8 +3555,13 @@ def classify_clause(
     frame = primary_frame(scores)
     aspect = resolve_aspect(text, frame, scores, cfg, frame_context=frame_context)
 
-    sentiment = base_sentiment or "Neutral"
-    score = float(base_score if base_score is not None else 0.0)
+    if base_sentiment is None:
+        from app.services.turkish_nlp_utils import detect_strong_sentiment
+        sentiment, score = detect_strong_sentiment(text)
+    else:
+        sentiment = base_sentiment
+        score = float(base_score if base_score is not None else 0.0)
+
     sentiment, score, sent_notes = apply_sentiment_modifiers(
         text, sentiment, score, frame, aspect["aspect_key"], cfg
     )
@@ -2743,12 +3676,12 @@ def classify_clauses(
             try:
                 base_sent, base_score = sentiment_fn(clause)
             except Exception:
-                pass
+                logging.getLogger(__name__).debug("classify_clauses: hata yutuldu", exc_info=True)
         if mapping_fn:
             try:
                 base_map = mapping_fn(full_text or clause, clause)
             except Exception:
-                pass
+                logging.getLogger(__name__).debug("classify_clauses: hata yutuldu", exc_info=True)
         decision = classify_clause(
             clause,
             base_sentiment=base_sent,
@@ -2877,9 +3810,9 @@ def build_operational_summary(
         for s in sentences:
             low = s.lower()
             folded = _fold(s)
-            if any(a.lower() in low or _fold(a) in folded for a in avoid):
+            if any(_cue_str(a).lower() in low or _fold(_cue_str(a)) in folded for a in avoid):
                 continue
-            sc = sum(1.0 for c in prefer if c.lower() in low or _fold(c) in folded)
+            sc = sum(1.0 for c in prefer if _cue_str(c).lower() in low or _fold(_cue_str(c)) in folded)
             scored.append((sc, s))
         scored.sort(key=lambda x: -x[0])
         best = scored[0][1] if scored and scored[0][0] > 0 else (sentences[0] if sentences else raw)
@@ -2889,15 +3822,16 @@ def build_operational_summary(
         low_best = best.lower()
         stripped = False
         for a in avoid:
-            al = a.lower()
+            astr = _cue_str(a)
+            al = astr.lower()
             if low_best.startswith(al):
-                best = best[len(a):].lstrip(" ,.-")
+                best = best[len(astr):].lstrip(" ,.-")
                 stripped = True
                 break
             # opener may sit after a short leftover fragment
             idx = low_best.find(al)
             if 0 <= idx <= 12:
-                best = (best[:idx] + best[idx + len(a):]).lstrip(" ,.-")
+                best = (best[:idx] + best[idx + len(astr):]).lstrip(" ,.-")
                 stripped = True
                 break
         if not stripped:
@@ -2912,7 +3846,7 @@ def build_operational_summary(
         return best
 
     prefer_idx = next(
-        (i for i, w in enumerate(words) if any(_fold(c) in _fold(w) for c in prefer)),
+        (i for i, w in enumerate(words) if any(_fold(_cue_str(c)) in _fold(w) for c in prefer)),
         0,
     )
     # Prefer full drink-queue clauses over mid-crop starting at "sıra"

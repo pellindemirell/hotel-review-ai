@@ -6,7 +6,10 @@ Training outputs:
   simulation/training_data/corrections.jsonl
   simulation/training_data/chatbot_dialogues.jsonl
 """
+
 from __future__ import annotations
+
+import logging
 
 import json
 import os
@@ -327,7 +330,7 @@ class IncrementalTrainer:
                 with open(LEARNED_LEXICON_PATH, encoding="utf-8") as f:
                     learned = json.load(f)
             except (OSError, json.JSONDecodeError):
-                pass
+                logging.getLogger(__name__).debug("retrain_sentiment_lexicon: hata yutuldu", exc_info=True)
 
         added = 0
         for key in ("positive_phrases", "negative_phrases"):
@@ -358,7 +361,7 @@ class IncrementalTrainer:
             from app.services.lexicon_loader import load_lexicon
             load_lexicon.cache_clear()
         except Exception:
-            pass
+            logging.getLogger(__name__).debug("retrain_sentiment_lexicon: hata yutuldu", exc_info=True)
 
         return {"status": "success", "words_added": added, "path": LEARNED_LEXICON_PATH}
 
@@ -432,7 +435,7 @@ class IncrementalTrainer:
             from app.services.rag_service import RagService
             RagService.reload_index()
         except Exception:
-            pass
+            logging.getLogger(__name__).debug("update_rag_index: hata yutuldu", exc_info=True)
 
         return {"status": "success", "appended": appended, "total_indexed": index["meta"]["indexed_records"]}
 

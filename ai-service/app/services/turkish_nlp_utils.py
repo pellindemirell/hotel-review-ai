@@ -2,7 +2,10 @@
 Merkezi Türkçe otel yorumu NLP yardımcıları.
 Sentiment, kategori, anahtar kelime ve çelişki tespiti için paylaşılan sözlükler ve fonksiyonlar.
 """
+
 from __future__ import annotations
+
+import logging
 
 import re
 import unicodedata
@@ -178,16 +181,11 @@ NEGATIVE_WORDS: set[str] = {
     "suratsiz", "suratsız", "azarlayan", "bakimsiz", "bakımsız",
     "beceriksiz", "deneyimsiz", "acemi", "yipranmis", "yıpranmış", "eski", "kullanılmış",
     "kullanilmis", "kirilmis", "kırılmış", "yirtik", "yırtık", "solmus", "solmuş",
-    # expanded slang & informal & past-tense negative words
+    # expanded slang & informal negative words
     "leş", "les", "rezillik", "facia", "skandal", "fiyasko", "kazık", "kazik",
     "soygun", "yıldım", "yıldık", "kandırmaca", "illüzyon", "illuzyon", "sıfır", "sifir",
     "hüsran", "cehennem", "kabus", "rüsva", "rusva", "kanser", "odun",
     "kaplumbağa", "kaplumbaga", "zehirlendik", "mikrop", "kuyrukta", "işkence", "iskence",
-    "ilgisizdi", "ilgisizlerdi", "kabaydı", "kabalardı", "suratsızdı", "suratsızlardı", "umursamazdı",
-    "eskiydi", "eskimişti", "bakımsızdı", "dökülüyordu", "dökülüyor", "eskiyolardı",
-    "soğuktu", "lezzetsizdi", "tatsızdı", "bayattı", "kokuyordu", "pisdi", "pisti",
-    "bekletildik", "bekletildim", "bekletiyorlar", "kuyruktaydık", "kuyruktaydım",
-    "yetersizdi", "verilmedi", "verilemedi", "verilemiyor", "alınamadı", "alınamıyor",
 }
 
 POSITIVE_PHRASES: list[str] = [
@@ -268,29 +266,43 @@ NEGATIVE_PHRASES: list[str] = [
     "can çekişiyor", "can cekisiyor", "odun gibi", "kaplumbağa hızı", "kaplumbaga hizi",
     "mideyi bozduk", "mide fesadı", "mide fesadi", "mikrop yuvası", "mikrop yuvasi",
     "yeşil su", "yesil su", "kuyrukta çürüdük", "kuyrukta curuduk", "giriş işkence", "giris iskence",
-    "giriş işkencesi", "giris iskencesi", "asansör işkencesi", "asansor iskencesi",
+    "giriş işkencesi", "giris iskencesi", "asansör işkencesi",
+    "waited over an hour",
+    "waited for check-in",
+    "kept dropping",
+    "dropping constantly",
+    "didn't cool",
+    "didn't work",
+    "was not working",
+    "very noisy",
+    "extremely unresponsive",
+    "was disappointing",
+    "food was cold",
+    "staff was rude",
+    "rude staff",
+    "do not recommend",
+    "never coming back",
+    "worst hotel",
+    "dirty towels",
+    "dirty sheets",
+    "еда была холодной",
+    "не работал",
+    "не работала",
+    "долго ждали",
+    "не хотели помогать",
+    "ужасный отель",
+    "ванной комнате тараканы",
+    "грязное белье",
+    "грязное постельное",
+    "ужасный запах",
+    "ужасное обслуживание",
+    "ужасная уборка",
+    "никакого сервиса",
+    "не рекомендую",
+    "больше не приедем",
+    "никому не советую", "asansor iskencesi",
     "klima üflemiyor", "klima uflemiyor", "sauna gibi", "hamam gibi", "buz gibi",
     "rezil rüsva", "rezil rusva", "rezil ettiler", "tam bir fiyasko", "sakın bulaşmayın", "sakin bulasmayin",
-    # service failure / negligence
-    "magdur olduk", "mağdur olduk", "magdur edildik", "mağdur edildik", "magduriyet", "mağduriyet",
-    "ilgilenilmedi", "ilgilenmediler", "ilgilenen olmadi", "ilgilenen olmadı",
-    "ortada birakildik", "ortada bırakıldık", "ortada birakildi", "ortada bırakıldı",
-    "ortada kaldik", "ortada kaldık", "ortada kaldi", "ortada kaldı",
-    "bir daha kapisindan gecmem", "bir daha kapısından geçmem",
-    "muhattap bulamadik", "muhattap bulamadık", "muhattap bulamadim", "muhattap bulamadım",
-    "ilgilenen kimse yok", "ilgilenen yok",
-    # hygiene failure
-    "küf kokusu", "kuf kokusu", "rutubet kokusu", "nem kokusu",
-    "sifon cekmiyor", "sifon çekmiyor", "tikanik", "tıkanık", "tikanmis", "tıkanmış",
-    "kanalizasyon kokusu", "lağım kokusu", "lagim kokusu",
-    "küflenmiş", "kuflenmis", "küf vardı her yerde",
-    # concept mismatch / victimization / capacity & service failure
-    "aldatilmis", "aldatılmış", "aldatildik", "aldatıldık", "kandirildik", "kandırıldık",
-    "kaos", "karmaşa", "karmasa", "personel yetersiz", "personel alınmamış", "personel alinmamis",
-    "sınır tanınmamış", "sinir taninmamis", "full doldurulmuş", "full doldurulmus", "full olarak doldurulmuş",
-    "verilemiyor", "verilemedi", "verilmedi", "bile verilemiyor", "ne zaman geleceği belli değil",
-    "tercih edilmemesi gereken", "tercih edilmemesi", "tercih edilmemeli", "kesinlikle tercih edilmemesi",
-    "girişte başlayan sıra", "giriste baslayan sira", "her alanda sıra", "her alanda sira", "sıra ve kaos", "sira ve kaos",
 ]
 
 STRONG_POSITIVE: set[str] = {
@@ -319,6 +331,9 @@ STRONG_POSITIVE: set[str] = {
     "cozüm odakli", "cozum odakli", "çözüm odaklı",
     "guleryuzlu", "guleryuz", "guler yuz", "guler yuzlu",
     "sagol", "sağol", "sagolasin", "sağol", "eyvallah",
+    # English & Russian strong positive terms
+    "wonderful", "excellent", "amazing", "fantastic", "sparkling", "spotless",
+    "великолепный", "потрясающий", "потрясающие", "прекрасный", "отличный", "замечательный", "высший",
 }
 
 STRONG_NEGATIVE: set[str] = {
@@ -326,7 +341,9 @@ STRONG_NEGATIVE: set[str] = {
     "pişman", "korkunç", "dehşet", "skandal", "çarçur", "carcur",
     # slang
     "leş", "les", "rezillik", "facia", "fiyasko", "kazık", "kazik", "soygun",
-    "mağdur", "magdur", "işkence", "iskence",
+    # English & Russian strong negative terms
+    "nightmare", "cockroach", "cockroaches", "horrible", "terrible", "disgusting", "filthy",
+    "ужасный", "ужасная", "ужасное", "ужасно", "кошмар", "тараканы", "хамство",
 }
 
 SARCASM_INDICATORS: list[str] = [
@@ -390,7 +407,8 @@ PHRASE_SENTIMENT_WEIGHTS: list[tuple[str, float]] = [
     ("berbat bir otel", -3.5), ("para tuzağı", -3.0), ("temizlik yapılmamış", -3.0),
     ("5 yıldız veriyorum", -2.0), ("öne çıksın diye", -4.0),
     ("o kadar kötüydü ki", -3.5),     ("bayılacaktım", -3.5), ("ölecek kadar kötü", -4.0),
-    ("efsane otel", 3.5), ("otel efsane", 3.5), ("10/10", 4.0), ("fena değil", 2.0),
+    ("efsane otel", 3.5), ("otel efsane", 3.5), ("10/10", 4.0), ("fena değil", 2.2), ("fena degil", 2.2),
+    ("fena sayılmaz", 2.2), ("fena sayilmaz", 2.2), ("kötü sayılmaz", 2.2), ("kotu sayilmaz", 2.2),
     ("rezalet la", -3.8), ("berbat la", -3.8), ("çöp gibi", -3.5), ("cehennem gibi", -3.5),
     ("cennet gibi", 3.5), ("kabus gibi", -3.5),
     ("paramız çöp", -3.5), ("paramiz cop", -3.5), ("para çöp oldu", -3.5),
@@ -437,6 +455,27 @@ PHRASE_SENTIMENT_WEIGHTS: list[tuple[str, float]] = [
     ("sauna gibi", -3.5), ("hamam gibi", -3.5), ("buz gibi", -3.5),
     ("rezil rüsva", -3.9), ("rezil rusva", -3.9),
     ("sakın bulaşmayın", -3.9), ("sakin bulasmayin", -3.9),
+    ("sakın gelmeyin", -4.0), ("sakin gelmeyin", -4.0), ("sakın gelmeyiiin", -4.0), ("sakin gelmeyiiin", -4.0),
+    ("sakın tercih etmeyin", -4.0), ("sakın kalmayın", -4.0),
+    ("dayıyorlar", -3.5), ("ana yemek diye", -3.0), ("hindistan oteli", -3.5),
+    ("salata ile doyuruyorum", -3.5), ("karnımı salata ile", -3.5), ("ucuz tatlılarla", -3.0),
+    ("cila yapıp kapatıyorum", -3.0), ("3 kuruşun peşine", -3.5), ("her şeyin en ucuzunu", -3.5),
+    ("en ucuzunu kullanıyorlar", -3.5), ("elektrik kesintisi", -3.5), ("sular kesildi", -3.5),
+    ("su kesildi", -3.5), ("uzun süre gelmedi", -3.0), ("konseptimizde yok", -3.5),
+    ("sahipsiz bırakılması", -3.5), ("gerçekten üzücü", -3.0), ("bolca taş var", -3.0),
+    ("hemen derinleşiyor", -3.0), ("buz gibi", -3.5), ("ne bir yorgan ne", -3.5),
+    ("ne çalıştırılan bir klima", -3.5), ("zorlukla açtırıyoruz", -3.5), ("gece kapatıyorlar", -3.0),
+    ("sabah topluyorlar", -3.0), ("çeşit çok az", -3.5), ("donuk köfte", -3.5),
+    ("kuru balık", -3.0), ("bol bol patates", -3.0), ("içimiz kalktı", -3.8),
+    ("içim kalktı", -3.8), ("görmekten içimiz kalktı", -3.8), ("resmen mucizeydiler", 3.8),
+    ("mucizeydiler", 3.8), ("keza öyle", 3.0), ("havuz soğuk", -3.0),
+    ("spa hizmeti rezillikti", -4.0), ("rezillikti", -3.8), ("gönül aldı", 3.5),
+    ("kime yeter bilinmez", -3.0), ("yüzüne bakmadan", -3.5), ("havaya konuşur", -3.5),
+    ("dalga geçer şekilde", -3.5), ("saygısızca bir üslup", -3.8), ("saygısızca", -3.5),
+    ("resmen patates kızartması ile", -3.5), ("sırf karnım doysun diye", -3.0),
+    ("ketçap bulaşığı", -3.8), ("güya temiz", -3.5), ("yürü allah yürü", -3.5),
+    ("o yol bitmiyor", -3.5), ("illallah geldi", -3.8), ("küf kokusundan", -3.5),
+    ("yağ kokusundan", -3.5), ("tercih etseydiniz cevabı", -3.5), ("tam bir hayal kırıklığı", -4.0),
 ]
 
 # Türkçe mecaz / hyperbolik övgü — kelime kelime analiz kaçırır
@@ -509,12 +548,6 @@ MILD_NEGATIVE_PATTERNS: list[str] = [
 COORDINATION_ADJECTIVES: set[str] = {
     "guzel", "güzel", "yeterli", "iyi", "kotu", "kötü", "berbat", "harika",
     "mukemmel", "mükemmel", "lezzetli", "taze", "sicak", "soguk", "temiz", "kirli",
-    # Descriptive adjectives commonly appearing in "ve" coordination
-    "dalgali", "dalgalı", "bulanik", "bulanık", "genis", "geniş", "dar",
-    "kucuk", "küçük", "buyuk", "büyük", "rahat", "konforlu", "ferah",
-    "sakin", "huzurlu", "keyifli", "eglenceli", "eğlenceli",
-    "sicak", "sıcak", "soguk", "soğuk", "derin", "sığ", "sig",
-    "acik", "açık", "kapali", "kapalı", "isitmali", "ısıtmalı", "kaliteli",
 }
 
 GENERAL_PRAISE: list[str] = [
@@ -556,26 +589,26 @@ SINGLE_NEGATIVE_STRONG: set[str] = {
 CATEGORY_KEYWORDS: dict[str, list[str]] = {
     CAT_CLEANING: [
         "oda", "yatak", "banyo", "tuvalet", "temizlik", "temiz", "kirli", "pis", "havlu",
-        "buklet", "sampuan", "sabun", "bonoz", "terlik", "genis", "konfor",
+        "buklet", "sampuan", "sabun", "bonoz", "terlik", "genis", "kucuk", "dar", "konfor",
         "rahat", "ergonomi", "ses yalitimi", "yalitim", "yatak rahat", "yatak konfor",
-        "carsaf", "nevresim", "yorgan", "yastik", "duz", "oda buyuk", "oda genis", "oda kucuk",
+        "carsaf", "nevresim", "yorgan", "yorganlar", "battaniye", "yastik", "duz", "oda buyuk", "oda genis", "oda kucuk",
         "odalardan ses", "ses geliyor", "kapi alti", "balkon", "manzara", "minibar",
-        "calisma masasi", "aydinlatma", "lamba",
+        "calisma masasi", "aydinlatma", "lamba", "küf kokusu", "kuf kokusu", "yağ kokusu", "yag kokusu",
+        "koridor kokusu", "asansör kokusu", "asansor kokusu", "bina kokusu",
         # expanded slang
         "les", "les gibi", "leş gibi", "bal dok yala", "bal dök yala", "pislik", "cicek gibi",
         "çiçek gibi", "jilet", "leke", "lekeli", "kir", "toz", "cop", "çöp", "kokuyor",
     ],
-    CAT_GROUNDS: [
-        "taksi", "transfer", "ulaşım", "ulasim", "araç", "arac", "araba", "hastane",
-        "ambulans", "shuttle", "otopark", "güvenlik", "guvenlik", "getiremediler", "götüremediler",
-    ],
     CAT_FOOD: [
         "yemek", "kahvalti", "restoran", "bar", "minibar", "bufe", "lezzet", "lezzetli",
         "lezzetsiz", "taze", "sicak", "soguk", "cesit", "cesitlilik", "menü", "menu",
+        "snack", "snack bar", "snack kısmı", "snack kismi", "sabit bar", "içecek barı",
         "pankek", "kiyma", "limonata", "soda", "alkol", "icki", "kokteyl", "bira", "sarap",
         "doldurulmus", "minibar dolu", "icecek soguk", "kahvalti cesit", "bufe zengin",
         "domates", "corba", "et", "tavuk", "balik", "makarna", "pilav", "salata", "tatli",
         "meyve", "peynir", "zeytin", "recel", "bal", "ekmek", "dondurma", "krep",
+        "çatal", "bıçak", "catal", "bicak", "catal bicak", "ketçap", "ketcap", "patates kızartması",
+        "patates kizartmasi", "ana yemek", "dayıyorlar", "dayiyorlar", "yemek konusu", "büfe sırası",
         # expanded slang
         "kusmuk", "zehir", "zehirlendik", "mide", "bozuk", "bayat", "les", "leş", "lezzet",
         "efsane", "harika", "yikiliyor", "akiyor", "baba", "pide", "doner",
@@ -586,6 +619,7 @@ CATEGORY_KEYWORDS: dict[str, list[str]] = {
         "organizasyon", "ozel gun", "kutlama", "dogum gunu", "yil donumu",
         "lobi", "concierge", "bellboy", "valiz", "oda anahtari", "kart", "upgrade",
         "oda degisikligi", "erken giris", "gec cikis", "misafir iliskileri",
+        "danışma", "ön büro", "on buro", "yönlendirme", "yonlendirme", "bilgilendirme",
         # expanded slang
         "iskence", "iskencesi", "işkence", "kuyruk", "curuduk", "çürüdük", "beklemek",
         "rezalet", "fiyasko", "bellboy", "kuyrukta",
@@ -593,9 +627,10 @@ CATEGORY_KEYWORDS: dict[str, list[str]] = {
     CAT_TECH: [
         "klima", "wifi", "internet", "tv", "televizyon", "kumanda", "ariza", "bozuk",
         "tamir", "bakim", "mobil", "uygulama", "elektrik", "priz", "ampul", "lamba",
-        "asansor", "lift", "sogutma", "isitma", "calismiyor", "bozuldu", "sizinti",
+        "asansor", "asansör", "lift", "sogutma", "isitma", "ısıtma", "calismiyor", "bozuldu", "sizinti",
         "wifi yavas", "internet yok", "klima bozuk", "tv bozuk", "sinyal", "baglanti",
-        "kanal", "kart kilidi", "saç kurutma", "fon", "su basinci",
+        "kanal", "kart kilidi", "saç kurutma", "fon", "su basinci", "su kesildi", "sular kesildi",
+        "elektrik kesintisi", "çalıştırılan klima", "calistirilan klima", "kalorifer", "termostat",
         # expanded slang
         "kanser", "calismiyor", "calismaya", "cop", "çöp", "uflemiyor", "üflemiyor",
         "hamam", "sauna", "buz", "asansor", "klima", "tıkalı", "tikali",
@@ -603,9 +638,9 @@ CATEGORY_KEYWORDS: dict[str, list[str]] = {
     CAT_SPA: [
         "havuz", "spa", "sauna", "masaj", "wellness", "jakuzi", "hamam", "sezlong",
         "semsiye", "animasyon", "konser", "show", "sov", "muzik", "eglence", "aktivite",
-        "cocuk", "kulubu", "mini kulup", "cocuk havuz", "oyun alani", "spor", "fitness",
-        "tenis", "basketbol", "voleybol", "su sporlari", "dalış", "sörf", "yelken",
-        "buhar odasi", "tuz odasi", "gym", "pilates", "yoga", "dans",
+        "cocuk", "kulubu", "mini kulup", "cocuk havuz", "çocuk havuzu", "cocuk alanlari", "çocuk alanları",
+        "oyun alani", "spor", "fitness", "tenis", "basketbol", "voleybol", "su sporlari", "dalış", "sörf", "yelken",
+        "buhar odasi", "tuz odasi", "gym", "pilates", "yoga", "dans", "havuz soğuk", "havuz soguk",
         # expanded slang
         "les", "leş", "yesil su", "yeşil su", "mikrop", "klor", "sezlong", "semsiye",
     ],
@@ -614,7 +649,8 @@ CATEGORY_KEYWORDS: dict[str, list[str]] = {
         "park", "vale", "park yeri", "transfer", "havaalani", "shuttle", "servis",
         "guvenlik", "kamera", "kasa", "kilit", "konum", "merkez", "sehir merkezi",
         "ulasim", "dolmus", "otobus", "metro", "deniz", "sahil", "kumsal", "cakil",
-        "iskele", "manzara", "dag manzarasi",
+        "iskele", "manzara", "dag manzarasi", "mesafe", "yürüme mesafesi", "yokusu", "yokuş",
+        "yürüyüş yolu", "yuruyus yolu", "yürü allah yürü", "yuru allah yuru", "yol bitmiyor",
         # expanded slang
         "vale", "cop", "çöp", "guvenlik", "hırsız", "hirsiz",
     ],
@@ -622,7 +658,7 @@ CATEGORY_KEYWORDS: dict[str, list[str]] = {
         "gurultu", "gurultulu", "sessiz", "sakin", "huzurlu", "kalabalik", "tenha",
         "misafir profili", "profil", "prestij", "atmosfer", "kitle", "aile", "cift",
         "yasli", "grup", "kalite", "ortam", "dekor", "tema", "müzik seviyesi",
-        "disiplin", "saygi", "huzur", "rahatsiz",
+        "disiplin", "saygi", "huzur", "rahatsiz", "illallah geldi", "illallah",
         # expanded slang
         "kabus", "cehennem", "cennet", "ruya", "kavga",
     ],
@@ -631,7 +667,10 @@ CATEGORY_KEYWORDS: dict[str, list[str]] = {
         "yardimsever", "ilgili", "davranis", "bakim", "profesyonel", "kaba", "ilgisiz",
         "saygisiz", "kibar personel", "garson kaba", "personel ilgisiz", "yardimci oldu",
         "ilgi alaka", "motivasyon", "egitim", "hostes", "host", "mudur", "yonetici",
-        "asci", "sef", "barmen", "animator", "canayakin", "sicakkanli",
+        "asci", "sef", "barmen", "animator", "canayakin", "sicakkanli", "dil bariyeri",
+        "türkçe bilmiyor", "turkce bilmiyor", "anlaşalım bir dert", "anlasalim bir dert",
+        "yüzüne bakmadan", "yuzune bakmadan", "dalga geçer şekilde", "dalga gecer sekilde",
+        "tercih etseydiniz", "tercih etseydiniz cevabı",
         # expanded slang
         "odun", "robot", "suratsiz", "suratsız", "kral", "taciz", "bela",
     ],
@@ -749,11 +788,35 @@ def is_casual_register(text: str) -> bool:
 
 VOCABULARY: set[str] = set()
 FOLDED_VOCABULARY: dict[str, list[str]] = {}
+PRIO_FOLDED_VOCABULARY: dict[str, str] = {}
+
+# Türkçe -> ASCII karakter eşlemesi. Bu tuple dört ayrı dosyada kopyalanmıştı;
+# birinde bir harf eklenip diğerlerinde unutulduğunda eşleşmeler sessizce
+# çatallanıyordu. Tek kaynak burası.
+TR_ASCII_MAP: tuple[tuple[str, str], ...] = (
+    ("ş", "s"), ("ı", "i"), ("ğ", "g"), ("ü", "u"), ("ö", "o"), ("ç", "c"),
+)
+
+
+def fold_tr_chars(text: str) -> str:
+    """Yalnızca karakter indirgeme — normalize/lower yapmaz."""
+    for src, dst in TR_ASCII_MAP:
+        text = text.replace(src, dst)
+    return text
+
+
+@functools.lru_cache(maxsize=50000)
+def fold_tr(text: str) -> str:
+    """Kural eşlemesi için kanonik katlama: normalize_turkish + ASCII indirgeme.
+
+    engine.py ve ontology_service.py bu fonksiyonun birebir aynı kopyasını
+    ayrı ayrı taşıyordu; ikisi de buraya yönlendirildi.
+    """
+    return fold_tr_chars(normalize_turkish(text))
+
 
 def _fold_tr_word(word: str) -> str:
-    for src, dst in (("ş", "s"), ("ı", "i"), ("ğ", "g"), ("ü", "u"), ("ö", "o"), ("ç", "c")):
-        word = word.replace(src, dst)
-    return word
+    return fold_tr_chars(word)
 
 def is_damerau_levenshtein_1_with_type(w1: str, w2: str) -> str:
     len1, len2 = len(w1), len(w2)
@@ -791,6 +854,28 @@ def correct_word(word: str) -> str:
     if folded in FOLDED_VOCABULARY:
         candidates = FOLDED_VOCABULARY[folded]
         return candidates[0]
+    if len(word) >= 4:
+        best_cand = None
+        for cand_f, cand_w in PRIO_FOLDED_VOCABULARY.items():
+            if abs(len(cand_f) - len(folded)) <= 1:
+                match_type = is_damerau_levenshtein_1_with_type(folded, cand_f)
+                if match_type:
+                    # Skip 4-letter same-length substitution (e.g. biri -> bira collision)
+                    if len(word) == 4 and len(cand_f) == 4 and match_type == "substitution":
+                        continue
+                    # Turkish is agglutinative: if the input word is LONGER than the
+                    # candidate, the extra trailing char is likely a valid suffix
+                    # (e.g. denize → deniz, odalar → oda) — NOT a typo.
+                    # Only allow deletion_insertion when the word is SHORTER
+                    # (missing a letter = real typo, e.g. temizlk → temizlik).
+                    if match_type == "deletion_insertion" and len(folded) > len(cand_f):
+                        continue
+                    if match_type == "transposition":
+                        return cand_w
+                    if not best_cand:
+                        best_cand = cand_w
+        if best_cand:
+            return best_cand
     return w_lower
 
 def correct_word_with_punctuation(w: str) -> str:
@@ -844,7 +929,7 @@ def initialize_vocabulary() -> None:
                         for w in term.split():
                             words_to_add.add(w)
     except Exception:
-        pass
+        logging.getLogger(__name__).debug("initialize_vocabulary: hata yutuldu", exc_info=True)
     for w in words_to_add:
         w_clean = w.lower().strip()
         w_clean = re.sub(r"^[^\w]+|[^\w]+$", "", w_clean, flags=re.UNICODE)
@@ -860,15 +945,29 @@ def initialize_vocabulary() -> None:
     for folded in FOLDED_VOCABULARY:
         FOLDED_VOCABULARY[folded].sort(key=lambda x: -sum(1 for c in x if c in "çğıöşüÇĞİÖŞÜ"))
 
+    global PRIO_FOLDED_VOCABULARY
+    PRIO_FOLDED_VOCABULARY.clear()
+    for w in PRIORITY_TERMS:
+        w_clean = w.lower().strip()
+        if len(w_clean) >= 3 and w_clean.isalpha():
+            f = _fold_tr_word(w_clean)
+            if f not in PRIO_FOLDED_VOCABULARY:
+                PRIO_FOLDED_VOCABULARY[f] = w_clean
 
-# Saf fonksiyon (aynı girdi → aynı çıktı), ABSA sıcak yolunda binlerce kez çağrılıyor.
-# Cache olmadan tek yorum analizinde ~1500 kez yeniden hesaplanıyordu.
+
+# Saf fonksiyon (str -> str, yan etkisiz) ve analiz yolunun en sıcak noktası:
+# tek yorumun analizinde ~31.000 kez, üstelik büyük ölçüde AYNI girdilerle
+# çağrılıyordu (cümlecik metinleri ve YAML'den gelen sabit cue dizeleri).
+# Gövdesi ucuz değil: _TYPO_MAP üzerinde 28 tam string taraması, kısaltma
+# genişletme ve 20'den fazla re.sub. Önbellek çıktı değerlerini değiştirmez,
+# yalnızca aynı hesabın tekrarını ortadan kaldırır.
 @functools.lru_cache(maxsize=50000)
 def normalize_turkish(text: str) -> str:
     """Küçük harf, NFKC, slang, tekrarlı harf, bitişik kelimeler, yazım hatası düzeltme."""
     if not text:
         return ""
-    t = unicodedata.normalize("NFKC", text.lower().strip())
+    t = text.replace("İ", "i").replace("I", "ı")
+    t = unicodedata.normalize("NFKC", t.lower().strip()).replace("\u0307", "")
     t = _expand_internet_abbrev(t)
     for old, new in _TYPO_MAP.items():
         t = t.replace(old, new)
@@ -911,9 +1010,11 @@ def normalize_turkish(text: str) -> str:
 
 
 # PRIORITY_TERMS regex'leri modül yüklenirken BİR KEZ derlenir. Önceden her
-# split_glued_words çağrısında 437 terim için re.escape + re.sub yapılıyordu;
+# split_glued_words çağrısında 534 terim için re.escape + re.sub yapılıyordu;
 # tokenize_turkish bunu her seferinde çağırdığı için tek yorum analizinde
 # binlerce gereksiz regex derlemesi oluşuyordu.
+# Sıra ve desen semantiği birebir korunuyor (uzun terim önce, kelime sınırı
+# koruması ile "temizlik" -> "temiz"+"lik" bölünmesi engelleniyor).
 _GLUED_TERM_PATTERNS: list[tuple[re.Pattern[str], str]] = [
     (
         re.compile(rf"(?<![a-z]){re.escape(_term)}(?![a-z])", flags=re.IGNORECASE),
@@ -929,14 +1030,27 @@ _WS_RE = re.compile(r"\s+")
 @functools.lru_cache(maxsize=20000)
 def split_glued_words(text: str) -> str:
     lowered = normalize_turkish(text)
-    # Sıra korunuyor (uzun terim önce) — davranış birebir aynı, yalnızca derleme maliyeti kalktı.
     for pattern, replacement in _GLUED_TERM_PATTERNS:
         lowered = pattern.sub(replacement, lowered)
     return _WS_RE.sub(" ", lowered).strip()
 
 
+# Önbellek tuple döndürür, genel arayüz her çağrıda yeni bir list üretir.
+# Doğrudan list önbelleklenseydi tüm çağıranlar AYNI liste nesnesini paylaşırdı;
+# bugün kimse onu değiştirmiyor ama ileride biri .append() dediğinde önbellek
+# sessizce bozulurdu. Kopyalama maliyeti (birkaç eleman) yeniden hesaplamanın
+# yanında ihmal edilebilir.
+@functools.lru_cache(maxsize=50000)
+def _light_stem_cached(word: str) -> tuple[str, ...]:
+    return tuple(_light_stem_uncached(word))
+
+
 def light_stem(word: str) -> list[str]:
     """Hafif Türkçe kök çıkarma."""
+    return list(_light_stem_cached(word))
+
+
+def _light_stem_uncached(word: str) -> list[str]:
     stems: list[str] = []
     m = re.match(
         r"^(güzel|harika|mükemmel|kötü|berbat|iyi|leziz|kirli|temiz|soğuk|bozuk|pahalı|kaba|yavaş|keyif)"
@@ -955,8 +1069,18 @@ def light_stem(word: str) -> list[str]:
     return stems
 
 
+# light_stem ile aynı desen: önbellek tuple tutar, arayüz kopya döndürür.
+@functools.lru_cache(maxsize=50000)
+def _tokenize_turkish_cached(text: str) -> tuple[str, ...]:
+    return tuple(_tokenize_turkish_uncached(text))
+
+
 def tokenize_turkish(text: str) -> list[str]:
     """Türkçe metni anlamlı tokenlara ayırır."""
+    return list(_tokenize_turkish_cached(text))
+
+
+def _tokenize_turkish_uncached(text: str) -> list[str]:
     if not text or not text.strip():
         return []
     normalized = re.sub(r"[^\w\s]", " ", text, flags=re.UNICODE)
@@ -1290,7 +1414,7 @@ def analyze_mixed_review(text: str) -> MixedReviewResult:
             )
             primary = CAT_FOOD if food_hits >= 2 else (_best_complaint_category(neg) if neg else CAT_OTHER)
             secondary = _best_praise_category(pos) if pos else CAT_STAFF
-            overall_sent = "Negative" if any(w in cleaned_full for w in ("kuyruk", "pişman", "pisman", "yorucu", "paramız", "paramiz", "düşük", "dusuk", "kalitesiz", "kıyma", "kiyma")) else "Neutral"
+            overall_sent = "Negative" if any(w in cleaned_full for w in ("kuyruk", "pişman", "pisman", "yorucu", "paramız", "paramiz")) else "Neutral"
             overall_sc = -0.25 if overall_sent == "Negative" else 0.05
             return MixedReviewResult(
                 is_mixed=True, clauses=clauses,
@@ -1449,8 +1573,17 @@ def detect_manipulation(text: str, rating: Optional[int] = None) -> bool:
 # ---------------------------------------------------------------------------
 # Duygu analizi
 # ---------------------------------------------------------------------------
-def _word_in_text(word: str, cleaned: str, tokens: list[str]) -> bool:
+# `tokens` parametresi kaldırıldı: tüm çağrı yerleri onu istisnasız
+# tokenize_turkish(cleaned) ile üretiyordu, yani `cleaned`'den türetilebilir
+# gereksiz bir argümandı ve list olduğu için fonksiyonun önbelleklenmesini
+# engelliyordu. Artık token listesi içeride (önbellekli tokenizer'dan) alınıyor.
+# Bu fonksiyon POSITIVE_WORDS/NEGATIVE_WORDS/STRONG_* sözlükleri üzerinde
+# aynı metin için yüz binlerce kez çağrılıyor; (word, cleaned) çifti sürekli
+# tekrar ettiğinden önbellek doğrudan kazanç.
+@functools.lru_cache(maxsize=200000)
+def _word_in_text(word: str, cleaned: str) -> bool:
     """Kelime sınırı duyarlı eşleşme; olumsuz ekleri hariç tutar."""
+    tokens = _tokenize_turkish_cached(cleaned)
     if " " in word:
         return word in cleaned
     # Türkçe olumsuzluk ekleri — "temizlik" → "temiz" yanlış pozitifini engeller
@@ -1479,6 +1612,9 @@ def _word_in_text(word: str, cleaned: str, tokens: list[str]) -> bool:
     return word in cleaned.split()
 
 
+# POSITIVE_PHRASES / NEGATIVE_PHRASES / slang listeleri aynı metin üzerinde
+# defalarca taranıyor; (phrase, cleaned) çifti sürekli tekrar ediyor.
+@functools.lru_cache(maxsize=200000)
 def _phrase_in_text(phrase: str, cleaned: str) -> bool:
     """İfade düzeyi eşleşme — kısa parçaların alt-dize yanlış pozitifini önler."""
     p = phrase.strip().lower()
@@ -1493,20 +1629,18 @@ def _phrase_in_text(phrase: str, cleaned: str) -> bool:
                 re.search(r"(?<![a-zçğıöşü])on[\s\-]+numara(?![a-zçğıöşü])", cleaned)
             )
         return p in cleaned
-    tokens = tokenize_turkish(cleaned)
-    return _word_in_text(p, cleaned, tokens)
+    return _word_in_text(p, cleaned)
 
 
 def count_lexicon_hits(cleaned: str) -> tuple[int, int, bool, bool]:
-    tokens = tokenize_turkish(cleaned)
     hyperbole = detect_negative_hyperbole(cleaned)
     pos = 0
     for w in POSITIVE_WORDS:
         if w in {"bayıl", "bayıldım", "bayıldık", "bayıl"} and not _positive_bayil_allowed(cleaned):
             continue
-        if _word_in_text(w, cleaned, tokens):
+        if _word_in_text(w, cleaned):
             pos += 1
-    neg = sum(1 for w in NEGATIVE_WORDS if _word_in_text(w, cleaned, tokens))
+    neg = sum(1 for w in NEGATIVE_WORDS if _word_in_text(w, cleaned))
 
     if _has_positive_whitelist(cleaned):
         neg = max(0, neg - 2)
@@ -1542,18 +1676,29 @@ def count_lexicon_hits(cleaned: str) -> tuple[int, int, bool, bool]:
     has_pos_phrase = any(_phrase_in_text(p, cleaned) for p in POSITIVE_PHRASES + TWITTER_SLANG_POSITIVE + LITERARY_HYPERBOLE_POSITIVE)
     has_neg_phrase = any(_phrase_in_text(p, cleaned) for p in NEGATIVE_PHRASES + TWITTER_SLANG_NEGATIVE + LITERARY_HYPERBOLE_NEGATIVE)
     has_strong_pos = any(
-        _word_in_text(w, cleaned, tokens)
+        _word_in_text(w, cleaned)
         for w in STRONG_POSITIVE
         if w not in {"bayıl", "bayıldım", "bayıldık"} or _positive_bayil_allowed(cleaned)
     )
-    has_strong_neg = any(_word_in_text(w, cleaned, tokens) for w in STRONG_NEGATIVE)
+    has_strong_neg = any(_word_in_text(w, cleaned) for w in STRONG_NEGATIVE)
+    neg_praise_cues = (
+        "sorun gormedim", "sorun görmedim", "sorun yoktu", "sorun yasamadik", "sorun yaşamadık",
+        "sikinti yasamadik", "sıkıntı yaşamadık", "problem yasamadik", "problem yaşamadık",
+        "sikayetimiz olmadi", "şikayetimiz olmadı", "olumsuz bir sey", "olumsuz bir şey",
+        "hiçbir problem", "hicbir problem", "kusursuzdu"
+    )
+    if any(p in cleaned for p in neg_praise_cues):
+        if not any(w in cleaned for w in ("berbat", "rezalet", "iğrenç", "igrenc", "çöp", "cop", "fiyasko")):
+            neg = 0
+            has_strong_neg = False
+            has_single_neg = False
     if hyperbole:
         has_strong_neg = True
         neg += 3
         has_strong_pos = False
         has_pos_phrase = False
         pos = max(0, pos - 2)
-    has_single_neg = any(_word_in_text(w, cleaned, tokens) for w in SINGLE_NEGATIVE_STRONG)
+    has_single_neg = any(_word_in_text(w, cleaned) for w in SINGLE_NEGATIVE_STRONG)
     if "güzeldi" in cleaned or "çok güzel" in cleaned:
         if not any(n in cleaned for n in ("lezzetsiz", "berbat", "soğuk", "kötü", "iğrenç")):
             has_strong_pos = True
@@ -1615,75 +1760,29 @@ def count_lexicon_hits(cleaned: str) -> tuple[int, int, bool, bool]:
 
 def _apply_rule_sentiment(cleaned: str) -> Optional[tuple[str, float]]:
     """Yüksek güvenilir kural tabanlı duygu — leksikon öncesi."""
-    # 1. Negated positive adjectives ("temiz değildi", "lezzetli değildi", "personel ilgili değildi")
-    if any(p in cleaned for p in (
-        "temiz değildi", "temiz degildi", "temiz değil", "temiz degil",
-        "lezzetli değildi", "lezzetli degildi", "lezzetli değil", "lezzetli degil",
-        "ilgili değildi", "ilgili degildi", "ilgili değil", "ilgili degil",
-        "güzel değildi", "guzel degildi", "güzel değil", "guzel degil",
-        "iyi değildi", "iyi degildi", "iyi değil", "iyi degil",
-        "yeterli değildi", "yeterli degildi", "yeterli değil", "yeterli degil",
-        "harika değildi", "harika degildi", "harika değil", "harika degil",
-        "kaliteli değildi", "kaliteli degildi", "kaliteli değil", "kaliteli degil",
-    )):
-        return "Negative", -0.60
-
-    # 1b. Uzun bağlamlı mesafe olumsuzlamaları ("kaliteli olduğunu söylemek mümkün değil", "taze olduğunu söyleyemem")
-    if any(p in cleaned for p in (
-        "mümkün değil", "mumkun degil", "mümkün degil", "söylenemez", "soylenemez",
-        "söyleyemem", "soyleyemem", "denemez", "iddia edilemez", "söylemek zor", "soylemek zor",
-        "zannetmiyorum", "sanmıyorum", "sanmiyorum",
-    )):
-        if any(w in cleaned for w in ("kaliteli", "taze", "lezzetli", "temiz", "güzel", "guzel", "iyi", "yeterli", "çeşitli", "cesitli", "harika")):
-            if not any(w in cleaned for w in ("sorun yok", "şikayet yok", "kusur yok")):
-                return "Negative", -0.65
-
-    # 1c. Bir daha gelmeme / tercih etmeme ifadeleri ("bir daha tercih edeceğimi sanmıyorum", "asla tavsiye etmiyorum")
-    if any(p in cleaned for p in (
-        "tercih edeceğimi sanmıyorum", "tercih edecegimi sanmiyorum", "tercih etmem", "tercih etmiyorum",
-        "geleceğimi sanmıyorum", "gelecegimi sanmiyorum", "bir daha gelmem", "bir daha gitmem",
-        "tavsiye etmiyorum", "tavsiye etmem", "önermiyorum", "onermiyorum", "önermem", "onermem",
-        "kalmayı düşünmüyorum", "kalmayi dusunmuyorum", "tekrar kalmam", "asla tavsiye",
-    )):
-        return "Negative", -0.80
-
-    # 1d. Arızalı / kırık / gıda pişmemiş / altyapı şikayetleri ("kırıktı", "akmıyordu", "pişmemişti", "çalışmıyordu")
-    if any(p in cleaned for p in (
-        "kırıktı", "kirikti", "akmıyordu", "akmiyordu", "akmıyor", "akmiyor",
-        "pişmemişti", "pismemisti", "pişmemiş", "pismemis", "çiğdi", "cigdi", "çiğ", "cig",
-        "çalışmıyordu", "calismiyordu", "çalışmıyor", "calismiyor",
-        "bozuktu", "damlatıyordu", "damlatiyordu", "su gelmiyordu", "sıcak su yoktu", "sicak su yoktu",
-    )):
-        if not any(p in cleaned for p in ("sorun yok", "problem yok", "hata yok", "kusur yok")):
-            return "Negative", -0.65
-
-    # 2. Praise via negated negative terms ("sorun yaşamadık", "şikayetimiz yok", "pişman olmadık", "kötü sayılmazdı")
-    if any(p in cleaned for p in (
-        "sorun yaşamadık", "sorun yasamadik", "sorun yaşamadım", "sorun yasamadim",
-        "sorun yok", "sorun yoktu", "problem yok", "problem yoktu", "kusur yok",
-        "şikayetimiz yok", "sikayetimiz yok", "şikayet yok", "sikayet yok",
-        "pişman olmadık", "pisman olmadik", "pişman olmadım", "pisman olmadim",
-        "kötü sayılmazdı", "kotu sayilmazdi", "kötü değildi", "kotu degildi", "kötü değil", "kotu degil",
-        "kötü olmadığı", "kotu olmadigi", "kötü olmadigi", "kotu olmadığı",
-        "çok kötü olmadığı", "cok kotu olmadigi", "çok kötü olmadigi", "cok kotu olmadığı",
-        "kötü olmasa", "kotu olmasa", "kalitesiz değil", "kalitesiz degil",
-        "berbat değil", "berbat degil", "dolduruyorlardı", "dolduruyorlardi", "odaları temizdi", "odalari temizdi",
-    )):
-        return "Positive", 0.55
-
-    # 3. Constructive criticism & improvement suggestions ("geliştirilebilir", "çeşitlilik artırılmalı")
-    if any(p in cleaned for p in (
-        "geliştirilebilir", "gelistirilebilir",
-        "artırılmalı", "arttirilmali", "artırılabilir", "arttirilabilir",
-        "çeşitlendirilmeli", "cesitlendirilmeli",
-        "iyileştirilmeli", "iyilestirilmeli",
-    )):
-        return "Negative", -0.40
+    # Positive negation praise (e.g., "sorun görmedim", "sıkıntı yaşamadık")
+    neg_praise_cues = (
+        "sorun gormedim", "sorun görmedim", "sorun yoktu", "sorun yasamadik", "sorun yaşamadık",
+        "sikinti yasamadik", "sıkıntı yaşamadık", "problem yasamadik", "problem yaşamadık",
+        "sikayetimiz olmadi", "şikayetimiz olmadı", "olumsuz bir sey", "olumsuz bir şey",
+        "hiçbir problem", "hicbir problem", "kusursuzdu"
+    )
+    if any(p in cleaned for p in neg_praise_cues):
+        if not any(w in cleaned for w in ("berbat", "rezalet", "iğrenç", "igrenc", "çöp", "cop", "fiyasko")):
+            if any(w in cleaned for w in ("temiz", "güzel", "guzel", "harika", "iyi", "memnun", "muhtesem", "mükemmel")):
+                return "Positive", 0.65
+            return "Neutral", 0.35
 
     if any(w in cleaned for w in ("cozume kavustur", "çözüme kavuştur", "ciddiye aldi", "ciddiye aldı")):
         if not any(w in cleaned for w in ("mad", "med", "olamadi", "olamadı", "olmadi", "olmadı")):
             return "Positive", 0.55
     if "gormemis olabilir" in cleaned or "görmemiş olabilir" in cleaned:
+        return "Neutral", 0.0
+    if (
+        "ne cok iyi ne de cok kotu" in cleaned
+        or "ne çok iyi ne de çok kötü" in cleaned
+        or re.search(r"\bne\s+([a-zçğıöşü]+)\s+ne\s+de?\s+([a-zçğıöşü]+)", cleaned)
+    ):
         return "Neutral", 0.0
 
     # Systemic mediocre / sarcasm / queue classes (config) — never Positive
@@ -1693,8 +1792,7 @@ def _apply_rule_sentiment(cleaned: str) -> Optional[tuple[str, float]]:
         mediocre = cfg.get("mediocre_lexicon") or []
         folded = _fold(cleaned)
         if _any_cue(cleaned, folded, mediocre):
-            if not any(w in folded for w in ("dusuk", "düşük", "berbat", "kirli", "kotu", "kötü", "yetersiz", "kalitesiz")):
-                return "Neutral", float(cfg.get("mediocre_score", -0.12))
+            return "Neutral", float(cfg.get("mediocre_score", -0.12))
         # Queue quantity complaints
         if re.search(r"\d+\s*ki[sş]ilik", cleaned) and any(w in folded for w in ("sira", "kuyruk", "bekle")):
             if not any(w in folded for w in ("beklemiyor", "beklemeden")):
@@ -1717,7 +1815,7 @@ def _apply_rule_sentiment(cleaned: str) -> Optional[tuple[str, float]]:
             if _any_cue(cleaned, folded, cfg.get(key) or []):
                 return "Negative", float(cfg.get(score_key, default))
     except Exception:
-        pass
+        logging.getLogger(__name__).debug("_apply_rule_sentiment: hata yutuldu", exc_info=True)
     if _has_conditional_positive(cleaned):
         return "Positive", 0.40
     if any(p in cleaned for p in (
@@ -1730,8 +1828,6 @@ def _apply_rule_sentiment(cleaned: str) -> Optional[tuple[str, float]]:
         "metre yurumek", "metre yürümek", "kosmak isterseniz", "koşmak isterseniz",
         "guzel bir yani yok", "güzel bir yanı yok", "sira bekleniyor", "sıra bekleniyor",
         "alinamiyor", "alınamıyor", "baglanilamiyor", "bağlanılamıyor",
-        "öğrenci yemekhanesi", "ogrenci yemekhanesi", "yemekhane gibi",
-        "sıra gelirse", "sira gelirse", "çook fazla yürünüyor", "cok fazla yurunuyor", "yürünüyor",
     )):
         return "Negative", -0.50
     if "18.30" in cleaned or "18 30" in cleaned or "18.00" in cleaned or "18 00" in cleaned:
@@ -1747,7 +1843,7 @@ def _apply_rule_sentiment(cleaned: str) -> Optional[tuple[str, float]]:
         return "Negative", -0.45
     if "cesitlendirilebilir" in cleaned or "çeşitlendirilebilir" in cleaned:
         return "Negative", -0.40
-    if any(w in cleaned for w in ("kalitesiz", "yetersiz", "bitiyor", "cikmadi", "çıkmadı", "eksik", "düşüktü", "dusuktu", "kıyma kalitesi", "kiyma kalitesi")):
+    if any(w in cleaned for w in ("kalitesiz", "yetersiz", "bitiyor", "cikmadi", "çıkmadı", "eksik")):
         return "Negative", -0.50
     if "bakima ihtiyaci" in cleaned or "bakıma ihtiyacı" in cleaned:
         return "Negative", -0.45
@@ -1817,10 +1913,6 @@ def detect_strong_sentiment(text: str) -> tuple[str, float]:
         adjustment -= 0.35
     if ("yeterliydi" in cleaned or "yeterli" in cleaned) and "beklemiyor" in cleaned:
         adjustment += 0.40
-    # Long-distance "ne ... ne ..." (neither ... nor ...) → strong negative
-    if cleaned.count(" ne ") >= 2 or cleaned.count(" ne" ) >= 2:
-        if any(w in cleaned for w in ("guzel", "güzel", "iyi", "yeterli", "kaliteli")):
-            adjustment -= 0.55
     if any(w in cleaned for w in STRONG_NEGATIVE):
         adjustment -= 0.40
 
@@ -1938,6 +2030,8 @@ def analyze_sentiment_with_rating(text: str, rating: Optional[int] = None) -> tu
 
     mixed = analyze_mixed_review(text)
     if mixed.is_mixed and mixed.overall_sentiment and mixed.overall_score is not None:
+        if rating is not None and rating <= 2 and any(w in cleaned for w in ("berbat", "berbattı", "çalışmıyordu", "calismiyordu", "kötü", "kotu", "felaket", "pis")):
+            return "Negative", -0.75
         return mixed.overall_sentiment, mixed.overall_score
 
     ruled = _apply_rule_sentiment(cleaned)
@@ -1949,8 +2043,7 @@ def analyze_sentiment_with_rating(text: str, rating: Optional[int] = None) -> tu
     text_adj = (pos - neg) * 0.12 + (phrase_pos - phrase_neg) * 0.08
     if any(_phrase_in_text(p, cleaned) for p in POSITIVE_PHRASES):
         text_adj += 0.40
-    _tokens = tokenize_turkish(cleaned)
-    if any(_word_in_text(w, cleaned, _tokens) for w in STRONG_POSITIVE):
+    if any(_word_in_text(w, cleaned) for w in STRONG_POSITIVE):
         text_adj += 0.35
 
     if "güzeldi" in cleaned or "çok güzel" in cleaned:
@@ -1991,6 +2084,10 @@ def analyze_sentiment_with_rating(text: str, rating: Optional[int] = None) -> tu
             high_rating_contradiction = True
 
     low_rating_positive_text = rating is not None and rating <= 2 and strong_pos and not strong_neg
+
+    if rating is not None and rating <= 2:
+        if strong_neg or neg >= 1 or any(w in cleaned for w in ("berbat", "berbattı", "çalışmıyordu", "calismiyordu", "kötü", "kotu", "felaket", "pis")):
+            return "Negative", -0.75
 
     if high_rating_contradiction:
         score = -0.80
@@ -2204,7 +2301,7 @@ def _apply_lexicon_extensions() -> None:
         }
         DEPT_HINTS.update(w for w in HOTEL_TERMS if len(w) >= 4)
     except Exception:
-        pass
+        logging.getLogger(__name__).debug("_apply_lexicon_extensions: hata yutuldu", exc_info=True)
 
 
 def _apply_encyclopedia_extensions() -> None:
@@ -2231,7 +2328,7 @@ def _apply_encyclopedia_extensions() -> None:
         }
         DEPT_HINTS.update(w for w in HOTEL_TERMS if len(w) >= 4)
     except Exception:
-        pass
+        logging.getLogger(__name__).debug("_apply_encyclopedia_extensions: hata yutuldu", exc_info=True)
 
 
 _apply_lexicon_extensions()

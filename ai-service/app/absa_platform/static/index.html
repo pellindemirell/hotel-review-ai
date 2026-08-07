@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HCOS Review Platform</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+.login-box { background: #1e293b; padding: 40px; border-radius: 16px; border: 1px solid #334155; width: 400px; }
+.login-box h1 { font-size: 24px; color: #38bdf8; margin-bottom: 8px; }
+.login-box p { color: #64748b; margin-bottom: 24px; font-size: 14px; }
+.login-box input { width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; color: #e2e8f0; border-radius: 8px; font-size: 16px; margin-bottom: 12px; }
+.login-box input:focus { outline: none; border-color: #38bdf8; }
+.login-box button { width: 100%; padding: 12px; background: #38bdf8; color: #0f172a; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
+.login-box button:hover { background: #0ea5e9; }
+.login-box .error { color: #ef4444; font-size: 13px; margin-top: 8px; display: none; }
+
+.app { display: none; width: 100%; max-width: 1400px; margin: 0 auto; padding: 20px; min-height: 100vh; }
+
+.header { background: #1e293b; border-radius: 12px; padding: 16px 24px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+.header h1 { font-size: 20px; color: #38bdf8; }
+.header .user-info { font-size: 14px; color: #94a3b8; }
+.header .user-info strong { color: #e2e8f0; }
+.header .stats { display: flex; gap: 16px; }
+.header .stats span { background: #334155; padding: 4px 12px; border-radius: 6px; font-size: 13px; }
+.header .stats .done { color: #4ade80; }
+.header .stats .pct { color: #38bdf8; }
+
+.review-card { background: #1e293b; border-radius: 12px; border: 1px solid #334155; overflow: hidden; }
+.review-text-section { padding: 24px; border-bottom: 1px solid #334155; }
+.review-text-section .label { font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.review-text-section .original { font-size: 15px; line-height: 1.7; white-space: pre-wrap; }
+
+.absa-section { padding: 24px; }
+.absa-section h2 { font-size: 16px; color: #38bdf8; margin-bottom: 16px; }
+
+.aspect-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.aspect-card { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 14px; }
+.aspect-card .aspect-text { font-size: 14px; line-height: 1.5; margin-bottom: 10px; }
+.aspect-card .meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.aspect-card .meta select { background: #1e293b; border: 1px solid #334155; color: #e2e8f0; padding: 6px 10px; border-radius: 6px; font-size: 13px; cursor: pointer; }
+.aspect-card .meta select:focus { border-color: #38bdf8; outline: none; }
+.aspect-card .meta .sent-select { width: 90px; }
+.aspect-card .status { font-size: 12px; padding: 3px 10px; border-radius: 5px; cursor: pointer; border: none; font-weight: 600; }
+.aspect-card .status.pending { background: #f59e0b20; color: #f59e0b; }
+.aspect-card .status.approved { background: #4ade8020; color: #4ade80; }
+.aspect-card .status.corrected { background: #38bdf820; color: #38bdf8; }
+
+.dept-section { margin-bottom: 24px; }
+.dept-section h3 { font-size: 14px; color: #94a3b8; margin-bottom: 8px; }
+.dept-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.dept-tag { padding: 8px 18px; border-radius: 20px; font-size: 13px; cursor: pointer; border: 1px solid #334155; background: #0f172a; color: #94a3b8; transition: all .2s; }
+.dept-tag.approved { background: #4ade8020; border-color: #4ade80; color: #4ade80; }
+.dept-tag.rejected { background: #ef444420; border-color: #ef4444; color: #ef4444; opacity: 0.6; }
+.dept-tag:hover { border-color: #38bdf8; }
+
+.submit-area { padding: 24px; border-top: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
+.submit-area .summary { font-size: 13px; color: #94a3b8; }
+.submit-area .summary strong { color: #e2e8f0; }
+.submit-btn { padding: 14px 36px; background: #4ade80; color: #0f172a; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
+.submit-btn:hover { background: #22c55e; }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.skip-btn { padding: 14px 28px; background: transparent; color: #64748b; border: 1px solid #334155; border-radius: 8px; font-size: 14px; cursor: pointer; }
+.skip-btn:hover { background: #334155; }
+
+.empty-state { text-align: center; padding: 60px 20px; color: #64748b; }
+.empty-state h2 { font-size: 24px; margin-bottom: 8px; }
+.empty-state p { font-size: 14px; }
+
+.modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); align-items:center; justify-content:center; z-index:100; }
+.modal-overlay.show { display: flex; }
+.modal { background: #1e293b; border-radius: 12px; padding: 24px; width: 500px; max-width: 90vw; }
+.modal h3 { margin-bottom: 12px; }
+.modal select, .modal input { width:100%; padding:10px; background:#0f172a; border:1px solid #334155; color:#e2e8f0; border-radius:6px; margin-bottom:8px; font-size:14px; }
+.modal .btn-row { display:flex; gap:8px; justify-content:flex-end; margin-top:16px; }
+.modal .btn-row button { padding:10px 20px; border:none; border-radius:6px; cursor:pointer; font-size:14px; }
+.loading { text-align:center; padding:60px; color:#64748b; font-size:16px; }
+
+.absa-detail { margin-top: 12px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px; cursor: pointer; }
+.absa-detail summary { font-size: 13px; color: #94a3b8; font-weight: 600; padding: 4px 0; }
+.absa-detail table { width: 100%; margin-top: 8px; border-collapse: collapse; font-size: 12px; }
+.absa-detail td { padding: 3px 8px; border-bottom: 1px solid #1e293b; color: #cbd5e1; }
+.absa-detail td:first-child { color: #64748b; width: 100px; }
+
+@media(max-width:768px) {
+  .app { padding:10px; }
+  .aspect-grid { grid-template-columns:1fr; }
+  .header { flex-direction:column; gap:8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="login-box" id="loginScreen">
+  <h1>&#128273; HCOS Review Platform</h1>
+  <p>Stajyer girişi için token'ınızı girin</p>
+  <input type="password" id="tokenInput" placeholder="Token: arda1, arda2, pelin, bahriye, huseyin, ozgur, emre" onkeydown="if(event.key==='Enter') login()">
+  <button onclick="login()">Giriş Yap</button>
+  <div class="error" id="loginError">Geçersiz token</div>
+</div>
+
+<div class="app" id="app">
+  <div class="header">
+    <div>
+      <h1>HCOS Review</h1>
+      <div class="user-info">Hoş geldin, <strong id="userName">-</strong></div>
+    </div>
+    <div class="stats">
+      <span id="statTotal">0</span>
+      <span class="done" id="statDone">0 &#10003;</span>
+      <span class="pct" id="statPct">0%</span>
+      <button onclick="logout()" style="background:#dc2626;color:#fff;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;font-size:13px">Çıkış</button>
+    </div>
+  </div>
+
+  <div id="reviewContainer">
+    <div class="loading">Yükleniyor...</div>
+  </div>
+</div>
+
+<script>
+const DEPT_ASPECTS = {
+  "Kat Hizmetleri & Temizlik": ["genel","temizlik","oda_duzeni","yatak","banyo","havlu","nevresim","mini_bar"],
+  "Yiyecek & İçecek": ["genel","kahvalti","yemek_kalitesi","restoran","servis_hizi","menu_cesitlilik","fiyat_performans","ozel_diyet"],
+  "Ön Büro & Misafir İlişkileri": ["genel","giris_cikis","rezervasyon","oda_tahsis","faturalandirma","danisma","uye_programi"],
+  "Teknik Servis & IT": ["genel","aydinlatma","iklimlendirme","su_tesisati","teknolojik_cihaz","mobilya"],
+  "Rekreasyon & Eğlence": ["genel","havuz","spor_salonu","spa","cocuk_kulubu","eglence_programi","plaj"],
+  "Çevre, Güvenlik & Ulaşım": ["genel","otopark","guvenlik","konum","manzara","bahce","ulasim_servis"],
+  "Otel Atmosferi & Misafir Profili": ["genel","dekor","konsept","aydinlatma_atmosfer","ses_yalitimi","koku"],
+  "Personel Davranışı": ["genel","guler_yuz","ilgi_alaka","profesyonellik","dil_yetkinligi","cozum_odakli"],
+};
+const DEPARTMENTS = Object.keys(DEPT_ASPECTS);
+const ALL_ASPECTS = [...new Set(Object.values(DEPT_ASPECTS).flat())];
+
+const SENT_OPTIONS = ["OLUMLU","OLUMSUZ","NOTR"];
+const PRIORITY_COLORS = { KRITIK:"#ef4444", YUKSEK:"#f59e0b", ORTA:"#3b82f6", DUSUK:"#64748b", BILGI:"#4ade80" };
+const SENT_COLORS = { OLUMLU:"#4ade80", OLUMSUZ:"#ef4444", NOTR:"#94a3b8" };
+
+const CONTEXT_CATEGORIES = {
+  "yorum_turu": { label: "Yorum Türü", options: ["", "Şikayet", "Övgü", "Öneri", "Karışık"] },
+  "musteri_profili": { label: "Müşteri Profili", options: ["", "Aile", "Çift", "Yalnız", "İş Seyahati", "Grup"] },
+  "konaklama_suresi": { label: "Konaklama Süresi", options: ["", "Kısa (1-2 gece)", "Orta (3-5 gece)", "Uzun (6+ gece)"] },
+  "one_cikan_kategori": { label: "Öne Çıkan Kategori", options: ["", "Oda", "Yiyecek-İçecek", "Personel", "Temizlik", "Konum", "Havuz-Spa", "Fiyat/Performans", "Genel Atmosfer"] },
+};
+
+let state = { token: null, user: null, review: null, aspects: [], departments: [], review_context: {}, history: [] };
+
+async function api(path, opts) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (state.token) headers['Authorization'] = 'Bearer ' + state.token;
+  const r = await fetch(path, { headers, ...opts });
+  if (r.status === 401) { logout(); throw new Error('Session expired'); }
+  return r.json();
+}
+
+function login() {
+  const t = document.getElementById('tokenInput').value.trim();
+  if (!t) return;
+  api('/api/login', { method:'POST', body: JSON.stringify({ token: t }) })
+    .then(r => {
+      if (r.token) {
+        state.token = r.token;
+        state.user = r.user;
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        document.getElementById('userName').textContent = r.user.display_name;
+        loadStats();
+        loadNextReview();
+      }
+    })
+    .catch(() => { document.getElementById('loginError').style.display = 'block'; });
+}
+
+function logout() {
+  state.token = null;
+  state.user = null;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('loginScreen').style.alignItems = 'center';
+  document.getElementById('loginScreen').style.minHeight = '100vh';
+}
+
+async function loadStats() {
+  const s = await api('/api/reviews/stats');
+  document.getElementById('statTotal').textContent = 'Toplam: ' + s.total;
+  document.getElementById('statDone').textContent = s.completed + ' \u2713';
+  document.getElementById('statPct').textContent = s.progress_pct + '%';
+}
+
+async function loadNextReview() {
+  const container = document.getElementById('reviewContainer');
+  container.innerHTML = '<div class="loading">Sıradaki yorum yükleniyor...</div>';
+
+  let data;
+  try {
+    data = await api('/api/reviews/next');
+  } catch (e) {
+    container.innerHTML = '<div class="review-card"><div class="empty-state"><h2>⚠ Bağlantı hatası</h2><p>Sunucuya erişilemedi, sayfayı yenileyin.</p><button onclick="loadNextReview()">Tekrar Dene</button></div></div>';
+    return;
+  }
+  if (data.status === 'empty') {
+    container.innerHTML = `
+      <div class="review-card">
+        <div class="empty-state">
+          <h2>&#127881; Tüm yorumlar tamamlandı!</h2>
+          <p>${data.message}</p>
+        </div>
+      </div>`;
+    return;
+  }
+
+  state.review = data.review;
+  state.summary = data.summary || {};
+  state.review_context = data.review_context || { yorum_turu: '', musteri_profili: '', konaklama_suresi: '', one_cikan_kategori: '' };
+  state.aspects = data.auto_aspects.map((a, i) => ({ ...a, index: i, approved: true, context_wrong: false, context_correction: '', edited_text: '' }));
+  state.departments = data.auto_departments.map((d, i) => ({ ...d, index: i, approved: d.auto_detected }));
+  renderReview();
+
+  const r = state.review;
+  if (!['tr','az','tk'].includes(r.language) && !r.review_text_translated) {
+    document.getElementById('translateStatus').textContent = 'Çevriliyor...';
+    try {
+      const tr = await api('/api/reviews/translate', { method:'POST', body: JSON.stringify({ review_id: r.id }) });
+      if (tr.translated) {
+        state.review.review_text_translated = tr.translated;
+        if (tr.aspects && tr.aspects.length) {
+          state.aspects = tr.aspects.map((a, i) => ({ ...a, index: i, approved: true, context_wrong: false, context_correction: '' }));
+          const autoDepts = new Set(tr.aspects.map(a => a.department).filter(Boolean));
+          state.departments = state.departments.map(d => ({ ...d, auto_detected: autoDepts.has(d.department), approved: autoDepts.has(d.department) }));
+        }
+        renderReview();
+      }
+    } catch (e) {
+      document.getElementById('translateStatus').textContent = 'Çeviri başarısız';
+    }
+  }
+}
+
+function getAspectsForDept(dept) {
+  return DEPT_ASPECTS[dept] || ["genel"];
+}
+
+function renderReview() {
+  const r = state.review;
+  const a = state.aspects;
+  const d = state.departments;
+  const summary = state.summary || {};
+
+  const aspectsHtml = a.map((asp, i) => {
+    const pc = PRIORITY_COLORS[asp.priority] || '#64748b';
+    const sc = SENT_COLORS[asp.sentiment_label] || '#94a3b8';
+    const statusIcon = asp.approved ? '\u2713' : '\u2717';
+    const statusCls = asp.approved ? 'approved' : 'corrected';
+    const aspectsForDept = getAspectsForDept(asp.department);
+
+    return `<div class="aspect-card" style="border-left:3px solid ${pc}">
+      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:6px">
+        <span style="font-size:11px;background:${pc};color:#fff;padding:2px 8px;border-radius:3px;font-weight:600">${asp.priority || 'ORTA'}</span>
+        <span style="font-size:12px;color:${sc};font-weight:600;background:${sc}15;padding:2px 10px;border-radius:3px">${asp.sentiment_label || 'NOTR'} ${asp.sentiment_score ? '(' + asp.sentiment_score + ')' : ''}</span>
+      </div>
+      ${asp.original_text ? '<div style="font-size:12px;color:#64748b;line-height:1.5;margin-bottom:4px;padding:4px 8px;background:#1e293b;border-radius:4px;border-left:2px solid #38bdf8">🔍 Özgün: ' + escapeHtml(asp.original_text) + '</div>' : ''}
+      <textarea style="width:100%;padding:8px;background:#0f172a;border:1px solid #334155;color:#e2e8f0;border-radius:6px;font-size:14px;line-height:1.5;min-height:48px;resize:vertical;font-family:inherit" oninput="state.aspects[${i}].edited_text=this.value;state.aspects[${i}].text=this.value">${escapeHtml(asp.edited_text || asp.text)}</textarea>
+      ${asp.original_text && r.review_text_translated ? '<div style="font-size:11px;color:#4ade80;margin-bottom:4px;padding:2px 8px;background:#4ade8015;border-radius:3px">🌐 Türkçe clause</div>' : ''}
+      <div class="meta" style="margin-top:6px">
+        <select onchange="updateAspect(${i},'aspect',this.value)" style="flex:1">
+          ${aspectsForDept.map(x => `<option value="${x}" ${x === (asp.aspect || 'genel') ? 'selected' : ''}>${x}</option>`).join('')}
+        </select>
+        <select onchange="updateAspect(${i},'department',this.value); refreshAspectOptions(${i})" style="flex:1">
+          ${DEPARTMENTS.map(x => `<option value="${x}" ${x === (asp.department || 'Otel Atmosferi & Misafir Profili') ? 'selected' : ''}>${x}</option>`).join('')}
+        </select>
+        <select class="sent-select" onchange="updateAspect(${i},'sentiment_label',this.value)">
+          ${SENT_OPTIONS.map(x => `<option value="${x}" ${x === asp.sentiment_label ? 'selected' : ''}>${x}</option>`).join('')}
+        </select>
+      </div>
+      <div style="font-size:12px;color:#64748b;margin-top:6px">&#128161; ${escapeHtml(asp.suggestion || '')}</div>
+      <div style="margin-top:8px;border-top:1px solid #334155;padding-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:4px;flex:1;min-width:200px">
+          <span style="font-size:12px;color:#f59e0b;white-space:nowrap">&#9998; Bağlam:</span>
+          <input type="text" placeholder="AI yanlış ayırdıysa doğrusunu yaz..." value="${escapeHtml(asp.context_correction || '')}" style="flex:1;padding:6px 8px;background:#0f172a;border:1px solid ${asp.context_correction ? '#f59e0b' : '#334155'};color:#e2e8f0;border-radius:5px;font-size:12px" oninput="state.aspects[${i}].context_correction=this.value;state.aspects[${i}].context_wrong=!!this.value.trim()">
+        </div>
+        <button class="status ${statusCls}" onclick="toggleApprove(${i})" style="padding:6px 16px;font-size:13px">${statusIcon} ${asp.approved ? 'Doğru' : 'Düzeltildi'}</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  const deptsHtml = d.map((dept, i) => {
+    const cls = dept.approved ? 'approved' : 'rejected';
+    const autoLabel = dept.auto_detected ? ' <span style="font-size:10px;color:#64748b">(auto)</span>' : '';
+    return `<span class="dept-tag ${cls}" onclick="toggleDept(${i})" style="${dept.auto_detected ? '' : 'opacity:0.5'}">
+      ${dept.department} ${dept.approved ? '\u2713' : '\u2717'}${autoLabel}
+    </span>`;
+  }).join('');
+
+  const dualText = r.review_text_translated ? `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px">
+      <div>
+        <div style="font-size:11px;color:#64748b;text-transform:uppercase;margin-bottom:4px">${r.language.toUpperCase()} — ORİJİNAL</div>
+        <div style="font-size:14px;line-height:1.6">${escapeHtml(r.review_text)}</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:#4ade80;text-transform:uppercase;margin-bottom:4px">TÜRKÇE — ÇEVİRİ</div>
+        <div style="font-size:14px;line-height:1.6;color:#94a3b8">${escapeHtml(r.review_text_translated)}</div>
+      </div>
+    </div>` : `
+    <div class="original" style="margin-top:12px">${escapeHtml(r.review_text)}</div>
+    <div id="translateStatus" style="font-size:12px;color:#94a3b8;margin-top:4px"></div>`;
+
+  const approvedAspects = a.filter(x => x.approved).length;
+  const criticalCount = summary.critical_count || a.filter(x => x.priority === 'KRITIK').length;
+  const overallSent = summary.overall_sentiment || 'NOTR';
+
+  const absaDetailRows = a.map((asp, i) => {
+    const deptAspects = getAspectsForDept(asp.department);
+    return `<tr><td>Clause ${i+1}</td><td>${escapeHtml(asp.text.slice(0,60))}${asp.text.length>60?'...':''}</td></tr>
+      ${asp.original_text ? '<tr><td>Orijinal</td><td style="color:#94a3b8">' + escapeHtml(asp.original_text.slice(0,80)) + (asp.original_text.length>80?'...':'') + '</td></tr>' : ''}
+      <tr><td>Aspect</td><td><select onchange="updateAspect(${i},'aspect',this.value)" style="background:#0f172a;border:1px solid #334155;color:#e2e8f0;padding:2px 6px;border-radius:3px;font-size:11px">
+        ${deptAspects.map(x => `<option value="${x}" ${x === (asp.aspect||'genel')?'selected':''}>${x}</option>`).join('')}</select></td></tr>
+      <tr><td>Departman</td><td>${asp.department}</td></tr>
+      <tr><td>Duygu</td><td>${asp.sentiment_label} (${asp.sentiment_score})</td></tr>
+      <tr><td>Memnuniyet</td><td>${asp.satisfaction || '-'}</td></tr>
+      <tr><td>Domain</td><td>${asp.domain || '-'}</td></tr>
+      <tr><td>Confidence</td><td>${typeof asp.confidence !== 'undefined' ? (asp.confidence*100).toFixed(0)+'%' : '-'}</td></tr>`;
+  }).join('');
+
+  document.getElementById('reviewContainer').innerHTML = `
+    <div class="review-card">
+      <div class="review-text-section">
+        <div class="label">${r.language.toUpperCase()} · ${r.hotel_name || 'Otel'} ${r.rating ? '· ' + '★'.repeat(r.rating) : ''}</div>
+        ${dualText}
+      </div>
+
+      <div class="absa-section">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <h2 style="font-size:16px;color:#38bdf8;margin:0">ABSA — Clause Bazında Analiz</h2>
+          <div style="display:flex;gap:8px;font-size:12px">
+            <span style="background:#1e293b;padding:2px 10px;border-radius:4px;color:${SENT_COLORS[overallSent]}">${overallSent}</span>
+            <span style="background:#1e293b;padding:2px 10px;border-radius:4px">${a.length} clause</span>
+            ${criticalCount > 0 ? '<span style="background:#ef444420;padding:2px 10px;border-radius:4px;color:#ef4444">' + criticalCount + ' kritik</span>' : ''}
+          </div>
+        </div>
+        <div class="info" style="font-size:13px;color:#94a3b8;margin-bottom:12px">Her clause için aspect, departman ve duyguyu kontrol edin. Departman değişince aspect listesi otomatik filtrelenir.</div>
+
+        <details class="absa-detail">
+          <summary>&#128203; Ham ABSA Çıktısı — tüm alanlar</summary>
+          <table>${absaDetailRows}</table>
+        </details>
+
+        <details style="margin-bottom:12px;background:#0f172a;border:1px solid #334155;border-radius:8px;padding:10px 14px;cursor:pointer">
+          <summary style="font-size:13px;color:#94a3b8;font-weight:600">&#128196; Tüm Yorumu Oku (${r.review_text.length} karakter)</summary>
+          <div style="margin-top:8px;font-size:14px;line-height:1.7;white-space:pre-wrap;color:#e2e8f0;cursor:text">${escapeHtml(r.review_text_translated || r.review_text)}</div>
+        </details>
+
+        <details style="margin-bottom:12px;background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px 14px;cursor:pointer" ${Object.values(state.review_context).some(v => v) ? 'open' : ''}>
+          <summary style="font-size:13px;color:#f59e0b;font-weight:600">&#128220; Yorum Bağlamı — ekstra kategoriler</summary>
+          <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px;cursor:text">
+            ${Object.entries(CONTEXT_CATEGORIES).map(([key, cat]) => `
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <label style="font-size:12px;color:#94a3b8">${cat.label}</label>
+                <select style="padding:8px;background:#0f172a;border:1px solid #334155;color:#e2e8f0;border-radius:6px;font-size:13px" onchange="state.review_context['${key}']=this.value">
+                  ${cat.options.map(o => `<option value="${o}" ${o === (state.review_context[key] || '') ? 'selected' : ''}>${o || '(seçilmedi)'}</option>`).join('')}
+                </select>
+              </div>
+            `).join('')}
+          </div>
+        </details>
+
+        <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+          <button onclick="addClause()" style="padding:8px 18px;background:#38bdf820;color:#38bdf8;border:1px solid #38bdf8;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">+ Yeni Clause Ekle</button>
+        </div>
+        <div class="aspect-grid" style="margin-top:8px">${aspectsHtml}</div>
+
+        <div style="text-align:center;margin:12px 0">
+          <button onclick="addClause()" style="padding:10px 28px;background:transparent;border:1px dashed #38bdf8;color:#38bdf8;border-radius:8px;font-size:14px;cursor:pointer">+ Yeni Clause Ekle</button>
+        </div>
+
+        <div class="dept-section" style="margin-top:16px">
+          <h3 style="font-size:14px;color:#94a3b8;margin-bottom:8px">Departmanlar — tikla onayla/reddet</h3>
+          <div class="dept-grid">${deptsHtml}</div>
+        </div>
+      </div>
+
+      <div class="submit-area">
+        <div class="summary">
+          <strong>${approvedAspects}</strong>/<strong>${a.length}</strong> aspect onaylandi
+          ${criticalCount > 0 ? '· <span style="color:#ef4444">' + criticalCount + ' kritik</span>' : ''}
+          ${Object.values(state.review_context).some(v => v) ? '· <span style="color:#f59e0b">bağlam var</span>' : ''}
+        </div>
+        <div style="display:flex;gap:8px">
+          ${state.history.length > 0 ? '<button class="skip-btn" onclick="previousReview()">← Önceki Yorum</button>' : ''}
+          <button class="skip-btn" onclick="skipReview()">Atla</button>
+          <button class="submit-btn" onclick="submitCorrections()">Onayla ve Kaydet</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function refreshAspectOptions(i) {
+  const cards = document.querySelectorAll('.aspect-card');
+  if (!cards[i]) return;
+  const selects = cards[i].querySelectorAll('select');
+  if (!selects[0]) return;
+  const dept = state.aspects[i].department;
+  const aspects = getAspectsForDept(dept);
+  const currentAspect = state.aspects[i].aspect;
+  selects[0].innerHTML = aspects.map(x =>
+    `<option value="${x}" ${x === currentAspect || (!aspects.includes(currentAspect) && x === 'genel') ? 'selected' : ''}>${x}</option>`
+  ).join('');
+  if (!aspects.includes(currentAspect)) {
+    state.aspects[i].aspect = 'genel';
+  }
+}
+
+function updateAspect(i, field, value) {
+  state.aspects[i][field] = value;
+  state.aspects[i].approved = false;
+}
+
+function toggleApprove(i) {
+  state.aspects[i].approved = !state.aspects[i].approved;
+  renderReview();
+}
+
+function toggleDept(i) {
+  state.departments[i].approved = !state.departments[i].approved;
+  renderReview();
+}
+
+function addClause() {
+  const i = state.aspects.length;
+  state.aspects.push({
+    index: i,
+    text: '',
+    edited_text: '',
+    original_text: '',
+    aspect: 'genel',
+    department: 'Otel Atmosferi & Misafir Profili',
+    sentiment_label: 'NOTR',
+    sentiment_score: 0,
+    priority: 'ORTA',
+    suggestion: '',
+    approved: false,
+    context_wrong: false,
+    context_correction: '',
+    is_new: true,
+  });
+  // Scroll to the new clause after render
+  renderReview();
+  setTimeout(() => {
+    const cards = document.querySelectorAll('.aspect-card');
+    if (cards[i]) cards[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+}
+
+async function skipReview() {
+  try {
+    await api('/api/reviews/skip', { method: 'POST' });
+  } catch (e) {
+    /* skip is best-effort */
+  }
+  loadNextReview();
+}
+
+async function submitCorrections() {
+  const btn = document.querySelector('.submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Kaydediliyor...';
+
+  // Push current review to history before moving forward
+  if (state.review) {
+    const hasContext = Object.values(state.review_context).some(v => v);
+    state.history.push({
+      review: state.review,
+      aspects: JSON.parse(JSON.stringify(state.aspects)),
+      departments: JSON.parse(JSON.stringify(state.departments)),
+      review_context: JSON.parse(JSON.stringify(state.review_context)),
+      summary: state.summary,
+    });
+  }
+
+  const payload = {
+    review_id: state.review.id,
+    aspects: state.aspects.map(a => ({
+      text: a.edited_text || a.text,
+      original_clause_text: a.text,
+      is_new: a.is_new || false,
+      aspect: a.aspect,
+      department: a.department || 'Otel Atmosferi & Misafir Profili',
+      sentiment: a.sentiment_label || 'NOTR',
+      sentiment_score: a.sentiment_score || 0,
+      priority: a.priority || 'ORTA',
+      approved: a.approved,
+      context_wrong: a.context_wrong || false,
+      context_correction: a.context_correction || '',
+    })),
+    departments: state.departments.map(d => ({
+      department: d.department,
+      approved: d.approved,
+    })),
+    review_context: state.review_context,
+  };
+
+  try {
+    const r = await api('/api/reviews/correct', { method:'POST', body: JSON.stringify(payload) });
+    if (r.status === 'ok') {
+      loadStats();
+      loadNextReview();
+    }
+  } catch (e) {
+    alert('Hata: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = 'Onayla ve Kaydet';
+  }
+}
+
+function previousReview() {
+  if (state.history.length === 0) return;
+  const prev = state.history.pop();
+  state.review = prev.review;
+  state.aspects = prev.aspects;
+  state.departments = prev.departments;
+  state.review_context = prev.review_context;
+  state.summary = prev.summary;
+  renderReview();
+}
+
+function escapeHtml(t) {
+  const d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
+</script>
+</body>
+</html>
